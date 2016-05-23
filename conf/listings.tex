@@ -1,0 +1,32 @@
+\definecolor{kwcolor}{rgb}{0,0.5,0}
+\definecolor{bgcolor}{rgb}{0.98, 0.98, 0.98}
+\definecolor{numbercolor}{rgb}{0.1,0.1,0.1}
+
+\lstset{
+  keywordstyle=\bfseries\underbar,
+  stringstyle=\itshape,
+  basicstyle=\small\ttfamily,
+  frame=bt,
+  framerule=1pt,
+  numbers=left,
+  numbersep=10pt,
+  numberstyle=\scriptsize\color{numbercolor},
+  backgroundcolor=\color{bgcolor},
+  tabsize=2
+}
+
+\lstdefinelanguage{l1}
+{keywords={let, letrec, in, if, then, else, end, unused}%
+  sensitive=true,
+  alsoletter={\$},
+  comment=[l]{\#},
+  string=[b]"
+}
+
+\lstdefinelanguage{acqua-ir}
+{keywords={unused, EnvNew, EnvAdd, Call, unused}%
+  sensitive=true,
+  alsoletter={\$},
+  comment=[l]{\#},
+  string=[b]"
+}
