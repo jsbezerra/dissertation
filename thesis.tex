@@ -10,6 +10,7 @@
 
 \usepackage{lmodern}
 \usepackage{amsmath}
+\usepackage{amsthm}
 \usepackage{enumitem}
 \usepackage{listings}
 \usepackage{xcolor}
@@ -29,6 +30,7 @@
 \usepackage[all,knot,arc,import,poly]{xy}
 
 \newtheorem{mydef}{Definition}[chapter]
+\newtheorem{thm}{Theorem}[chapter]
 \newcommand{\diagram}{\centerline{\xymatrix{Diagram}}}
 
 % avoid LaTeX Font Warning: Font shape `U/stmry/b/n' undefined
@@ -92,6 +94,7 @@
 
   \begin{listofabbrv}{SPMD}
           \item[GTS] Graph Transformation System
+          \item[NAC] Negative Application Condition
   \end{listofabbrv}
 
   \begin{listofsymbols}{$\alpha\beta\pi\omega$}
@@ -103,6 +106,7 @@
 
   \include{chapters/introduction}
   \include{chapters/gts}
+  \include{chapters/algebras}
   \include{chapters/verigraph}
   \include{chapters/methodology}
   \include{chapters/case-study}
