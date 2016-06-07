@@ -1,5 +1,6 @@
 \chapter{Case Study}
 
+\iffalse 
 $L1$ is a simple call-by-value functional language with high order functions. All functions are currified, that is, have exactly one argument.
 
 \begin{figure}
@@ -54,3 +55,4 @@ To find the 7th Fibonacci number, we need to first find the 6th and 5th numbers.
 \end{figure}
 
 Each node in the Fibonacci dependency tree represents a function application in the program shown on figure \ref{fig:fib-l1}. The acqua architecture allows function applications to be done in parallel, so the architecture has the potential to parallelize the width of the tree in a given moment, that is $fibo(n)$ function applications. Function application will generate a job, and each job will potentially copy one environment with only two name bindings: The $x$ variable and the reference to $fibo$ function, thus the environment copy is constant. Assuming that we have enough processing units in the architecture, we can execute the naive program shown on figure \ref{fig:fib-l1} in linear time.
+\fi
