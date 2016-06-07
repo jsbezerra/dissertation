@@ -9,9 +9,12 @@
 \end{mydef}
 
 \begin{mydef}{Negative Application Condition}
-\end{mydef}
 
-\begin{mydef}{Conflicts and Dependencies}
+\centerline{\xymatrix{
+  L\ar[d]_{m}\ar[r]^{n} & N\ar@{.>}[dl]_{q}\\
+  G & 
+}}
+
 \end{mydef}
 
 \begin{mydef}{Downward Shifted NACs}
@@ -24,7 +27,16 @@
 
 \end{mydef}
 
-\begin{mydef}{Right NACs from Left NACs}
+\begin{mydef}{Left NACs from Right NACs}
+
+\centerline{\xymatrix{
+  L\ar[d]_{n'_i} & K\ar[l]\ar[r]\ar[d] & R\ar[d]^{n_i}\\
+  N'_i\ar@{}[ur]|{(2)} & D\ar[l]\ar[r] & N_i\ar@{}[ul]|{(1)}
+}}
+
+\end{mydef}
+
+\begin{mydef}{Conflicts and Dependencies}
 \end{mydef}
 
 \begin{mydef}{Concurrent Rules with NACs}
@@ -69,3 +81,4 @@ A concurrent rule is
   \end{proof}
 \end{thm}
 
+\section{All the previous concepts for Attributed GTSs}
