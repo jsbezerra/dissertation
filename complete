@@ -1,0 +1,11 @@
+#!/bin/ruby
+
+puts `pdflatex thesis.tex`
+puts `bibtex thesis.aux`
+puts `pdflatex thesis.tex`
+puts `pdflatex thesis.tex`
+
+#puts `TEXINPUTS=.//:$(TEXINPUTS) pdflatex thesis.tex`
+#puts `TEXINPUTS=.//:$(TEXINPUTS) bibtex thesis.aux`
+#puts `TEXINPUTS=.//:$(TEXINPUTS) pdflatex thesis.tex`
+#puts `TEXINPUTS=.//:$(TEXINPUTS) pdflatex thesis.tex`

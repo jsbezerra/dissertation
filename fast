@@ -1,0 +1,4 @@
+#!/bin/ruby
+
+puts `pdflatex thesis.tex`
+puts `pdflatex thesis.tex`
