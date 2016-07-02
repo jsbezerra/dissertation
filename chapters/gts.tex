@@ -1,13 +1,19 @@
 \chapter{Graph Transformation Systems}
 
-REDO: Add the notions of Parallel and Sequential Independence. Move concurrent rules and its pieces to the proper section.
-
 \section{Overview of Graph Transformation, definitions, algorithms, etc.}
 
-\begin{mydef}{Graph Transformation Systems}
+\begin{mydef}{Graph}
 \end{mydef}
 
-\begin{mydef}{Attributed Graph Transformation Systems}
+\begin{mydef}{Typed Graph}
+\end{mydef}
+
+\begin{mydef}{Morphisms of Graph and Typed Graphs}
+\end{mydef}
+
+% Should I put the definitions of Graphs, Typed Graphs and its morphisms?
+
+\begin{mydef}{Graph Production}
 \end{mydef}
 
 \begin{mydef}{Negative Application Condition}
@@ -19,91 +25,14 @@ REDO: Add the notions of Parallel and Sequential Independence. Move concurrent r
 
 \end{mydef}
 
-\begin{mydef}{Downward Shifted NACs}
-
-\centerline{\xymatrix{
-  N'_j\ar@{.>}@/0.5pc/[r]^{e_{ji}} & N_i\ar@{}[dl]|{=}\\
-  A\ar[r]_{m}\ar[u]^{n'_j} & B\ar[u]_{n_i}
-}}
-
-For each $NAC(n'_j)$ on $A$ with $n'_j : A \rightarrow N'_j$ and $m : A \rightarrow B$, 
-let $D_m(NAC(n'_j)) = \{ NAC(n_i)|i \in I, n_i : B \rightarrow N_i \}$ where $I$ and $n_i$ 
-are constructed as follows:
-\begin{itemize}
-  \item $i \in I$ iff $(e_{ji}, n_i)$ with $e_{ji} : N'_j \rightarrow N_i$ jointly surjective 
-  \item $e_{ji} \circ n_i = n_i \circ m$
-  \item $e_ji$ injective
-\end{itemize}
-
-For each set of NACs $NAC_A = {NAC(N_j)| j \in J}$ on A the downward shift of $NAC_A$ is then defined as: $D_m(NAC_A) = \cup_{j \in J}D_m(NAC(n'_j))$. $D_m$ is also called the \emph{Downward shift of $NAC_A$}.
-
+\begin{mydef}{Graph Transformation Systems}
 \end{mydef}
 
-\begin{mydef}{Left NACs from Right NACs}
-
-\centerline{\xymatrix{
-  L\ar[d]_{n'_i} & K\ar[l]\ar[r]\ar[d] & R\ar[d]^{n_i}\\
-  N'_i\ar@{}[ur]|{(2)} & D\ar[l]\ar[r] & N_i\ar@{}[ul]|{(1)}
-}}
-
+\begin{mydef}{Attributed Graph Transformation Systems}
 \end{mydef}
 
-\begin{mydef}{Conflicts and Dependencies}
+\begin{mydef}{Parallel and Sequential Independence}
 \end{mydef}
 
-\begin{mydef}{Concurrent Rules with NACs}
-
-A concurrent rule is
-\end{mydef}
-
-\centerline{
-\xymatrix{
-  N_i & & & & N_j & & \\
-  L_c\ar[d]\ar[u]^{n_i}\ar@{}[dr]|{(3)} & K_c\ar[d]\ar[l]\ar[r] \ar@{}[dr]|{(1)} & R_c\ar[dr]^{e_1} & & L_n\ar[dl]_{e_2}\ar[u]^{n_j} & K_n\ar[d]\ar[l]\ar[r]\ar@{}[dl]|{(2)} & R_n\ar[d]\ar@{}[dl]|{(4)}\\
-  L & C_c\ar[l]^{c_l}\ar[rr]_{c_r} & & \textit{E} & & C_n\ar[ll]^{n_l}\ar[r]_{n_r} & R\\
-  & & & K\ar@{.>}@/1pc/[llu]^{k_c}\ar@{.>}@/1pc/[urr]_{k_n}\ar@{}[u]|{(5)} & & &
-}}
-
-\begin{itemize}
-\item $n = 0$ The \emph{concurrent rule} $p_c$ with NACs for rule $p_0$ with NACs is $p_0$ with NACs itself.
-\item $n \geqslant 1$ A concurrent rule $p_c = p'_c \ast_E p_n $ with NACs for the rule sequence \rulesequence is defined recursively as $p_c = (l_c \circ k_c : K \rightarrow L, r_n \circ k_n : K \rightarrow R)$ where 
-  \begin{itemize}
-  \item $p'_c : L'_c \leftarrow K'_c \rightarrow R'_c$ is a concurrent rule for the sequence $p_0,\ldots,p_{n-1}$
-  \item $(e'_c,e_n)$ is jointly surjective
-  \item (1), (2), (3) and (4) are pushouts
-  \item (5) is a pullback
-  \item $N_i$ is shifted over morphism $l'$
-  \item $N_j$ is shifted over morphism $e_2$ and then over the ``rule'' $q'_c = l_c : C_c \rightarrow L, r_c : C_c \rightarrow E$
-  \end{itemize}
-\end{itemize}
-
-\begin{mydef}{Concurrent Rules induced by Dependencies}
-
-  \textbf{incomplete}
-
-\centerline{
-\xymatrix{
-  N_i& & & & N_j\ar@{.>}@/_3pc/[ddllll]_{e_2} & & \\
-  L_c\ar[u]^{n_i}\ar[d]_{e_1}\ar@{}[dr]|{(1)} & K_c\ar[d]\ar[l]\ar[r] \ar@{}[dr]|{(2)} & R_c\ar[dr]^{m'_1} & & L_n\ar[dl]_{m_2}\ar[u]^{n_j} & K_n\ar[d]\ar[l]\ar[r]\ar@{}[dl]|{(3)} & R_n\ar[d]^{m'_2}\ar@{}[dl]|{(4)}\\
-  \textit{E} & C_c\ar[l]|{c_l}\ar[rr]|{c_r} & & P_1 & & C_n\ar[ll]|{n_l}\ar[r]|{n_r} & P_2\\
-  & & & K\ar@{.>}@/1pc/[llu]|{k_c}\ar@{.>}@/1pc/[urr]|{k_n}\ar@{}[u]|{(5)} & & & 
-}}
-
-\end{mydef}
-% \ar@{.>}@/_1pc/[dlll]|{X_{h_{21}}}
-
-\begin{thm}{EpiPairs}
-  \begin{proof}{Incomplete}
-  \end{proof}
-\end{thm}
-
-
-\begin{mydef}{Rules with trivially triggered NACs}
-\end{mydef}
-
-\begin{thm}{Propagation of trivially triggered NACs over concurrent rules}
-  \begin{proof}{Yet to come}
-  \end{proof}
-\end{thm}
 
 \section{All the previous concepts for Attributed GTSs}
