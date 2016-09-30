@@ -2,7 +2,8 @@
 
 \section{Overview of Graph Transformation, definitions, algorithms, etc.}
 
-\cite{Ribeiro1996}
+\begin{intuition}
+\end{intuition}
 
 \begin{mydef}{Graph}
 \end{mydef}
@@ -21,12 +22,21 @@
 \begin{mydef}{Graph Production}
 \end{mydef}
 
+\begin{mydef}{Atomic Constraints}
+
+\diagram{
+  P\ar[rr]^{a}\ar[dr]_{p} & & C\ar[dl]^{q}\\
+  & G &
+}
+
+\end{mydef}
+
 \begin{mydef}{Negative Application Condition}
 
-\centerline{\xymatrix{
-  L\ar[d]_{m}\ar[r]^{n} & N\ar@{.>}[dl]|{X_q}\\
-  G & 
-}}
+\diagram{
+  N\ar@{.>}[dr]|{| q} & L\ar[d]^{m}\ar[l]_{n}\\
+   & G
+}
 
 \end{mydef}
 

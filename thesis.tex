@@ -36,7 +36,12 @@
 \newtheorem{mydef}[thm]{Definition}
 \newtheorem{example}[thm]{Example}
 
-\newcommand{\diagram}{\centerline{\xymatrix{Diagram}}}
+\def\changemargin#1#2{\list{}{\rightmargin#2\leftmargin#1}\item[]}
+\let\endchangemargin=\endlist
+
+\newenvironment{intuition}{\begin{changemargin}{1cm}{1cm}}{\end{changemargin}}
+
+\newcommand{\diagram}[1]{\centerline{\xymatrix{#1}}}
 \newcommand{\grule}{$p = (L \leftarrow K \rightarrow R) $}
 \newcommand{\rulesequence}{$p_0,\ldots,p_{n-1},p_n$}
 
@@ -75,6 +80,8 @@
 \input{conf/listings.tex}
 \input{conf/figures.tex}
 
+
+\sloppy
 \begin{document}
 
   \maketitle

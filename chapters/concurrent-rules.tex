@@ -8,10 +8,10 @@ What kind of concurrent rule do we expect and why?
 
 \begin{mydef}{Downward Shifted NACs}
 
-\centerline{\xymatrix{
+\diagram{
   N'_j\ar@{.>}@/0.5pc/[r]^{e_{ji}} & N_i\ar@{}[dl]|{=}\\
   A\ar[r]_{m}\ar[u]^{n'_j} & B\ar[u]_{n_i}
-}}
+}
 
 For each $NAC(n'_j)$ on $A$ with $n'_j : A \rightarrow N'_j$ and $m : A \rightarrow B$, 
 let $D_m(NAC(n'_j)) = \{ NAC(n_i)|i \in I, n_i : B \rightarrow N_i \}$ where $I$ and $n_i$ 
@@ -19,10 +19,10 @@ are constructed as follows:
 \begin{itemize}
   \item $i \in I$ iff $(e_{ji}, n_i)$ with $e_{ji} : N'_j \rightarrow N_i$ jointly surjective 
   \item $e_{ji} \circ n_i = n_i \circ m$
-  \item $e_ji$ injective
+  \item $e_{ji}$ injective
 \end{itemize}
 
-For each set of NACs $NAC_A = {NAC(N_j)| j \in J}$ on A the downward shift of $NAC_A$ is then defined as: $D_m(NAC_A) = \cup_{j \in J}D_m(NAC(n'_j))$. $D_m$ is also called the \emph{Downward shift of $NAC_A$}.
+For each set of NACs $NAC_A = {NAC(N_j)| j \in J}$ on $A$ the downward shift of $NAC_A$ is then defined as: $D_m(NAC_A) = \cup_{j \in J}D_m(NAC(n'_j))$. $D_m$ is also called the \emph{Downward shift of $NAC_A$}.
 
 \end{mydef}
 
@@ -68,13 +68,12 @@ A concurrent rule is
 
   \textbf{incomplete}
 
-\centerline{
-\xymatrix{
+\diagram{
   N_i& & & & N_j\ar@{.>}@/_3pc/[ddllll]_{e_2} & & \\
   L_c\ar[u]^{n_i}\ar[d]_{e_1}\ar@{}[dr]|{(1)} & K_c\ar[d]\ar[l]\ar[r] \ar@{}[dr]|{(2)} & R_c\ar[dr]^{m'_1} & & L_n\ar[dl]_{m_2}\ar[u]^{n_j} & K_n\ar[d]\ar[l]\ar[r]\ar@{}[dl]|{(3)} & R_n\ar[d]^{m'_2}\ar@{}[dl]|{(4)}\\
   \textit{E} & C_c\ar[l]|{c_l}\ar[rr]|{c_r} & & P_1 & & C_n\ar[ll]|{n_l}\ar[r]|{n_r} & P_2\\
   & & & K\ar@{.>}@/1pc/[llu]|{k_c}\ar@{.>}@/1pc/[urr]|{k_n}\ar@{}[u]|{(5)} & & & 
-}}
+}
 
 \end{mydef}
 % \ar@{.>}@/_1pc/[dlll]|{X_{h_{21}}}
@@ -84,6 +83,7 @@ A concurrent rule is
   \end{proof}
 \end{thm}
 
+\subsection{Inapplicable concurrent rules}
 
 \begin{mydef}{Rules with trivially triggered NACs}
 \end{mydef}
@@ -92,6 +92,9 @@ A concurrent rule is
   \begin{proof}{Yet to come}
   \end{proof}
 \end{thm}
+
+\begin{mydef}{Breaking constraint rules}
+\end{mydef}
 
 
 \section{Concurrent Rules with attributes}
