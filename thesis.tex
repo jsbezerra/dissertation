@@ -29,8 +29,13 @@
 \usepackage{mathptmx}
 \usepackage[all,knot,arc,import,poly]{xy}
 
-\newtheorem{mydef}{Definition}[chapter]
+\theoremstyle{plain}
 \newtheorem{thm}{Theorem}[chapter]
+
+\theoremstyle{definition}
+\newtheorem{mydef}[thm]{Definition}
+\newtheorem{example}[thm]{Example}
+
 \newcommand{\diagram}{\centerline{\xymatrix{Diagram}}}
 \newcommand{\grule}{$p = (L \leftarrow K \rightarrow R) $}
 \newcommand{\rulesequence}{$p_0,\ldots,p_{n-1},p_n$}
