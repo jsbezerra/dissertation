@@ -5,61 +5,85 @@
 \begin{intuition}
 \end{intuition}
 
-\begin{mydef}{Graph}
-\end{mydef}
+\begin{definition}[Graph] A graph is a tuple $G = (V,E,s,t)$ where: $V$ is a set of nodes, $E$ is a set of Edges and $s,t : E \rightarrow V$ are two total functions that map each edge in $E$ to its source and target in $V$% respectively
+.
 
-\begin{mydef}{Graph Morphism}
-\end{mydef}
+\end{definition}
 
-\begin{mydef}{Typed Graph}
-\end{mydef}
+\begin{example}[Graph]
+  \todo{Is it necessary?}
+\end{example}
 
-\begin{mydef}{Typed Graph Morphism}
-\end{mydef}
+\begin{definition}[Graph Morphism] Given two graphs $G_1,G_2$ with $G_i = (V_i, E_i, s_i, t_i)$ for $i$ in $[1,2]$, a graph morphism $f : G_1 \rightarrow G_2$ between them is a pair $f = (f_V,f_E)$ where $f_V : V_1 \rightarrow V_2$ and $f_E : E_1 \rightarrow E_2$ are functions that preserve the source and target functions, i.e. $f_V \circ s_1 = s_2 \circ f_E$ and $f_V \circ t_1 = t_2 \circ f_E$.
+\end{definition}
 
-% Should I put the definitions of Graphs, Typed Graphs and its morphisms?
+\begin{definition}{Typed Graph}
+\end{definition}
 
-\begin{mydef}{Graph Production}
-\end{mydef}
+\begin{definition}{Typed Graph Morphism}
+\end{definition}
 
-\begin{mydef}{Atomic Constraints}
+\begin{definition}{Graph Production}
+\end{definition}
+
+\begin{definition}[Positive Atomic Constraint] A \emph{positive} atomic (typed) graph constraint is of the form $PC(a)$, where $a : P \rightarrow C$ is a (typed) graph morphism. A (typed) graph $G$ satisfies $PC(a)$ if for every injective (typed) graph morphism $p : P \rightarrow G$ there is at least one injective (typed) graph morphism $q : P \rightarrow C$ such that $p = q \circ a$.
+
+  A positive (typed) graph constraint with $a : \emptyset \rightarrow C$ is also notated $PC(C)$. Given a (typed) graph $G$, it satisfies $PC(C)$ if there is an injective (typed) graph morphism $q : C \rightarrow  G$.
 
 \diagram{
   P\ar[rr]^{a}\ar[dr]_{p} & & C\ar[dl]^{q}\\
   & G &
 }
 
-\end{mydef}
+\end{definition}
 
-\begin{mydef}{Negative Application Condition}
+\begin{remark}\todo{Talk about about how the morphism $a$ is not required to be injective, but it would not make a difference if it was?}
+\end{remark}
+
+\begin{definition}[Negative Atomic Constraint]
+A \emph{negative} atomic (typed) graph constraint is of the form $NC(a)$, where $a : P \rightarrow C$ is a (typed) graph morphism. A (typed) graph $G$ satisfies $PC(a)$ if for every injective (typed) graph morphism $p : P \rightarrow G$ there is no injective (typed) graph morphism $q : P \rightarrow C$ such that $p = q \circ a$.
+
+  A negative (typed) graph constraint with $a : \emptyset \rightarrow C$ is also notated $NC(C)$. Given a (typed) graph $G$, it satisfies $NC(C)$ if there is no injective (typed) graph morphism $q : C \rightarrow G$.
 
 \diagram{
-  N\ar@{.>}[dr]|{| q} & L\ar[d]^{m}\ar[l]_{n}\\
+  P\ar[rr]^{a}\ar[dr]_{p} & & C\ar[dl]|{|}^{q}\\
+  & G &
+}
+
+\end{definition}
+
+\begin{remark} It was shown in ~\cite{Ehrig2006} that negative atomic constraints do not give more expressive power. However, we introduced this concept because it makes easier to reason about some of the purposes of this thesis in a negative rather than a positive manner. \todo{related to the graph constraint definition, maybe this is not necessary}.
+\end{remark}
+
+\begin{definition}{Negative Application Condition}
+
+\diagram{
+  N\ar@{.>}[dr]|{|}_{q} & L\ar[d]^{m}\ar[l]_{n}\\
    & G
 }
 
-\end{mydef}
+\end{definition}
 
-\begin{mydef}{Graph Transformation System}
-\end{mydef}
+\begin{definition}{Graph Transformation System}
+\end{definition}
 
-\begin{mydef}{Graph Grammar}
-\end{mydef}
+\begin{definition}{Graph Grammar}
+\end{definition}
 
-\begin{mydef}{Parallel and Sequential Independence}
-\end{mydef}
+\begin{definition}{Parallel and Sequential Independence}
+\end{definition}
 
 
-\section{Occurence Graph Grammars}
+\section{Occurrence Graph Grammars}
 
-\begin{mydef}{Doubly-Typed Graph}
-\end{mydef}
+\begin{definition}{Doubly-Typed Graph}
+\end{definition}
 
-\begin{mydef}{Doubly-Typed Graph Morphisms}
-\end{mydef}
+\begin{definition}{Doubly-Typed Graph Morphisms}
+\end{definition}
 
-\begin{mydef}{Doubly-Typed Graph Grammars}
-\end{mydef}
+\begin{definition}{Doubly-Typed Graph Grammars}
+\end{definition}
 
-\begin{mydef}{Core Graph}
-\end{mydef}
+\begin{definition}{Core Graph}
+\end{definition}

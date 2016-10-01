@@ -6,7 +6,7 @@ What kind of concurrent rule do we expect and why?
 
 \section{Concurrent Rules}
 
-\begin{mydef}{Downward Shifted NACs}
+\begin{definition}{Downward Shifted NACs}
 
 \diagram{
   N'_j\ar@{.>}@/0.5pc/[r]^{e_{ji}} & N_i\ar@{}[dl]|{=}\\
@@ -24,24 +24,24 @@ are constructed as follows:
 
 For each set of NACs $NAC_A = {NAC(N_j)| j \in J}$ on $A$ the downward shift of $NAC_A$ is then defined as: $D_m(NAC_A) = \cup_{j \in J}D_m(NAC(n'_j))$. $D_m$ is also called the \emph{Downward shift of $NAC_A$}.
 
-\end{mydef}
+\end{definition}
 
-\begin{mydef}{Left NACs from Right NACs}
+\begin{definition}{Left NACs from Right NACs}
 
 \centerline{\xymatrix{
   L\ar[d]_{n'_i} & K\ar[l]\ar[r]\ar[d] & R\ar[d]^{n_i}\\
   N'_i\ar@{}[ur]|{(2)} & D\ar[l]\ar[r] & N_i\ar@{}[ul]|{(1)}
 }}
 
-\end{mydef}
+\end{definition}
 
-\begin{mydef}{Conflicts and Dependencies}
-\end{mydef}
+\begin{definition}{Conflicts and Dependencies}
+\end{definition}
 
-\begin{mydef}{Concurrent Rules with NACs}
+\begin{definition}{Concurrent Rules with NACs}
 
 A concurrent rule is
-\end{mydef}
+\end{definition}
 
 \centerline{
 \xymatrix{
@@ -64,7 +64,7 @@ A concurrent rule is
   \end{itemize}
 \end{itemize}
 
-\begin{mydef}{Concurrent Rules induced by Dependencies}
+\begin{definition}{Concurrent Rules induced by Dependencies}
 
   \textbf{incomplete}
 
@@ -75,7 +75,7 @@ A concurrent rule is
   & & & K\ar@{.>}@/1pc/[llu]|{k_c}\ar@{.>}@/1pc/[urr]|{k_n}\ar@{}[u]|{(5)} & & & 
 }
 
-\end{mydef}
+\end{definition}
 % \ar@{.>}@/_1pc/[dlll]|{X_{h_{21}}}
 
 \begin{thm}{EpiPairs}
@@ -85,16 +85,16 @@ A concurrent rule is
 
 \subsection{Inapplicable concurrent rules}
 
-\begin{mydef}{Rules with trivially triggered NACs}
-\end{mydef}
+\begin{definition}{Rules with trivially triggered NACs}
+\end{definition}
 
 \begin{thm}{Propagation of trivially triggered NACs over concurrent rules}
   \begin{proof}{Yet to come}
   \end{proof}
 \end{thm}
 
-\begin{mydef}{Breaking constraint rules}
-\end{mydef}
+\begin{definition}{Breaking constraint rules}
+\end{definition}
 
 
 \section{Concurrent Rules with attributes}
