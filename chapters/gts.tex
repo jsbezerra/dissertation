@@ -5,8 +5,7 @@
 \begin{intuition}
 \end{intuition}
 
-\begin{definition}[Graph] A graph is a tuple $G = (V,E,s,t)$ where: $V$ is a set of nodes, $E$ is a set of Edges and $s,t : E \rightarrow V$ are two total functions that map each edge in $E$ to its source and target in $V$% respectively
-.
+\begin{definition}[Graph] A graph is a tuple $G = (V,E,s,t)$ where: $V$ is a set of nodes, $E$ is a set of Edges and $s,t : E \rightarrow V$ are two total functions that map each edge in $E$ to its source and target in $V$.
 
 \end{definition}
 
@@ -28,11 +27,6 @@
   \ar@{}[rur]|{=}& TG &
 }
 
-\end{definition}
-
-\begin{definition}[Graph Rule] A (typed) graph rule\footnote{Also called graph transformation rule or graph production} \graphrule is a span of injective (typed) graph morphisms \lefthand and \righthand where the (typed) graphs $L, K$ and $R$ are called the left-hand side, gluing graph and right-hand side, respectively.
-
-  Given a (typed) graph rule $p$, its inverse rule is defined by \inversegraphrule.
 \end{definition}
 
 \begin{definition}[Positive Atomic Constraint] A \emph{positive} atomic (typed) graph constraint is of the form $PC(a)$, where $a : P \rightarrow C$ is a (typed) graph morphism. A (typed) graph $G$ satisfies $PC(a)$ if for every injective (typed) graph morphism $p : P \rightarrow G$ there is at least one injective (typed) graph morphism $q : P \rightarrow C$ such that $p = q \circ a$.
@@ -61,22 +55,48 @@ A \emph{negative} atomic (typed) graph constraint is of the form $NC(a)$, where 
 
 \end{definition}
 
-\begin{remark} It was shown in ~\cite{Ehrig2006} that negative atomic constraints do not give more expressive power. However, we introduced this concept because it makes easier to reason about some of the purposes of this thesis in a negative rather than a positive manner. \tinytodo{related to the graph constraint definition, maybe this is not necessary}.
+\begin{remark} It was shown in ~\cite{Ehrig2006} that negative atomic constraints do not give more expressive power. However, we introduced this concept because it makes easier to reason about some of the purposes of this thesis in a negative rather than a positive manner.\tinytodo{related to the graph constraint definition, maybe this is not necessary}
 \end{remark}
 
-\begin{definition}[Negative Application Condition]
+\begin{definition}[Graph Rule] A (typed) graph rule\footnote{Also called graph transformation rule or graph production} \graphrule{} is a span of injective (typed) graph morphisms \lefthand{} and \righthand{}  where the (typed) graphs $L$, $K$ and $R$ are called the left-hand side, gluing graph and right-hand side, respectively.
+
+  Given a (typed) graph rule $p$, its inverse rule is defined by \inversegraphrule.
+\end{definition}\tinytodo{Talk about match and rule applicability here}
+
+\begin{definition}[Graph Transformation] Given a (typed) graph rule \graphrule{} and a (typed) graph $G$ with a (typed) graph morphism \match, called match, a direct (typed) graph transformation $G \xRightarrow{p,m} H$ from $G$ to a (typed) graph $H$ is a double-pushout (DPO) diagram such as:\tinytodo{Review this definition}
+  
+\tinytodo{Include fact about inverse graph transformation?}
+
+\diagram{
+  L\ar[d]_{m}        & & K\ar[ll]_{l}\ar[rr]^{r}\ar[d]|{k} & & R\ar[d]^{m'}\\
+  G\ar@{}[urr]|{(1)} & & D\ar[ll]^{f}\ar[rr]_{g}             & & H\ar@{}[ull]|{(2)}
+}
+\end{definition}
+
+\begin{definition}[Negative Application Condition] A \emph{left} negative application condition over a graph rule \graphrule{} is of the form $NAC(n)$, where \nac{} is an arbitrary \tinytodo{total?} (typed) graph morphism. A match \match{} of a rule $p$ satisfies $NAC(n)$ on $L$ (written $m \models NAC(n)$) iff $\nexists$ $q : N \rightarrow G$ with $q$ injective and $q \circ n = m$.
 
 \diagram{
   N\ar@{.>}[dr]|{|}_{q} & L\ar[d]^{m}\ar[l]_{n}\\
    & G
 }
 
+  A match \match{} satisfies a set \mbox{$NAC_L = \{NAC(n_i)|i \in I\}$} of left $NACs$, iff \mbox{$m \models NAC(n_i)$} $\forall i \in I$.
+
+  Analogously, a \emph{right} negative application condition over a graph rule \graphrule{} is of the form $NAC(n)$, where \rightnac{} is an arbitrary (typed) graph morphism. A comatch \comatch{} of a rule $p$ satisfies $NAC(n)$ on $R$ (written \mbox{$m' \models NAC(n)$}) iff $\nexists$ $q : N \rightarrow H$ with $q$ injective and $q \circ n = m'$\tinytodo{Make diagram of right nac?}.
+
+  Also, a comatch \comatch{} satisfies a set \mbox{$NAC_R = \{NAC(n_i)|i \in I\}$} of right $NACs$, iff $m' \models NAC(n_i)$ $\forall i \in I$.
+
 \end{definition}
 
-\begin{definition}[Graph Transformation System]
-\end{definition}
+\begin{assumption}[Left NACs] Unless stated otherwise, we will work with left $NACs$ for the rest of this thesis.\tinytodo{Explain how right nacs can be transformed into left ones}
+\end{assumption}
 
-\begin{definition}[Graph Grammar]
+\begin{remark}[Different NAC Satisfaction]\tinytodo{Talk about partial injective $NACs$?}
+\end{remark}
+
+\begin{definition}[Graph Transformation System and Graph Grammar] \tinytodo{Talk about the language of the grammar?} A typed graph transformation system is a pair $GTS = (TG,P)$ where $TG$ is the type graph of the system and $P$ is a set of typed graph rules with NACs.
+
+  A typed graph grammar is a pair $GG = (GTS,S)$ where $GTS$ is a typed graph transformation system and $S$ is a typed start graph.
 \end{definition}
 
 \begin{definition}[Parallel and Sequential Independence]
