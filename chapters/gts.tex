@@ -11,19 +11,28 @@
 \end{definition}
 
 \begin{example}[Graph]
-  \todo{Is it necessary?}
+  \tinytodo{Is it necessary?}
 \end{example}
 
-\begin{definition}[Graph Morphism] Given two graphs $G_1,G_2$ with $G_i = (V_i, E_i, s_i, t_i)$ for $i$ in $[1,2]$, a graph morphism $f : G_1 \rightarrow G_2$ between them is a pair $f = (f_V,f_E)$ where $f_V : V_1 \rightarrow V_2$ and $f_E : E_1 \rightarrow E_2$ are functions that preserve the source and target functions, i.e. $f_V \circ s_1 = s_2 \circ f_E$ and $f_V \circ t_1 = t_2 \circ f_E$.
+\begin{definition}[Graph Morphism] Given two graphs $G_1,G_2$ with $G_i = (V_i, E_i, s_i, t_i)$ for $i$ in $[1,2]$, a graph morphism $f : G_1 \rightarrow G_2$ between them is a pair $f = (f_V,f_E)$ where $f_V : V_1 \rightarrow V_2$ and $f_E : E_1 \rightarrow E_2$ are functions that preserve the source and target functions, i.e. $f_V \circ s_1 = s_2 \circ f_E$ and $f_V \circ t_1 = t_2 \circ f_E$. \tinytodo{Talk about injective / surjective / isomorphic morphisms?} \tinytodo{Talk about morphisms composition?}
 \end{definition}
 
-\begin{definition}{Typed Graph}
+\begin{definition}[Typed Graph and Typed Graph Morphism] A type graph is a distinguished graph $TG = (V_{TG},E_{TG},s_{TG},t_{TG})$ where $V_{TG}$ and $E_{TG}$ are called the node and edge type alphabets, respectively.
+
+  A typed graph is a pair $G^T = (G, type)$ consisting of a graph $G$ and a graph morphism $type : G \rightarrow TG$.
+
+  Given two typed graphs $G^T_1 = (G_1,type_1)$ and $G^T_2 =(G_2,type_2)$, a typed graph morphism $f : G^T_1 \rightarrow G^T_2$ is a graph morphism $f : G_1 \rightarrow G_2$ such that $type_2 \circ f = type_1$:
+
+\diagram{
+  G_1\ar[rr]^{f}\ar[dr]_{type_1} & & G_2\ar[dl]^{type_2}\\
+  \ar@{}[rur]|{=}& TG &
+}
+
 \end{definition}
 
-\begin{definition}{Typed Graph Morphism}
-\end{definition}
+\begin{definition}[Graph Rule] A (typed) graph rule\footnote{Also called graph transformation rule or graph production} \graphrule is a span of injective (typed) graph morphisms \lefthand and \righthand where the (typed) graphs $L, K$ and $R$ are called the left-hand side, gluing graph and right-hand side, respectively.
 
-\begin{definition}{Graph Production}
+  Given a (typed) graph rule $p$, its inverse rule is defined by \inversegraphrule.
 \end{definition}
 
 \begin{definition}[Positive Atomic Constraint] A \emph{positive} atomic (typed) graph constraint is of the form $PC(a)$, where $a : P \rightarrow C$ is a (typed) graph morphism. A (typed) graph $G$ satisfies $PC(a)$ if for every injective (typed) graph morphism $p : P \rightarrow G$ there is at least one injective (typed) graph morphism $q : P \rightarrow C$ such that $p = q \circ a$.
@@ -37,7 +46,7 @@
 
 \end{definition}
 
-\begin{remark}\todo{Talk about about how the morphism $a$ is not required to be injective, but it would not make a difference if it was?}
+\begin{remark}\tinytodo{Talk about about how the morphism $a$ is not required to be injective, but it would not make a difference if it was?}
 \end{remark}
 
 \begin{definition}[Negative Atomic Constraint]
@@ -52,10 +61,10 @@ A \emph{negative} atomic (typed) graph constraint is of the form $NC(a)$, where 
 
 \end{definition}
 
-\begin{remark} It was shown in ~\cite{Ehrig2006} that negative atomic constraints do not give more expressive power. However, we introduced this concept because it makes easier to reason about some of the purposes of this thesis in a negative rather than a positive manner. \todo{related to the graph constraint definition, maybe this is not necessary}.
+\begin{remark} It was shown in ~\cite{Ehrig2006} that negative atomic constraints do not give more expressive power. However, we introduced this concept because it makes easier to reason about some of the purposes of this thesis in a negative rather than a positive manner. \tinytodo{related to the graph constraint definition, maybe this is not necessary}.
 \end{remark}
 
-\begin{definition}{Negative Application Condition}
+\begin{definition}[Negative Application Condition]
 
 \diagram{
   N\ar@{.>}[dr]|{|}_{q} & L\ar[d]^{m}\ar[l]_{n}\\
@@ -64,26 +73,26 @@ A \emph{negative} atomic (typed) graph constraint is of the form $NC(a)$, where 
 
 \end{definition}
 
-\begin{definition}{Graph Transformation System}
+\begin{definition}[Graph Transformation System]
 \end{definition}
 
-\begin{definition}{Graph Grammar}
+\begin{definition}[Graph Grammar]
 \end{definition}
 
-\begin{definition}{Parallel and Sequential Independence}
+\begin{definition}[Parallel and Sequential Independence]
 \end{definition}
 
 
 \section{Occurrence Graph Grammars}
 
-\begin{definition}{Doubly-Typed Graph}
+\begin{definition}[Doubly-Typed Graph]
 \end{definition}
 
-\begin{definition}{Doubly-Typed Graph Morphisms}
+\begin{definition}[Doubly-Typed Graph Morphisms]
 \end{definition}
 
-\begin{definition}{Doubly-Typed Graph Grammars}
+\begin{definition}[Doubly-Typed Graph Grammars]
 \end{definition}
 
-\begin{definition}{Core Graph}
+\begin{definition}[Core Graph]
 \end{definition}

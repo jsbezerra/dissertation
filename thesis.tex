@@ -29,6 +29,11 @@
 \usepackage{mathptmx}
 \usepackage[all,knot,arc,import,poly]{xy}
 
+%For todo notes, remove in final version
+\setlength{\marginparwidth}{2cm}
+\newcommand{\tinytodo}[2][]
+{\todo[caption={#2}, size=\footnotesize, #1]{\renewcommand{\baselinestretch}{0.5}\selectfont#2\par}}
+
 \newcommand{\critical}[1]{\todo[color=red]{\textbf{Critical:} #1}}
 
 \theoremstyle{plain}
@@ -46,8 +51,11 @@
 \newenvironment{intuition}{\begin{changemargin}{1cm}{1cm}}{\end{changemargin}}
 
 \newcommand{\diagram}[1]{\centerline{\xymatrix{#1}}}
-\newcommand{\grule}{$p = (L \leftarrow K \rightarrow R) $}
-\newcommand{\rulesequence}{$p_0,\ldots,p_{n-1},p_n$}
+\newcommand{\graphrule}{$p = (L \xleftarrow{l} K \xrightarrow{r} R)$ }
+\newcommand{\inversegraphrule}{$p^{-1} = (R \xleftarrow{r} K \xrightarrow{l} L)$ }
+\newcommand{\lefthand}{$l : K \rightarrow L$ }
+\newcommand{\righthand}{$r : K \rightarrow R$ }
+\newcommand{\rulesequence}{$p_0,\ldots,p_{n-1},p_n$ }
 
 % avoid LaTeX Font Warning: Font shape `U/stmry/b/n' undefined
 \SetSymbolFont{stmry}{bold}{U}{stmry}{m}{n}
