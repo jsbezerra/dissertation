@@ -2,7 +2,7 @@
 
 \section{Overview of Graph Transformation, definitions, algorithms, etc.}
 
-\begin{definition}[Graph] A graph is a tuple $G = (V,E,s,t)$ where: $V$ is a set of nodes, $E$ is a set of Edges and $s,t : E \rightarrow V$ are two total functions that map each edge in $E$ to its source and target in $V$.
+\begin{definition}[Graph] A graph is a tuple $G = \left(V,E,s,t\right)$ where: $V$ is a set of nodes, $E$ is a set of Edges and $s,t : E \rightarrow V$ are two total functions that map each edge in $E$ to its source and target in $V$.
 
 \end{definition}
 
@@ -10,14 +10,14 @@
   \tinytodo{Is it necessary?}
 \end{example}
 
-\begin{definition}[Graph Morphism] Given two graphs $G_1,G_2$ with $G_i = (V_i, E_i, s_i, t_i)$ for $i$ in $[1,2]$, a graph morphism $f : G_1 \rightarrow G_2$ between them is a pair $f = (f_V,f_E)$ where $f_V : V_1 \rightarrow V_2$ and $f_E : E_1 \rightarrow E_2$ are functions that preserve the source and target functions, i.e. $f_V \circ s_1 = s_2 \circ f_E$ and $f_V \circ t_1 = t_2 \circ f_E$. \tinytodo{Talk about injective / surjective / isomorphic morphisms?} \tinytodo{Talk about morphisms composition?}
+\begin{definition}[Graph Morphism] Given two graphs $G_1,G_2$ with $G_i = \left(V_i, E_i, s_i, t_i\right)$ for $i$ in $[1,2]$, a graph morphism $f : G_1 \rightarrow G_2$ between them is a pair $f = \left(f_V,f_E\right)$ where $f_V : V_1 \rightarrow V_2$ and $f_E : E_1 \rightarrow E_2$ are functions that preserve the source and target functions, i.e. $f_V \circ s_1 = s_2 \circ f_E$ and $f_V \circ t_1 = t_2 \circ f_E$. \tinytodo{Talk about injective / surjective / isomorphic morphisms?} \tinytodo{Talk about morphisms composition?}
 \end{definition}
 
-\begin{definition}[Typed Graph and Typed Graph Morphism] A type graph is a distinguished graph $TG = (V_{TG},E_{TG},s_{TG},t_{TG})$ where $V_{TG}$ and $E_{TG}$ are called the node and edge type alphabets, respectively.
+\begin{definition}[Typed Graph and Typed Graph Morphism] A type graph is a distinguished graph $TG = \left(V_{TG},E_{TG},s_{TG},t_{TG}\right)$ where $V_{TG}$ and $E_{TG}$ are called the node and edge type alphabets, respectively.
 
-  A typed graph is a pair $G^T = (G, type)$ consisting of a graph $G$ and a graph morphism $type : G \rightarrow TG$.
+  A typed graph is a pair $G^T = \left(G, type\right)$ consisting of a graph $G$ and a graph morphism $type : G \rightarrow TG$.
 
-  Given two typed graphs $G^T_1 = (G_1,type_1)$ and $G^T_2 =(G_2,type_2)$, a typed graph morphism $f : G^T_1 \rightarrow G^T_2$ is a graph morphism $f : G_1 \rightarrow G_2$ such that $type_2 \circ f = type_1$:
+  Given two typed graphs $G^T_1 = \left(G_1,type_1\right)$ and $G^T_2 =\left(G_2,type_2\right)$, a typed graph morphism $f : G^T_1 \rightarrow G^T_2$ is a graph morphism $f : G_1 \rightarrow G_2$ such that $type_2 \circ f = type_1$:
 
 \diagram{
   G_1\ar[rr]^{f}\ar[dr]_{type_1} & & G_2\ar[dl]^{type_2}\\
@@ -26,9 +26,9 @@
 
 \end{definition}
 
-\begin{definition}[Positive Atomic Constraint] A \emph{positive} atomic (typed) graph constraint is of the form $PC(a)$, where $a : P \rightarrow C$ is a (typed) graph morphism. A (typed) graph $G$ satisfies $PC(a)$ if for every injective (typed) graph morphism $p : P \rightarrow G$ there is at least one injective (typed) graph morphism $q : P \rightarrow C$ such that $p = q \circ a$.
+\begin{definition}[Positive Atomic Constraint] A \emph{positive} atomic (typed) graph constraint is of the form $PC\left(a\right)$, where $a : P \rightarrow C$ is a (typed) graph morphism. A (typed) graph $G$ satisfies $PC\left(a\right)$ if for every injective (typed) graph morphism $p : P \rightarrow G$ there is at least one injective (typed) graph morphism $q : P \rightarrow C$ such that $p = q \circ a$.
 
-  A positive (typed) graph constraint with $a : \emptyset \rightarrow C$ is also notated $PC(C)$. Given a (typed) graph $G$, it satisfies $PC(C)$ if there is an injective (typed) graph morphism $q : C \rightarrow  G$.
+  A positive (typed) graph constraint with $a : \emptyset \rightarrow C$ is also notated $PC\left(C\right)$. Given a (typed) graph $G$, it satisfies $PC\left(C\right)$ if there is an injective (typed) graph morphism $q : C \rightarrow  G$.
 
 \diagram{
   P\ar[rr]^{a}\ar[dr]_{p} & & C\ar[dl]^{q}\\
@@ -41,9 +41,9 @@
 \end{remark}
 
 \begin{definition}[Negative Atomic Constraint]
-A \emph{negative} atomic (typed) graph constraint is of the form $NC(a)$, where $a : P \rightarrow C$ is a (typed) graph morphism. A (typed) graph $G$ satisfies $PC(a)$ if for every injective (typed) graph morphism $p : P \rightarrow G$ there is no injective (typed) graph morphism $q : P \rightarrow C$ such that $p = q \circ a$.
+A \emph{negative} atomic (typed) graph constraint is of the form $NC\left(a\right)$, where $a : P \rightarrow C$ is a (typed) graph morphism. A (typed) graph $G$ satisfies $PC\left(a\right)$ if for every injective (typed) graph morphism $p : P \rightarrow G$ there is no injective (typed) graph morphism $q : P \rightarrow C$ such that $p = q \circ a$.
 
-  A negative (typed) graph constraint with $a : \emptyset \rightarrow C$ is also notated $NC(C)$. Given a (typed) graph $G$, it satisfies $NC(C)$ if there is no injective (typed) graph morphism $q : C \rightarrow G$.
+  A negative (typed) graph constraint with $a : \emptyset \rightarrow C$ is also notated $NC\left(C\right)$. Given a (typed) graph $G$, it satisfies $NC\left(C\right)$ if there is no injective (typed) graph morphism $q : C \rightarrow G$.
 
 \diagram{
   P\ar[rr]^{a}\ar[dr]_{p} & & C\ar[dl]|{|}^{q}\\
@@ -54,6 +54,18 @@ A \emph{negative} atomic (typed) graph constraint is of the form $NC(a)$, where 
 
 \begin{remark} It was shown in ~\cite{Ehrig2006} that negative atomic constraints do not give more expressive power. However, we introduced this concept because it makes easier to reason about some of the purposes of this thesis in a negative rather than a positive manner.\tinytodo{related to the graph constraint definition, maybe this is not necessary}
 \end{remark}
+
+\begin{definition}[Graph Constraint] A (typed) graph constraint is a \emph{boolean} formula over atomic (typed) graph constraints, such that:
+  \begin{itemize}
+    \item $true$ is graph constraint
+    \item every atomic constraint is also a graph constraint
+    \item if $c$ is a graph constraint, then $\neg c$ is also a graph constraint
+    \item for every graph constraint $c_i$ with $i \in I$ for some index set $I$, both $\land_{i \in I} c_i$ and $\lor_{i \in I} c_i$ are also graph constraints
+    \item nothing else is a graph constraint
+  \end{itemize}
+
+  A graph $G$ satisfies a graph constraint $c$ 
+\end{definition}
 
 \begin{definition}[Graph Rule] A (typed) graph rule\footnote{Also called graph transformation rule or graph production} \graphrule{} is a span of injective (typed) graph morphisms \lefthand{} and \righthand{}  where the (typed) graphs $L$, $K$ and $R$ are called the left-hand side, gluing graph and right-hand side, respectively.
 
@@ -66,22 +78,22 @@ A \emph{negative} atomic (typed) graph constraint is of the form $NC(a)$, where 
 
 \diagram{
   L\ar[d]_{m}        & & K\ar[ll]_{l}\ar[rr]^{r}\ar[d]|{k} & & R\ar[d]^{m'}\\
-  G\ar@{}[urr]|{(1)} & & D\ar[ll]^{f}\ar[rr]_{g}             & & H\ar@{}[ull]|{(2)}
+  G\ar@{}[urr]|{\left(1\right)} & & D\ar[ll]^{f}\ar[rr]_{g}             & & H\ar@{}[ull]|{\left(2\right)}
 }
 \end{definition}
 
-\begin{definition}[Negative Application Condition] A \emph{left} negative application condition over a graph rule \graphrule{} is of the form $NAC(n)$, where \nac{} is an arbitrary \tinytodo{total?} (typed) graph morphism. A match \match{} of a rule $p$ satisfies $NAC(n)$ on $L$ (written $m \models NAC(n)$) iff $\nexists$ $q : N \rightarrow G$ with $q$ injective and $q \circ n = m$.
+\begin{definition}[Negative Application Condition] A \emph{left} negative application condition over a graph rule \graphrule{} is of the form $NAC\left(n\right)$, where \nac{} is an arbitrary \tinytodo{total?} (typed) graph morphism. A match \match{} of a rule $p$ satisfies $NAC\left(n\right)$ on $L$ (written $m \models NAC\left(n\right)$) iff $\nexists$ $q : N \rightarrow G$ with $q$ injective and $q \circ n = m$.
 
 \diagram{
   N\ar@{.>}[dr]|{|}_{q} & L\ar[d]^{m}\ar[l]_{n}\\
    & G
 }
 
-  A match \match{} satisfies a set \mbox{$NAC_L = \{NAC(n_i)|i \in I\}$} of left $NACs$, iff \mbox{$m \models NAC(n_i)$} $\forall i \in I$.
+  A match \match{} satisfies a set \mbox{$NAC_L = \{NAC\left(n_i\right)|i \in I\}$} of left $NACs$, iff \mbox{$m \models NAC\left(n_i\right)$} $\forall i \in I$.
 
-  Analogously, a \emph{right} negative application condition over a graph rule \graphrule{} is of the form $NAC(n)$, where \rightnac{} is an arbitrary (typed) graph morphism. A comatch \comatch{} of a rule $p$ satisfies $NAC(n)$ on $R$ (written \mbox{$m' \models NAC(n)$}) iff $\nexists$ $q : N \rightarrow H$ with $q$ injective and $q \circ n = m'$\tinytodo{Make diagram of right nac?}.
+  Analogously, a \emph{right} negative application condition over a graph rule \graphrule{} is of the form $NAC\left(n\right)$, where \rightnac{} is an arbitrary (typed) graph morphism. A comatch \comatch{} of a rule $p$ satisfies $NAC\left(n\right)$ on $R$ (written \mbox{$m' \models NAC\left(n\right)$}) iff $\nexists$ $q : N \rightarrow H$ with $q$ injective and $q \circ n = m'$\tinytodo{Make diagram of right nac?}.
 
-  Also, a comatch \comatch{} satisfies a set \mbox{$NAC_R = \{NAC(n_i)|i \in I\}$} of right $NACs$, iff $m' \models NAC(n_i)$ $\forall i \in I$.
+  Also, a comatch \comatch{} satisfies a set \mbox{$NAC_R = \{NAC\left(n_i\right)|i \in I\}$} of right $NACs$, iff $m' \models NAC\left(n_i\right)$ $\forall i \in I$.
 
 \end{definition}
 
@@ -91,9 +103,9 @@ A \emph{negative} atomic (typed) graph constraint is of the form $NC(a)$, where 
 \begin{remark}[Different NAC Satisfaction]\tinytodo{Talk about partial injective $NACs$?}
 \end{remark}
 
-\begin{definition}[Graph Transformation System and Graph Grammar] \tinytodo{Talk about the language of the grammar?} A typed graph transformation system is a pair $GTS = (TG,P)$ where $TG$ is the type graph of the system and $P$ is a set of typed graph rules with NACs.
+\begin{definition}[Graph Transformation System and Graph Grammar] \tinytodo{Talk about the language of the grammar?} A typed graph transformation system is a pair $GTS = \left(TG,P\right)$ where $TG$ is the type graph of the system and $P$ is a set of typed graph rules with NACs.
 
-  A typed graph grammar is a pair $GG = (GTS,S)$ where $GTS$ is a typed graph transformation system and $S$ is a typed start graph.
+  A typed graph grammar is a pair $GG = \left(GTS,S\right)$ where $GTS$ is a typed graph transformation system and $S$ is a typed start graph.
 \end{definition}
 
 \begin{definition}[Parallel and Sequential Independence]
