@@ -55,16 +55,16 @@ A \emph{negative} atomic (typed) graph constraint is of the form $NC\left(a\righ
 \begin{remark} It was shown in ~\cite{Ehrig2006} that negative atomic constraints do not give more expressive power. However, we introduced this concept because it makes easier to reason about some of the purposes of this thesis in a negative rather than a positive manner.\tinytodo{related to the graph constraint definition, maybe this is not necessary}
 \end{remark}
 
-\begin{definition}[Graph Constraint] A (typed) graph constraint is a \emph{boolean} formula over atomic (typed) graph constraints, such that:
-  \begin{itemize}
-    \item $true$ is graph constraint
-    \item every atomic constraint is also a graph constraint
-    \item if $c$ is a graph constraint, then $\neg c$ is also a graph constraint
-    \item for every graph constraint $c_i$ with $i \in I$ for some index set $I$, both $\land_{i \in I} c_i$ and $\lor_{i \in I} c_i$ are also graph constraints
-    \item nothing else is a graph constraint
-  \end{itemize}
+\begin{definition}[Graph Constraint] A (typed) graph constraint is a \emph{boolean} formula over atomic (typed) graph constraints, in such way that $true$, $false$ and every atomic constraint are also graph constraints. Also, if $c$ and $c_i$, with $i \in I$ for some index set $I$, are graph constraints, then $\neg c$, $\land_{i \in I} c_i$ and $\lor_{i \in I} c_i$ are also graph constraints. Nothing else is a graph constraint.
 
-  A graph $G$ satisfies a graph constraint $c$ 
+  A graph $G$ satisfies a graph constraint $c$ (written $G \models c$) if:
+  \begin{itemize}
+    \item $c = true$
+    \item $c$ is an atomic constraint and $G \models c$
+    \item $c = \neg c'$ and $G \not\models c'$
+    \item $c = \land_{i \in I}c_i$ and $\forall i \in I$ $G \models c_i$      
+    \item $c = \lor_{i \in I}c_i$  and $\exists i \in I$ $G \models c_i$
+  \end{itemize}
 \end{definition}
 
 \begin{definition}[Graph Rule] A (typed) graph rule\footnote{Also called graph transformation rule or graph production} \graphrule{} is a span of injective (typed) graph morphisms \lefthand{} and \righthand{}  where the (typed) graphs $L$, $K$ and $R$ are called the left-hand side, gluing graph and right-hand side, respectively.
