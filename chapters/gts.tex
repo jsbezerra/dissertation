@@ -55,7 +55,7 @@ A \emph{negative} atomic (typed) graph constraint is of the form $NC\left(a\righ
 \begin{remark} It was shown in ~\cite{Ehrig2006} that negative atomic constraints do not give more expressive power. However, we introduced this concept because it makes easier to reason about some of the purposes of this thesis in a negative rather than a positive manner.\tinytodo{related to the graph constraint definition, maybe this is not necessary}
 \end{remark}
 
-\begin{definition}[Graph Constraint] A (typed) graph constraint is a \emph{boolean} formula over atomic (typed) graph constraints, in such way that $true$, $false$ and every atomic constraint are also graph constraints. Also, if $c$ and $c_i$, with $i \in I$ for some index set $I$, are graph constraints, then $\neg c$, $\land_{i \in I} c_i$ and $\lor_{i \in I} c_i$ are also graph constraints. Nothing else is a graph constraint.
+\begin{definition}[Graph Constraint] A (typed) graph constraint is a \emph{boolean} formula over atomic (typed) graph constraints, in such way that $true$, $false$ and every atomic constraint are also graph constraints. Also, if $c$ and $c_i$, with $i \in I$ for some index set $I$, are graph constraints, then $\neg c$, $\land_{i \in I} c_i$ and $\lor_{i \in I} c_i$ are also graph constraints.
 
   A graph $G$ satisfies a graph constraint $c$ (written $G \models c$) if:
   \begin{itemize}
@@ -67,7 +67,7 @@ A \emph{negative} atomic (typed) graph constraint is of the form $NC\left(a\righ
   \end{itemize}
 \end{definition}
 
-\begin{definition}[Graph Rule] A (typed) graph rule\footnote{Also called graph transformation rule or graph production} \graphrule{} is a span of injective (typed) graph morphisms \lefthand{} and \righthand{}  where the (typed) graphs $L$, $K$ and $R$ are called the left-hand side, gluing graph and right-hand side, respectively.
+\begin{definition}[Graph Rule] A (typed) graph rule\footnote{Also called graph transformation rule or graph production.} \graphrule{} is a span of injective (typed) graph morphisms \lefthand{} and \righthand{}  where the (typed) graphs $L$, $K$ and $R$ are called the left-hand side, gluing graph and right-hand side, respectively.
 
   Given a (typed) graph rule $p$, its inverse rule is defined by \inversegraphrule.
 \end{definition}\tinytodo{Talk about match and rule applicability here}
