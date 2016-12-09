@@ -6,13 +6,14 @@ Why do we use it to generate tests?
 
 \section{Doubly-Typed Graph Grammars}
 
-\begin{definition}[Doubly-Typed Graph]
+\begin{definition}[Doubly-Typed Graph]Given a graph $T$, a \emph{doubly-typed graph} \doublyTypedGraph{} over $T$ is a tuple \doublyTypedGraph $= \left(G^T, t^{G^T},TG^T\right)$ where $G^T$ and $TG^T$ are typed graphs and \mbox{$t^{G^T} : G^T \rightarrow TG^T$} is a typed graph morphism in $\cat{TGraph_T}$. We call $TG^T$ the \emph{double-type graph}.
 \end{definition}
 
 \begin{definition}[Doubly-Typed Graph Morphisms]
+  \tinytodo{Explain only the kind we are interested in or all three kinds?}
 \end{definition}
 
-\begin{definition}[Doubly-Typed Graph Grammars]
+\begin{definition}[Doubly-Typed Graph Grammars] A \emph{doubly-typed graph grammar} is a tuple $GG = \left( TG^T, I^{TG^T},P \right)$ where $TG^T$ is the double-type graph of the grammar, $I^{TG^T}$ is a doubly-typed graph corresponding to the \emph{initial graph} of the grammar and $P$ is a set of doubly-typed graph rules. 
 \end{definition}
 
 \begin{definition}[Core Graph]
