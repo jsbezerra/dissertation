@@ -1,0 +1,3 @@
+#!/bin/ruby
+
+puts `rm *.aux *.bbl *.blg *.lof *.out`
