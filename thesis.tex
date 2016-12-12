@@ -52,7 +52,11 @@
 
 \newenvironment{intuition}{\begin{changemargin}{1cm}{1cm}}{\end{changemargin}}
 
+%% Diagram commands
 \newcommand{\diagram}[1]{\centerline{\xymatrix{#1}}}
+\newcommand{\parens}[1]{\left(#1\right)}
+
+%% Graph Grammars constructions
 \newcommand{\graphrule}{\mbox{$p = \left(L \xleftarrow{l} K \xrightarrow{r} R\right)$}}
 \newcommand{\inversegraphrule}{\mbox{$p^{-1} = \left(R \xleftarrow{r} K \xrightarrow{l} L\right)$}}
 \newcommand{\lefthand}{\mbox{$l : K \rightarrow L$}}
@@ -62,8 +66,15 @@
 \newcommand{\match}{\mbox{$m : L \rightarrow G$}}
 \newcommand{\comatch}{\mbox{$m' : R \rightarrow H$}}
 \newcommand{\rulesequence}{\mbox{$p_0,\ldots,p_{n-1},p_n$}}
+
+%% Doubly-typed Graph Gramars constructions
 \newcommand{\doublyTypedGraph}{\mbox{$G^{TG^{T}}$}}
 \newcommand{\doublyTypedRule}{\mbox{$p^{TG^T} = \left(L^{TG^T} \leftarrow K^{TG^T} \rightarrow R^{TG^T}\right)$}}
+\newcommand{\doublyTypedGraphGrammar}{\mbox{$GG = \left(TG^T, I^{TG^T},P \right)$}}
+\newcommand{\doublyTypedGraphGrammarCore}{\mbox{$GG = \left(C^T, I^{TG^T},P \right)$}}
+\newcommand{\coreGraph}{$C^T$}
+
+%% Category Constructions
 \newcommand{\cat}{\mathbf}
 \newcommand{\typedGraphCategory}{\mbox{$\cat{TGraph_T}$}}
 \newcommand{\doublyTypedGraphCategory}{\mbox{$\cat{DTGraph_{TG^T}}$}}

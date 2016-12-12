@@ -28,32 +28,43 @@ Notice that the type morphisms $type_G : G \rightarrow T$ and $type_H : H \right
 
 \end{remark}
 
-\begin{definition}[Doubly-Typed Graph Grammars] A \emph{doubly-typed graph grammar} is a tuple $GG = \left( TG^T, I^{TG^T},P \right)$ where $TG^T$ is the double-type graph of the grammar, $I^{TG^T}$ is a doubly-typed graph corresponding to the \emph{initial graph} of the grammar and $P$ is a set of doubly-typed graph rules. 
+\begin{definition}[Doubly-Typed Graph Grammars] A \emph{doubly-typed graph grammar} is a tuple $GG = \left(TG^T, I^{TG^T},P \right)$ where $TG^T$ is the double-type graph of the grammar, $I^{TG^T}$ is a doubly-typed graph corresponding to the \emph{initial graph} of the grammar and $P$ is a set of doubly-typed graph rules. 
 \end{definition}
 
-\begin{definition}[Doubly-Typed Graph Rule] Given a double-type graph $TG^T$, doubly-typed rule with respect to $TG^T$ is a span \doublyTypedRule{} in \doublyTypedGraphCategory{}. 
-\end{definition}
+\begin{definition}[Doubly-Typed Graph Rule] Given a double-type graph $TG^T$, a doubly-typed rule with respect to $TG^T$ is a span of morphisms \doublyTypedRule{} in \doublyTypedGraphCategory{} iff $p$ is a rule in \typedGraphCategory{} (see Definition~\ref{def:graph-rule}).\tinytodo{$p$ or $p^T$?}
 
-\begin{definition}[Core Graph]
+  Let the typing morphisms from $L^{TG^T}$, $K^{TG^T}$ and $R^{TG^T}$ be $t^{L^T}$, $t^{K^T}$ and $t^{R^T}$, respectively. For a rule $a = p^{TG^T}$ we call:
+
+  \begin{itemize}
+    \item $L_a = L_T$, $K_a = K_R$ and $R_a = R_T$, the left, gluing and right graphs of $a$.
+    \item $pre_a = t^{L^T} : L^T \rightarrow TG^T$, the \emph{pre-condition} of the $a$.
+    \item $post_a = t^{R^T} : R^T \rightarrow TG^T$, the \emph{post-condition} of $a$.
+    %\item $r_a = r^T$, the \emph{rule pattern} of $a$.
+      \tinytodo{Not sure if we will need the rule pattern.}
+  \end{itemize}
 \end{definition}
 
 \section{Relations within a Doubly-Typed Graph Grammars}
+
 \tinytodo{We will probably need to start using incremental negative application conditions only}
 
-\begin{definition}{Unconditional Causal Dependency Relation}
+\begin{definition}[Core Graph] Given a doubly-typed graph grammar \doublyTypedGraphGrammarCore{}
 \end{definition}
 
-\begin{definition}{Unconditional Weak Conflict Relation}
+\begin{definition}[Unconditional Causal Dependency Relation]
 \end{definition}
 
-\begin{definition}{Conditional Causal Dependency Relation}
+\begin{definition}[Unconditional Weak Conflict Relation]
 \end{definition}
 
-\begin{definition}{Conditional Weak Conflict Relation}
+\begin{definition}[Conditional Causal Dependency Relation]
 \end{definition}
 
-\begin{definition}{Occurrence Relation}
+\begin{definition}[Conditional Weak Conflict Relation]
 \end{definition}
 
-\begin{definition}{Occurrence Graph Grammars}
+\begin{definition}[Occurrence Relation]
+\end{definition}
+
+\begin{definition}[Occurrence Graph Grammars]
 \end{definition}
