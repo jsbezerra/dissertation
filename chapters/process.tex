@@ -4,7 +4,7 @@
 
 Why do we use it to generate tests?
 
-To a more in depth-explanation, see~\cite{Ribeiro1996} 
+To a more in depth-explanation, see~\cite{Ribeiro1996, Corradini2014} 
 
 \section{Doubly-Typed Graph Grammars}
 
@@ -39,16 +39,28 @@ Notice that the type morphisms $type_G : G \rightarrow T$ and $type_H : H \right
     \item $L_a = L_T$, $K_a = K_R$ and $R_a = R_T$, the left, gluing and right graphs of $a$.
     \item $pre_a = t^{L^T} : L^T \rightarrow TG^T$, the \emph{pre-condition} of the $a$.
     \item $post_a = t^{R^T} : R^T \rightarrow TG^T$, the \emph{post-condition} of $a$.
-    %\item $r_a = r^T$, the \emph{rule pattern} of $a$.
-      \tinytodo{Not sure if we will need the rule pattern.}
+    \item $r_a = r^T$, the \emph{rule pattern} of $a$.\tinytodo{Not sure if we will need the rule pattern.}
   \end{itemize}
 \end{definition}
 
 \section{Relations within a Doubly-Typed Graph Grammars}
 
-\tinytodo{We will probably need to start using incremental negative application conditions only}
+\tinytodo{We will probably need to start using incremental negative application conditions only~\cite{Corradini2013}}
 
-\begin{definition}[Core Graph] Given a doubly-typed graph grammar \doublyTypedGraphGrammarCore{}
+\begin{definition}[Core Graph] Given a doubly-typed graph grammar \doublyTypedGraphGrammarCore{}, we have that \coreGraph{} is a \emph{core graph} iff $\forall x \in$ \coreGraph $: \exists! y \in \parens{I^T \uplus \parens{\uplus_{ai \in P} R_{ai}}}$\tinytodo{review this} such that
+
+  \[ x =
+    \begin{cases}
+      in_{GG}\parens{y} & y \in I^T\\
+      post_{ai}\parens{y} & y \in R_{ai} \land y \not\in rng\parens{r_{ai}}\\
+    \end{cases}
+   \]\tinytodo{reformulate this entire definition}
+
+  \begin{intuition} The idea is that each element in the \emph{Core Graph} has a unique origin either being present in the initial graph or being created by a single rule.
+\end{intuition}
+
+  Each rule in a doubly-typed graph grammar whose double-type is also a core graph is called an \emph{action}. An action $a$ \emph{creates} an element $e$ iff \tinytodo{\textbf{adapt leila's thesis to dpo}}. Similarly, an action $a$ \emph{deletes} an element $e$ iff
+
 \end{definition}
 
 \begin{definition}[Unconditional Causal Dependency Relation]
