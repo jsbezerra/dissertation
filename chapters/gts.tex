@@ -114,11 +114,19 @@ One of the characteristics that make Graph Transformation Systems and Graph Gram
 
 In this section, we show both what it means for two graph rules (graph transformations) to be independent and how to check it. Notice that when we are reasoning about graph transformations the (in)dependence is concrete, while for the case of graph rules the (in)dependence is potential, as it would depend on a particular pattern being found on an instance graph.
 
-\begin{definition}[Causal Dependency] \tinytodo{explain and put the other morphisms in the diagram}
+\begin{definition}[Causal Dependency] Given two graph rules $p_1,p_2$ with NACs, they are \emph{causally dependent} iff for a given graph $E$ in which they interact one of the following situations occur: \tinytodo{explain and put the other morphisms in the diagram}
+
+  \begin{enumerate}
+    \item $\nexists$
+    \item $\nexists h_{12} : R_1 -> D_2$ such that $d_2 \circ h_{12} = m_1'$
+    \item $\exists! h_{12} : R_1 -> D_2$ such that $d_2 \circ h_{12} = m_1'$ but $e_2 \circ h_{12} \not\models NAC_{p_1^{-1}}$
+    \item 
+    \item 
+  \end{enumerate}
 
 \diagram{
     N_1 & & & & N_2 & & \\
-      L_1\ar[d]\ar[u]^{n_1} & K_1\ar[d]\ar[l]\ar[r] & R_1\ar[dr]^{e_1} & & L_2\ar[dl]_{e_2}\ar[u]^{n_2} & K_2\ar[d]\ar[l]\ar[r] & R_2\ar[d]\\
+      L_1\ar[d]\ar[u]^{n_1} & K_1\ar[d]\ar[l]\ar[r] & R_1\ar[dr]^{m'_{1}} & & L_2\ar[dl]_{m_2}\ar[u]^{n_2} & K_2\ar[d]\ar[l]\ar[r] & R_2\ar[d]\\
         H_1 & D_1\ar[l]^{d_1}\ar[rr]_{e_1} & & \textit{E} & & D_2\ar[ll]^{d_2}\ar[r]_{e_2} & H_2\\
           & & & & & &
           }
