@@ -117,11 +117,10 @@ In this section, we show both what it means for two graph rules (graph transform
 \begin{definition}[Causal Dependency] Given two graph rules $p_1,p_2$ with NACs, they are \emph{causally dependent} iff for a given graph $E$ in which they interact one of the following situations occur: \tinytodo{explain and put the other morphisms in the diagram}
 
   \begin{enumerate}
-    \item $\nexists$
     \item $\nexists h_{12} : R_1 -> D_2$ such that $d_2 \circ h_{12} = m_1'$
     \item $\exists! h_{12} : R_1 -> D_2$ such that $d_2 \circ h_{12} = m_1'$ but $e_2 \circ h_{12} \not\models NAC_{p_1^{-1}}$
-    \item 
-    \item 
+    \item $\nexists h_{21} : L_2 -> D_1$ such that $e_1 \circ h_{21} = m_2$
+    \item $\exists! h_{21} : L_2 -> D_1$ such that $e_1 \circ h_{21} = m_2$ but $d_1 \circ h_{21} \not\models NAC_{p_2}$
   \end{enumerate}
 
 \diagram{
@@ -134,6 +133,12 @@ In this section, we show both what it means for two graph rules (graph transform
 
 \begin{definition}[Conflict]\tinytodo{explain and put the other morphisms in the diagram}
 
+  \begin{enumerate}
+    \item $\nexists h_{12} : L_1 -> D_2$ such that $d_2 \circ h_{12} = m_1$
+    \item $\exists! h_{12} : R_1 -> D_2$ such that $d_2 \circ h_{12} = m_1$ but $e_2 \circ h_{12} \not\models NAC_{p_1}$
+    \item $\nexists h_{21} : L_2 -> D_1$ such that $d_1 \circ h_{21} = m_2$
+    \item $\exists! h_{21} : L_2 -> D_1$ such that $d_1 \circ h_{21} = m_2$ but $e_1 \circ h_{21} \not\models NAC_{p_2}$
+  \end{enumerate}
 
 \diagram{
      & & N_1 & & N_2 & & \\
