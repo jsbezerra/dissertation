@@ -32,7 +32,7 @@
 
 \diagram{
   P\ar[rr]^{a}\ar[dr]_{p} & & C\ar[dl]^{q}\\
-  & G &
+  \ar@{}[rur]|{=}& G &
 }
 
 \end{definition}
@@ -47,7 +47,7 @@ A \emph{negative} atomic (typed) graph constraint is of the form $NC\left(a\righ
 
 \diagram{
   P\ar[rr]^{a}\ar[dr]_{p} & & C\ar[dl]|{|}^{q}\\
-  & G &
+  \ar@{}[rur]|{=}& G &
 }
 
 \end{definition}
@@ -57,12 +57,12 @@ A \emph{negative} atomic (typed) graph constraint is of the form $NC\left(a\righ
 
 \begin{definition}[Graph Constraint] A (typed) graph constraint is a \emph{boolean} formula over atomic (typed) graph constraints, in such way that $true$, $false$ and every atomic constraint are also graph constraints. Also, if $c$ and $c_i$, with $i \in I$ for some index set $I$, are graph constraints, then $\neg c$, $\land_{i \in I} c_i$ and $\lor_{i \in I} c_i$ are also graph constraints.
 
-  A graph $G$ satisfies a graph constraint $c$ (written $G \models c$) if:
+  A graph $G$ satisfies a graph constraint $c$ (written $G \models c$) if one of the following situations occurs:
   \begin{itemize}
     \item $c = true$
     \item $c$ is an atomic constraint and $G \models c$
     \item $c = \neg c'$ and $G \not\models c'$
-    \item $c = \land_{i \in I}c_i$ and $\forall i \in I$ $G \models c_i$      
+    \item $c = \land_{i \in I}c_i$ and $\forall i \in I$ $G \models c_i$
     \item $c = \lor_{i \in I}c_i$  and $\exists i \in I$ $G \models c_i$
   \end{itemize}
 \end{definition}
@@ -100,8 +100,8 @@ A \emph{negative} atomic (typed) graph constraint is of the form $NC\left(a\righ
 \begin{assumption}[Left NACs] Unless stated otherwise, we will work with left $NACs$ for the rest of this thesis.\tinytodo{Explain how right nacs can be transformed into left ones}
 \end{assumption}
 
-\begin{remark}[Different NAC Satisfaction]\tinytodo{Talk about partial injective $NACs$?}
-\end{remark}
+%\begin{remark}[Different NAC Satisfaction]\tinytodo{Talk about partial injective $NACs$?}
+%\end{remark}
 
 \begin{definition}[Graph Transformation System and Graph Grammar] \tinytodo{Talk about the language of the grammar?} A typed graph transformation system is a pair $GTS = \left(TG,P\right)$ where $TG$ is the type graph of the system and $P$ is a set of typed graph rules with NACs.
 
@@ -114,7 +114,7 @@ One of the characteristics that make Graph Transformation Systems and Graph Gram
 
 In this section, we show both what it means for two graph rules (graph transformations) to be independent and how to check it. Notice that when we are reasoning about graph transformations the (in)dependence is concrete, while for the case of graph rules the (in)dependence is potential, as it would depend on a particular pattern being found on an instance graph.
 
-\begin{definition}[Causal Dependency] Given two graph rules $p_1,p_2$ with NACs, they are \emph{causally dependent} iff for a given graph $E$ in which they interact one of the following situations occur: \tinytodo{explain and put the other morphisms in the diagram}
+\begin{definition}[Causal Dependency] Given two graph rules $p_1,p_2$ with NACs, they are \emph{causally dependent} for a given graph $G$ in which they overlap iff one of the following situations occur in the diagram where all the squares are pushouts of the DPO rewriting: \tinytodo{explain and put the other morphisms in the diagram}
 
   \begin{enumerate}
     \item $\nexists h_{12} : R_1 -> D_2$ such that $d_2 \circ h_{12} = m_1'$
@@ -125,11 +125,16 @@ In this section, we show both what it means for two graph rules (graph transform
 
 \diagram{
     N_1 & & & & N_2 & & \\
-      L_1\ar[d]\ar[u]^{n_1} & K_1\ar[d]\ar[l]\ar[r] & R_1\ar[dr]^{m'_{1}} & & L_2\ar[dl]_{m_2}\ar[u]^{n_2} & K_2\ar[d]\ar[l]\ar[r] & R_2\ar[d]\\
+      L_1\ar[d]\ar[u]^{n_1} & K_1\ar[d]\ar[l]\ar[r] & R_1\ar[dr]_{m'_{1}}\ar@{.>}@/^1.1pc/[drrr]|<<{|}^<<<{h_{12}} & & L_2\ar[dl]^{m_2}\ar[u]^{n_2}\ar@{.>}@/_1.1pc/[dlll]|<<{|}_<<<{h_{21}} & K_2\ar[d]\ar[l]\ar[r] & R_2\ar[d]\\
         H_1 & D_1\ar[l]^{d_1}\ar[rr]_{e_1} & & \textit{E} & & D_2\ar[ll]^{d_2}\ar[r]_{e_2} & H_2\\
           & & & & & &
           }
 \end{definition}
+
+  If 1 occurs, it means, and we call that a \emph{deliver-delete} dependency.\tinytodo{explain what each dependency mean}
+  If 2 occurs, it means, and we call that a \emph{forbid-produce} dependency.
+  If 3 occurs, it means $p_1$ creates (on graph $E$) at least one element needed for $p_2$ to be applied, and we call that a \emph{produce-use} dependency.
+  If 4 occurs, it means $p_1$ deletes (from graph $H_1$) at least one element that would trigger the NAC $N_2$, thus allowing the application of $p_2$ on $E$, and we call that a \emph{delete-forbid} dependency.
 
 \begin{definition}[Conflict]\tinytodo{explain and put the other morphisms in the diagram}
 
@@ -142,11 +147,16 @@ In this section, we show both what it means for two graph rules (graph transform
 
 \diagram{
      & & N_1 & & N_2 & & \\
-      R_1\ar[d] & K_1\ar[d]\ar[l]\ar[r] & L_1\ar[u]^{n_1}\ar[dr]^{e_1} & & L_2\ar[dl]_{e_2}\ar[u]^{n_2} & K_2\ar[d]\ar[l]\ar[r] & R_2\ar[d]\\
+      R_1\ar[d] & K_1\ar[d]\ar[l]\ar[r] & L_1\ar[u]^{n_1}\ar[dr]^{m_1}\ar@{.>}@/^1.1pc/[drrr]|<<{|}^<<<{h_{12}} & & L_2\ar[dl]_{m_2}\ar[u]^{n_2}\ar@{.>}@/_1.1pc/[dlll]|<<{|}_<<<{h_{21}} & K_2\ar[d]\ar[l]\ar[r] & R_2\ar[d]\\
         H_1 & D_1\ar[l]^{d_1}\ar[rr]_{e_1} & & \textit{E} & & D_2\ar[ll]^{d_2}\ar[r]_{e_2} & H_2\\
           & & & & & &
           }
 \end{definition}
+
+  If 1 occurs, it means, and we call that a \emph{delete-use} conflict\tinytodo{explain what each conflict means}.
+  If 2 occurs, it means, and we call that a \emph{produce-forbid} conflict.
+  If 3 occurs, it means $p_1$ creates (on graph $E$) at least one element needed for $p_2$ to be applied, and we call that a \emph{delete-use} conflict.
+  If 4 occurs, it means $p_1$ deletes (from graph $H_1$) at least one element that would trigger the NAC $N_2$, thus allowing the application of $p_2$ on $E$, and we call that a \emph{produce-forbid} conflict.
 
 \begin{definition}[Parallel Independence]
 \end{definition}
