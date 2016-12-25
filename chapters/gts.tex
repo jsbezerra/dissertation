@@ -91,8 +91,12 @@ A \emph{negative} atomic (typed) graph constraint is of the form $NC\left(a\righ
 
   A match \match{} satisfies a set \mbox{$NAC_L = \{NAC\left(n_i\right)|i \in I\}$} of left $NACs$, iff \mbox{$m \models NAC\left(n_i\right)$} $\forall i \in I$.
 
-  Analogously, a \emph{right} negative application condition over a graph rule \graphrule{} is of the form $NAC\left(n\right)$, where \rightnac{} is an arbitrary (typed) graph morphism. A comatch \comatch{} of a rule $p$ satisfies $NAC\left(n\right)$ on $R$ (written \mbox{$m' \models NAC\left(n\right)$}) iff $\nexists$ $q : N \rightarrow H$ with $q$ injective and $q \circ n = m'$\tinytodo{Make diagram of right nac?}.
+  Analogously, a \emph{right} negative application condition over a graph rule \graphrule{} is of the form $NAC\left(n\right)$, where \rightnac{} is an arbitrary (typed) graph morphism. A comatch \comatch{} of a rule $p$ satisfies $NAC\left(n\right)$ on $R$ (written \mbox{$m' \models NAC\left(n\right)$}) iff $\nexists$ $q : N \rightarrow H$ with $q$ injective and $q \circ n = m'$.
 
+\diagram{
+  R\ar[d]_{m'}\ar[r]^{n} & N\ar@{.>}[dl]|{|}^{q}\\
+  H &
+}
   Also, a comatch \comatch{} satisfies a set \mbox{$NAC_R = \{NAC\left(n_i\right)|i \in I\}$} of right $NACs$, iff $m' \models NAC\left(n_i\right)$ $\forall i \in I$.
 
 \end{definition}
@@ -111,7 +115,7 @@ One of the characteristics that make Graph Transformation Systems and Graph Gram
 
 In this section, we show both what it means for two graph rules (graph transformations) to be independent and how to check it. Notice that when we are reasoning about graph transformations the (in)dependence is concrete, while for the case of graph rules the (in)dependence is potential, as it would depend on a particular pattern being found on an instance graph.
 
-\begin{definition}[Causal Dependency] Given two graph rules $p_1,p_2$ with NACs, they are \emph{causally dependent} for a given graph $G$ in which they overlap iff one of the following situations occur in the diagram where all the squares are pushouts of the DPO rewriting: \tinytodo{explain and put the other morphisms in the diagram}
+\begin{definition}[Causal Dependency] Given two graph rules $p_1,p_2$ with NACs, they are \emph{causally dependent} for a given graph $E$ in which they overlap iff one of the following situations occur in the diagram where all the squares are pushouts of the DPO rewriting: \tinytodo{change explanation to use graph transformations instead of graph rules?}
 
   \begin{enumerate}
     \item $\nexists h_{12} : R_1 -> D_2$ such that $d_2 \circ h_{12} = m_1'$
@@ -137,9 +141,9 @@ Intuitively, each dependency case can be regarded as follows:
   \item a \emph{delete-forbid} dependency: $p_1$ deletes (from graph $H_1$) at least one element that would trigger the NAC $N_2$, thus allowing the application of $p_2$ on $E$.
 \end{enumerate}
 
-\begin{definition}[Conflict]\tinytodo{explain and put the other morphisms in the diagram}
+\begin{definition}[Conflict] Given two graph rules $p_1, p_2$ with NACs they are in conflict for a given graph $E$ in which they overlap iff one of the following situations occur:
 
-  \begin{enumerate}
+\begin{enumerate}
     \item $\nexists h_{12} : L_1 -> D_2$ such that $d_2 \circ h_{12} = m_1$
     \item $\exists! h_{12} : R_1 -> D_2$ such that $d_2 \circ h_{12} = m_1$ but $e_2 \circ h_{12} \not\models NAC_{p_1}$
     \item $\nexists h_{21} : L_2 -> D_1$ such that $d_1 \circ h_{21} = m_2$
@@ -154,9 +158,11 @@ Intuitively, each dependency case can be regarded as follows:
           }
 \end{definition}
 
+Intuitively, each conflict case can be regarded as:
+
 \begin{enumerate}
-  \item  If 1 occurs, it means, and we call that a \emph{delete-use} conflict\tinytodo{explain what each conflict means}.
-  \item If 2 occurs, it means, and we call that a \emph{produce-forbid} conflict.
-  \item  If 3 occurs, it means $p_1$ creates (on graph $E$) at least one element needed for $p_2$ to be applied, and we call that a \emph{delete-use} conflict.
-  \item  If 4 occurs, it means $p_1$ deletes (from graph $H_1$) at least one element that would trigger the NAC $N_2$, thus allowing the application of $p_2$ on $E$, and we call that a \emph{produce-forbid} conflict.
+  \item a \emph{delete-use} conflict: $p_2$ deletes (from graph $E$) at least one element needed for $p_1$ to be applied.
+  \item a \emph{produce-forbid} conflict: $p_2$ produces (on graph $H_2$) at least one element that triggers the NAC $N_1$.
+  \item a \emph{delete-use} conflict: $p_1$ deletes at least one element needed for $p_2$ to be applied
+  \item a \emph{produce-forbid} conflict: $p_1$ creates at least one element that triggers the NAC $N_2$.
 \end{enumerate}
