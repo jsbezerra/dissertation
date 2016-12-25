@@ -57,13 +57,13 @@ A \emph{negative} atomic (typed) graph constraint is of the form $NC\left(a\righ
 
 \begin{definition}[Graph Constraint] A (typed) graph constraint is a \emph{boolean} formula over atomic (typed) graph constraints, in such way that $true$, $false$ and every atomic constraint are also graph constraints. Also, if $c$ and $c_i$, with $i \in I$ for some index set $I$, are graph constraints, then $\neg c$, $\land_{i \in I} c_i$ and $\lor_{i \in I} c_i$ are also graph constraints.
 
-  A graph $G$ satisfies a graph constraint $c$ (written $G \models c$) if one of the following situations occurs:
+  A graph $G$ satisfies a graph constraint $c$ (written $G \models c$) iff one of the following situations occurs:
   \begin{itemize}
     \item $c = true$
-    \item $c$ is an atomic constraint and $G \models c$
+    \item $c$ is an atomic constraint $a$ and $G \models a$
     \item $c = \neg c'$ and $G \not\models c'$
-    \item $c = \land_{i \in I}c_i$ and $\forall i \in I$ $G \models c_i$
-    \item $c = \lor_{i \in I}c_i$  and $\exists i \in I$ $G \models c_i$
+    \item $c = \land_{i \in I}c_i$ and $G \models c_i$ $\forall i \in I$ 
+    \item $c = \lor_{i \in I}c_i$  and $\exists i \in I$ such that $G \models c_i$
   \end{itemize}
 \end{definition}
 
@@ -128,10 +128,14 @@ In this section, we show both what it means for two graph rules (graph transform
           }
 \end{definition}
 
-  If 1 occurs, it means, and we call that a \emph{deliver-delete} dependency.\tinytodo{explain what each dependency mean}
-  If 2 occurs, it means, and we call that a \emph{forbid-produce} dependency.
-  If 3 occurs, it means $p_1$ creates (on graph $E$) at least one element needed for $p_2$ to be applied, and we call that a \emph{produce-use} dependency.
-  If 4 occurs, it means $p_1$ deletes (from graph $H_1$) at least one element that would trigger the NAC $N_2$, thus allowing the application of $p_2$ on $E$, and we call that a \emph{delete-forbid} dependency.
+Intuitively, each dependency case can be regarded as follows:
+
+\begin{enumerate}
+  \item a \emph{deliver-delete} dependency: $p_2$ deletes (from graph $E$) at least one element that was created or preserved by \tinytodo{preserved?}$p_1$.
+  \item a \emph{forbid-produce} dependency: $p_2$ creates on $H_2$ at least one element that would trigger the NAC $N_1^{-1}$.
+  \item a \emph{produce-use} dependency: $p_1$ creates (on graph $E$) at least one element needed for $p_2$ to be applied which did not exist on $H_1$.
+  \item a \emph{delete-forbid} dependency: $p_1$ deletes (from graph $H_1$) at least one element that would trigger the NAC $N_2$, thus allowing the application of $p_2$ on $E$.
+\end{enumerate}
 
 \begin{definition}[Conflict]\tinytodo{explain and put the other morphisms in the diagram}
 
@@ -150,14 +154,9 @@ In this section, we show both what it means for two graph rules (graph transform
           }
 \end{definition}
 
-  If 1 occurs, it means, and we call that a \emph{delete-use} conflict\tinytodo{explain what each conflict means}.
-  If 2 occurs, it means, and we call that a \emph{produce-forbid} conflict.
-  If 3 occurs, it means $p_1$ creates (on graph $E$) at least one element needed for $p_2$ to be applied, and we call that a \emph{delete-use} conflict.
-  If 4 occurs, it means $p_1$ deletes (from graph $H_1$) at least one element that would trigger the NAC $N_2$, thus allowing the application of $p_2$ on $E$, and we call that a \emph{produce-forbid} conflict.
-
-\begin{definition}[Parallel Independence]
-\end{definition}
-
-\begin{definition}[Sequential Independence]
-\end{definition}
-
+\begin{enumerate}
+  \item  If 1 occurs, it means, and we call that a \emph{delete-use} conflict\tinytodo{explain what each conflict means}.
+  \item If 2 occurs, it means, and we call that a \emph{produce-forbid} conflict.
+  \item  If 3 occurs, it means $p_1$ creates (on graph $E$) at least one element needed for $p_2$ to be applied, and we call that a \emph{delete-use} conflict.
+  \item  If 4 occurs, it means $p_1$ deletes (from graph $H_1$) at least one element that would trigger the NAC $N_2$, thus allowing the application of $p_2$ on $E$, and we call that a \emph{produce-forbid} conflict.
+\end{enumerate}
