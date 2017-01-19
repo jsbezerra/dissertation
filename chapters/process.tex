@@ -100,7 +100,26 @@ Notice that the type morphisms $type_G : G \rightarrow T$ and $type_H : H \right
 
 The problem with conditional relations in the core graph\tinytodo{expand}
 
-\begin{definition}[Conditional Causal Dependency Relation]
+\begin{definition}[Sketch] Given \doublyTypedGraphGrammarCore{} a doubly-typed graph grammar, \coreGraph{} a core graph and $P$ a set of rules with incremental, non-trivially triggered NACs only.
+
+Given $a_1, a_2 \in P$, when the dependency of the type delete-forbid or a conflict of the type produce-forbid are real?
+
+Let $a_1$ delete from graph \coreGraph{} an element $x \in N($\coreGraph$) \cup E($\coreGraph$)$ that potentially triggers a NAC $N_2$ of $a_2$. There are three possible cases to look at. 
+  
+  First, let $x$ be related to $a_2$ by the concrete occurrence relation, i.e. \mbox{$x \leq a_2 \lor a_2 \leq x$}: if $a_2 \leq x$ then the rules are not dependent by delete-forbid, because the element that triggers $N_2$ exists only after $a_2$ was already applied. On the other hand, if $x \leq a_2$, then $x$ must exists and must be deleted before $a_2$ is applied, therefore the rules are dependent by delete-forbid.
+
+Second, $x$ is not related to $a_2$ and also is not created by any rule in $P$, i.e., $x \in$ \coreGraph{}. Then, the rules are in delete-forbid, because $x$ existed before $a_2$, which can not be applied until $x$ is deleted.
+
+  Third, $x$ is not related to $a_2$, but there is a third rule $a_3 \in P$ which creates it, (notice that, $a_3 < a_1$ by produce-use), and $a_3$ is not related to $a_2$ by the concrete occurrence relation. \footnote{If $a_3$ is related to $a_2$ and $a_3$ creates $x$, then $a_2$ is related to $x$, which corresponds to the first case.}
+\end{definition}
+
+\begin{definition}[Conditional Causal Dependency Relation] Given two
+
+\diagram{
+   & & & & N_2 & &\\
+  L_1\ar[d] & K_1\ar[d]\ar[l]\ar[r] & R_1\ar[dr]_{post_1} & & L_2\ar[u]_n\ar@{.>}@/_1.1pc/[dlll]_<<<<{h_{21}}\ar[dl]^{pre_2} & K_2\ar[l]\ar[r]\ar[d] & R_2\\
+     C^T_{|L_1} & C^T_{|K_1}\ar[rr]_{d_1}\ar[l]^{e_1} & & C^T_{|R_1L_2} & & C^T_{|K_2}\ar[ll] &}
+
 \end{definition}
 
 \begin{definition}[Conditional Weak Conflict Relation]
