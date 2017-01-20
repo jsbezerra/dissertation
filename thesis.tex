@@ -24,6 +24,7 @@
 \usepackage{graphicx}
 \usepackage{todonotes}
 \usepackage{mathtools}
+\usepackage{etoolbox}
 
 \usepackage{times}
 \usepackage{palatino}
@@ -43,8 +44,11 @@
 \newtheorem{definition}[thm]{Definition}
 \newtheorem{example}[thm]{Example}
 \newtheorem{assumption}[thm]{Assumption}
-
 \newtheorem*{remark}{Remark}
+\AtEndEnvironment{definition}{\null\hfill\qedsymbol}
+\AtEndEnvironment{assumption}{\null\hfill\qedsymbol}
+\AtEndEnvironment{remark}{\null\hfill\qedsymbol}
+
 
 \def\changemargin#1#2{\list{}{\rightmargin#2\leftmargin#1}\item[]}
 \let\endchangemargin=\endlist

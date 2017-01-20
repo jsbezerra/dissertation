@@ -43,10 +43,6 @@ Notice that the type morphisms $type_G : G \rightarrow T$ and $type_H : H \right
   \end{itemize}
 \end{definition}
 
-\section{Relations within a Doubly-Typed Graph Grammars}
-
-\tinytodo{We will probably need to start using incremental negative application conditions only~\cite{Corradini2013}}
-
 \begin{definition}[Core Graph] Given a doubly-typed graph grammar \doublyTypedGraphGrammarCore{}, we have that \coreGraph{} is a \emph{core graph} iff $\forall x \in$ \coreGraph $: \exists! y \in \parens{I^T \uplus \parens{\uplus_{ai \in P} R_{ai}}}$\tinytodo{review this} such that
 
   \[ x =
@@ -62,6 +58,21 @@ Notice that the type morphisms $type_G : G \rightarrow T$ and $type_H : H \right
   Each rule in a doubly-typed graph grammar whose double-type is also a core graph is called an \emph{action}. An action $a$ \emph{creates} an element $e$ iff \tinytodo{\textbf{adapt leila's thesis to dpo}}. Similarly, an action $a$ \emph{deletes} an element $e$ iff
 
 \end{definition}
+
+\section{Relations within Graph Grammars typed over a Core Graph}
+
+\tinytodo{We will probably need to start using incremental negative application conditions only~\cite{Corradini2013}}
+
+
+\begin{remark}[Different Graph Transformation interpretation] When dealing action, we will use a slightly different interpretation of the graph transformations for the equivalent rules. Given an action \emph{a}, we have that:
+  
+\diagram{
+  L\ar[d]_{pre_a}        & & K\ar[ll]_{l}\ar[rr]^{r}\ar[d]|{k} & & R\ar[d]^{post_a}\\
+  C^T_{|L}\ar@{}[urr]|{\left(1\right)} & & C^T_{|K}\ar[ll]^{f}\ar[rr]_{g}             & & C^T_{|R}\ar@{}[ull]|{\left(2\right)}
+}
+
+The difference lies in the fact an action 
+\end{remark}
 
 \begin{intuition} An action $a$ is a direct cause of an action $b$ if either $a$ creates some item that is needed by $b$ or $a$ deletes an item that is forbidden by a NAC of $b$. In both cases, we have that $b$ can only happen after $a$. 
 \end{intuition}
@@ -96,6 +107,9 @@ Notice that the type morphisms $type_G : G \rightarrow T$ and $type_H : H \right
    \item The elements $e_1$ and $e_2$ are in directly weak conflict iff \tinytodo{complete}
     \item \emph{conflict relation}\tinytodo{complete}
   \end{enumerate}
+\end{definition}
+
+\begin{definition}[Concrete Occurence Relation] The dependencies and conflicts generated without NACs, i.e. produce-use and use-delete only.
 \end{definition}
 
 The problem with conditional relations in the core graph\tinytodo{expand}
