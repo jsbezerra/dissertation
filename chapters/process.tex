@@ -55,40 +55,62 @@ Notice that the type morphisms $type_G : G \rightarrow T$ and $type_H : H \right
   \begin{intuition} The idea is that each element in the \emph{Core Graph} has a unique origin either being present in the initial graph or being created by a single rule.
 \end{intuition}
 
-  Each rule in a doubly-typed graph grammar whose double-type is also a core graph is called an \emph{action}. An action $a$ \emph{creates} an element $e$ iff \tinytodo{\textbf{adapt leila's thesis to dpo}}. Similarly, an action $a$ \emph{deletes} an element $e$ iff
+  Each rule in a doubly-typed graph grammar whose double-type is also a core graph is called an \emph{action}. An action $a$ \emph{creates} an element $e$ iff $e \in R(a) - K(a)$. Similarly, an action $a$ \emph{deletes} an element $e$ iff $e \in L(a) - K(a)$.
 
 \end{definition}
 
 \section{Relations within Graph Grammars typed over a Core Graph}
 
-\tinytodo{We will probably need to start using incremental negative application conditions only~\cite{Corradini2013}}
 
+As a core graph contains the entire ``execution history'' of a grammar, some interesting properties can be found by looking at it. Particularly, the relations between actions, elements, and actions and elements.
 
-\begin{remark}[Different Graph Transformation interpretation] When dealing action, we will use a slightly different interpretation of the graph transformations for the equivalent rules. Given an action \emph{a}, we have that:
+\begin{remark}[Different Graph Transformation interpretation] When dealing with actions, we will use a slightly different interpretation of the graph transformations. Given an action \emph{a}, we have that:
   
 \diagram{
   L\ar[d]_{pre_a}        & & K\ar[ll]_{l}\ar[rr]^{r}\ar[d]|{k} & & R\ar[d]^{post_a}\\
   C^T_{|L}\ar@{}[urr]|{\left(1\right)} & & C^T_{|K}\ar[ll]^{f}\ar[rr]_{g}             & & C^T_{|R}\ar@{}[ull]|{\left(2\right)}
 }
+\hfill %\break
 
-The difference lies in the fact an action 
+The first difference is that elements created or deleted by the underlying rule of an action are not merely typed over the core graph, but in fact exactly the ones in the core graph. Second, the elements in $pre_a - k_a$ and $post_a - k_a$ are not really deleted nor created, they must be always be present in the core graph as it maintains the history of execution. Nonetheless, their creation (resp. deletion) would be performed in an execution of the simply-typed grammar. Here, for the sake of
+  simplicity, we overload these terms and continue to refer to this elements as deleted/created.
+
+  Also, for practical purposes, we restrict the codomain of the pre-, post- and gluing morphisms of an action to their respective images, such as $pre_a : L \rightarrow C^T_{|L}$. This point will be returned later on when dealing with negative application conditions\tinytodo{Do not forget to explain this in the proper session}.
 \end{remark}
 
-\begin{intuition} An action $a$ is a direct cause of an action $b$ if either $a$ creates some item that is needed by $b$ or $a$ deletes an item that is forbidden by a NAC of $b$. In both cases, we have that $b$ can only happen after $a$. 
+In~\cite{Ribeiro1996}, the causal and conflict relations for doubly-typed graph grammars over a core graph were defined. There, the graph transformation approach used was the \emph{Single Pushout} (SPO) without NACs. \cite{Corradini1996} also defined a similar notion of causal relation with respect to the DPO approach without NACs. Here we recall these definitions and extend them to create a equivalent notion that works for grammars in DPO approach with NACs.
+
+It is important to recall that the relationships extracted from a core graph whose underlying rules do not have NACs are always concrete, in the sense that if a rule is dependent on another one it is because the first one creates (some of) the elements necessary for the second to applied.
+
+On the other hand, the potential dependencies and conflicts induced by NACs may not be real, for example: let $a_1, a_2, a_3$ be three actions of the same doubly-typed grammar. Suppose that $a_1$ creates elements used by $a_2$ and $a_2$ creates elements used by $a_3$. 
+Now suppose that when $a_2$ is applied, it creates an element that would be forbidden by a NAC $a_1$ and also that $a_3$ deletes this element. By the classical notions of dependencies and conflicts with NACs, $a_2$ would conflict with $a_1$ and $a_1$ would be dependent on $a_3$, still this relationships can not occur in any execution of this grammar, once there is only one order (by creation and deletion of the elements) in which this rules can be applied, that is
+$a_1,a_2,a_3$\tinytodo{This two paragraphs need a reformulation and an example}.
+
+The dependency relations defined below are based on the following intuition:
+
+\begin{intuition} An action $a_1$ is a direct cause of an action $a_2$ if either $a_1$ creates some element that is needed by $a_2$ or $a_1$ deletes an element that is both forbidden by a NAC of $a_2$ and existent before the application of $a_2$. In both cases, we have that $a_2$ can only happen after $a_1$.\footnote{Notice that we do not use the notion of irreversible dependency, as we are interested only in the ordered execution of the actions.} 
 \end{intuition}
 
 \begin{definition}[Unconditional Causal Dependency Relation] Given \doublyTypedGraphGrammarCore{} a doubly-typed graph grammar and \coreGraph{} a core graph. Let $a_1, a_2 \in P, a_1 \ne a_2$ and \mbox{$e_1, e_2 \in $ \coreGraph{},} $e_1 \ne e_2$. Then: 
 
   \begin{enumerate}
-    \item The action $a_2$ is \emph{directly causally dependent} on $a_1$ iff $\not\exists h_{21} : L_2 \rightarrow D_1$ s.t. \mbox{$d_1 \circ h_{21} = pre_2$}.
+    \item The action $a_2$ is \emph{directly causally dependent} on $a_1$, written $a_1 < a_2$, iff \mbox{$\not\exists h_{21} : L_2 \rightarrow C^T_{|K_1}$ s.t. \mbox{$d_1 \circ h_{21} = pre_2$}}, where the two squares are pushouts and $C^T_{|R_1L_2}$ satisfies the NACs of $a_2$ if there is any.
 
-      \diagram{
+  \diagram{
         L_1 & K_1\ar[d]\ar[l]\ar[r] & R_1\ar[dr]_{post_1} & & L_2\ar@{.>}@/_1.1pc/[dlll]|{|}_<<<<{h_{21}}\ar[dl]^{pre_2} & K_2\ar[l]\ar[r]\ar[d] & R_2\\
-       & D_1\ar[rr]_{d_1} & & C^T & & D_2\ar[ll] &}
-    \item The element $e_2$ is \emph{directly causally dependent} on $e_1$ iff there is an action $a_1 \in P$ such that $a_1$ deletes $e_1$ and creates $e_2$.
-    \item \emph{dependency relation}\tinytodo{complete}
+       & C^T_{K_1}\ar[rr]_{d_1} & & C^T_{|R_1L_2} & & C^T_{|K_2}\ar[ll] &}
+   \item The \emph{causal dependency relation between actions} $(P, \leq)$ is the reflexive and transitive closure of the direct causal dependency.
+     \item The element $e_2$ is \emph{directly causally dependent} on $e_1$ iff there is an action $a_1 \in P$ such that $a_1$ deletes $e_1$ and creates $e_2$.
+    \item The \emph{causal dependency relation between elements} $(E, \leq)$ is the reflexive and transitive closure of the direct causal dependency.
   \end{enumerate}
 
+  Also, we will need a \emph{causal dependency relation between elements and actions} and we will use here de notion defined by~\cite{Corradini1996}:
+
+  \begin{enumerate}\addtocounter{enumi}{4}
+    \item The action $a_1$ is \emph{directly causally dependent} on element $e_1$, written $e_1 < a_1$, iff $a_1$ deletes $e_1$. 
+    \item The element $e_1$ is \emph{directly causally dependent} on action $a_1$, written $a_1 < e_1$, iff $a_1$ creates $e_1$.
+    \item The causal dependency relation between actions and elements $(N, \leq)$ is the reflexive and transitive closure of the direct causal dependencies between action and element, element and action.
+  \end{enumerate}
 \end{definition}
 
 
@@ -112,7 +134,7 @@ The difference lies in the fact an action
 \begin{definition}[Concrete Occurence Relation] The dependencies and conflicts generated without NACs, i.e. produce-use and use-delete only.
 \end{definition}
 
-The problem with conditional relations in the core graph\tinytodo{expand}
+The problem with conditional relations in the core graph\tinytodo{expand}\tinytodo{We will probably need to start using incremental negative application conditions only~\cite{Corradini2013}}
 
 \begin{definition}[Sketch] Given \doublyTypedGraphGrammarCore{} a doubly-typed graph grammar, \coreGraph{} a core graph and $P$ a set of rules with incremental, non-trivially triggered NACs only.
 
