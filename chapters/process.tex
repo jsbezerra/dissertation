@@ -13,7 +13,7 @@ To a more in depth-explanation, see~\cite{Ribeiro1996, Corradini2014}
 \end{definition}
 
 \begin{definition}[Doubly-Typed Graph Morphisms]
-  Given two doubly-typed graphs $G^{TG^T}$ and $H^{TG^T}$ and a graph morphism $g^T : G^T \rightarrow H^T$, we say that $g^T$ is a \emph{$TG^T$-doubly-typed graph morphism} if the following diagram weakly commutes\tinytodo{weakly commutes?}:
+  Given two doubly-typed graphs $G^{TG^T}$ and $H^{TG^T}$ and a graph morphism $g^T : G^T \rightarrow H^T$, we say that $g^T$ is a \emph{$TG^T$-doubly-typed graph morphism} if the following diagram commutes:
 
 \diagram{
   G\ar[rr]^{g}\ar[d]_{t^{G}}& & H\ar[d]^{t^{H}} \\
@@ -39,7 +39,7 @@ Notice that the type morphisms $type_G : G \rightarrow T$ and $type_H : H \right
     \item $L_a = L_T$, $K_a = K_R$ and $R_a = R_T$, the left, gluing and right graphs of $a$.
     \item $pre_a = t^{L^T} : L^T \rightarrow TG^T$, the \emph{pre-condition} of the $a$.
     \item $post_a = t^{R^T} : R^T \rightarrow TG^T$, the \emph{post-condition} of $a$.
-    \item $r_a = r^T$, the \emph{rule pattern} of $a$.\tinytodo{Not sure if we will need the rule pattern.}
+    %\item $r_a = r^T$, the \emph{rule pattern} of $a$.\tinytodo{Not sure if we will need the rule pattern.}
   \end{itemize}
 \end{definition}
 
@@ -140,9 +140,15 @@ The problem with conditional relations in the core graph\tinytodo{expand}\tinyto
 
 Given $a_1, a_2 \in P$, when the dependency of the type delete-forbid or a conflict of the type produce-forbid are real?
 
-Let $a_1$ delete from graph \coreGraph{} an element $x \in N($\coreGraph$) \cup E($\coreGraph$)$ that potentially triggers a NAC $N_2$ of $a_2$. There are three possible cases to look at. 
-  
-  First, let $x$ be related to $a_2$ by the concrete occurrence relation, i.e. \mbox{$x \leq a_2 \lor a_2 \leq x$}: if $a_2 \leq x$ then the rules are not dependent by delete-forbid, because the element that triggers $N_2$ exists only after $a_2$ was already applied. On the other hand, if $x \leq a_2$, then $x$ must exists and must be deleted before $a_2$ is applied, therefore the rules are dependent by delete-forbid.
+Let $a_1$ delete from graph \coreGraph{} an element $x \in N($\coreGraph$) \cup E($\coreGraph$)$ that potentially triggers a NAC $N_2$ of $a_2$. There are three possible cases to look at:
+
+\begin{enumerate}
+  \item $a_2$ is somehow related to $x$ by the concrete occurence relation
+  \item $a_2$ is not related to $x$ by the concrete occurence relation, but $x$ is present in the initial graph.
+  \item $a_2$ is not related to $x$ by the concrete occurence relation and $x$ is not present in the initial graph.
+\end{enumerate}
+
+First, let $x$ be related to $a_2$ by the concrete occurrence relation, i.e. \mbox{$x \leq a_2 \lor a_2 \leq x$}. If $a_2 \leq x$ it means that $x$ was either created by $a_2$ or by another action that has to occur after it. Thus, the delete-forbid dependency in this case can not be concrete as $x$ did not exist to trigger $N_2$ before $a_2$ was applied. On the other hand, if $x \leq a_2$, then $x$ must exists and must be deleted before $a_2$ is applied, therefore the rules are dependent by delete-forbid.
 
 Second, $x$ is not related to $a_2$ and also is not created by any rule in $P$, i.e., $x \in$ \coreGraph{}. Then, the rules are in delete-forbid, because $x$ existed before $a_2$, which can not be applied until $x$ is deleted.
 
