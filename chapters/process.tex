@@ -110,6 +110,7 @@ The dependency relations defined below are based on the following intuition:
     \item The action $a_1$ is \emph{directly causally dependent} on element $e_1$, written $e_1 < a_1$, iff $a_1$ deletes $e_1$. 
     \item The element $e_1$ is \emph{directly causally dependent} on action $a_1$, written $a_1 < e_1$, iff $a_1$ creates $e_1$.
     \item The causal dependency relation between actions and elements $(N, \leq)$ is the reflexive and transitive closure of the direct causal dependencies between action and element, element and action.
+    \item The concrete causal dependency relation $(D, \leq)$ is the given by \mbox{$(P, \leq) \cup (E, \leq) \cup (N, \leq)$}\tinytodo{Or by the reflexive and transitive closure of this?}.
   \end{enumerate}
 \end{definition}
 
@@ -143,7 +144,7 @@ Given $a_1, a_2 \in P$, when the dependency of the type delete-forbid or a confl
 Let $a_1$ delete from graph \coreGraph{} an element $x \in N($\coreGraph$) \cup E($\coreGraph$)$ that potentially triggers a NAC $N_2$ of $a_2$. There are three possible cases to look at:
 
 \begin{enumerate}
-  \item $a_2$ is somehow related to $x$ by the concrete occurence relation
+  \item $a_2$ is somehow related to $x$ by the concrete occurence relation.
   \item $a_2$ is not related to $x$ by the concrete occurence relation, but $x$ is present in the initial graph.
   \item $a_2$ is not related to $x$ by the concrete occurence relation and $x$ is not present in the initial graph.
 \end{enumerate}
