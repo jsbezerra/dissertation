@@ -139,7 +139,7 @@ As for the conflicts, the relations defined below are based on the following int
 
 The problem with conditional relations in the core graph\tinytodo{expand}\tinytodo{define and explain the notion of incremental negative application conditions~\cite{Corradini2013}}
 
-\begin{definition}[Sketch] Given \doublyTypedGraphGrammarCore{} a doubly-typed graph grammar, \coreGraph{} a core graph and $P$ a set of rules with incremental, non-trivially triggered NACs only.
+\begin{definition}[Conditional Causal Dependency Relation] Let \doublyTypedGraphGrammarCore{} a doubly-typed graph grammar, \coreGraph{} a core graph and $P$ a set of rules with incremental, non-trivially triggered NACs only.
 
 Given $a_1, a_2 \in P$, when the dependency of the type delete-forbid or a conflict of the type produce-forbid are real?
 
@@ -156,9 +156,7 @@ First, let $x$ be related to $a_2$ by the concrete occurrence relation, i.e. \mb
   Second, let $x$ be not related to $a_2$ and also not created by any rule in $P$, i.e., $x \in I^{C^T}$. Then, the rules are in delete-forbid, because $x$ existed before $a_2$, which can not be applied until $x$ is deleted.
 
   Third, $x$ is not related to $a_2$, but there is a third rule $a_3 \in P$ which creates it, (notice that, $a_3 < a_1$ by produce-use), and $a_3$ is not related to $a_2$ by the concrete occurrence relation\footnote{If $a_3$ is related to $a_2$ and $a_3$ creates $x$, then $a_2$ is related to $x$, which corresponds to the first case.}
-. In this case, we may have that $a_1 < a_2$ by delete-forbid if we choose a configuration where $a_3$ is applied before $a_2$.\end{definition}
-
-\begin{definition}[Conditional Causal Dependency Relation] Given two
+. In this case, we may have that $a_1 < a_2$ by delete-forbid if we choose a configuration where $a_3$ is applied before $a_2$.
 
 \diagram{
    & & & & N_2 & &\\
@@ -167,7 +165,18 @@ First, let $x$ be related to $a_2$ by the concrete occurrence relation, i.e. \mb
 
 \end{definition}
 
-\begin{definition}[Conditional Weak Conflict Relation]
+\begin{definition}[Conditional Weak Conflict Relation] Let \doublyTypedGraphGrammarCore{} a doubly-typed graph grammar, \coreGraph{} a core graph and $P$ a set of rules with incremental, non-trivially triggered NACs only.
+
+  Given $a_1,a_2 \in P$, where $a_1$ creates on graph $C^T$ an element $x \in N(C^T) \cup E(C^T)$ that potentially triggers a NAC $N_2$ of $a_2$. There are two possible cases to look at:
+
+  \begin{enumerate}
+    \item $a_2$ is somehow related to $x$ by the concrete occurrence relation.
+    \item $a_2$ is not related to $x$ by the concrete occurrence relation.
+  \end{enumerate}
+
+  In the first case, if $a2 \leq x$ it means that $x$ is created only after $a_2$ has been applied, therefore this configuration of produce-forbid can not be concrete as the trigger element does not occur at the moment of $a_2$ application. On the other hand, if $x \leq a_2$ it means that $x$ existed before $a_2$ was applied, which leads to two possible subcases: (1) there is another action $a_3$ that deletes $x$, which means that the $a_1$ and $a_2$ are in produce-forbid conflict, but this
+  conflict is ``annulated'' by the application of $a_3$, which must then happen before $a_2$ or (2) there is no other rule that deletes $x$, which means that rules are in
+  produce-forbid conflict.
 \end{definition}
 
 \begin{definition}[Occurrence Relation]
