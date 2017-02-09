@@ -43,14 +43,34 @@ Notice that the type morphisms $type_G : G \rightarrow T$ and $type_H : H \right
   \end{itemize}
 \end{definition}
 
-\begin{definition}[Core Graph] Given a doubly-typed graph grammar \doublyTypedGraphGrammarCore{}, we have that \coreGraph{} is a \emph{core graph} iff $\forall x \in$ \coreGraph $: \exists! y \in \parens{I^T \uplus \parens{\uplus_{ai \in P} R_{ai}}}$\tinytodo{review this} such that
+\begin{definition}[Negative Application Conditions on Doubly-Typed Graph Rules] A \emph{left} negative application condition over a doubly-typed graph rule $p^{TG^T}$ is of the form $NAC(n)$, where $n^T : L^T \rightarrow N^T$ is an arbitrary (single-)typed graph morphism. A  (doubly-typed) match $m^{TG^T} : L^{TG^T} \rightarrow G^{TG^T}$ of a rule $p^{TG^T}$ satisfies $NAC(n^T)$ on $L^{TG^T}$, written \mbox{$m \models NAC(n)$}, iff $\nexists$ $q^T : N^T \rightarrow G^T$ where $q^T$ injective and $q^T \circ n^T = m^T$.
 
-  \[ x =
+\diagram{
+  T & TG\ar[l]\\
+  N\ar[u]\ar@{.>}[dr]|{|}_{q} & L\ar[u]\ar[d]^{m}\ar[l]_{n}\\
+   & G\ar@/_2.1pc/[uu]
+}
+
+  A match $m^{TG^T} : L^{TG^T} \rightarrow G^{TG^T}$ satisfies a set \mbox{$NAC_L = \{NAC\left(n_i\right)|i \in I\}$} of left $NACs$, iff \mbox{$m \models NAC\left(n_i\right)$} $\forall i \in I$.
+
+\emph{Right} negative application conditions are defined analogously for the right hand side of a rule an its comatch.
+
+
+\end{definition}
+
+\begin{remark}
+  Although we could have defined NACs that are also doubly-typed graph morphisms, which would then act specifically over doubly-typed graphs, we will not use this in our work graph. Therefore, we will use this \emph{single-typed} NACs as the only NAC type in all of our \emph{doubly-typed graph grammars}.
+\end{remark}
+
+\begin{definition}[Core Graph] Given a doubly-typed graph grammar \doublyTypedGraphGrammarCore{}, we have that \coreGraph{} is a \emph{core graph} iff \mbox{$\forall x \in$ \coreGraph $: \exists! y \in (I^T \uplus (\uplus_{i \in P} (R_i - K_i))$}.
+
+
+\[ x =
     \begin{cases}
-      in_{GG}\parens{y} & y \in I^T\\
-      post_{ai}\parens{y} & y \in R_{ai} \land y \not\in rng\parens{r_{ai}}\\
+      in_{GG}\parens{y},$ if $y \in I^T\\
+      post_i(y),$ if $y \in R_i - K_i\\
     \end{cases}
-   \]\tinytodo{reformulate this entire definition}
+   \]\tinytodo{check whether this definition is correct/complete}
 
   \begin{intuition} The idea is that each element in the \emph{Core Graph} has a unique origin either being present in the initial graph or being created by a single rule.
 \end{intuition}
