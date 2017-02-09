@@ -112,7 +112,7 @@ One of the characteristics that make Graph Transformation Systems and Graph Gram
 
 In this section, we show both what it means for two graph rules (graph transformations) to be independent and how to check it. Notice that when we are reasoning about graph transformations the (in)dependence is concrete, while for the case of graph rules the (in)dependence is potential, as it would depend on a particular pattern being found on an instance graph.
 
-\begin{definition}[Causal Dependency] Given two graph rules $p_1,p_2$ with NACs, they are \emph{causally dependent} for a given graph $E$ in which they overlap iff one of the following situations occur in the diagram where all the squares are pushouts of the DPO rewriting: \tinytodo{change explanation to use graph transformations instead of graph rules?}
+\begin{definition}[Causal Dependency]\label{def:classic-dependency} Given two graph rules $p_1,p_2$ with NACs, they are \emph{causally dependent} for a given graph $E$ in which they overlap iff one of the following situations occur in the diagram where all the squares are pushouts of the DPO rewriting: \tinytodo{change explanation to use graph transformations instead of graph rules?}
 
   \begin{enumerate}
     \item $\nexists h_{12} : R_1 -> D_2$ such that $d_2 \circ h_{12} = m_1'$
@@ -138,7 +138,7 @@ Intuitively, each dependency case can be regarded as follows:
   \item a \emph{delete-forbid} dependency: $p_1$ deletes (from graph $H_1$) at least one element that would trigger the NAC $N_2$, thus allowing the application of $p_2$ on $E$.
 \end{enumerate}
 
-\begin{definition}[Conflict] Given two graph rules $p_1, p_2$ with NACs they are in conflict for a given graph $E$ in which they overlap iff one of the following situations occur:
+\begin{definition}[Conflict]\label{def:classic-conflict} Given two graph rules $p_1, p_2$ with NACs they are in conflict for a given graph $E$ in which they overlap iff one of the following situations occur:
 
 \begin{enumerate}
     \item $\nexists h_{12} : L_1 -> D_2$ such that $d_2 \circ h_{12} = m_1$
