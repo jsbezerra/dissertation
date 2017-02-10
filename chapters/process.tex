@@ -75,11 +75,15 @@ Notice that the type morphisms $type_G : G \rightarrow T$ and $type_H : H \right
   \begin{intuition} The idea is that each element in the \emph{Core Graph} has a unique origin either being present in the initial graph or being created by a single rule.
 \end{intuition}
 
-  Each rule in a doubly-typed graph grammar whose double-type is also a core graph is called an \emph{action}. An action $a$ \emph{creates} an element $e$ iff $e \in R(a) - K(a)$. Similarly, an action $a$ \emph{deletes} an element $e$ iff $e \in L(a) - K(a)$.
 
 \end{definition}
 
-\section{Relations within Graph Grammars typed over a Core Graph}
+\begin{definition}[Strongly Safe (Doubly-Typed) Graph Grammars] Given \doublyTypedGraphGrammarCore{} a doubly-typed graph grammar, $GG$ is said to be \emph{strongly safe} if its double-type graph is also a core graph.
+
+Also, each rule in a strongly safe graph grammar whose double-type is also a core graph is called an \emph{action}. An action $a$ \emph{creates} an element $e$ iff $e \in R(a) - K(a)$. Similarly, $a$ \emph{deletes} $e$ iff $e \in L(a) - K(a)$.
+\end{definition}
+
+\section{Relations within Strongly Safe Graph Grammars}
 
 Given that a Core Graph contains all elements used (created, read or deleted) during the execution of a grammar and that each element has an unique origin within it, the Core Graph can be considered to contain the entire ``execution history'' of its underlying grammar. 
 
@@ -99,16 +103,40 @@ The first difference is that elements created or deleted by the underlying rule 
   Also, for practical purposes, we restrict the codomain of the pre-, post- and gluing morphisms of an action to their respective images, such as $pre_a : L \rightarrow C^T_{|L}$. This point will be returned later on when dealing with negative application conditions\tinytodo{Do not forget to explain this in the proper session}.
 \end{remark}
 
-In~\cite{Ribeiro1996}, the causal and conflict relations for doubly-typed graph grammars over a core graph were defined. There, the graph transformation approach used was the \emph{Single Pushout} (SPO) without NACs. \cite{Corradini1996} also defined a similar notion of causal relation with respect to the DPO approach without NACs. 
+In~\cite{Ribeiro1996}, the causal and conflict relations for strongly safe graph grammars were defined. There, the graph transformation approach used was the \emph{Single Pushout} (SPO) without NACs. \cite{Corradini1996} also defined a similar notion of causal relation with respect to the DPO approach without NACs.
 
-Here we recall these definitions, which correspond to the \emph{unconditional causal dependency and conflict relations} defined in the following, and then extend them to create an equivalent notion of \emph{conditional relations} that work for grammars in the DPO approach with NACs.
+Both authors use these relations to find out whether all actions of a strongly safe graph grammar are applicable and prove some properties about it. However, this relations alone are no sufficient to this purpose when the actions may have NACs, which are nowadays essential for modelling complex systems~\cite{Corradini2014}.
 
-Both cases of dependency relations defined below are based on the following intuition:
+Here we recall these definitions, which correspond to the \emph{existential relation} and the \emph{unconditional causal dependency and conflict relations} defined in the following, and extend them to create an equivalent notion of \emph{conditional relations} that work for grammars in the DPO approach with NACs.
 
-\begin{intuition} An action $a_1$ is a direct cause of an action $a_2$ if either $a_1$ creates some element that is needed by $a_2$ (unconditional causal dependency) or $a_1$ deletes an element that is both forbidden by a NAC of $a_2$ and existent before the application of $a_2$ (conditional causal dependency). In both cases, we have that $a_2$ can only happen after $a_1$.\footnote{Notice that we do not use the notion of irreversible dependency, as we are interested only in the ordered execution of the actions.} 
+\begin{definition}[Existential Relation] This is the \emph{causal relation} defined in \cite{Corradini1996} for the DPO approach without NACs. Given  \doublyTypedGraphGrammarCore{} a strongly safe graph grammar. Let actions $a_1, a_2 \in P, a_1 \ne a_2$ and element \mbox{$e_1 \in $ \coreGraph{}}, then:
+
+  \begin{enumerate}
+    \item If $a_1$ deletes $e_1$, then $e_1 <_e a_1$.
+    \item If $a_1$ creates $e_1$, then $a_1 <_e e_1$.
+    \item If $a_1$ creates $e_1$ and $p_2$ preserves $e_1$, then $a_1 <_e a_2$.
+    \item If $a_1$ preserves $e_1$ and $a_2$ deletes $e_1$, then $a_1 <_e a_2$. 
+    \item The \emph{existential relation} $(P \cup E, \leq_e)$ is the reflexive and transitive closure of $<_e$.
+  \end{enumerate}
+\end{definition}
+
+This relation represents restrictions over creation, use (preservation) and deletion of elements by actions that must be respected for the actions to be applicable. In the sense that an action $a$ must occur after all the actions that create the elements which it depends on. Similarly, $a$ must occur before all actions that delete those same elements.
+
+\begin{example}[Existencial Relation Example]
+\end{example}
+
+In \cite{Corradini1996} it is shown that if this relation is a partial order, then all productions of the underlying grammar are applicable. However, this condition is not sufficient in grammars with NACs.
+
+\begin{example}[Failing existencial relation with nacs]
+\end{example}
+
+The next unconditional relations are equivalent to the relations presented at~\cite{Ribeiro1996}, but for the DPO approach. Both cases of dependency relations defined below are based on the following intuition:
+
+\begin{intuition} An action $a_1$ is a direct cause of an action $a_2$ if either $a_1$ creates some element that is needed by $a_2$ (unconditional causal dependency) or $a_1$ deletes an element that is both forbidden by a NAC of $a_2$ and existent before the application of $a_2$ (conditional causal dependency). In both cases, we have that $a_2$ can only happen after $a_1$.\tinytodo{Explain that we do not use the notion of irreversible dependency, as we are interested only in the ordered
+  execution of the actions?} 
 \end{intuition}
 
-\begin{definition}[Unconditional Causal Dependency Relation] Given \doublyTypedGraphGrammarCore{} a doubly-typed graph grammar and \coreGraph{} a core graph. Let $a_1, a_2 \in P, a_1 \ne a_2$ and \mbox{$e_1, e_2 \in $ \coreGraph{},} $e_1 \ne e_2$. Then: 
+\begin{definition}[Unconditional Causal Dependency Relation\footnote{Also be called Produce-Use Relation}] Given \doublyTypedGraphGrammarCore{} a doubly-typed graph grammar and \coreGraph{} a core graph. Let $a_1, a_2 \in P, a_1 \ne a_2$ and \mbox{$e_1, e_2 \in $ \coreGraph{},} $e_1 \ne e_2$. Then: 
 
   \begin{enumerate}
     \item The action $a_2$ is \emph{directly causally dependent} on $a_1$, written $a_1 <_{pu} a_2$, iff \mbox{$\not\exists h_{21} : L_2 \rightarrow D_1$ s.t. \mbox{$d_1 \circ h_{21} = pre_2$}}, where the two squares are pushouts and $C^T_{|R_1L_2}$ ($C^T$ restricted to the jointly-image of $post_1$ and $pre_2$) satisfies the NACs for $a_2$ and $a_1^{-1}$.
@@ -120,42 +148,35 @@ Both cases of dependency relations defined below are based on the following intu
    \item The \emph{causal dependency relation between actions} $(P, \leq_{pu})$ is the reflexive and transitive closure of the direct causal dependency.
    \item The element $e_2$ is \emph{directly causally dependent} on $e_1$, written $e_1 <_{pu} e_2$, iff there is an action $a_1 \in P$ such that $a_1$ deletes $e_1$ and creates $e_2$.
    \item The \emph{causal dependency relation between elements} $(E, \leq_{pu})$ is the reflexive and transitive closure of the direct causal dependency.
-  \end{enumerate}
-
-  Also, we will need a \emph{causal dependency relation between elements and actions} and we will use here de notion defined by~\cite{Corradini1996}:
-
-  \begin{enumerate}\addtocounter{enumi}{4}
-    \item The action $a_1$ is \emph{directly causally dependent} on element $e_1$, written $e_1 < a_1$, iff $a_1$ deletes $e_1$. 
-    \item The element $e_1$ is \emph{directly causally dependent} on action $a_1$, written $a_1 < e_1$, iff $a_1$ creates $e_1$.
-    \item The causal dependency relation between actions and elements $(N, \leq)$ is the reflexive and transitive closure of the direct causal dependencies between action and element, element and action.
-    \item The concrete causal dependency relation $(D, \leq)$ is the given by \mbox{$(P, \leq) \cup (E, \leq) \cup (N, \leq)$}\tinytodo{Or by the reflexive and transitive closure of this?}.
+   \item The \emph{unconditional causal dependency relation} of a strongly safe grammar is defined by $(P \cup E, \leq_{pu})$.
   \end{enumerate}
 \end{definition}
 
 
 As for the conflicts, the relations defined below are based on the following intuition: 
 
-\begin{intuition} An action $a_1$ is in \emph{weak} conflict with an action $a_2$ if either $a_1$ deletes something that is needed by $a_2$ to be applied (unconditional weak conflict) or creates something that is both forbidden by a NAC of $a_2$ and not deleted before the application of $a_2$ (conditional weak conflict). In both cases, we have that $a_2$ can not happen once $a_1$ has happened, in other words: $a_2$ can only happen before $a_1$.
+\begin{intuition} An action $a_1$ is in \emph{weak} conflict with an action $a_2$ if either $a_1$ deletes something that is needed by $a_2$ to be applied (unconditional weak conflict) or creates something that is both forbidden by a NAC of $a_2$ and not deleted before the application of $a_2$ (conditional weak conflict). In both cases, we have that $a_2$ can not happen once $a_1$ has happened, in other words: $a_2$ can only happen before $a_1$\footnote{Unless a third rule deletes the forbidden
+  element(s) between the applications of $a_1$ and $a_2$. This point will be returned later on.}.
 \end{intuition}
 
 
-\begin{definition}[Unconditional Weak Conflict Relation] Given \doublyTypedGraphGrammarCore{} a doubly-typed graph grammar and \coreGraph{} a core graph. Let $a_1, a_2 \in P, a_1 \ne a_2$ and \mbox{$e_1, e_2 \in $ \coreGraph{},} $e_1 \ne e_2$. Then: 
+\begin{definition}[Unconditional Weak Conflict Relation\footnote{Also called Delete-Use Relation.}] Given \doublyTypedGraphGrammarCore{} a doubly-typed graph grammar and \coreGraph{} a core graph. Let $a_1, a_2 \in P, a_1 \ne a_2$ and \mbox{$e_1, e_2 \in $ \coreGraph{},} $e_1 \ne e_2$. Then: 
 
   \begin{enumerate}
-    \item The action $a_2$ is in \emph{direct weak conflict} with $a_1$, written $a_2 <_{du} a_1$, iff \mbox{$\not\exists h_{12} : L_1 \rightarrow D_2$} s.t. \mbox{$d_2 \circ h_{12} = pre_1$}.
+    \item The action $a_1$ is in \emph{direct weak conflict} with $a_2$, written $a_2 <_{du} a_1$, iff \mbox{$\not\exists h_{12} : L_1 \rightarrow D_2$} s.t. \mbox{$d_2 \circ h_{12} = pre_1$}.
 
       \diagram{
         R_1 & K_1\ar[l]\ar[r]\ar[d] & L_1\ar[dr]_{pre_1} & & L_2\ar[dl]^{pre_2}\ar@{.>}@/_1.1pc/[dlll]|{|}_<<<<{h^{21}} & K_2\ar[l]\ar[r]\ar[d] & R_2\\
        & D_1\ar[rr]_{d_1} & & C^T & & D_2\ar[ll] &}
    \item The \emph{weak conflict relation between actions} $(P,\leq_{du})$ is the reflexive and transitive closure of the direct weak conflict.
    \item The element $e_2$ is in weak conflict with $e_1$, written $e_2 <_{du} e_1$, iff there are actions $a_1$ and $a_2$ that respectively create $e_1$ and $e_2$ and $a_2$ is in a weak conflict with $a_1$.
-   \item The \emph{weak conflict relation between elements} $(E, \leq_{du})$ is the reflexive and transitive closure their direct weak conflict.
+   \item The \emph{weak conflict relation between elements} $(P \cup E, \leq_{du})$ is the reflexive and transitive closure of $<_{du}$.
   \end{enumerate}
 \end{definition}
 
-It is important to recall that the relationships extracted from a core graph whose underlying actions do not have NACs are always concrete, in the sense that if an action is dependent on (conflicting with) another one, it happens because the first one creates (resp. deletes) at least one of the elements necessary for the second to be applied.
+It is important to recall that the relationships extracted from strongly safe grammars whose underlying actions do not have NACs are always concrete, in the sense that if an action is dependent on (conflicting with) another one, it happens because the first one creates (resp. deletes) at least one of the elements necessary for the second to be applied.
 
-On the other hand, dependencies and conflicts induced by NACs may be concrete, non existent, or conditioned to a specific order of application, for example: 
+On the other hand, each dependency or conflict induced by NACs may be always \emph{concrete}, \emph{non existent}, or conditioned to a specific order of application (\emph{abstract}), for example: 
 
 Let $a_1, a_2, a_3$ be three actions of the same doubly-typed grammar. Suppose that $a_1$ creates elements used by $a_2$ and $a_2$ creates elements used by $a_3$. 
 Now suppose that when $a_2$ is applied, it creates an element that would be forbidden by a NAC of $a_1$ and also that $a_3$ deletes this element. 
@@ -169,7 +190,7 @@ Given that $a_1, a_2 \in P$ are in a potential dependency of the type delete-for
 
 The problem with conditional relations in the core graph\tinytodo{expand}\tinytodo{define and explain the notion of incremental negative application conditions~\cite{Corradini2013}}
 
-\begin{definition}[Conditional Causal Dependency Relation] Let \doublyTypedGraphGrammarCore{} be a doubly-typed graph grammar, \coreGraph{} a core graph and $P$ a set of rules with incremental, non-trivially triggered NACs only.
+\begin{definition}[Conditional Causal Dependency Relation\footnote{Also called Delete-Forbid Relation}] Let \doublyTypedGraphGrammarCore{} be a doubly-typed graph grammar, \coreGraph{} a core graph and $P$ a set of rules with incremental, non-trivially triggered NACs only.
 
 
 \diagram{
@@ -181,22 +202,24 @@ The problem with conditional relations in the core graph\tinytodo{expand}\tinyto
 Let $a_1$ delete from graph \coreGraph{} an element $x \in N($\coreGraph$) \cup E($\coreGraph$)$ that potentially triggers a NAC $N_2$ of $a_2$. There are three possible cases to look at:
 
 \begin{enumerate}
-  \item $a_2$ is somehow related to $x$ by the concrete occurence relation.
-  \item $a_2$ is not related to $x$ by the concrete occurence relation, but $x$ is present in the initial graph.
-  \item $a_2$ is not related to $x$ by the concrete occurence relation and $x$ is not present in the initial graph.
+  \item $a_2$ is somehow related to $x$ by the concrete occurrence relation.
+  \item $a_2$ is not related to $x$ by the concrete occurrence relation, but $x$ is present in the initial graph.
+  \item $a_2$ is not related to $x$ by the concrete occurrence relation and $x$ is not present in the initial graph.
 \end{enumerate}
 
-First, let $x$ be related to $a_2$ by the concrete occurrence relation, i.e. \mbox{$x \leq a_2 \lor a_2 \leq x$}. If $a_2 \leq x$ it means that $x$ was either created by $a_2$ or by another action that has to occur after it. Thus, the delete-forbid dependency in this case can not be concrete as $x$ did not exist to trigger $N_2$ before $a_2$ was applied. On the other hand, if $x \leq a_2$, then $x$ must exists and must be deleted before $a_2$ is applied, therefore the rules are dependent by delete-forbid.
+  First, let $x$ be related to $a_2$ by the unconditional occurrence relation\tinytodo{define this or extend corradini's}, i.e. \mbox{$x \leq a_2 \lor a_2 \leq x$}. If $a_2 \leq x$ it means that $x$ was either created by $a_2$ or by another action that must to occur after $a_2$. Thus, the delete-forbid dependency in this case can \emph{does not exist} as the element $x$ did not exist to trigger $N_2$ before $a_2$ was applied. On the other hand, if $x \leq a_2$, then $x$ exists before $a_2$
+  application and must be deleted in order for $a_2$ to be applied, therefore this delete-forbid is \emph{concrete} and $a_1 <_{df} a_2$ .
 
-  Second, let $x$ be not related to $a_2$ and also not created by any rule in $P$, i.e., $x \in I^{C^T}$. Then, the rules are in delete-forbid, because $x$ existed before $a_2$, which can not be applied until $x$ is deleted.
+  Second, let $x$ be not related to $a_2$ at the same time that it is not created by any rule in $P$, meaning that $x$ is present on the initial graph: $x \in I^{C^T}$. In such configuration, the delete-forbid is also \emph{concrete}, once $x$ existed before $a_2$, preventing its application. Therefore, we have $a_1 <_{df} a_2$.
 
-  Third, $x$ is not related to $a_2$, but there is a third rule $a_3 \in P$ which creates it, (notice that, $a_3 < a_1$ by produce-use), and $a_3$ is not related to $a_2$ by the concrete occurrence relation\footnote{If $a_3$ is related to $a_2$ and $a_3$ creates $x$, then $a_2$ is related to $x$, which corresponds to the first case.}
-. In this case, we may have that $a_1 < a_2$ by delete-forbid if we choose a configuration where $a_3$ is applied before $a_2$.
+  Third, let $x$ be not related to $a_2$, but created by a third action $a_3 \in P$, $a_1 \ne a_3 \ne a_2$\footnote{Notice that in this configuration, $a_3 <_{pu} a_1$.}, and let $a_3$ be not related to $a_2$ by the concrete occurrence relation. In this case, we may have that $a_1 < a_2$ by delete-forbid if we choose a configuration where $a_3$ is applied before $a_2$.
+  
+  If $a_3$ were related to $a_2$ and $a_3$ creates $x$, then $a_2$ would be related to $x$, which corresponds to the first case.
 
 
 \end{definition}
 
-\begin{definition}[Conditional Weak Conflict Relation] Let \doublyTypedGraphGrammarCore{} a doubly-typed graph grammar, \coreGraph{} a core graph and $P$ a set of rules with incremental, non-trivially triggered NACs only.
+\begin{definition}[Conditional Weak Conflict Relation\footnote{Also called Produce-Forbid Relation}] Let \doublyTypedGraphGrammarCore{} a doubly-typed graph grammar, \coreGraph{} a core graph and $P$ a set of rules with incremental, non-trivially triggered NACs only.
 
   Given $a_1,a_2 \in P$, where $a_1$ creates on graph $C^T$ an element $x \in N(C^T) \cup E(C^T)$ that potentially triggers a NAC $N_2$ of $a_2$. There are two possible cases to look at:
 
@@ -234,7 +257,15 @@ First, let $x$ be related to $a_2$ by the concrete occurrence relation, i.e. \mb
 
 \subsection{Graph Process with NACs}
 
-\begin{definition}[Incremental NACs]
+\begin{definition}[Incremental NACs] Given a monomorphism \mbox{$f : A \rightarrow B$}, $f$ is said to be incremental if for any possible pair of decompositions \mbox{$g_1 : A \rightarrow O_g;g_2 : O_g \rightarrow B$} and \mbox{$h_1 : A \rightarrow O_h;h_2 : O_h \rightarrow B$} as in the diagram below, where all morphisms are monos and $g = f = h$, there exists a mediating morphism $o_1 : O_g \rightarrow O_h$ or $o_2 : O_h \rightarrow O_g$, such that the resulting triangles commutes.
+
+
+\diagram{
+  & O_g\ar[dr]^{g_2}\ar@{.>}@/_0.5pc/[dd]|<<<<<<{o_1} &  \\
+  A\ar[ur]^{g_1}\ar[dr]_{h_1}\ar[rr]|<<<<{f}&     & B\\
+    & O_h\ar[ur]_{h_2}\ar@{.>}@/_0.5pc/[uu]|<<<<<<<<{o_2} & 
+}
+
 \end{definition}
 
 \begin{definition}[Colimit construction with Incremental NACs]

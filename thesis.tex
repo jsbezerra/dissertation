@@ -45,8 +45,9 @@
 \newtheorem{example}[thm]{Example}
 \newtheorem{assumption}[thm]{Assumption}
 \newtheorem*{remark}{Remark}
-\AtEndEnvironment{definition}{\null\hfill\qedsymbol}
-\AtEndEnvironment{assumption}{\null\hfill\qedsymbol}
+\AtEndEnvironment{definition}{\hfill\qedsymbol}%put \null before \hfill?
+\AtEndEnvironment{assumption}{\hfill\qedsymbol}
+\AtEndEnvironment{example}{\hfill\qedsymbol}
 
 
 \def\changemargin#1#2{\list{}{\rightmargin#2\leftmargin#1}\item[]}
