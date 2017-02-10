@@ -224,14 +224,26 @@ Let $a_1$ delete from graph \coreGraph{} an element $x \in N($\coreGraph$) \cup 
   Given $a_1,a_2 \in P$, where $a_1$ creates on graph $C^T$ an element $x \in N(C^T) \cup E(C^T)$ that potentially triggers a NAC $N_2$ of $a_2$. There are two possible cases to look at:
 
   \begin{enumerate}
-    \item $a_2$ is somehow related to $x$ by the concrete occurrence relation.
-    \item $a_2$ is not related to $x$ by the concrete occurrence relation.
+    \item $a_2$ is somehow related to $x$ by the existential relation.
+    \item $a_2$ is not related to $x$ by the existential relation.
   \end{enumerate}
 
-  In the first case, if $a2 \leq x$ it means that $x$ is created only after $a_2$ has been applied, therefore this configuration of produce-forbid can not be concrete as the trigger element does not occur at the moment of $a_2$ application. On the other hand, if $x \leq a_2$ it means that $x$ existed before $a_2$ was applied, which leads to two possible subcases: (1) there is another action $a_3$ that deletes $x$, which means that the $a_1$ and $a_2$ are in produce-forbid conflict, but this
-  conflict is ``annulated'' by the application of $a_3$, which must then happen before $a_2$ or (2) there is no other rule that deletes $x$, which means that rules are in
-  produce-forbid conflict.
+  First, if $a2 \leq x$ it means that $x$ is created only after $a_2$ has been applied, therefore this configuration of produce-forbid does not really exist as the trigger element does not occur before the application of $a_2$. On the other hand, if $x \leq a_2$ it means that $x$ existed before $a_2$ was applied, which leads to two possible sub cases: 
+  
+  (a) if there is no other action $a_3$ which deletes $x$, then the produce-forbid between $a_1$ and $a_2$ is \emph{concrete} and we have
+  that the $a_2 <_{pf} a_1$ or 
+  
+  (b) if there exists a third action $a_3$, with $a_1 \ne a_3 \ne a_2$, which deletes $x$. This means $a_1$ and $a_2$ are in a concrete produce-forbid conflict, but this conflict is ``annulated'' by the application of $a_3$, which must then happen before $a_2$. Notice that in this configuration, $a_3 <_{df} a_2$.
+
+  Second, if $a_2$ is not related to $x$ in the existential relation, then we have to possible cases:
+
+  (c) if there is no other action $a_3$ which deletes $x$, then we know for a fact that once $a_1$ has been applied and $x$ created there will no longer be possible to apply $a_2$. Therefore, this delete forbid is \emph{concrete}.
+
+  (d) if there is an action $a_3$ which deletes $x$ and $a_3$ is not related to $a_2$ by the existential relation. In this case we have an \emph{abstract} conflict that $a_2 <_{pf} a_1$ paired with an \emph{abstract} dependency $a_3 <_{df} a_2$.
 \end{definition}
+
+\begin{remark}[Abstract Dependencies and Conflicts] Given three different actions $a_1,a_2,a_3 \in P$, the existence of an abstract produce-forbid conflict caused by an element $x$ is conditioned to the existence of an abstract delete-forbid dependency caused by the same element $x$.
+\end{remark}
 
 \begin{definition}[Concrete Occurence Relation] The union of unconditional dependency and conflict relations, which are always concrete, and the concrete concrete conditional dependency and conflict relations.
 \end{definition}
