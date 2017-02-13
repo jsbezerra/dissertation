@@ -24,7 +24,9 @@ To a more in depth-explanation, see~\cite{Ribeiro1996, Corradini2014}
 
 Notice that the type morphisms $type_G : G \rightarrow T$ and $type_H : H \rightarrow T$ can be obtained respectively as $type_{TG} \circ t^G$ and $type_{TG} \circ t^H$.
 
-\begin{remark} Although there are different kinds of doubly-typed graph morphisms depending on whether the doubly-type graphs and the type graphs are the different, we are here only interested in the case where the doubly-typed graphs share the same double-type and type graphs. Therefore we will call \mbox{\emph{$TG^T$-doubly-typed graph morphisms}} simply by \emph{doubly-typed graph morphisms} through the rest of this work.
+\begin{remark} Although there could be different kinds of doubly-typed graph morphisms depending on whether the doubly-type graphs and the type graphs are the different. However, we are here only interested in the case where all doubly-typed graphs share the same double-type and type graphs. 
+  
+Therefore we will call \mbox{\emph{$TG^T$-doubly-typed graph morphisms}} simply by \emph{doubly-typed graph morphisms} through the rest of this work.
 
 \end{remark}
 
@@ -219,9 +221,15 @@ Let $a_1$ delete from graph \coreGraph{} an element $x \in N($\coreGraph$) \cup 
 
 \end{definition}
 
-\begin{definition}[Conditional Weak Conflict Relation\footnote{Also called Produce-Forbid Relation}] Let \doublyTypedGraphGrammarCore{} a doubly-typed graph grammar, \coreGraph{} a core graph and $P$ a set of rules with incremental, non-trivially triggered NACs only.
+\begin{definition}[Conditional Weak Conflict Relation\footnote{Also called Produce-Forbid Relation}] Given \doublyTypedGraphGrammarCore{} a strongly safe graph grammar, where $P$ is a set of rules with incremental, non-trivially triggered NACs only.
 
-  Given $a_1,a_2 \in P$, where $a_1$ creates on graph $C^T$ an element $x \in N(C^T) \cup E(C^T)$ that potentially triggers a NAC $N_2$ of $a_2$. There are two possible cases to look at:
+\diagram{
+  & & N_1 & & N_2 & &\\
+  R_1\ar[d] & K_1\ar[d]\ar[l]\ar[r] & L_1\ar[u]^{n_1}\ar[dr]_{pre_1} & & L_2\ar[u]_{n_2}\ar@{.>}@/_1.1pc/[dlll]_<<<<{h_{21}}\ar[dl]^{pre_2} & K_2\ar[l]\ar[r]\ar[d] & R_2\\
+     C^T_{|R_1D_1} & D_1\ar[rr]_{e_1}\ar[l]^{d_1} & & C^T_{|L_1L_2} & & D_2\ar[ll] &}
+\hfill
+
+  Let $a_1,a_2 \in P$, where $a_1$ causes a potential produce-forbid conflict on $a_2$ because $a_1$ creates on an element $x \in N(C^T) \cup E(C^T)$ that may trigger a NAC $N_2$ of $a_2$. There are two possible cases to look at:
 
   \begin{enumerate}
     \item $a_2$ is somehow related to $x$ by the existential relation.
@@ -242,7 +250,15 @@ Let $a_1$ delete from graph \coreGraph{} an element $x \in N($\coreGraph$) \cup 
   (d) if there is an action $a_3$ which deletes $x$ and $a_3$ is not related to $a_2$ by the existential relation. In this case we have an \emph{abstract} conflict that $a_2 <_{pf} a_1$ paired with an \emph{abstract} dependency $a_3 <_{df} a_2$.
 \end{definition}
 
-\begin{remark}[Abstract Dependencies and Conflicts] Given three different actions $a_1,a_2,a_3 \in P$, the existence of an abstract produce-forbid conflict caused by an element $x$ is conditioned to the existence of an abstract delete-forbid dependency caused by the same element $x$.
+\begin{remark}[Abstract Dependencies and Conflicts] The existence of an abstract produce-forbid conflict caused by an element $x$ is conditioned to the existence of an action which deletes $x$. 
+  
+  Given an action $a_1$ which creates $x$, an action $a_2$ which forbids $x$ and provided a configuration where $a_1$ was applied before $a_2$, we have that $a_2$ can be applied only after an action $a_3$ which deletes $x$ has been applied. 
+  
+  However, $a_3$ may also cause a new produce-forbid conflict on $a_2$, on which case $a_2$ can only be applied of there is another action $a_4$ which turns off the conflict caused by $a_3$.
+
+  In general, for each abstract produce-forbid conflict $a_2 <_{pf} a_1$ caused by an element $x$, we have that $a_2$ must be successfully applied before $a_1$ or after an action $a_{j}$ where $a_i$ deletes $x$ and $a_i \leq a_j$.
+
+  Analogously, for each abstract delete-forbid conflict $a_1 <_{df} a_2$ caused by an element $x$, we have that $a_2$ must be successfully applied after $a_1$ or before an action $a_j$ where $a_i$ creates $x$ and $a_j \leq a_i$.
 \end{remark}
 
 \begin{definition}[Concrete Occurence Relation] The union of unconditional dependency and conflict relations, which are always concrete, and the concrete concrete conditional dependency and conflict relations.
@@ -254,7 +270,15 @@ Let $a_1$ delete from graph \coreGraph{} an element $x \in N($\coreGraph$) \cup 
 \begin{definition}[Occurrence Relation]
 \end{definition}
 
-\begin{definition}[Occurrence Graph Grammars]
+\begin{definition}[Occurrence Graph Grammars] Let \doublyTypedGraphGrammarCore{} be a strongly safe graph grammar. $GG$ is an \emph{occurrence graph grammar} iff:
+
+  \begin{enumerate}
+    \item acyclic existential relation: $\forall a \in P$: $\leq_e$ is antisymmetric;
+    \item acyclic concrete occurrence relation: $\forall a \in P$: $\leq_{co}$ is antisymmetric;
+    \item \coreGraph{} is a core graph;
+    \item \tinytodo{Deterministic action output?}
+    \item there is at least one serialization of $a_1,\ldots,a_n \in P$ which respects the constraints in the abstract occurrence relation.
+  \end{enumerate}
 \end{definition}
 
 \begin{definition}[Concurrent Graphs]
@@ -279,6 +303,9 @@ Let $a_1$ delete from graph \coreGraph{} an element $x \in N($\coreGraph$) \cup 
 }
 
 \end{definition}
+
+\begin{example}[Incremental NACs]
+\end{example}
 
 \begin{definition}[Colimit construction with Incremental NACs]
 \end{definition}
