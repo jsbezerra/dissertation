@@ -30,6 +30,10 @@
 \usepackage{palatino}
 \usepackage[all,knot,arc,import,poly]{xy}
 
+\usepackage{tikz,tkz-euclide}
+\usetikzlibrary{backgrounds,calc,shapes,shapes.geometric}
+\usepackage{subfig}
+
 %For todo notes, remove in final version
 \setlength{\marginparwidth}{2cm}
 \newcommand{\tinytodo}[2][]
@@ -47,7 +51,7 @@
 \newtheorem*{remark}{Remark}
 \AtEndEnvironment{definition}{\hfill\qedsymbol}%put \null before \hfill?
 \AtEndEnvironment{assumption}{\hfill\qedsymbol}
-\AtEndEnvironment{example}{\hfill\qedsymbol}
+\AtEndEnvironment{example}{\hfill$\blacksquare$}
 
 
 \def\changemargin#1#2{\list{}{\rightmargin#2\leftmargin#1}\item[]}

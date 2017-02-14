@@ -2,17 +2,23 @@
 
 \section{Motivation}
 
-Why do we use it to generate tests?
-
-To a more in depth-explanation, see~\cite{Ribeiro1996, Corradini2014} 
-
 \section{Doubly-Typed Graph Grammars}
 
 \begin{definition}[Doubly-Typed Graph] Given a type graph $T$, a \emph{doubly-typed graph} \doublyTypedGraph{} over $T$ is a tuple \doublyTypedGraph $= \left(G^T, t^{G^T},TG^T\right)$ where $G^T$ and $TG^T$ are typed graphs over $T$ and \mbox{$t^{G^T} : G^T \rightarrow TG^T$} is a typed graph morphism in \typedGraphCategory{}. We call $TG^T$ the \emph{double-type graph} and $t^{G^T}$ the double-typing morphism.
 
 \end{definition}
 
-\begin{definition}[Doubly-Typed Graph Morphisms]
+\begin{example}[Doubly-Typed Graph Example]
+
+\begin{figure}
+  \centering
+  \input{images/process/doubly-typed-graph.tikz}
+  \caption{Doubly-Typed Graph}\label{fig:process:doubly-typed-graph}
+\end{figure}
+
+\end{example}
+
+\begin{definition}[Doubly-Typed Graph Morphism]
   Given two doubly-typed graphs $G^{TG^T}$ and $H^{TG^T}$ and a graph morphism $g^T : G^T \rightarrow H^T$, we say that $g^T$ is a \emph{$TG^T$-doubly-typed graph morphism} if the following diagram commutes:
 
 \diagram{
@@ -24,14 +30,15 @@ To a more in depth-explanation, see~\cite{Ribeiro1996, Corradini2014}
 
 Notice that the type morphisms $type_G : G \rightarrow T$ and $type_H : H \rightarrow T$ can be obtained respectively as $type_{TG} \circ t^G$ and $type_{TG} \circ t^H$.
 
+\begin{example}[Doubly-Typed Graph Morphism Example]
+\end{example}
+
 \begin{remark} Although there could be different kinds of doubly-typed graph morphisms depending on whether the doubly-type graphs and the type graphs are the different. However, we are here only interested in the case where all doubly-typed graphs share the same double-type and type graphs. 
   
 Therefore we will call \mbox{\emph{$TG^T$-doubly-typed graph morphisms}} simply by \emph{doubly-typed graph morphisms} through the rest of this work.
 
 \end{remark}
 
-\begin{definition}[Doubly-Typed Graph Grammars] A \emph{doubly-typed graph grammar} is a tuple $GG = \left(TG^T, I^{TG^T},P \right)$ where $TG^T$ is the double-type graph of the grammar, $I^{TG^T}$ is a doubly-typed graph corresponding to the \emph{initial graph} of the grammar and $P$ is a set of doubly-typed graph rules. 
-\end{definition}
 
 \begin{definition}[Doubly-Typed Graph Rule] Given a double-type graph $TG^T$, a doubly-typed rule with respect to $TG^T$ is a span of morphisms \doublyTypedRule{} in \doublyTypedGraphCategory{} iff $p$ is a rule in \typedGraphCategory{} (see Definition~\ref{def:graph-rule})\tinytodo{$p$ or $p^T$?}. Also, given a doubly-typed graph rule \doublyTypedRule{} its inverse rule is defined by \inverseDoublyTypedRule{}.
 
@@ -44,6 +51,9 @@ Therefore we will call \mbox{\emph{$TG^T$-doubly-typed graph morphisms}} simply 
     %\item $r_a = r^T$, the \emph{rule pattern} of $a$.\tinytodo{Not sure if we will need the rule pattern.}
   \end{itemize}
 \end{definition}
+
+\begin{example}[Doubly-Typed Graph Rule Example]
+\end{example}
 
 \begin{definition}[Negative Application Conditions on Doubly-Typed Graph Rules] A \emph{left} negative application condition over a doubly-typed graph rule $p^{TG^T}$ is of the form $NAC(n)$, where $n^T : L^T \rightarrow N^T$ is an arbitrary (single-)typed graph morphism. A  (doubly-typed) match $m^{TG^T} : L^{TG^T} \rightarrow G^{TG^T}$ of a rule $p^{TG^T}$ satisfies $NAC(n^T)$ on $L^{TG^T}$, written \mbox{$m \models NAC(n)$}, iff $\nexists$ $q^T : N^T \rightarrow G^T$ where $q^T$ injective and $q^T \circ n^T = m^T$.
 
@@ -60,9 +70,36 @@ Therefore we will call \mbox{\emph{$TG^T$-doubly-typed graph morphisms}} simply 
 
 \end{definition}
 
+\begin{example}[NAC Example]
+\end{example}
+
+We will also use a special type of NACs called \emph{incremental NACs}, defined in~\cite{Corradini2013} and~\cite{Corradini2014}. Incremental NACs have the property of extending the forbidden context of a match by a single edge or a single node.\tinytodo{(1) talk about the problem with switch equivalence? (2) we don't need this definition until the conditional relations, thus should it be here?} 
+
+In the general definition may occur situations where a NAC can be triggered by cumulative application of 2 or more rules that would not trigger this NAC by themselves, while with incremental NACs, if 2 or more rules are responsible for its triggering, then each rule would trigger the NAC\tinytodo{redo this entire paragraph}.
+
+\begin{definition}[Incremental NACs] Given a monomorphism \mbox{$n : L \rightarrow N$}, $NAC(n)$ is said to be incremental if for any possible pair of decompositions \mbox{$g_1 : L \rightarrow O_g;g_2 : O_g \rightarrow N$} and \mbox{$f_1 : L \rightarrow O_f;f_2 : O_f \rightarrow N$} as in the diagram below, where all morphisms are monos and $f = n = g$, there exists a mediating morphism $o_1 : O_g \rightarrow O_f$ or $o_2 : O_f \rightarrow O_g$, such that the resulting triangles commutes.
+
+
+\diagram{
+  & O_g\ar[dr]^{g_2}\ar@{.>}@/_0.5pc/[dd]|<<<<<<{o_1} &  \\
+  L\ar[ur]^{g_1}\ar[dr]_{f_1}\ar[rr]|<<<<{n}&     & N\\
+    & O_f\ar[ur]_{f_2}\ar@{.>}@/_0.5pc/[uu]|<<<<<<<<{o_2} & 
+}
+
+\end{definition}
+
+\begin{example}[Incremental NACs] 
+\end{example}
+
 \begin{remark}
   Although we could have defined NACs that are also doubly-typed graph morphisms, which would then act specifically over doubly-typed graphs, we will not use this in our work graph. Therefore, we will use this \emph{single-typed} NACs as the only NAC type in all of our \emph{doubly-typed graph grammars}.
 \end{remark}
+
+\begin{definition}[Doubly-Typed Graph Grammars] A \emph{doubly-typed graph grammar} is a tuple $GG = \left(TG^T, I^{TG^T},P \right)$ where $TG^T$ is the double-type graph of the grammar, $I^{TG^T}$ is a doubly-typed graph corresponding to the \emph{initial graph} of the grammar and $P$ is a set of doubly-typed graph rules. 
+\end{definition}
+
+\begin{example}[Doubly-Typed Graph Grammars Example]
+\end{example}
 
 \begin{definition}[Core Graph] Given a doubly-typed graph grammar \doublyTypedGraphGrammarCore{}, we have that \coreGraph{} is a \emph{core graph} iff \mbox{$\forall x \in$ \coreGraph $: \exists! y \in (I^T \uplus (\uplus_{i \in P} (R_i - K_i))$}.
 
@@ -80,10 +117,16 @@ Therefore we will call \mbox{\emph{$TG^T$-doubly-typed graph morphisms}} simply 
 
 \end{definition}
 
+\begin{example}[Core Graph Example]
+\end{example}
+
 \begin{definition}[Strongly Safe (Doubly-Typed) Graph Grammars] Given \doublyTypedGraphGrammarCore{} a doubly-typed graph grammar, $GG$ is said to be \emph{strongly safe} if its double-type graph is also a core graph.
 
-Also, each rule in a strongly safe graph grammar whose double-type is also a core graph is called an \emph{action}. An action $a$ \emph{creates} an element $e$ iff $e \in R(a) - K(a)$. Similarly, $a$ \emph{deletes} $e$ iff $e \in L(a) - K(a)$.
+Also, each rule in a strongly safe graph grammar is also called an \emph{action}. An action $a$ \emph{creates} an element $e$ iff $e \in R(a) - K(a)$. Similarly, $a$ \emph{deletes} $e$ iff $e \in L(a) - K(a)$.
 \end{definition}
+
+\begin{example}[Strongly Safe Graph Grammar]
+\end{example}
 
 \section{Relations within Strongly Safe Graph Grammars}
 
@@ -111,7 +154,7 @@ Both authors use these relations to find out whether all actions of a strongly s
 
 Here we recall these definitions, which correspond to the \emph{existential relation} and the \emph{unconditional causal dependency and conflict relations} defined in the following, and extend them to create an equivalent notion of \emph{conditional relations} that work for grammars in the DPO approach with NACs.
 
-\begin{definition}[Existential Relation] This is the \emph{causal relation} defined in \cite{Corradini1996} for the DPO approach without NACs. Given  \doublyTypedGraphGrammarCore{} a strongly safe graph grammar. Let actions $a_1, a_2 \in P, a_1 \ne a_2$ and element \mbox{$e_1 \in $ \coreGraph{}}, then:
+\begin{definition}[Existential Relation] \tinytodo{I need a better name for this relation}This is the \emph{causal relation} defined in \cite{Corradini1996} for the DPO approach without NACs. Given  \doublyTypedGraphGrammarCore{} a strongly safe graph grammar. Let actions $a_1, a_2 \in P, a_1 \ne a_2$ and element \mbox{$e_1 \in $ \coreGraph{}}, then:
 
   \begin{enumerate}
     \item If $a_1$ deletes $e_1$, then $e_1 <_e a_1$.
@@ -293,19 +336,6 @@ Let $a_1$ delete from graph \coreGraph{} an element $x \in N($\coreGraph$) \cup 
 
 \subsection{Graph Process with NACs}
 
-\begin{definition}[Incremental NACs] Given a monomorphism \mbox{$f : A \rightarrow B$}, $f$ is said to be incremental if for any possible pair of decompositions \mbox{$g_1 : A \rightarrow O_g;g_2 : O_g \rightarrow B$} and \mbox{$h_1 : A \rightarrow O_h;h_2 : O_h \rightarrow B$} as in the diagram below, where all morphisms are monos and $g = f = h$, there exists a mediating morphism $o_1 : O_g \rightarrow O_h$ or $o_2 : O_h \rightarrow O_g$, such that the resulting triangles commutes.
-
-
-\diagram{
-  & O_g\ar[dr]^{g_2}\ar@{.>}@/_0.5pc/[dd]|<<<<<<{o_1} &  \\
-  A\ar[ur]^{g_1}\ar[dr]_{h_1}\ar[rr]|<<<<{f}&     & B\\
-    & O_h\ar[ur]_{h_2}\ar@{.>}@/_0.5pc/[uu]|<<<<<<<<{o_2} & 
-}
-
-\end{definition}
-
-\begin{example}[Incremental NACs]
-\end{example}
 
 \begin{definition}[Colimit construction with Incremental NACs]
 \end{definition}

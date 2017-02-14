@@ -1,0 +1,21 @@
+\begin{tikzpicture}[->,>=stealth',semithick,show background rectangle]
+
+%% Edge Types
+\tikzstyle{arr}=[-latex, black, line width=0.5pt]
+\tikzstyle{morph}=[-latex, black, dashed, line width=0.5pt]
+
+%% Node Types
+\tikzstyle{rect}=[rectangle, draw=black, inner sep=9pt]
+\tikzstyle{circ}=[circle, draw=black, inner sep=9pt]
+\tikzstyle{trigl}=[isosceles triangle, draw, shape border rotate=90, inner sep=5pt, isosceles triangle apex angle=60, isosceles triangle stretches, text depth=1ex]
+
+
+\node[rect] at (1,0) (pro3) {};
+\node[circ] at (4,0) (pro1) {};
+\node[trigl] at (2.5,2) (pro2) {};
+
+\draw (pro2) to node[midway,left]{} (pro1);
+\draw (pro1) to node[midway,left]{} (pro3);
+\draw (pro3) to node[midway,above]{} (pro2);
+
+\end{tikzpicture}
