@@ -101,6 +101,10 @@ A \emph{negative} atomic (typed) graph constraint is of the form $NC\left(a\righ
 \begin{assumption}[Left NACs] Unless stated otherwise, we will work with graph rules that have only left $NACs$ for the rest of this thesis. This is without loss of generality once right $NACs$ can be translated to left ones as it is shown in Definition~\ref{def:shift-nac}
 \end{assumption}
 
+\begin{definition}[Trivially-Triggered NACs]Given a $NAC(n)$, where $n : L \rightarrow \hat{L}$ is a isomorphism, we call $NAC(n)$ a \emph{trivially-triggered NAC} as for each match \match{} there will always exist a $q : \hat{L} \rightarrow G$ injective such that $q \circ n = m$.
+  A trivially-triggered NAC $n : L \rightarrow \hat{L}$ is also notated $NAC(L)$. If a rule $p$ has a trivially-triggered NAC then $p$ can never be applied whatsoever, as the NAC will never be satisfied.
+\end{definition}
+
 \begin{definition}[Graph Transformation System and Graph Grammar] \tinytodo{Talk about the language of the grammar?} A typed graph transformation system is a pair $GTS = \left(TG,P\right)$ where $TG$ is the type graph of the system and $P$ is a set of typed graph rules with NACs.
 
   A typed graph grammar is a pair $GG = \left(GTS,S\right)$ where $GTS$ is a typed graph transformation system and $S$ is a typed start graph.
