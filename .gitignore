@@ -22,3 +22,6 @@
 *.out
 *.synctex.gz
 thesis.pdf
+
+images/process/*.pdf
+images/process/core_graph/*.pdf

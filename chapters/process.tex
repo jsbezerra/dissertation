@@ -2,18 +2,23 @@
 
 \section{Motivation}
 
+We are interested in a way of representing several (equivalent) possible derivations in a compact notation.
+
+  This chapter is highly inspired by the works of~\cite{Ribeiro1996} and~\cite{Corradini1996}.
+
 \section{Doubly-Typed Graph Grammars}
 
 \begin{definition}[Doubly-Typed Graph] Given a type graph $T$, a \emph{doubly-typed graph} \doublyTypedGraph{} over $T$ is a tuple \doublyTypedGraph $= \left(G^T, t^{G^T},TG^T\right)$ where $G^T$ and $TG^T$ are typed graphs over $T$ and \mbox{$t^{G^T} : G^T \rightarrow TG^T$} is a typed graph morphism in \typedGraphCategory{}. We call $TG^T$ the \emph{double-type graph} and $t^{G^T}$ the double-typing morphism.
 
 \end{definition}
 
-\begin{example}[Doubly-Typed Graph Example]
+\begin{example}[Doubly-Typed Graph Example] Figure~\ref{fig:process:doubly-typed-graph} shows a doubly-typed graph $G^{TG^T}$.
 
-\begin{figure}
+\begin{figure}[!ht]
   \centering
-  \input{images/process/doubly-typed-graph.tikz}
-  \caption{Doubly-Typed Graph}\label{fig:process:doubly-typed-graph}
+  \fbox{\includegraphics[scale=0.4]{images/process/doubly-typed-graph-example}}
+  %\input{images/process/doubly-typed-graph.tikz}
+  \caption{Doubly-Typed Graph Example}\label{fig:process:doubly-typed-graph}
 \end{figure}
 
 \end{example}
@@ -22,19 +27,25 @@
   Given two doubly-typed graphs $G^{TG^T}$ and $H^{TG^T}$ and a graph morphism $g^T : G^T \rightarrow H^T$, we say that $g^T$ is a \emph{$TG^T$-doubly-typed graph morphism} if the following diagram commutes:
 
 \diagram{
-  G\ar[rr]^{g}\ar[d]_{t^{G}}& & H\ar[d]^{t^{H}} \\
-  TG\ar[rr]^{id}\ar[dr]_{type_{TG}} & &TG\ar[dl]^{type_{TG}} \\
+  G\ar[rr]^{g}\ar[dr]_{t^{G}}& & H\ar[dl]^{t^{H}} \\
+   & TG\ar[d]^{type_{TG}} & \\
   & T &
 }
 \end{definition}
 
 Notice that the type morphisms $type_G : G \rightarrow T$ and $type_H : H \rightarrow T$ can be obtained respectively as $type_{TG} \circ t^G$ and $type_{TG} \circ t^H$.
 
-\begin{example}[Doubly-Typed Graph Morphism Example]
+\begin{example}[Doubly-Typed Graph Morphism Example] Figure~\ref{fig:process:doubly-typed-graph-morphism} shows a doubly-typed graph morphism $f : G^{TG^T} \rightarrow H^{TG^T}$.
+
+\begin{figure}[!ht]
+  \centering
+  \fbox{\includegraphics[scale=0.4]{images/process/doubly-typed-graph-morphism-example}}
+  \caption{Doubly-Typed Graph Morphism Example}\label{fig:process:doubly-typed-graph-morphism}
+\end{figure}
 \end{example}
 
-\begin{remark} There could be defined different kinds of doubly-typed graph morphisms depending on whether the doubly-type graphs and the type graphs are or not the same. However, we are here only interested in the case where all doubly-typed graphs share the same double-type and type graphs. 
-  
+\begin{remark} There could be defined different kinds of doubly-typed graph morphisms depending on whether the doubly-type graphs and the type graphs are or not the same. However, we are here only interested in the case where all doubly-typed graphs share the same double-type and type graphs.
+
 Therefore we will call \mbox{\emph{$TG^T$-doubly-typed graph morphisms}} simply by \emph{doubly-typed graph morphisms} through the rest of this work.
 
 \end{remark}
@@ -42,6 +53,12 @@ Therefore we will call \mbox{\emph{$TG^T$-doubly-typed graph morphisms}} simply 
 
 \begin{definition}[Doubly-Typed Graph Rule] Given a double-type graph $TG^T$, a doubly-typed rule with respect to $TG^T$ is a span of morphisms \doublyTypedRule{} in \doublyTypedGraphCategory{} iff $p$ is a rule in \typedGraphCategory{} (see Definition~\ref{def:graph-rule})\tinytodo{$p$ or $p^T$?}. 
   
+\diagram{
+  L\ar[dr] & K\ar[l]\ar[r]\ar[d] & R\ar[dl]\\
+    & TG\ar[d] & \\
+    & T &
+}
+
   Given a doubly-typed graph rule \doublyTypedRule{} its inverse rule is defined by \inverseDoublyTypedRule{}.
 
   Let the double-typing morphisms from $L^{TG^T}$, $K^{TG^T}$ and $R^{TG^T}$ be $t^{L^T}$, $t^{K^T}$ and $t^{R^T}$, respectively. For a rule $a = p^{TG^T}$ we call:
@@ -52,9 +69,16 @@ Therefore we will call \mbox{\emph{$TG^T$-doubly-typed graph morphisms}} simply 
     \item $post_a = t^{R^T} : R^T \rightarrow TG^T$, the \emph{post-condition} of $a$.
     %\item $r_a = r^T$, the \emph{rule pattern} of $a$.\tinytodo{Not sure if we will need the rule pattern.}
   \end{itemize}
+
 \end{definition}
 
-\begin{example}[Doubly-Typed Graph Rule Example]
+\begin{example}[Doubly-Typed Graph Rule Example]Figure~\ref{fig:process:doubly-typed-graph-rule} show a doubly-typed graph rule.
+
+\begin{figure}[!ht]
+  \centering
+  \fbox{\includegraphics[scale=0.4]{images/process/doubly-typed-graph-rule-example}}
+  \caption{Doubly-Typed Graph Rule Example}\label{fig:process:doubly-typed-graph-rule}
+\end{figure}
 \end{example}
 
 \begin{definition}[Negative Application Conditions on Doubly-Typed Graph Rules] A \emph{left} negative application condition over a doubly-typed graph rule $p^{TG^T}$ is of the form $NAC(n^T)$, where $n^T : L^T \rightarrow N^T$ is an arbitrary (single-)typed graph morphism. 
@@ -84,6 +108,12 @@ Although we could have defined NACs whose morphisms are doubly-typed graph morph
 When dealing with the general\tinytodo{classical?} definition\tinytodo{notion?} of NACs, there may occur situations where the NAC of a rule can be triggered by the cumulative effect of applying two (or more) other rules, while the same rules would not trigger this NAC without the other. This may lead to a situation where conflicts and dependencies are not stable under switch, as shown in example~\ref{ex:process:instability}.
 
 \begin{example}[Instability of Conflicts and Dependencies]\label{ex:process:instability}
+
+\begin{figure}[!ht]
+  \centering
+  \fbox{\includegraphics[scale=0.4]{images/process/instability-example}}
+  \caption{Instability of Conflicts under shift\\}\label{fig:process:instability}
+\end{figure}
 
 \end{example}
 
@@ -130,7 +160,20 @@ As we are interested in constructing a canonical representation of several possi
 
 \end{definition}
 
-\begin{example}[Core Graph Example]
+\begin{example}[Core Graph Example] Figure~\ref{fig:process:core-graph:counter-example} shows a double-type graph which is not a core graph. Notice that the elements \tinytodo{insert elements} are created by both rules \tinytodo{insert rules}, as well as \tinytodo{insert elements} are deleted by \tinytodo{insert rules}. 
+
+  Figure~\ref{fig:process:core-graph:example} shows a double-type which happens to be also a core graph\tinytodo{explain}.
+\begin{figure}[!ht]
+  \centering
+  \fbox{\includegraphics[scale=0.5]{images/process/core_graph/counter_example}}
+  \caption{Example of a doubly-typed graph that is not a core graph.}\label{fig:process:core-graph:counter-example}
+\end{figure}
+
+\begin{figure}[!ht]
+  \centering
+  \fbox{\includegraphics[scale=0.5]{images/process/core_graph/example}}
+  \caption{Example of a doubly-typed graph that is also a core graph.}\label{fig:process:core-graph:example}
+\end{figure}
 \end{example}
 
 \begin{definition}[Strongly Safe (Doubly-Typed) Graph Grammars] Given \doublyTypedGraphGrammarCore{} a doubly-typed graph grammar, $GG$ is said to be \emph{strongly safe} if its double-type graph is also a core graph.
