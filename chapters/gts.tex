@@ -69,9 +69,17 @@ A \emph{negative} atomic (typed) graph constraint is of the form $NC\left(a\righ
   Given a (typed) graph rule $p$, its inverse rule is defined by \inversegraphrule.
 \end{definition}
 
-\begin{definition}[Graph Transformation] Given a (typed) graph rule \graphrule{} and a (typed) graph $G$ with a (typed) graph morphism \match, called match, a direct (typed) graph transformation $G \xRightarrow{p,m} H$ from $G$ to a (typed) graph $H$ is a double-pushout (DPO) diagram such as:\tinytodo{Review this definition}
-  
-\tinytodo{Include fact about inverse graph transformation?}
+\begin{example}[Graph Rule Example and Notation] Figure~\ref{fig:gts:rule_format} shows an example of a graph rule which reads a node of the type $\Circle$, deletes a node of the type $\triangle$ and then creates a node of the type $\Square$ with an edge between them.
+
+This figure also show the same rule depicted in a compact notation, where the gluing graph is omitted. Sometimes through this work we will use the compact notation to make the figures smaller. Notice that the compact notation does not cause any loss as the gluing graph can be obtained as the ``intersection'' of the left and right graphs, and the morphisms $l$ and $r$ as the inclusions of $K$ in $L$ and $R$, respectively.
+\begin{figure}[!ht]
+  \centering
+  \fbox{\includegraphics[scale=0.5]{images/gts/rule_format}}
+  \caption{DPO graph rule}\label{fig:gts:rule_format}
+\end{figure}
+\end{example}
+
+\begin{definition}[Graph Transformation] Given a (typed) graph rule \graphrule{} and a (typed) graph $G$ with a (typed) graph morphism \match, called match, a direct (typed) graph transformation $G \xRightarrow{p,m} H$ from $G$ to a (typed) graph $H$ is a double-pushout (DPO) diagram such as:\tinytodo{Explain gluing conditions.}
 
 \diagram{
   L\ar[d]_{m}        & & K\ar[ll]_{l}\ar[rr]^{r}\ar[d]|{k} & & R\ar[d]^{m'}\\
@@ -79,6 +87,23 @@ A \emph{negative} atomic (typed) graph constraint is of the form $NC\left(a\righ
 }
 \end{definition}
 
+\begin{example}[Graph Transformation Examples] Figure~\ref{fig:gts:transformation} shows a transformation where the rule depicted in Figure~\ref{fig:gts:rule_format} is successfully applied over a graph instance $G_0$.
+
+  Figure~\ref{fig:gts:transformation-failed} shows the same rule being applied over a graph instance $G_1$ which does not satisfy the gluing conditions (more specifically the dangling condition), therefore the transformation can not be applied as the result would not be a valid graph.
+
+\begin{figure}[!ht]
+  \centering
+  \fbox{\includegraphics[scale=0.5]{images/gts/transformation}}
+  \caption{Graph transformation}\label{fig:gts:transformation}
+\end{figure}
+
+\begin{figure}[!ht]
+  \centering
+  \fbox{\includegraphics[scale=0.5]{images/gts/transformation-failed}}
+  \caption{Failing graph transformation due to the dangling condition}\label{fig:gts:transformation-failed}
+\end{figure}
+
+\end{example}
 \begin{definition}[Negative Application Condition] A \emph{left} negative application condition over a graph rule \graphrule{} is of the form $NAC\left(n\right)$, where \nac{} is an arbitrary \tinytodo{total?} (typed) graph morphism. A match \match{} of a rule $p$ satisfies $NAC\left(n\right)$ on $L$ (written $m \models NAC\left(n\right)$) iff $\nexists$ $q : N \rightarrow G$ with $q$ injective and $q \circ n = m$.
 
 \diagram{
