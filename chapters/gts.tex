@@ -104,7 +104,7 @@ This figure also show the same rule depicted in a compact notation, where the gl
 \end{figure}
 
 \end{example}
-\begin{definition}[Negative Application Condition] A \emph{left} negative application condition over a graph rule \graphrule{} is of the form $NAC\left(n\right)$, where \nac{} is an arbitrary \tinytodo{total?} (typed) graph morphism. A match \match{} of a rule $p$ satisfies $NAC\left(n\right)$ on $L$ (written $m \models NAC\left(n\right)$) iff $\nexists$ $q : N \rightarrow G$ with $q$ injective and $q \circ n = m$.
+\begin{definition}[Negative Application Condition] A \emph{left} negative application condition over a graph rule \graphrule{} is of the form $NAC\left(n\right)$, where \nac{} is an arbitrary \tinytodo{total?} (typed) graph morphism. A match \match{} of a rule $p$ satisfies\footnote{When a NAC is satisfied it is also said that the NAC is \emph{not triggered} and vice versa.} $NAC\left(n\right)$ on $L$, written $m \models NAC\left(n\right)$, iff $\nexists$ $q : N \rightarrow G$ with $q$ injective and $q \circ n = m$.
 
 \diagram{
   N\ar@{.>}[dr]|{|}_{q} & L\ar[d]^{m}\ar[l]_{n}\\
@@ -122,6 +122,18 @@ This figure also show the same rule depicted in a compact notation, where the gl
   Also, a comatch \comatch{} satisfies a set \mbox{$NAC_R = \{NAC\left(n_i\right)|i \in I\}$} of right $NACs$, iff $m' \models NAC\left(n_i\right)$ $\forall i \in I$.
 
 \end{definition}
+
+\begin{example}[NAC and NAC satisfiability] Figure~\ref{fig:gts:nacs:satisfied} shows a NAC that is satisfied (i.e. not triggered) over a match $m$, as there is no possible way of mapping the edge between $\Circle_1$ and $\Square_1$ in $N$ to an edge in $G_0$ such that the resulting triangle commutes. Therefore, if $G_0$ also satisfies the gluing conditions for the corresponding rule the transformation can be applied.
+
+  On the other hand, Figure~\ref{fig:gts:nacs:triggered} shows a NAC that is triggered (i.e. not satisfied) over the match $m$: all the elements in $N$ can be mapped to $G_0$ such that the resulting triangle commutes. Therefore, even if $G_0$ satisfies the gluing conditions, the transformation can never be applied, as the forbidden pattern of the NAC was found on the instance graph.
+
+\begin{figure}[!ht]
+  \centering
+  \subfloat[A satisfied NAC]{\label{fig:gts:nacs:satisfied}\fbox{\includegraphics[scale=0.55]{images/gts/satisfied_nac}}}
+  \subfloat[A triggered NAC]{\label{fig:gts:nacs:triggered}\fbox{\includegraphics[scale=0.55]{images/gts/triggered_nac}}}
+  \caption{NACs and NAC satisfiability}\label{fig:gts:nacs}
+\end{figure}
+\end{example}
 
 \begin{assumption}[Left NACs] Unless stated otherwise, we will work with graph rules that have only left $NACs$ for the rest of this thesis. This is without loss of generality once right $NACs$ can be translated to left ones as it is shown in Definition~\ref{def:shift-nac}
 \end{assumption}
