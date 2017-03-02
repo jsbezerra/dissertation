@@ -154,7 +154,7 @@ As we are interested in constructing a canonical representation of several possi
     \end{cases}
    \]\tinytodo{check whether this definition is correct/complete}
 
-  \begin{intuition} The idea is that each element in the \emph{Core Graph} has an unique origin, either being present in the initial graph or being created by a single rule. Moreover, all elements present in the initial graph or in the rules are also present in the \emph{Core Graph}.
+  \begin{intuition} The idea is that each element in the \emph{Core Graph} has a unique origin, either being present in the initial graph or being created by a single rule. Moreover, all elements present in the initial graph or in the rules are also present in the \emph{Core Graph}.
 \end{intuition}
 
 
@@ -186,7 +186,7 @@ As we are interested in constructing a canonical representation of several possi
 
 \section{Relations within Strongly Safe Graph Grammars}
 
-Given a strongly safe graph grammar, its core graph contains all elements used (created, read or deleted) during one possible execution of the grammar. Moreover, as each element has an unique origin within it, the Core Graph can be considered to contain the entire ``execution history'' of its underlying grammar. 
+Given a strongly safe graph grammar, its core graph contains all elements used (created, read or deleted) during one possible execution of the grammar. Moreover, as each element has a unique origin within it, the Core Graph can be considered to contain the entire ``execution history'' of its underlying grammar. 
 
 We are here interested in some of the properties that can be found by looking at this history. Particularly, which kind of relations exist among actions and elements, whether is possible to find sequences in which all the actions are applied, and which graphs can be considered valid (reachable) by this grammar.
 
@@ -353,7 +353,7 @@ Notice that if $a_3$ were related to $a_2$ and $a_3$ creates $x$, then $a_2$ wou
 
 \begin{description}[style=nextline]
   \item[Related element:]
-  Let $a2 \leq_e x$, which means that $x$ is created only after $a_2$ has been applied. In such configuration, the produce-forbid does not exist as the trigger element does not occur before the application of $a_2$. 
+  Let $a_2 \leq_e x$, which means that $x$ is created only after $a_2$ has been applied. In such configuration, the produce-forbid does not exist as the trigger element does not occur before the application of $a_2$. 
     
   Now let $x \leq a_2$ it means that $x$ existed before $a_2$ was applied, which leads to two possible sub cases: 
   
