@@ -32,7 +32,10 @@
 
 \usepackage{tikz,tkz-euclide}
 \usetikzlibrary{backgrounds,calc,shapes,shapes.geometric}
-\usepackage{subfig}
+%\usepackage{subfig}
+\usepackage{caption}
+\usepackage{subcaption}
+\captionsetup[subfigure]{justification=centering}
 
 \usepackage{pdfpages}
 
@@ -128,6 +131,8 @@
 \input{conf/listings.tex}
 \input{conf/figures.tex}
 
+\captionsetup[figure]{position=t}
+\captionsetup[subfigure]{position=t}
 
 \sloppy
 \begin{document}
