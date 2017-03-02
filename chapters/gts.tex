@@ -69,13 +69,24 @@ A \emph{negative} atomic (typed) graph constraint is of the form $NC\left(a\righ
   Given a (typed) graph rule $p$, its inverse rule is defined by \inversegraphrule.
 \end{definition}
 
-\begin{example}[Graph Rule Example and Notation] Figure~\ref{fig:gts:rule_format} \tinytodo{break into sub images} shows an example of a graph rule which reads a node of the type $\Circle$, deletes a node of the type $\triangle$ and then creates a node of the type $\Square$ with an edge between them.
+\begin{example}[Graph Rule Example and Notation] Figure~\ref{fig:gts:rule} shows an example of a graph rule which reads a node of the type $\Circle$, deletes a node of the type $\triangle$ and then creates a node of the type $\Square$ with an edge between them. 
+  
+Figure ~\ref{fig:gts:rule-standard} presents the rule in the standard DPO notation, while Figure~\ref{fig:gts:rule-compact} depicts the same rule in a compact notation, where the gluing graph is omitted. 
 
-This figure also show the same rule depicted in a compact notation, where the gluing graph is omitted. Sometimes through this work we will use the compact notation to make the figures smaller. Notice that the compact notation does not cause any loss as the gluing graph can be obtained as the ``intersection'' of the left and right graphs, and the morphisms $l$ and $r$ as the inclusions of $K$ in $L$ and $R$, respectively.
+Sometimes we will use the compact notation to make the figures smaller. Notice that the compact notation does not cause any loss as the gluing graph can be obtained as the ``intersection'' of the left and right graphs, and the morphisms $l$ and $r$ as the inclusions of $K$ in $L$ and $R$, respectively.
+
 \begin{figure}[!ht]
   \centering
-  \fbox{\includegraphics[scale=0.5]{images/gts/rule_format}}
-  \caption{DPO graph rule}\label{fig:gts:rule_format}
+  \begin{subfigure}[t]{.5\textwidth}
+    \centerline{\fbox{\includegraphics[scale=0.5]{images/gts/standard-dpo-rule}}}
+    \caption{Standard DPO rule notation}\label{fig:gts:rule-standard}
+  \end{subfigure}
+
+  \begin{subfigure}[t]{.5\textwidth}
+    \centerline{\fbox{\includegraphics[scale=0.5]{images/gts/compact-dpo-rule}}}
+    \caption{Compact DPO rule notation}\label{fig:gts:rule-compact}
+  \end{subfigure}
+  \caption{DPO graph rule}\label{fig:gts:rule}
 \end{figure}
 \end{example}
 
@@ -87,7 +98,7 @@ This figure also show the same rule depicted in a compact notation, where the gl
 }
 \end{definition}
 
-\begin{example}[Graph Transformation Examples] Figure~\ref{fig:gts:transformation-success} shows a transformation where the rule depicted in Figure~\ref{fig:gts:rule_format} is successfully applied over a graph instance $G_0$.
+\begin{example}[Graph Transformation Examples] Figure~\ref{fig:gts:transformation-success} shows a transformation where the rule depicted in Figure~\ref{fig:gts:rule} is successfully applied over a graph instance $G_0$.
 
   Figure~\ref{fig:gts:transformation-fail} shows the same rule being applied over a graph instance $G_1$ which does not satisfy the gluing conditions (more specifically the dangling condition), therefore the transformation can not be applied as the result would not be a valid graph.
 
@@ -139,22 +150,22 @@ This figure also show the same rule depicted in a compact notation, where the gl
     \centerline{\fbox{\includegraphics[scale=0.5]{images/gts/triggered_nac}}}
     \caption{A triggered NAC}\label{fig:gts:nacs:triggered}
   \end{subfigure}
+  \begin{subfigure}[t]{.5\textwidth}
+    \centerline{\fbox{\includegraphics[scale=0.5]{images/gts/trivially_triggered_nac}}}
+    \caption{A trivially-triggered NAC}\label{fig:gts:nacs:trivial}
+  \end{subfigure}
   \caption{NACs and NAC satisfiability}\label{fig:gts:nacs}
 \end{figure}
-
-%\begin{figure}[!ht]
-%  \centering
-%  \subfloat[A satisfied NAC]{\label{fig:gts:nacs:satisfied}\fbox{\includegraphics[scale=0.5]{images/gts/satisfied_nac}}}\quad
-%  \subfloat[A triggered NAC]{\label{fig:gts:nacs:triggered}\fbox{\includegraphics[scale=0.5]{images/gts/triggered_nac}}}
-%  \caption{NACs and NAC satisfiability}\label{fig:gts:nacs}
-%\end{figure}
 \end{example}
 
-\begin{assumption}[Left NACs] Unless stated otherwise, we will work with graph rules that have only left $NACs$ for the rest of this thesis. This is without loss of generality once right $NACs$ can be translated to left ones as it is shown in Definition~\ref{def:shift-nac}
+\begin{assumption}[Left NACs] Unless stated otherwise, we will work with graph rules that have only left $NACs$ for the rest of this thesis. This is without loss of generality once right $NACs$ can be translated to left ones as it is shown in Definition~\ref{def:shift-nac}.
 \end{assumption}
 
 \begin{definition}[Trivially-Triggered NACs]Given a $NAC(n)$, where $n : L \rightarrow \hat{L}$ is a isomorphism, we call $NAC(n)$ a \emph{trivially-triggered NAC} as for each match \match{} there will always exist a $q : \hat{L} \rightarrow G$ injective such that $q \circ n = m$.
+
   A trivially-triggered NAC $n : L \rightarrow \hat{L}$ is also notated $NAC(L)$. If a rule $p$ has a trivially-triggered NAC then $p$ can never be applied whatsoever, as the NAC will never be satisfied.
+  
+  Figure~\ref{fig:gts:nacs:trivial} shows an example of a trivially-triggered NAC.
 \end{definition}
 
 \begin{definition}[Graph Transformation System and Graph Grammar] \tinytodo{Talk about the language of the grammar?} A typed graph transformation system is a pair $GTS = \left(TG,P\right)$ where $TG$ is the type graph of the system and $P$ is a set of typed graph rules with NACs.
