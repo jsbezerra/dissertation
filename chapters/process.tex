@@ -122,7 +122,7 @@ As we are interested in constructing a canonical representation of several possi
 \emph{Incremental NACs}, originally defined in~\cite{Corradini2013} and~\cite{Corradini2014}, have the property of extending the forbidden context of a match by a single edge or a single node. This can be regarded as each NAC forbidding only one element at a time, thus there is no possible way to trigger a NAC by the cumulative effect of more than one rule\footnote{Notice that two different rules can still trigger two different incremental NACs}.\tinytodo{we don't need this definition until the conditional relations, thus should it be here?} 
 
 
-\begin{definition}[Incremental NACs] Given a monomorphism \mbox{$n : L \rightarrow N$}, $NAC(n)$ is said to be incremental if for any possible pair of decompositions \mbox{$g_1 : L \rightarrow O_g;g_2 : O_g \rightarrow N$} and \mbox{$f_1 : L \rightarrow O_f;f_2 : O_f \rightarrow N$} as in the diagram below, where all morphisms are monos and $f = n = g$, there exists a mediating morphism $o_1 : O_g \rightarrow O_f$ or $o_2 : O_f \rightarrow O_g$, such that the resulting triangles
+\begin{definition}[Incremental NACs] Given a monomorphism \mbox{$n : L \rightarrow N$}, $NAC(n)$ is said to be incremental if for any possible pair of decompositions \mbox{$g_1 : L \rightarrow O_g;g_2 : O_g \rightarrow N$} and \mbox{$f_1 : L \rightarrow O_f;f_2 : O_f \rightarrow N$} as in the diagram below, where all morphisms are monos and \mbox{$f_1;f_2 = n = g_1;g_2$}, there exists a mediating morphism $o_1 : O_g \rightarrow O_f$ or $o_2 : O_f \rightarrow O_g$, such that the resulting triangles
   commutes\tinytodo{explain that inc. nacs are sufficient for most applications?}.
 
 \diagram{
@@ -141,9 +141,6 @@ As we are interested in constructing a canonical representation of several possi
 \begin{definition}[Doubly-Typed Graph Grammars] A \emph{doubly-typed graph grammar} is a tuple $GG = \left(TG^T, I^{TG^T},P \right)$ where $TG^T$ is the double-type graph of the grammar, $I^{TG^T}$ is a doubly-typed graph corresponding to the \emph{initial graph} of the grammar and $P$ is a set of doubly-typed graph rules. 
 \end{definition}
 
-\begin{example}[Doubly-Typed Graph Grammars Example]
-\end{example}
-
 \begin{definition}[Core Graph] Given a doubly-typed graph grammar \doublyTypedGraphGrammarCore{}, we have that \coreGraph{} is a \emph{core graph} iff \mbox{$\forall x \in$ \coreGraph $: \exists! y \in (I^T \uplus (\uplus_{i \in P} (R_i - K_i))$}.
 
 
@@ -160,22 +157,25 @@ As we are interested in constructing a canonical representation of several possi
 
 \end{definition}
 
-\begin{example}[Core Graph Example] Figure~\ref{fig:process:core-graph:counter-example} shows a double-type graph which is not a core graph. Notice that the elements \tinytodo{insert elements} are created by both rules \tinytodo{insert rules}, as well as \tinytodo{insert elements} are deleted by \tinytodo{insert rules}.
+\begin{example}[Doubly-Typed Graph Grammar and Core Graph Example] \mbox{Figure~\ref{fig:process:core-graph:counter-example}} shows a doubly-typed graph grammar, whose double-type is not a core graph. Notice that $\Square_2$ is created by both rules $p_1$ and $p_2$, as well as $\Circle_1$ is deleted by both $p_2$ and $p_3$.
 
-  Figure~\ref{fig:process:core-graph:example} shows a double-type which happens to be also a core graph\tinytodo{explain}.
+  On the other hand, Figure~\ref{fig:process:core-graph:example} shows a doubly-typed graph grammar whose double-type is also a core graph. Notice how all elements are either created only once or, if not created by any rule, are present in the initial graph: $\Square_2$ and $\curvearrowleft_1$ are created by $p_1$, $\curvearrowleft_3$ by $p_2$, $\Circle_3$ and $\curvearrowleft_2$ by $p_3$ and $\Circle_1$ is present on the initial graph. Also, the deleted elements are deleted only once: $\Circle_1$ by $p_3$.
 
   Notice that, although the $TG$ graphs in both grammars are isomorphic, one of them is considered to be a core graph and the other not because of their underlying grammars (initial graphs and rules).
 \begin{figure}[!ht]
   \centering
-  \fbox{\includegraphics[scale=0.5]{images/process/core_graph/counter_example}}
-  \caption{A grammar with a double-type graph that is not a core graph.}\label{fig:process:core-graph:counter-example}
+  \begin{subfigure}[t]{.5\textwidth}
+    \centerline{\fbox{\includegraphics[scale=0.5]{images/process/core_graph/counter_example}}}
+    \caption{A grammar with a double-type graph that is not a core graph.}\label{fig:process:core-graph:counter-example}
+  \end{subfigure}
+  \begin{subfigure}[t]{.5\textwidth}
+    \centerline{\fbox{\includegraphics[scale=0.5]{images/process/core_graph/example}}}
+    \caption{A grammar with a double-type graph that is also a core graph.}\label{fig:process:core-graph:example}
+  \end{subfigure}
+
+  \caption{Doubly-typed graph grammars}\label{fig:process:doubly-typed-grammars}
 \end{figure}
 
-\begin{figure}[!ht]
-  \centering
-  \fbox{\includegraphics[scale=0.5]{images/process/core_graph/example}}
-  \caption{A grammar with a double-type graph that is also a core graph.}\label{fig:process:core-graph:example}
-\end{figure}
 \end{example}
 
 \begin{definition}[Strongly Safe (Doubly-Typed) Graph Grammars] Given \doublyTypedGraphGrammarCore{} a doubly-typed graph grammar, $GG$ is said to be \emph{strongly safe} if its double-type graph is also a core graph.
