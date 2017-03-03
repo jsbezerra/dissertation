@@ -19,7 +19,7 @@
 
 \begin{example}[Graph Morphisms]Figure~\ref{fig:gts:compact-graph-morphism} shows three morphisms $f : G_0 \rightarrow G_1$, $g : G_0 \rightarrow G_2$ and $h : G_0 \rightarrow G_3$, which are a monomorphism, an epimorphism and a isomorphism, respectively.
 
-  The morphism $f$ maps node $\Circle_1$ to $\Circle_a$, node $\Circle_2$ to $\Circle_b$ and edge $1$ to $q$, morphism $g$ maps both nodes $1$ and $2$ to $c$ and edge $1$ to $r$, and morphism $h$ maps node $1$ to $d$, node $2$ to $e$ and edge $1$ to $s$.
+  The morphism $f$ maps node $\Circle_1$ to $\Circle_a$, node $\Circle_2$ to $\Circle_b$ and edge $\curvearrowleft_1$ to $\curvearrowleft_q$; $g$ maps both nodes $\Circle_1$ and $\Circle_2$ to $\Circle_c$ and edge $\curvearrowleft_1$ to $\curvearrowleft_r$; and $h$ maps node $\Circle_1$ to $\Circle_d$, node $\Circle_2$ to $\Circle_e$ and edge $\curvearrowleft_1$ to $\curvearrowleft_s$.
 
   Figure~\ref{fig:gts:expanded-graph-morphism} shows the morphism $f$ in an expanded (explicit) notation. Both notations will be used through this work according to which one will be the better to clarify the meaning at the moment.
 \begin{figure}[!ht]
@@ -47,6 +47,24 @@
 }
   \tinytodo{Talk about he category of graphs typed over T}
 \end{definition}
+
+\begin{example}[Typed Graph and Typed Graph Morphism Example] Figure~\ref{fig:gts:typed-graphs} shows a type graph $T$, and four graphs $G_0, G_1, G_2, G_3$ where only $G_0$ and $G_1$ are valid \emph{T-typed} graphs. 
+  
+  Notice that $G_2$ can not be a \emph{T-typed} graph because type graph does not have a node of the type $\lozenge$, neither an edge type with source and target in the $\Square$ type. Similarly, $G_3$ is not a valid \emph{T-typed} graph because, although there is an edge type between a $\triangle$ and a $\Square$ types, the source must of this type of edge must be a $\Square$ and the target a $\triangle$.
+
+  Figure~\ref{fig:gts:typed-graph-morphism} shows a typed graph morphism $f : G_0^T \rightarrow G_1^T$, where $f$ maps node $\Circle_a$ to $\Circle_1$, $\Square_b$ to $\Square_1$ and edge $\curvearrowleft_e$ to $\curvearrowleft_2$.
+\begin{figure}[!ht]
+  \centering
+  \fbox{\includegraphics[scale=0.65]{images/gts/typed-graphs}}
+  \caption{\emph{T-typed} valid and invalid graphs}\label{fig:gts:typed-graphs}
+\end{figure}
+
+\begin{figure}[!ht]
+  \centering
+  \fbox{\includegraphics[scale=0.6]{images/gts/typed-graph-morphism}}
+  \caption{A typed graph morphism}\label{fig:gts:typed-graph-morphism}
+\end{figure}
+\end{example}
 
 \begin{definition}[Positive Atomic Constraint] A \emph{positive} atomic (typed) graph constraint is of the form $PC\left(a\right)$, where $a : P \rightarrow C$ is a (typed) graph morphism. A (typed) graph $G$ satisfies $PC\left(a\right)$ if for every injective (typed) graph morphism $p : P \rightarrow G$ there is at least one injective (typed) graph morphism $q : P \rightarrow C$ such that $p = q \circ a$.
 
@@ -85,6 +103,9 @@ A \emph{negative} atomic (typed) graph constraint is of the form $NC\left(a\righ
     \item $c = \lor_{i \in I}c_i$  and $\exists i \in I$ such that $G \models c_i$
   \end{itemize}
 \end{definition}
+
+\begin{example}[Constraints Example]
+\end{example}
 
 \begin{definition}[Graph Rule]\label{def:graph-rule} A (typed) graph rule\footnote{Also called graph transformation rule or graph production.} \graphrule{} is a span of injective (typed) graph morphisms \lefthand{} and \righthand{}  where the (typed) graphs $L$, $K$ and $R$ are called the left-hand side, gluing graph and right-hand side, respectively.
 
@@ -167,7 +188,7 @@ Sometimes we will use the compact notation to make the figures smaller. Notice t
   \begin{subfigure}[t]{.5\textwidth}
     \centerline{\fbox{\includegraphics[scale=0.55]{images/gts/satisfied_nac}}}
     \caption{A satisfied NAC}\label{fig:gts:nacs:satisfied}
-  \end{subfigure}
+  \end{subfigure}%
   \begin{subfigure}[t]{.5\textwidth}
     \centerline{\fbox{\includegraphics[scale=0.55]{images/gts/triggered_nac}}}
     \caption{A triggered NAC}\label{fig:gts:nacs:triggered}
@@ -185,9 +206,7 @@ Sometimes we will use the compact notation to make the figures smaller. Notice t
 
 \begin{definition}[Trivially-Triggered NACs]Given a $NAC(n)$, where $n : L \rightarrow \hat{L}$ is a isomorphism, we call $NAC(n)$ a \emph{trivially-triggered NAC} as for each match \match{} there will always exist a $q : \hat{L} \rightarrow G$ injective such that $q \circ n = m$.
 
-  A trivially-triggered NAC $n : L \rightarrow \hat{L}$ is also notated $NAC(L)$. If a rule $p$ has a trivially-triggered NAC then $p$ can never be applied whatsoever, as the NAC will never be satisfied.
-  
-  Figure~\ref{fig:gts:nacs:trivial} shows an example of a trivially-triggered NAC.
+  A trivially-triggered NAC $n : L \rightarrow \hat{L}$ is also notated $NAC(L)$. If a rule $p$ has a trivially-triggered NAC then $p$ can never be applied whatsoever, as the NAC will never be satisfied. An example of a trivially-triggered NAC is shown on Figure~\ref{fig:gts:nacs:trivial}.
 \end{definition}
 
 \begin{definition}[Graph Transformation System and Graph Grammar] \tinytodo{Talk about the language of the grammar?} A typed graph transformation system is a pair $GTS = \left(TG,P\right)$ where $TG$ is the type graph of the system and $P$ is a set of typed graph rules with NACs.
