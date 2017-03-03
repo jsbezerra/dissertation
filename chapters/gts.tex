@@ -6,12 +6,34 @@
 
 \end{definition}
 
-\begin{example}[Graph]
-  \tinytodo{Is it necessary?}
+\begin{example}[Graph] Figure~\ref{fig:gts:graph} shows a simple graph $G$ with $V = \{1,2,3,4\}$, $E = \{1,2\}$, $s =\{(1,1),(2,3)\}$ and $t = \{(1,2),(2,3)\}$.
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[scale=0.8]{images/gts/graph}
+  \caption{A graph example}\label{fig:gts:graph}
+\end{figure}
 \end{example}
 
-\begin{definition}[Graph Morphism] Given two graphs $G_1,G_2$ with $G_i = \left(V_i, E_i, s_i, t_i\right)$ for $i$ in $[1,2]$, a graph morphism $f : G_1 \rightarrow G_2$ between them is a pair $f = \left(f_V,f_E\right)$ where $f_V : V_1 \rightarrow V_2$ and $f_E : E_1 \rightarrow E_2$ are functions that preserve the source and target functions, i.e. $f_V \circ s_1 = s_2 \circ f_E$ and $f_V \circ t_1 = t_2 \circ f_E$. \tinytodo{Talk about injective / surjective / isomorphic morphisms?} \tinytodo{Talk about morphisms composition?}
+\begin{definition}[Graph Morphism] Given two graphs $G_1,G_2$ with $G_i = \left(V_i, E_i, s_i, t_i\right)$ for $i$ in $[1,2]$, a graph morphism $f : G_1 \rightarrow G_2$ between them is a pair $f = \left(f_V,f_E\right)$ where $f_V : V_1 \rightarrow V_2$ and $f_E : E_1 \rightarrow E_2$ are total functions that preserve the source and target functions, i.e. $f_V \circ s_1 = s_2 \circ f_E$ and $f_V \circ t_1 = t_2 \circ f_E$. \tinytodo{Talk about injective / surjective / isomorphic morphisms?} \tinytodo{Talk about morphisms composition?}
 \end{definition}
+
+\begin{example}[Graph Morphisms]Figure~\ref{fig:gts:compact-graph-morphism} shows three morphisms $f : G_0 \rightarrow G_1$, $g : G_0 \rightarrow G_2$ and $h : G_0 \rightarrow G_3$, which are a monomorphism, an epimorphism and a isomorphism, respectively.
+
+  The morphism $f$ maps node $\Circle_1$ to $\Circle_a$, node $\Circle_2$ to $\Circle_b$ and edge $1$ to $q$, morphism $g$ maps both nodes $1$ and $2$ to $c$ and edge $1$ to $r$, and morphism $h$ maps node $1$ to $d$, node $2$ to $e$ and edge $1$ to $s$.
+
+  Figure~\ref{fig:gts:expanded-graph-morphism} shows the morphism $f$ in an expanded (explicit) notation. Both notations will be used through this work according to which one will be the better to clarify the meaning at the moment.
+\begin{figure}[!ht]
+  \centering
+  \fbox{\includegraphics[scale=0.8]{images/gts/compact-graph-morphism}}
+  \caption{A graph morphism example}\label{fig:gts:compact-graph-morphism}
+\end{figure}
+
+\begin{figure}[!ht]
+  \centering
+  \fbox{\includegraphics[scale=0.8]{images/gts/expanded-graph-morphism}}
+  \caption{An expanded graph morphism example}\label{fig:gts:expanded-graph-morphism}
+\end{figure}
+\end{example}
 
 \begin{definition}[Typed Graph and Typed Graph Morphism] A type graph is a distinguished graph $TG = \left(V_{TG},E_{TG},s_{TG},t_{TG}\right)$ where $V_{TG}$ and $E_{TG}$ are called the node and edge type alphabets, respectively.
 
@@ -69,7 +91,7 @@ A \emph{negative} atomic (typed) graph constraint is of the form $NC\left(a\righ
   Given a (typed) graph rule $p$, its inverse rule is defined by \inversegraphrule.
 \end{definition}
 
-\begin{example}[Graph Rule Example and Notation] Figure~\ref{fig:gts:rule} shows an example of a graph rule which reads a node of the type $\Circle$, deletes a node of the type $\triangle$ and then creates a node of the type $\Square$ with an edge between them. 
+\begin{example}[Graph Rule Example and Notation] Figure~\ref{fig:gts:rule} shows an example of a graph rule which reads a node of the type $\Circle$, deletes a node of the type $\triangle$ and then creates a node of the type $\Square$ with an edge between the $\Circle$ and the \Square. 
   
 Figure ~\ref{fig:gts:rule-standard} presents the rule in the standard DPO notation, while Figure~\ref{fig:gts:rule-compact} depicts the same rule in a compact notation, where the gluing graph is omitted. 
 
@@ -105,12 +127,12 @@ Sometimes we will use the compact notation to make the figures smaller. Notice t
 \begin{figure}[!ht]
   \centering
   \begin{subfigure}[t]{.5\textwidth}
-    \centerline{\fbox{\includegraphics[scale=0.5]{images/gts/transformation}}}
+    \centerline{\fbox{\includegraphics[scale=0.8]{images/gts/transformation}}}
     \caption{Successfully applied graph transformation}\label{fig:gts:transformation-success}
   \end{subfigure}
 
   \begin{subfigure}[t]{.5\textwidth}
-    \centerline{\fbox{\includegraphics[scale=0.5]{images/gts/transformation-failed}}}
+    \centerline{\fbox{\includegraphics[scale=0.8]{images/gts/transformation-failed}}}
     \caption{Failing graph transformation due to the dangling condition}\label{fig:gts:transformation-fail}
   \end{subfigure}
   \caption{Graph transformation}\label{fig:gts:transformation}
@@ -143,15 +165,15 @@ Sometimes we will use the compact notation to make the figures smaller. Notice t
 \begin{figure}[!ht]
   \centering
   \begin{subfigure}[t]{.5\textwidth}
-    \centerline{\fbox{\includegraphics[scale=0.5]{images/gts/satisfied_nac}}}
+    \centerline{\fbox{\includegraphics[scale=0.55]{images/gts/satisfied_nac}}}
     \caption{A satisfied NAC}\label{fig:gts:nacs:satisfied}
-  \end{subfigure}%
+  \end{subfigure}
   \begin{subfigure}[t]{.5\textwidth}
-    \centerline{\fbox{\includegraphics[scale=0.5]{images/gts/triggered_nac}}}
+    \centerline{\fbox{\includegraphics[scale=0.55]{images/gts/triggered_nac}}}
     \caption{A triggered NAC}\label{fig:gts:nacs:triggered}
   \end{subfigure}
   \begin{subfigure}[t]{.5\textwidth}
-    \centerline{\fbox{\includegraphics[scale=0.5]{images/gts/trivially_triggered_nac}}}
+    \centerline{\fbox{\includegraphics[scale=0.55]{images/gts/trivially_triggered_nac}}}
     \caption{A trivially-triggered NAC}\label{fig:gts:nacs:trivial}
   \end{subfigure}
   \caption{NACs and NAC satisfiability}\label{fig:gts:nacs}
