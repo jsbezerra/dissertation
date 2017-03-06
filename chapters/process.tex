@@ -226,6 +226,14 @@ Given a strongly safe graph grammar, its core graph contains all elements used (
 
 We are here interested in some of the properties that can be found by looking at this history. Particularly, which kind of relations exist among actions and elements, whether is possible to find sequences in which all the actions are applied, and which graphs can be considered valid (reachable) by this grammar.
 
+In~\cite{Ribeiro1996}, causal, conflict and occurrence relations for strongly safe graph grammars were defined. There, the graph transformation approach used was the \emph{Single Pushout} (SPO) without NACs. 
+
+\cite{Corradini1996} also defined a different notion of causal relation, equivalent to the occurrence relation in the previous work, with respect to the DPO approach without NACs.
+
+Both authors use these relations to find out whether all actions of a strongly safe graph grammar are applicable and prove some properties about it\tinytodo{which properties?}. However, this relations alone are no sufficient to our purpose when the actions may have NACs, which are nowadays essential for modelling complex systems~\cite{Corradini2014}\tinytodo{Redo this paragraph, explain better our needs}.
+
+Here we recall these definitions, which correspond to the \emph{existential relation} and the \emph{unconditional causal dependency and conflict relations} defined in the following, and extend them to create an equivalent notion of \emph{conditional relations} that work for grammars in the DPO approach with NACs.
+
 \begin{remark}[Different Graph Transformation Interpretation] When dealing with actions, we will use a slightly different interpretation for the graph transformations:
   
 First, actions are always applied over the core graph: the match of an action is equal to its pre-condition $pre_a : L \rightarrow C^T$, as well as the comatch is equal to its post-condition $post_a : R \rightarrow C^T$. 
@@ -236,14 +244,6 @@ First, actions are always applied over the core graph: the match of an action is
 
   The ``restricted to the image'' search is meant to avoid the triggering of NACs by elements that are present in the core graph, therefore present in the match/comatch, but that do not exist when looking only at the actions interacting at the moment. This point will be returned later on when dealing with negative application conditions\tinytodo{Do not forget to explain this in the proper session}.
 \end{remark}
-
-In~\cite{Ribeiro1996}, causal, conflict and occurrence relations for strongly safe graph grammars were defined. There, the graph transformation approach used was the \emph{Single Pushout} (SPO) without NACs. 
-
-\cite{Corradini1996} also defined a different notion of causal relation, equivalent to the occurrence relation in the previous work, with respect to the DPO approach without NACs.
-
-Both authors use these relations to find out whether all actions of a strongly safe graph grammar are applicable and prove some properties about it\tinytodo{which properties?}. However, this relations alone are no sufficient to our purpose when the actions may have NACs, which are nowadays essential for modelling complex systems~\cite{Corradini2014}\tinytodo{Redo this paragraph, explain better our needs}.
-
-Here we recall these definitions, which correspond to the \emph{existential relation} and the \emph{unconditional causal dependency and conflict relations} defined in the following, and extend them to create an equivalent notion of \emph{conditional relations} that work for grammars in the DPO approach with NACs.
 
 \begin{definition}[Existential Relation] \tinytodo{I need a better name for this relation}This is the \emph{causal relation} defined in \cite{Corradini1996} for the DPO approach without NACs. Given  \doublyTypedGraphGrammarCore{} a strongly safe graph grammar. Let actions \mbox{$a_1, a_2 \in P, a_1 \ne a_2$} and element \mbox{$e_1 \in $ \coreGraph{}}, then:
 
@@ -348,6 +348,39 @@ Regarding both unconditional and conditional weak conflict relations, their defi
 
   \end{enumerate}
 \end{definition}
+
+\begin{example}[Unconditional Relations]
+\begin{figure}[!ht]
+  \centering
+  \begin{subfigure}[t]{.5\textwidth}
+    \centerline{\fbox{\includegraphics[scale=0.45]{images/process/unconditional-relation/core-graph}}}
+    \caption{Core and initial graphs}\label{fig:process:unconditional-relation:core-graph}
+  \end{subfigure}
+
+  \begin{subfigure}[t]{.5\textwidth}
+    \centerline{\fbox{\includegraphics[scale=0.45]{images/process/unconditional-relation/a1}}}
+    \caption{Action $a_1$}\label{fig:process:unconditional-relation:a1}
+  \end{subfigure}%
+  \begin{subfigure}[t]{.5\textwidth}
+    \centerline{\fbox{\includegraphics[scale=0.45]{images/process/unconditional-relation/a2}}}
+    \caption{Action $a_2$}\label{fig:process:unconditional-relation:a2}
+  \end{subfigure}
+
+  \begin{subfigure}[t]{.5\textwidth}
+    \centerline{\fbox{\includegraphics[scale=0.45]{images/process/unconditional-relation/a3}}}
+    \caption{Action $a_3$}\label{fig:process:unconditional-relation:a3}
+  \end{subfigure}%
+  \begin{subfigure}[t]{.5\textwidth}
+    \centerline{\fbox{\includegraphics[scale=0.45]{images/process/unconditional-relation/a4}}}
+    \caption{Action $a_4$}\label{fig:process:unconditional-relation:a4}
+  \end{subfigure}
+%  \begin{subfigure}[t]{.5\textwidth}
+%    \centerline{\fbox{\includegraphics[scale=0.6]{images/process/existential-relation/example-nacs}}}
+%    \caption{A strongly safe grammar with NACs}\label{fig:process:existential-relation:example-nacs}
+%  \end{subfigure}
+  \caption{Unconditional Relation}\label{fig:process:unconditional-relation}
+\end{figure}
+\end{example}
 
 It is important to recall that relationships extracted from strongly safe grammars whose actions do not have NACs are always concrete, in the sense that if an action is dependent on (conflicting with) another one, it happens because the first one creates (resp. deletes) at least one of the concrete elements necessary for the second to be applied.
 
