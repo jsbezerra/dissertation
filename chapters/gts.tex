@@ -160,7 +160,7 @@ Sometimes we will use the compact notation to make the figures smaller. Notice t
 \end{figure}
 
 \end{example}
-\begin{definition}[Negative Application Condition] A \emph{left} negative application condition over a graph rule \graphrule{} is of the form $NAC\left(n\right)$, where \nac{} is an arbitrary \tinytodo{total?} (typed) graph morphism. A match \match{} of a rule $p$ satisfies\footnote{When a NAC is satisfied it is also said that the NAC is \emph{not triggered} and vice versa.} $NAC\left(n\right)$ on $L$, written $m \models NAC\left(n\right)$, iff $\nexists$ $q : N \rightarrow G$ with $q$ injective and $q \circ n = m$.
+\begin{definition}[Negative Application Condition] A \emph{left} negative application condition over a graph rule \graphrule{} is of the form $NAC\left(n\right)$, where \nac{} is an arbitrary (typed) graph morphism. A match \match{} of a rule $p$ satisfies\footnote{When a NAC is satisfied it is also said that the NAC is \emph{not triggered} and vice versa.} $NAC\left(n\right)$ on $L$, written $m \models NAC\left(n\right)$, iff $\nexists$ $q : N \rightarrow G$ with $q$ injective and $q \circ n = m$.
 
 \diagram{
   N\ar@{.>}[dr]|{|}_{q} & L\ar[d]^{m}\ar[l]_{n}\\
@@ -209,7 +209,7 @@ Sometimes we will use the compact notation to make the figures smaller. Notice t
   A trivially-triggered NAC $n : L \rightarrow \hat{L}$ is also notated $NAC(L)$. If a rule $p$ has a trivially-triggered NAC then $p$ can never be applied whatsoever, as the NAC will never be satisfied. An example of a trivially-triggered NAC is shown on Figure~\ref{fig:gts:nacs:trivial}.
 \end{definition}
 
-\begin{definition}[Graph Transformation System and Graph Grammar] \tinytodo{Talk about the language of the grammar?} A typed graph transformation system is a pair $GTS = \left(TG,P\right)$ where $TG$ is the type graph of the system and $P$ is a set of typed graph rules with NACs.
+\begin{definition}[Graph Transformation System and Graph Grammar] A typed graph transformation system is a pair $GTS = \left(TG,P\right)$ where $TG$ is the type graph of the system and $P$ is a set of typed graph rules with NACs.
 
   A typed graph grammar is a pair $GG = \left(GTS,S\right)$ where $GTS$ is a typed graph transformation system and $S$ is a typed start graph.
 \end{definition}
@@ -240,7 +240,7 @@ In this section, we show both what it means for two graph rules (graph transform
 Intuitively, each dependency case can be regarded as follows:
 
 \begin{enumerate}
-  \item a \emph{deliver-delete} dependency: $p_2$ deletes (from graph $E$) at least one element that was created or preserved by \tinytodo{preserved?}$p_1$.
+  \item a \emph{deliver-delete} dependency: $p_2$ deletes (from graph $E$) at least one element that was created or preserved by $p_1$.
   \item a \emph{forbid-produce} dependency: $p_2$ creates on $H_2$ at least one element that would trigger the NAC $N_1^{-1}$.
   \item a \emph{produce-use} dependency: $p_1$ creates (on graph $E$) at least one element needed for $p_2$ to be applied which did not exist on $H_1$.
   \item a \emph{delete-forbid} dependency: $p_1$ deletes (from graph $H_1$) at least one element that would trigger the NAC $N_2$, thus allowing the application of $p_2$ on $E$.

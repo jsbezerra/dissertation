@@ -8,16 +8,17 @@ We are interested in a way of representing several (equivalent) possible derivat
 
 \section{Doubly-Typed Graph Grammars}
 
-\begin{definition}[Doubly-Typed Graph] Given a type graph $T$, a \emph{doubly-typed graph} \doublyTypedGraph{} over $T$ is a tuple \doublyTypedGraph $= \left(G^T, t^{G^T},TG^T\right)$ where $G^T$ and $TG^T$ are typed graphs over $T$ and \mbox{$t^{G^T} : G^T \rightarrow TG^T$} is a typed graph morphism in \typedGraphCategory{}. We call $TG^T$ the \emph{double-type graph} and $t^{G^T}$ the double-typing morphism.
-
+\begin{definition}[Doubly-Typed Graph] Given a type graph $T$, a \emph{doubly-typed graph} \doublyTypedGraph{} over $T$ is a tuple \doublyTypedGraph $= \left(G^T,TG^T, t^{G^T} : G^T \rightarrow TG^T\right)$ where $G^T$ and $TG^T$ are typed graphs over $T$ and \mbox{$t^{G^T} : G^T \rightarrow TG^T$} is a typed graph morphism in \typedGraphCategory{}. We call $TG^T$ the \emph{double-type graph} and $t^{G^T}$ the double-typing morphism.
 \end{definition}
+
+\begin{remark}[Typing morphism] In this work, we will consider only doubly-typed graphs whose typing morphism $type_{TG} : TG \rightarrow T$ is an epimorphism.\tinytodo{explain why?} 
+\end{remark}
 
 \begin{example}[Doubly-Typed Graph Example] Figure~\ref{fig:process:doubly-typed-graph} shows a doubly-typed graph $G^{TG^T}$.
 
 \begin{figure}[!ht]
   \centering
   \fbox{\includegraphics[scale=0.4]{images/process/doubly-typed-graph-example}}
-  %\input{images/process/doubly-typed-graph.tikz}
   \caption{Doubly-typed graph}\label{fig:process:doubly-typed-graph}
 \end{figure}
 
@@ -105,9 +106,15 @@ A (doubly-typed) match morphism $m^{TG^T} : L^{TG^T} \rightarrow G^{TG^T}$ of a 
 Although we could have defined NACs whose morphisms are doubly-typed graph morphisms (which would then act specifically over doubly-typed graphs) we will not use this kind of NACs later in our work. Therefore, we will use this \emph{single-typed} NACs as the only NAC type in all of our \emph{doubly-typed graph grammars}, and $NAC(n)$ as a synonym of $NAC(n^T)$.
 \end{remark}
 
-When dealing with the general\tinytodo{classical?} definition\tinytodo{notion?} of NACs, there may occur situations where the NAC of a rule can be triggered by the cumulative effect of applying two (or more) other rules, while the same rules would not trigger this NAC without the other. This may lead to a situation where conflicts and dependencies are not stable under switch, as shown in example~\ref{ex:process:instability}.
+When dealing with the classical notion of NACs, there may occur situations where the NAC of a rule can be triggered by the cumulative effect of applying two (or more) other rules, while the same rules would not trigger this NAC without the other. This may lead to a situation where conflicts and dependencies are not stable under switch, as shown in example~\ref{ex:process:instability}.
 
-\begin{example}[Instability of Conflicts and Dependencies]\label{ex:process:instability}
+\begin{example}[Instability of Conflicts and Dependencies]\label{ex:process:instability}The rules depicted in Figure~\ref{fig:process:instability} where the independency between rules is not stable under swithc equivalence.
+
+  Notice that all rules are independent and do not conflict with each other in the sense of Definitions~\ref{def:classic-dependency} and~\ref{def:classic-conflict}. Particularly, it is possible to apply all rules in the order they appear in the figure: $[p_1, p_2, p_3]$.
+
+  Given that they are independent (and not conflicting), it should be possible to apply them in any order. It is possible to apply them as $[p_1, p_3, p_2]$, $[p_2, p_1, p_3]$ and $[p_3, p_1, p_2]$. However, we can no longer apply all rules if we use the sequences $[p_2, p_3, p_1]$ or $[p_3, p_2, p_1]$.
+
+  The problem with this example is that $p_2$ and $p_3$ independently create a piece of the pattern forbidden by the NAC of $p_1$. Although the effects of each rule by themselves do not trigger the NAC of $p_1$, their combined effects do it.
 
 \begin{figure}[!ht]
   \centering
@@ -117,9 +124,9 @@ When dealing with the general\tinytodo{classical?} definition\tinytodo{notion?} 
 
 \end{example}
 
-As we are interested in constructing a canonical representation of several possible derivations of a set of rules in a grammar, we will make use of a special type of NACs called \emph{incremental NACs}.
+As we are interested in constructing a canonical representation of several possible derivations for a set of rules in a grammar, we will make use of a special type of NACs called \emph{incremental NACs} that aim to address this issue.
 
-\emph{Incremental NACs}, originally defined in~\cite{Corradini2013} and~\cite{Corradini2014}, have the property of extending the forbidden context of a match by a single edge or a single node. This can be regarded as each NAC forbidding only one element at a time, thus there is no possible way to trigger a NAC by the cumulative effect of more than one rule\footnote{Notice that two different rules can still trigger two different incremental NACs}.\tinytodo{we don't need this definition until the conditional relations, thus should it be here?} 
+\emph{Incremental NACs}, originally defined in~\cite{Corradini2013} and~\cite{Corradini2014}, have the property of extending the forbidden context of a match by a single edge or a single node. This can be regarded as each NAC forbidding only one element at a time, thus there is no possible way to trigger a NAC by the cumulative effect of more than one rule\footnote{Notice that two different rules can still trigger two different incremental NACs}.
 
 
 \begin{definition}[Incremental NACs] Given a monomorphism \mbox{$n : L \rightarrow N$}, $NAC(n)$ is said to be incremental if for any possible pair of decompositions \mbox{$g_1 : L \rightarrow O_g;g_2 : O_g \rightarrow N$} and \mbox{$f_1 : L \rightarrow O_f;f_2 : O_f \rightarrow N$} as in the diagram below, where all morphisms are monos and \mbox{$f_1;f_2 = n = g_1;g_2$}, there exists a mediating morphism $o_1 : O_g \rightarrow O_f$ or $o_2 : O_f \rightarrow O_g$, such that the resulting triangles
@@ -133,15 +140,26 @@ As we are interested in constructing a canonical representation of several possi
 
 \end{definition}
 
-\begin{example}[Incremental NACs] \tinytodo{say that there is an algorithm to convert general nacs to inc, but not implemented (out of scope)?}
+\begin{example}[Incremental NACs]Figure~\ref{fig:process:incremental-nacs} shows all possible formats that any valide incremental NAC can have.
 
-
+\begin{figure}[!ht]
+  \centering
+  \fbox{\includegraphics[scale=0.65]{images/process/incremental-nacs}}
+  \caption{Incremental NACs possible formats}\label{fig:process:incremental-nacs}
+\end{figure}
 \end{example}
+
+At first, it may seem that we are loosing expressive power by restricting the NACs we use in our grammars to incremental NACs only, however ~\cite{Corradini2013} has shown two important results regarding that.
+
+First, they show that incremental NACs are sufficient to model most of real applications using $GTSs$. Second, they present an algorithm to compile rules with general NACs to rules with incremental NACs only, generating a new $GTS$ that is able to simulate the old one.
+
+In ispite of it, the implementation of the compiling algorithm is out of the scope of this thesis and it is left as future work.
+
 
 \begin{definition}[Doubly-Typed Graph Grammars] A \emph{doubly-typed graph grammar} is a tuple $GG = \left(TG^T, I^{TG^T},P \right)$ where $TG^T$ is the double-type graph of the grammar, $I^{TG^T}$ is a doubly-typed graph corresponding to the \emph{initial graph} of the grammar and $P$ is a set of doubly-typed graph rules. 
 \end{definition}
 
-\begin{definition}[Core Graph] Given a doubly-typed graph grammar \doublyTypedGraphGrammarCore{}, we have that \coreGraph{} is a \emph{core graph} iff \mbox{$\forall x \in$ \coreGraph $: \exists! y \in (I^T \uplus (\uplus_{i \in P} (R_i - K_i))$}.
+\begin{definition}[Core Graph] Given a doubly-typed graph grammar \doublyTypedGraphGrammarCore{}, we have that \coreGraph{} is a \emph{core graph} iff \mbox{$\forall x \in$ \coreGraph $: \exists! y \in (I^T \uplus (\uplus_{i \in P} (R_i - K_i)) \land \exists^{\leq1} y \in \uplus_{i \in P} (L_i - K_i)$}.
 
 
 \[ x =
@@ -201,12 +219,6 @@ First, actions are always applied over the core graph: the match of an action is
   Third, given an action $a$ with NACs and its underlying graph transformation, we restrict the search of the injective morphism $q : N \rightarrow C^T$ to the image of the match $q : N \rightarrow C^T_{L_a}$ (comatch $q : N \rightarrow C^T_{R_a}$) rather than the entire core graph. Similarly, when searching for conflicts or dependencies within two actions $a_1, a_2$ with NACs, the test of NAC satisfiability performed on the overlapping between the actions is restricted to the jointly image of the respective morphisms onto the core graph.
 
   The restricted to the image search is meant to avoid the triggering of NACs by elements that are present in the core graph, therefore present in the match/comatch, but that do not exist when looking only at the actions interacting at the moment. This point will be returned later on when dealing with negative application conditions\tinytodo{Do not forget to explain this in the proper session}.
-%Given an action \emph{a}, we have that:
-%\diagram{
-%  L\ar[d]_{pre_a}        & & K\ar[ll]_{l}\ar[rr]^{r}\ar[d]|{k} & & R\ar[d]^{post_a}\\
-%  C^T_{|L}\ar@{}[urr]|{\left(1\right)} & & C^T_{|K}\ar[ll]^{f}\ar[rr]_{g}             & & C^T_{|R}\ar@{}[ull]|{\left(2\right)}
-%}
-%\hfill %\break
 \end{remark}
 
 In~\cite{Ribeiro1996}, causal, conflict and occurrence relations for strongly safe graph grammars were defined. There, the graph transformation approach used was the \emph{Single Pushout} (SPO) without NACs. 
