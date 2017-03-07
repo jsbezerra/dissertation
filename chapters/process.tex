@@ -286,7 +286,8 @@ In \cite{Corradini1996} it is shown that if this relation is a partial order, th
     \centerline{\fbox{\includegraphics[scale=0.6]{images/process/existential-relation/example-nacs}}}
     \caption{A strongly safe grammar with NACs}\label{fig:process:existential-relation:example-nacs}
   \end{subfigure}
-  \caption{Existential Relation}\label{fig:process:existential-relation}
+  \stepcounter{doubly-typed-grammar-counter}
+  \caption{Strongly safe grammar GG\arabic{doubly-typed-grammar-counter}}\label{fig:process:existential-relation}
 \end{figure}
 \end{example}
 
@@ -374,11 +375,8 @@ Regarding both unconditional and conditional weak conflict relations, their defi
     \centerline{\fbox{\includegraphics[scale=0.45]{images/process/unconditional-relation/a4}}}
     \caption{Action $a_4$}\label{fig:process:unconditional-relation:a4}
   \end{subfigure}
-%  \begin{subfigure}[t]{.5\textwidth}
-%    \centerline{\fbox{\includegraphics[scale=0.6]{images/process/existential-relation/example-nacs}}}
-%    \caption{A strongly safe grammar with NACs}\label{fig:process:existential-relation:example-nacs}
-%  \end{subfigure}
-  \caption{Unconditional Relation}\label{fig:process:unconditional-relation}
+  \stepcounter{doubly-typed-grammar-counter}
+  \caption{Strongly safe grammar GG\arabic{doubly-typed-grammar-counter}}\label{fig:process:unconditional-relation}
 \end{figure}
 \end{example}
 
@@ -407,7 +405,6 @@ Given actions $a_1, a_2$ in a potential delete-forbid dependency or produce-forb
   L_1\ar[d] & K_1\ar[d]\ar[l]\ar[r] & R_1\ar[u]^{n_1}\ar[dr]_{post_1} & & L_2\ar[u]_{n_2}\ar@{.>}@/_1.1pc/[dlll]_<<<<{h_{21}}\ar[dl]^{pre_2} & K_2\ar[l]\ar[r]\ar[d] & R_2\\
      C^T_{|L_1D_1} & D_1\ar[rr]_{d_1}\ar[l]^{e_1} & & C^T_{|R_1L_2} & & D_2\ar[ll] &}
 \hfill
-
   Let the dependency diagram present a potential delete-forbid dependency where $a_1$ delete from graph \coreGraph{} an element $x \in N($\coreGraph$) \cup E($\coreGraph$)$ that potentially triggers a NAC $N_2$ of $a_2$. There are three possible configurations that can determine this dependency:
 
 \begin{enumerate}
