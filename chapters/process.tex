@@ -1,6 +1,8 @@
-\chapter{Graph Processes}
+\chapter{Occurrence Graph Grammars}
 
 \section{Motivation}
+
+Occurrence graph grammars were defined by~\cite{Ribeiro1996} for the SPO approach and by~\cite{Corradini1996} for the DPO approach. They can be considered as a way of representing the \tinytodo{concurrent?} semantics of a graph grammar that it is still a graph grammar.
 
 We are interested in a way of representing several (equivalent) possible derivations in a compact notation.
 
@@ -140,7 +142,7 @@ As we are interested in constructing a canonical representation of several possi
 
 \end{definition}
 
-\begin{example}[Incremental NACs]Figure~\ref{fig:process:incremental-nacs} shows all possible formats that any valide incremental NAC can have.
+\begin{example}[Incremental NACs]Figure~\ref{fig:process:incremental-nacs} shows all possible formats that any valid incremental NAC can have.
 
 \begin{figure}[!ht]
   \centering
@@ -183,7 +185,7 @@ In ispite of it, the implementation of the compiling algorithm is out of the sco
     \end{cases}
    \]\end{enumerate}
 
-  The first condition assures that every element in the \emph{core graph} was either already present in the initial graph or\footnote{exclusive or} was created by one and only rule. The second condition assures that for every element that is deleted, it is deleted only once by only one rule.
+  The first condition assures that every element in the \emph{core graph} was either already present in the initial graph or was created by one and only rule. The second condition assures that for every element that is deleted, it is deleted only once by only one rule.
 
   \begin{intuition} The idea is that each element within a \emph{core graph} has a unique origin, at the same time the \emph{core graph} contains all elements necessary (created, deleted and preserved) by all rules in its underlying grammar.
 \end{intuition}
@@ -371,7 +373,7 @@ Regarding both unconditional and conditional weak conflict relations, their defi
 \end{intuition}
 
 
-\begin{definition}[Unconditional Weak Conflict Relation\footnote{Also called Delete-Use Relation.}] Given \doublyTypedGraphGrammarCore{} a strongly safe graph grammar. Let $a_1, a_2 \in P$, $a_1 \ne a_2$, \mbox{$e_1, e_2 \in $ \coreGraph{}} and $e_1 \ne e_2$. Then: 
+\begin{definition}[Unconditional Weak Conflict Relation\footnote{Also called Delete-Use Relation.}]\label{def:unconditional-conflict} Given \doublyTypedGraphGrammarCore{} a strongly safe graph grammar. Let $a_1, a_2 \in P$, $a_1 \ne a_2$, \mbox{$e_1, e_2 \in $ \coreGraph{}} and $e_1 \ne e_2$. Then: 
 
   \begin{enumerate}
     \item The action $a_1$ is in \emph{direct weak conflict} with $a_2$, written $a_2 <_{du} a_1$, iff \mbox{$\not\exists h_{12} : L_1 \rightarrow D_2$} s.t. \mbox{$d_2 \circ h_{12} = pre_1$}.
@@ -388,7 +390,9 @@ Regarding both unconditional and conditional weak conflict relations, their defi
   \end{enumerate}
 \end{definition}
 
-\begin{example}[Unconditional Weak Conflict Example]
+\begin{example}[Unconditional Weak Conflict Example] Figure~\ref{fig:process:unconditional-relation:conflict} shows a delete-use between the actions $a_1$ and $a_2$ of the strongly safe grammar depicted in Figure~\ref{fig:process:unconditional-relation}.
+
+  Again, both actions have valid graph transformations, now for the overlapping of $pre_1$ and $pre_2$ on $C^T$, but it is not possible to find a morphism from $L_2$ to $D_1$ satisfying the conditions on Definition~\ref{def:unconditional-conflict}.
 \begin{figure}[!ht]
   \centering
   \fbox{\includegraphics[scale=0.48]{images/process/unconditional-relation/conflict}}
