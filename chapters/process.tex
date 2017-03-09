@@ -314,7 +314,7 @@ Regarding both unconditional and conditional dependency relations, their definit
 \begin{figure}[!ht]
   \centering
   \begin{subfigure}[t]{.5\textwidth}
-    \centerline{\fbox{\includegraphics[scale=0.45]{images/process/unconditional-relation/core-graph}}}
+    \centerline{\fbox{\includegraphics[scale=0.5]{images/process/unconditional-relation/core-graph}}}
     \caption{Core and initial graphs}\label{fig:process:unconditional-relation:core-graph}
   \end{subfigure}
 
@@ -400,7 +400,23 @@ Regarding both unconditional and conditional weak conflict relations, their defi
 \end{figure}
 \end{example}
 
-\begin{example}[Unconditional Relations]
+\begin{definition}[Unconditional Occurrence Relation] Given \doublyTypedGraphGrammarCore{} a strongly safe graph grammar, let $PU$ and $DU$ be the unconditional dependency and unconditional weak conflict relations of this grammar, respectively. Then the \emph{unconditional occurrence relation} of GG is the reflexive and transitive closure of \mbox{$PU \cup DU$}.
+\end{definition}
+
+\begin{example}[Unconditional Relations] \tinytodo{Create at least one more rule to show the transitive closure working} For the strongly safe grammar depicted on Figure~\ref{fig:process:unconditional-relation} we have the following relations: 
+
+\begin{itemize}
+  \item produce-use dependencies: $a_1 <_{pu} a_3$, $a_2 <_{pu} a_3$, $a_2 <_{pu} a_4$. Therefore, the unconditional dependency relation for the actions is $a_1 \leq_{pu} a_3$, $a_2 \leq_{pu} a_3$, $a_2 \leq_{pu} a_4$. 
+  \item delete-use conflicts\tinytodo{define unconditional occurrence relation}: $a_2 <_{du} a_1$. Therefore, the unconditional weak conflict relation for the actions is $a_2 \leq_{du} a_1$.
+  \item unconditional occurrence relation: $a_1 \leq a_3$, $a_2 \leq a_3$, $a_2 \leq a_4, a_2 \leq a_1$.
+\end{itemize}
+
+  In order to know if all action of a strongly safe grammar without NACs can be applied, it would be sufficient to check whether the unconditional occurrence relation is a partial order, as demonstrated in~\cite{Ribeiro1996}.
+
+In particular, notice that if we do not consider the NACs for the grammar in this example, any total order of action compatible with the partial order given by the unconditional occurrence relation would be a valid sequentialization of this grammar. 
+
+  For example, $[a_2, a_1, a_3, a_4]$ and $[a_2, a_4, a_1, a_3]$ are valid serializations (without NACS). However not all previous serializations are valid when NACs come into play. In the grammar used in this example, the sequence $[a_2, a_4, a_1, a_3]$ is not valid, because once $a_4$ is applied before $a_3$ it creates $\curvearrowleft_2$ triggering the NAC of $a_3$, which can no longer be applied.
+
 \end{example}
 
 It is important to recall that relationships extracted from strongly safe grammars whose actions do not have NACs are always concrete, in the sense that if an action is dependent on (conflicting with) another one, it happens because the first one creates (resp. deletes) at least one of the concrete elements necessary for the second to be applied.
@@ -411,22 +427,21 @@ Let $a_1, a_2, a_3$ be three actions of the same strongly safe grammar. Suppose 
 
 Now suppose that when $a_2$ is applied, it creates an element that would be forbidden by a NAC of $a_1$ and also that $a_3$ deletes this element. 
 
-Following the classical notions of dependency and conflict with NACs, as shown in definitions~\ref{def:classic-dependency} and~\ref{def:classic-conflict}, $a_2$ would (possibly) cause a produce-forbid conflict on $a_1$ while $a_1$ would be dependent by delete-forbid on $a_3$.
-
-\begin{example}[Failing Occurrence Relation with NACs]
+Following the classical notions of dependency and conflict with NACs, as shown in definitions~\ref{def:classic-dependency} and~\ref{def:classic-conflict}, $a_2$ would cause a produce-forbid conflict on $a_1$ while $a_1$ would be dependent by delete-forbid on $a_3$. This situation is summarized in Figure~\ref{fig:process:order:occurrence-relation-fail}.
 \begin{figure}[!ht]
   \centering
-  \fbox{\includegraphics[scale=0.48]{images/process/order/cycle}}
-  \caption{Cycle due to conditional conflicts and dependencies}\label{fig:process:order/cycle}
+  \fbox{\includegraphics[scale=0.5]{images/process/order/occurrence-relation-fail}}
+  \caption{False positives captured by the classical notions of dependency and conflict}\label{fig:process:order:occurrence-relation-fail}
 \end{figure}
-\end{example}
 
-However, looking at the existential relation, we can affirm that in this configuration ensures there is no conflict between $a_1$ and $a_2$, as the element that would be forbidden by the NAC of $a_1$ can only exist after $a_1$ itself was already applied. Similar reasoning is applied to the potential dependency that is identified because $a_3$ deletes the element that would be forbidden by the NAC of $a_1$\tinytodo{Draw the examples for non-existent (last paragraph), concrete and potential
+However, looking at the existential relation, we can affirm that this configuration ensures there is no conflict between $a_1$ and $a_2$, as the element that would be forbidden by the NAC of $a_1$ can only exist after $a_1$ itself was already applied.
+Similar reasoning is applied to the dependency that is identified because $a_3$ deletes the element that would be forbidden by the NAC of $a_1$\tinytodo{Draw the examples for non-existent (last paragraph), concrete and potential
 dependencies/conflicts}. As a consequence, the following problem arises:
 
 \begin{intuition}
-Given actions $a_1, a_2$ in a potential delete-forbid dependency or produce-forbid conflict, we want to know when this dependency/conflict can be considered to be \emph{concrete}, \emph{non existent} or \emph{abstract}.
+  Given a strongly safe grammar \doublyTypedGraphGrammarCore{} and actions $a_1, a_2 \in P$ in a potential delete-forbid dependency or produce-forbid conflict, we want to know under which circumstances when this dependency/conflict exists and must be considered in the actions application ordering.
 \end{intuition}
+
 
 \begin{definition}[Conditional Causal Dependency Relation\footnote{Also called Delete-Forbid Relation}] Let \doublyTypedGraphGrammarCore{} be a strongly-safe graph grammar, where $P$ is a set of actions with incremental, non-trivially triggered NACs only.
 
@@ -494,6 +509,64 @@ Notice that if $a_3$ were related to $a_2$ and $a_3$ creates $x$, then $a_2$ wou
     On the other hand, if there is an action $a_3$ which deletes $x$ and $a_3$ is not related to $a_2$ by the existential relation, then is this configuration we have an \emph{abstract} conflict that $a_2 <_{pf} a_1$ conditioned to whether $a_3$ is applied before $a_2$. We will represent this \emph{abstract produce-forbid conflict as} \mbox{$[a_2 <_{pf} a_1$ | $a_3 < a_2]$}.
 \end{description}
 \end{definition}
+
+\begin{example}[Conditional Relations] Consider the strongly safe grammar show in Figure~\ref{fig:process:order}. It has the following relations:
+
+\begin{itemize}
+  \item existential relation: $a_1 \leq_e a_2, a_2 \leq_e a_4, a_1 \leq_e a_4, a_3 \leq_e a_3$.
+  \item unconditional occurrence relation: $a_1 \leq_{pu} a_2, a_2 \leq_{pu} a_4, a_1 \leq a_4, a_3 \leq a_3$.
+\end{itemize}
+
+  Therefore, sequentialization where the partial order $a_1 < a_2 < a_4$ is maintained would be valid, such as $[a_1, a_2, a_3, a_4]$, $[a_1,a_3,a_2,a_4]$, $[a_3, a_1, a_2, a_4]$ and $[a_1,a_2,a_4,a_3]$.
+
+  However, as this grammar have NACs, the following conditional conflicts and dependencies have been \textit{potentially} identified:
+\begin{itemize}
+  \item conditional dependencies: $a_4 <_{df} a_3$.
+  \item conditional weak conflicts: $a_3 <_{pf} a_1, a_3 <_{pf} a_2$.
+\end{itemize}
+
+  Notice that, despite of the fact that $a_2$ deletes an element that triggers the NAC of $a_3$, $a_2 <_{df} a_3$ is not a delete-forbid dependency because it also creates another element that still triggers the same NAC. Therefore the transformations when searching for the dependency between $a_2$ to $a_3$ are not valid.
+
+  Therefore, there are two possible sequentializations of the existential (or the unconditional occurrence relation) that respects the restrictions imposed by the abstract conflicts and dependencies: $[a_3, a_1, a_2, a_4]$ and $[a_1,a_2,a_4,a_3]$.
+
+\begin{figure}[!ht]
+  \centering
+  \begin{subfigure}[t]{.5\textwidth}
+    \centerline{\fbox{\includegraphics[scale=0.45]{images/process/order/a1}}}
+    \caption{Action $a_1$}\label{fig:process:order:a1}
+  \end{subfigure}%
+  \begin{subfigure}[t]{.5\textwidth}
+    \centerline{\fbox{\includegraphics[scale=0.45]{images/process/order/a2}}}
+    \caption{Action $a_2$}\label{fig:process:order:a2}
+  \end{subfigure}
+
+  \begin{subfigure}[t]{.5\textwidth}
+    \centerline{\fbox{\includegraphics[scale=0.45]{images/process/order/a3}}}
+    \caption{Action $a_3$}\label{fig:process:order:a3}
+  \end{subfigure}%
+  \begin{subfigure}[t]{.5\textwidth}
+    \centerline{\fbox{\includegraphics[scale=0.45]{images/process/order/a4}}}
+    \caption{Action $a_4$}\label{fig:process:order:a4}
+  \end{subfigure}
+  \stepcounter{doubly-typed-grammar-counter}
+  \caption{Strongly safe grammar GG\arabic{doubly-typed-grammar-counter}}\label{fig:process:order}
+\end{figure}
+
+
+  This situation is summarized in Figure~\ref{fig:process:order:cycle}, without the explicit representation of transitivity and reflexivity. At first, we are to consider all the relations as they are calculated, there is no possible sequentialization for this actions, denoted by the cycle in the ordering graph.
+
+  However, none of these conflicts or dependencies is \emph{concrete}, depending on how the orders are applied according to the existential relation and unconditional occurrence relation to exist.
+
+  Regarding the element $\Circle_1$, we have an abstract produce-forbid conflict as $a_3$ can be applied before $a_1$ creates it or after $a_2$ deletes it. Thus \mbox{$[a_3 <_{pf} a_1$ $|$ $a_2 < a_3]$}.
+
+  As for the element we have an abstract produce-forbid conflict \mbox{$[a_3 <_{pf} a_2$ $|$ $a_4 < a_3]$} and an abstract delete-forbid dependency \mbox{$[a_3 < a_2$ $|$ $a_4 <_{df} a_3]$}. Since the produce-forbid and the delete-forbid act on the same element $\Circle_1$, we can simply say that \mbox{$[a_3 <_{pf} a_2$ $|$ $a_4 <_{df} a_3]$}.
+
+\begin{figure}[!ht]
+  \centering
+  \fbox{\includegraphics[scale=0.6]{images/process/order/cycle}}
+  \caption{Cycle due to conditional conflicts and dependencies}\label{fig:process:order:cycle}
+\end{figure}
+\end{example}
 
 \begin{remark}[Abstract Dependencies and Conflicts] The existence of an abstract produce-forbid conflict caused by an element $x$ is conditioned to the existence of an action which deletes $x$.
 
