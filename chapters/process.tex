@@ -222,7 +222,7 @@ In ispite of it, the implementation of the compiling algorithm is out of the sco
 \begin{example}[Strongly Safe Graph Grammar] Figure~\ref{fig:process:core-graph:example} also depicts a strongly safe graph grammar, as the double-type graph of the grammar is, in fact, a core graph.
 \end{example}
 
-\section{Relations within Strongly Safe Graph Grammars}
+\section{Relations within Strongly Safe Graph Grammars without NACs}
 
 Given a strongly safe graph grammar, its core graph contains all elements used (created, read or deleted) during one possible execution of the grammar. Moreover, as each element has a unique origin within it, the Core Graph can be considered to contain the entire ``execution history'' of its underlying grammar. 
 
@@ -232,7 +232,7 @@ In~\cite{Ribeiro1996}, causal, conflict and occurrence relations for strongly sa
 
 \cite{Corradini1996} also defined a different notion of causal relation, equivalent to the occurrence relation in the previous work, with respect to the DPO approach without NACs.
 
-Both authors use these relations to find out whether all actions of a strongly safe graph grammar are applicable and prove some properties about it\tinytodo{which properties?}. However, this relations alone are no sufficient to our purpose when the actions may have NACs, which are nowadays essential for modelling complex systems~\cite{Corradini2014}\tinytodo{Redo this paragraph, explain better our needs}.
+Both authors use these relations to find out whether all actions of a strongly safe graph grammar are applicable and prove some properties about it\tinytodo{which properties?}. However, this relations alone are no sufficient for our purpose when the actions may have NACs, which are nowadays essential for modelling complex systems~\cite{Corradini2014}\tinytodo{Redo this paragraph, explain better our needs}.
 
 Here we recall these definitions, which correspond to the \emph{existential relation} and the \emph{unconditional causal dependency and conflict relations} defined in the following, and extend them to create an equivalent notion of \emph{conditional relations} that work for grammars in the DPO approach with NACs.
 
@@ -252,7 +252,7 @@ First, actions are always applied over the core graph: the match of an action is
   \begin{enumerate}
     \item If $a_1$ deletes $e_1$, then $e_1 <_e a_1$.
     \item If $a_1$ creates $e_1$, then $a_1 <_e e_1$.
-    \item If $a_1$ creates $e_1$ and $p_2$ preserves $e_1$, then $a_1 <_e a_2$.
+    \item If $a_1$ creates $e_1$ and $a_2$ preserves $e_1$, then $a_1 <_e a_2$.
     \item If $a_1$ preserves $e_1$ and $a_2$ deletes $e_1$, then $a_1 <_e a_2$. 
     \item The \emph{existential relation} $(P \cup E, \leq_e)$ is the reflexive and transitive closure of $<_e$.
   \end{enumerate}
@@ -271,7 +271,7 @@ In \cite{Corradini1996} it is shown that if this relation is a partial order, th
   \item $a_2 <_e a_1$ by creation/preservation of $\Square_1$
 \end{itemize}
 
-  Therefore, we have that all actions in this grammar can be applied as long as $a_2$ is applied before $a_1$ ($a_2$ crates the element $Square_1$ which is necessary for $a_1$ to be applied)\tinytodo{Mount transitive and reflexive closure}.
+  Therefore, we have that all actions in this grammar can be applied as long as $a_2$ is applied before $a_1$ ($a_2$ crates the element $\Square_1$ which is necessary for $a_1$ to be applied)\tinytodo{Mount transitive and reflexive closure}.
   In particular, the following configurations are valid and lead to the same result: $[a_2,a_1,a_3],[a_2,a_3,a_1],[a_3,a_2,a_1]$.
 
 \begin{figure}[!ht]
@@ -419,6 +419,8 @@ In particular, notice that if we do not consider the NACs for the grammar in thi
 
 \end{example}
 
+\section{Relations within Strongly Safe Graph Grammars with NACs}
+
 It is important to recall that relationships extracted from strongly safe grammars whose actions do not have NACs are always concrete, in the sense that if an action is dependent on (conflicting with) another one, it happens because the first one creates (resp. deletes) at least one of the concrete elements necessary for the second to be applied.
 
 On the other hand, each dependency or conflict induced by NACs may be \emph{always concrete}, \emph{non existent}, or \emph{abstract} (conditioned to a specific order of application), for example: 
@@ -451,6 +453,7 @@ dependencies/conflicts}. As a consequence, the following problem arises:
   L_1\ar[d] & K_1\ar[d]\ar[l]\ar[r] & R_1\ar[u]^{n_1}\ar[dr]_{post_1} & & L_2\ar[u]_{n_2}\ar@{.>}@/_1.1pc/[dlll]_<<<<{h_{21}}\ar[dl]^{pre_2} & K_2\ar[l]\ar[r]\ar[d] & R_2\\
      C^T_{|L_1D_1} & D_1\ar[rr]_{d_1}\ar[l]^{e_1} & & C^T_{|R_1L_2} & & D_2\ar[ll] &}
 \hfill
+
   Let the dependency diagram present a potential delete-forbid dependency where $a_1$ delete from graph \coreGraph{} an element $x \in N($\coreGraph$) \cup E($\coreGraph$)$ that potentially triggers a NAC $N_2$ of $a_2$. There are three possible configurations that can determine this dependency:
 
 \begin{enumerate}
