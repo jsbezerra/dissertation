@@ -252,17 +252,17 @@ First, actions are always applied over the core graph: the match of an action is
 
   Third, given an action $a$ with NACs and its underlying graph transformation, we restrict the search of the injective morphism $q : N \rightarrow C^T$ to the image of the match $q : N \rightarrow C^T_{L_a}$ (comatch $q : N \rightarrow C^T_{R_a}$) rather than the entire core graph. Similarly, when searching for conflicts or dependencies within two actions $a_1, a_2$ with NACs, the test of NAC satisfiability performed on the overlapping between the actions is restricted to the jointly image of the respective morphisms onto the core graph.
 
-  The ``restricted to the image'' search is meant to avoid the triggering of NACs by elements that are present in the core graph, therefore present in the match/comatch, but that do not exist when looking only at the actions interacting at the moment. This point will be returned later on when dealing with negative application conditions\tinytodo{Do not forget to explain this in the proper session}.
+  The ``restricted to the image'' search is meant to avoid the triggering of NACs by elements that are present in the core graph, therefore present in the match/comatch, but that do not exist when looking only at the actions interacting at the moment. This restriction together with the use of incremental NACs allow us to locally compute the conflicts and dependencies for each pair of actions, without having to be concerned about global effects of other actions coming into play.
 \end{remark}
 
-\begin{definition}[Existential Relation] \tinytodo{I need a better name for this relation}This is the \emph{causal relation} defined in \cite{Corradini1996} for the DPO approach without NACs. Given  \doublyTypedGraphGrammarCore{} a strongly safe graph grammar. Let actions \mbox{$a_1, a_2 \in P, a_1 \ne a_2$} and element \mbox{$e_1 \in $ \coreGraph{}}, then:
+\begin{definition}[Existential Relation] \tinytodo{I need a better name for this relation}This is the \emph{causal relation} defined in \cite{Corradini1996} for the DPO approach without NACs. Given  \doublyTypedGraphGrammarCore{} a strongly safe graph grammar. Let actions \mbox{$a_1, a_2 \in P, a_1 \ne a_2$} and element \mbox{$e_1 \in N(C^T) \cup E(C^T)$}, then:
 
   \begin{enumerate}
     \item If $a_1$ deletes $e_1$, then $e_1 <_e a_1$.
     \item If $a_1$ creates $e_1$, then $a_1 <_e e_1$.
     \item If $a_1$ creates $e_1$ and $a_2$ preserves $e_1$, then $a_1 <_e a_2$.
     \item If $a_1$ preserves $e_1$ and $a_2$ deletes $e_1$, then $a_1 <_e a_2$. 
-    \item The \emph{existential relation} $(P \cup E, \leq_e)$ is the reflexive and transitive closure of $<_e$.
+    \item The \emph{existential relation} $\leq_e$ of $P \cup N(C^T) \cup E(C^T)$ is the reflexive and transitive closure of $<_e$.
   \end{enumerate}
 \end{definition}
 
@@ -301,21 +301,22 @@ In \cite{Corradini1996} it is shown that if this relation is a partial order, th
 \end{figure}
 \end{example}
 
+The same definition can be attempted in a strongly safe grammar where actions are equipped with Nacs. However, as shown in the next example, it lacks the same properties as the relation in the context without NACs.
 
-\begin{example}[Failing existencial relation with nacs]\label{ex:process:existential-relation-fail}Given the strongly safe grammar composed of the core and initial graphs in Figure~\ref{fig:process:existential-relation:core-graph} and the set of rules in Figure~\ref{fig:process:existential-relation:example-nacs}. We have the same the same existential relation as the one presented in Example~\ref{ex:process:existential-relation}. Notice that actions are the same in both examples, except for the
-  new NAC in $a_1$.
+\begin{example}[Existential Relation in Grammars with NACs]\label{ex:process:existential-relation-fail}Given the strongly safe grammar composed of the core and initial graphs in Figure~\ref{fig:process:existential-relation:core-graph} and the set of rules in Figure~\ref{fig:process:existential-relation:example-nacs}. We have the same the same existential relation as the one presented in Example~\ref{ex:process:existential-relation}. Notice that the actions are the same in both examples, except
+  for the new NAC in action $a_1$ on Figure~\ref{fig:process:existential-relation:example-nacs}.
 
-  Following this example, we still have that $a_2$ must be applied first in order for $a_1$ to be applied. However, besides creating the $\Square_1$ needed for $a_1$, $a_2$ also creates a $\curvearrowleft_1$ from $\Square_1$ to $\Circle_1$ which is pattern forbidden by NAC of $a_1$. Therefore, we have that $a_2$ also causes a produce-forbid conflict with $a_1$.
+  Following this example, we still have that $a_2$ must be applied first in order for $a_1$ to be applied. However, besides creating the $\Square_1$ needed for $a_1$, $a_2$ also creates a $\curvearrowleft_1$ from $\Square_1$ to $\Circle_1$ which is a pattern forbidden by NAC of $a_1$. Therefore, we have that $a_2$ also causes a produce-forbid conflict with $a_1$.
 
   Moreover, the only other action $a_3$ does not delete any element that could help undoing the forbidden pattern. Thus, there is no possible way of applying all actions of this grammar, even though the existential relation is a partial order.
 
 \end{example}
 
-The next \emph{unconditional relations} are equivalent to the \emph{causal dependency} and \emph{weak conflict} relations presented at~\cite{Ribeiro1996}, but based on the DPO, rather than the SPO approach. Moreover, \emph{conditional relations} will be defined for conflicts and dependencies with NACs.
+The next \emph{unconditional relations} are equivalent to the \emph{causal dependency} and \emph{weak conflict} relations presented at~\cite{Ribeiro1996}, but based on the DPO, rather than the SPO approach. Moreover, \emph{conditional relations} will be later defined for conflicts and dependencies with NACs.
 
 Regarding both unconditional and conditional dependency relations, their definitions are based on the following intuition:
 
-\begin{intuition} An action $a_1$ is a direct cause of an action $a_2$ if either $a_1$ creates some element that is needed by $a_2$ (unconditional causal dependency) or $a_1$ deletes an element that is both forbidden by a NAC of $a_2$ and existent before the application of $a_2$ (conditional causal dependency). In both cases, we have that $a_2$ can only happen after $a_1$.\tinytodo{Explain that we do not use the notion of irreversible dependency, as we are interested only in the ordered
+\begin{intuition} An action $a_1$ is a direct cause of an action $a_2$ if either $a_1$ creates some element that is needed by $a_2$ (unconditional causal dependency) or $a_1$ deletes an element that is both forbidden by a NAC of $a_2$ and existent before the application of $a_2$ (conditional causal dependency). In both cases, we have that $a_2$ can only happen after $a_1$ has been applied.\tinytodo{Explain that we do not use the notion of irreversible dependency, as we are interested only in the ordered
   execution of the actions?} 
 \end{intuition}
 
