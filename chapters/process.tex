@@ -157,7 +157,14 @@ First, they show that incremental NACs are sufficient to model most of real appl
 
 Despite of it, the implementation of the compiling algorithm is out of the scope of this thesis and it is left as future work.
 
-\begin{definition}[Triggering element] Given a rule \graphrule{} with an incremental, non trivially triggered NAC \nac{}, and a match \match{} where $m \not\models NAC(n)$.
+\begin{definition}[Triggering element] Given a rule \graphrule{} with an incremental, non trivially triggered NAC \nac{}, and a monomorphic match \match{} where $m \not\models NAC(n)$, therefore there is an injective $q : N \rightarrow G$. We have that the element that will complete the match towards triggering the NAC will be in the difference between the images of $q$ and $m$.
+
+  Let $G_{|N}$ be the image of $n$ and $G_{|L}$ the image of match, and \mbox{$T = G_{|N} - G_{|L}$}.\footnote{Notice that $T$ may not be a graph, we are here abusing the notation and treating $T$ as a set $V$ of vertices and set $E$ of edges} The triggering element of this NAC is:
+
+  \begin{itemize}
+    \item $x \in E(T)$, if $E(T) \neq \varnothing$;
+    \item $x \in V(T)$ otherwise.
+  \end{itemize} 
 \end{definition}
 
 
@@ -432,13 +439,11 @@ In particular, notice that if we do not consider the NACs for the grammar in thi
 
 It is important to recall that relationships extracted from strongly safe grammars whose actions do not have NACs are always concrete, in the sense that if an action is dependent on (conflicting with) another one, it happens because the first one creates (resp. deletes) at least one of the concrete elements necessary for the second to be applied.
 
-On the other hand, each dependency or conflict induced by NACs may be \emph{always concrete}, \emph{non existent}, or \emph{abstract} (conditioned to a specific order of application), for example: 
+On the other hand, not all dependencies and conflicts caused by NACs are always concrete. In fact, according to the possible application orders, such dependencies and conflicts may be classified as \emph{concrete}, the ones that happen no matter the application order; \emph{non existent}, the one that will never happen no matter the application order; or \emph{abstract}, meaning they may or may not happen according to the chosen order.
 
 Let $a_1, a_2, a_3$ be three actions of the same strongly safe grammar. Suppose that $a_1$ creates elements used by $a_2$ and $a_2$ creates elements used by $a_3$, therefore by the existential relation we know that $a_1 \leq_e a_2 \leq_e a_3$.
 
-Now suppose that when $a_2$ is applied, it creates an element that would be forbidden by a NAC of $a_1$ and also that $a_3$ deletes this element. 
-
-Following the classical notions of dependency and conflict with NACs, as shown in definitions~\ref{def:classic-dependency} and~\ref{def:classic-conflict}, $a_2$ would cause a produce-forbid conflict on $a_1$ while $a_1$ would be dependent by delete-forbid on $a_3$. This situation is summarized in Figure~\ref{fig:process:order:occurrence-relation-fail}.
+Now suppose that when $a_2$ is applied, it creates an element that would be forbidden by a NAC of $a_1$ and also that $a_3$ deletes this element. Following the classical notions of dependency and conflict with NACs, as shown in definitions~\ref{def:classic-dependency} and~\ref{def:classic-conflict}, $a_2$ would cause a produce-forbid conflict on $a_1$ while $a_1$ would be dependent by delete-forbid on $a_3$. This situation is summarized in Figure~\ref{fig:process:order:occurrence-relation-fail}.
 \begin{figure}[!ht]
   \centering
   \fbox{\includegraphics[scale=0.5]{images/process/order/occurrence-relation-fail}}
@@ -446,7 +451,7 @@ Following the classical notions of dependency and conflict with NACs, as shown i
 \end{figure}
 
 However, looking at the existential relation, we can affirm that this configuration ensures there is no conflict between $a_1$ and $a_2$, as the element that would be forbidden by the NAC of $a_1$ can only exist after $a_1$ itself was already applied.
-Similar reasoning is applied to the dependency that is identified because $a_3$ deletes the element that would be forbidden by the NAC of $a_1$\tinytodo{Draw the examples for non-existent (last paragraph), concrete and potential
+Similar reasoning is applied to the dependency that is identified because $a_3$ deletes the element that would be forbidden by the NAC of $a_1$\tinytodo{Draw the examples for non existent (last paragraph), concrete and potential
 dependencies/conflicts}. As a consequence, the following problem arises:
 
 \begin{intuition}
@@ -457,72 +462,75 @@ dependencies/conflicts}. As a consequence, the following problem arises:
 \begin{definition}[Delete-Forbid in Strongly Safe Graph Grammars] Let \doublyTypedGraphGrammarCore{} be a strongly-safe graph grammar, where $P$ is a set of actions with incremental, non-trivially triggered NACs only.
 
 \diagram{
-  & & N^{-1}_1 & & N_2 & &\\
+  \mathbf{a_1} & & N^{-1}_1 & & N_2 & & \mathbf{a_2}\\
   L_1\ar[d] & K_1\ar[d]\ar[l]\ar[r] & R_1\ar[u]^{n_1}\ar[dr]_{post_1} & & L_2\ar[u]_{n_2}\ar@{.>}@/_1.1pc/[dlll]_<<<<{h_{21}}\ar[dl]^{pre_2} & K_2\ar[l]\ar[r]\ar[d] & R_2\\
      C^T_{|L_1D_1} & D_1\ar[rr]_{d_1}\ar[l]^{e_1} & & C^T_{|R_1L_2} & & D_2\ar[ll] &}
 \hfill
 
-  Let the dependency diagram present a delete-forbid dependency where $a_1$ deletes from graph \coreGraph{} an element $x \in N($\coreGraph$) \cup E($\coreGraph$)$ that potentially triggers a NAC $N_2$ of $a_2$. This dependency can be categorized as:
+  Let $a_1, a_2 \in P$ be in a delete-forbid dependency according to the diagram above, where $a_1$ deletes from graph \coreGraph{} an element $x \in N($\coreGraph$) \cup E($\coreGraph$)$ which is the triggering element of a NAC $N_2$ of $a_2$. This delete-forbid dependency is:
 
 \begin{itemize}
-  \item \emph{concrete}: iff $(x \leq_e a_2) \lor (x \in I^{C^T})$ 
-  \item \emph{abstract}: iff $(\exists a_3 \in P \mid x \in R_3 - K_3)$ $\land$ $(x, a_2) \not\in \leq_e$ $\land$ $(a_2, x) \not\in \leq_e$ \tinytodo{ $(x,a_2)$ or $(a_3, a_2)$?}
-  \item \emph{non-existent}: otherwise
+  \item \emph{concrete}: iff $(x \leq_e a_2) \lor (x \in I^{C^T})$;
+  \item \emph{abstract}: iff $(\exists a_3 \in P \mid x \in R_3 - K_3)$ $\land$ $(x \not\leq_e a_2)$ $\land$ $(a_2 \not\leq_e x)$;\tinytodo{ $(x,a_2)$ or $(a_3, a_2)$?}
+  \item \emph{non existent}: otherwise.
 \end{itemize}
 
 \end{definition}
 
-There are three possible configurations that can determine this dependency:
+The delete-forbid dependency found in the diagram can have different meanings \tinytodo{meanings?} according to the existential relation of its underlying strongly safe graph grammar and also to the existence (or not) of the triggering element in the initial graph. The cases can be summarized as:
 
-\begin{enumerate}
-  \item $a_2$ is somehow related to $x$ by the existential relation.
-  \item $a_2$ is not related to $x$ by the existential relation, but $x$ is present in the initial graph.
-  \item $a_2$ is not related to $x$ by the existential relation and $x$ is not present in the initial graph.
-\end{enumerate}
+%\begin{enumerate}
+%  \item $x \in I^{C^T}$.
+%  \item $x \not\in I^{C^T}$ and $a_2$ is related to $x$ by the existential relation.
+%  \item $x \not\in I^{C^T}$ and $a_2$ is not related to $x$ by the existential relation..
+%\end{enumerate}
 
-  \begin{description}[style=nextline]
-  \item [Related element:] If $a_2 \leq_e x$ it means that $x$ was either created by $a_2$ or by another action that must to occur after $a_2$. In this configuration the delete-forbid dependency \emph{does not exist} as the element $x$ did not exist to trigger $N_2$ before $a_2$ was applied. 
+\begin{description}[style=nextline,leftmargin=*]
 
-On the other hand, if $x \leq_e a_2$, then $x$ exists before $a_2$ application and must be deleted in order for $a_2$ to be applied. Since $a_1$ is the only action that deletes $x$, otherwise $GG$ would not be a strongly safe grammar, this delete-forbid is \emph{concrete} and we have that $a_1 <_{df} a_2$ .
+  \item [Triggering element is present on the initial graph:]
+Let $x$ be not created by any action in $P$, meaning that $x$ is present on the initial graph: $x \in I^{C^T}$. In such configuration, the delete-forbid is \emph{concrete}, given that $x$ exists before the application of $a_2$ (or any other action), preventing its application. Therefore, we have $a_1 <_{df} a_2$.
 
-\item [Unrelated element present on the initial graph:]
-Let $x$ be not related to $a_2$ at the same time that it is not created by any action in $P$, meaning that $x$ is present on the initial graph: $x \in I^{C^T}$. In such configuration, the delete-forbid is always \emph{concrete}, given that $x$ exists before the application of $a_2$ (or any other action), preventing its application. Therefore, we have $a_1 <_{df} a_2$.
+  \item [Triggering element is related to the action:] If $a_2 \leq_e x$ it means that $x$ was either created by $a_2$ or by another action that must to occur after $a_2$. In this configuration the delete-forbid dependency is \emph{non existent} as the element $x$ can not exist to trigger $N_2$ before $a_2$ was already applied.
 
-\item [Unrelated element absent from the initial graph:]
-Let $x$ be not related to $a_2$, but created by a third action $a_3$, $a_1 \ne a_3 \ne a_2$ (notice that in this configuration, $a_3 <_{e} a_1$). 
+    On the other hand, if $x \leq_e a_2$, it means that $x$ must exist at some moment before $a_2$ is applied. In this configuration, we have that $x$ must be deleted in order for $a_2$ to be applied. Since $a_1$ is the only action that deletes $x$ (otherwise the underlying grammar would not be a strongly safe grammar) this delete-forbid is \emph{concrete} and we have that $a_1 <_{df} a_2$.
 
-Now, suppose that $a_3$ is not related to $a_2$, in which case we have an \emph{abstract} delete-forbid $a_1 <_{df} a_2$ conditioned to $a_3$: in a configuration where $a_3$ is applied before $a_2$ the produce-forbid exists, otherwise it does not. We will represent this \emph{abstract delete-forbid dependency} as $[a_1 <_{df} a_2$ | $a_3 < a_2 ]$.
-  
-Notice that if $a_3$ were related to $a_2$ and $a_3$ creates $x$, then $a_2$ would be related to $x$, which corresponds to the first case.
+\item [Triggering element is not related to the action:]
+  Let $x$ be not related to $a_2$, but created by a third action $a_3 \in P$ (notice that in this configuration we have that $a_3 <_{e} a_1$).
+
+    Let $a_3$ be not related to $a_2$, in which case we have that $a_1$ and $a_2$ \emph{would be} in a concrete delete-forbid dependency if $a_3$ was applied before $a_2$. On the other hand, the same dependency \emph{would be} non existent if $a_3$ was applied after $a_2$. We name this situation an \emph{abstract} produce-forbid dependency and represent it by $[a_1 <_{df} a_2$ | $a_2 < a_3]$ or $a_2 \not\in [a_3 \ldots a_1]$.
+
+%    in which case we have an \emph{abstract} delete-forbid $a_1 <_{df} a_2$ conditioned to $a_3$: in a configuration where $a_3$ is applied before $a_2$ the produce-forbid exists, otherwise it does not. We will represent this \emph{abstract delete-forbid dependency} as .
+
+Now, let $a_3$ be related to $a_2$. In this configuration, we have that $a_2$ would be related to $x$, as $a_3$ creates $x$, which corresponds to our second case.
 \end{description}
 
 \begin{definition}[Produce-Forbid in Strongly Safe Graph Grammars] Given \doublyTypedGraphGrammarCore{} a strongly safe graph grammar, where $P$ is a set of rules with incremental, non-trivially triggered NACs only.
 
 \diagram{
-  & & N_1 & & N_2 & &\\
+  \mathbf{a_1^{-1}}& & N_1 & & N_2 & & \mathbf{a_2}\\
   R_1\ar[d] & K_1\ar[d]\ar[l]\ar[r] & L_1\ar[u]^{n_1}\ar[dr]_{pre_1} & & L_2\ar[u]_{n_2}\ar@{.>}@/_1.1pc/[dlll]_<<<<{h_{21}}\ar[dl]^{pre_2} & K_2\ar[l]\ar[r]\ar[d] & R_2\\
      C^T_{|R_1D_1} & D_1\ar[rr]_{e_1}\ar[l]^{d_1} & & C^T_{|L_1L_2} & & D_2\ar[ll] &}
 \hfill
 
-  Let $a_1,a_2 \in P$, where $a_1$ causes a potential produce-forbid conflict on $a_2$ because $a_1$ creates on an element $x \in N(C^T) \cup E(C^T)$ that may trigger a NAC $N_2$ of $a_2$. This conflict can be categorized as:
+  Let $a_1,a_2 \in P$, be in a produce-forbid conflict according to the diagram above, where on $a_1$ creates an element $x \in N(C^T) \cup E(C^T)$ which is the triggering element of a NAC $N_2$ of $a_2$. This produce-forbid conflict is:
 
 \begin{itemize}
-  \item \emph{concrete}: iff $(x \leq_e a_2) \land (\not\exists a_3 \mid x \in L_3 - K_3)$ or $(x,a_2),(a_2,x) \not\in \leq_ei \land (\not\exists a_3 \mid x \in L_3 - K_3)$\tinytodo{summarize this: $\not\exists a_3 \mid x \in L_3 - K_3 \land a_2\not\leq_e x$?}
-  \item \emph{abstract}: iff $\exists a_3 \in P \mid x \in L_3 - K_3 \land (a_3,a_2) \not\in \leq_e \land (a_2, a_3) \not\in \leq_e$
-  \item \emph{non-existent}: otherwise
+  \item \emph{concrete}: iff $(\not\exists a_3 \in P \mid x \in L_3 - K_3) \land (x \leq_e a_2 \lor a_2 \not\leq_e x)$; %iff $(x \leq_e a_2) \land (\not\exists a_3 \mid x \in L_3 - K_3)$ or $(x,a_2),(a_2,x) \not\in \leq_ei \land (\not\exists a_3 \mid x \in L_3 - K_3)$\tinytodo{summarize this: $\not\exists a_3 \mid x \in L_3 - K_3 \land a_2\not\leq_e x$?}
+  \item \emph{abstract}: iff $(\exists a_3 \in P \mid x \in L_3 - K_3) \land (a_3 \not\leq_e a_2) \land (a_2 \not\leq_e a_3)$;
+  \item \emph{non existent}: otherwise.
 \end{itemize}
 
 \end{definition}
 
-  There are two possible cases to look at:
+  Similarly to the dependency situation, the produce-forbid conflict can have different meanings according to the existential relation of its grammar. Nonetheless, once we are dealing with strongly safe grammars and this element is created by one of the actions involved in the conflict, we do not have to worry about the initial graph. The conflict cases can be summarized as:
 
-  \begin{enumerate}
-    \item $a_2$ is somehow related to $x$ by the existential relation.
-    \item $a_2$ is not related to $x$ by the existential relation.
-  \end{enumerate}
+%  \begin{enumerate}
+%    \item $a_2$ is somehow related to $x$ by the existential relation.
+%    \item $a_2$ is not related to $x$ by the existential relation.
+%  \end{enumerate}
 
-\begin{description}[style=nextline]
-  \item[Related element:]
+\begin{description}[style=nextline,leftmargin=*]
+  \item[Triggering element is related to the action:]
   Let $a_2 \leq_e x$, which means that $x$ is created only after $a_2$ has been applied. In such configuration, the produce-forbid does not exist as the trigger element does not occur before the application of $a_2$. 
 
     Now let $x \leq_e a_2$, which means that $x$ existed before $a_2$ was applied, which leads to two possible sub cases:
@@ -531,7 +539,7 @@ Notice that if $a_3$ were related to $a_2$ and $a_3$ creates $x$, then $a_2$ wou
 
     Now, assume that there exists a third action $a_3$, with $a_1 \ne a_3 \ne a_2$, which deletes $x$. This means that $a_1$ and $a_2$ are in a concrete produce-forbid conflict, but this conflict is ``annulated'' by the application of $a_3$, which must then happen before $a_2$. Notice that in this configuration we will probably have that $a_3 <_{df} a_2$\tinytodo{review this, the ``dependency'' may not occur but the order of application must contain $a_3 < a_2$}.
 
-  \item[Unrelated element:]
+  \item[Triggering element is not related to the action:]
     Let $a_2$ be not related to $x$ in the existential relation, then we have to possible cases.
 
     Suppose that there is no other action $a_3$ which deletes $x$, then we know for a fact that once $a_1$ has been applied and $x$ created there will no longer be possible to apply $a_2$. Therefore, this produce-forbid is \emph{concrete}, and $a_2 <_{pf} a_1$.
