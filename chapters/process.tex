@@ -531,20 +531,21 @@ Now, let $a_3$ be related to $a_2$. In this configuration, we have that $a_2$ wo
 
 \begin{description}[style=nextline,leftmargin=*]
   \item[Triggering element is related to the action:]
-  Let $a_2 \leq_e x$, which means that $x$ is created only after $a_2$ has been applied. In such configuration, the produce-forbid does not exist as the trigger element does not occur before the application of $a_2$. 
+    Let $a_2 \leq_e x$, which means that $x$ was created by $a_2$ or by another action that must occur after $a_2$ has been applied. In such a configuration, the produce-forbid conflict is \mbox{non existent} as the element $x$ can not exist to trigger $N_2$ before the application of $a_2$.
 
     Now let $x \leq_e a_2$, which means that $x$ existed before $a_2$ was applied, which leads to two possible sub cases:
 
-  First, assume that there is no other action $a_3$ which deletes $x$, then the produce-forbid between $a_1$ and $a_2$ is \emph{concrete} and we have that the $a_2 <_{pf} a_1$.
-
-    Now, assume that there exists a third action $a_3$, with $a_1 \ne a_3 \ne a_2$, which deletes $x$. This means that $a_1$ and $a_2$ are in a concrete produce-forbid conflict, but this conflict is ``annulated'' by the application of $a_3$, which must then happen before $a_2$. Notice that in this configuration we will probably have that $a_3 <_{df} a_2$\tinytodo{review this, the ``dependency'' may not occur but the order of application must contain $a_3 < a_2$}.
+    \begin{itemize}
+      \item Assume that there is no other action $a_3$ which deletes $x$. In this situation, we have both that the triggering element $x$ exists before the application of $a_2$ and that $x$ is never deleted. Therefore, the produce-forbid between $a_1$ and $a_2$ is \emph{concrete} and we have that the $a_2 <_{pf} a_1$.
+      \item Assume that there exists a third action $a_3 \in P$ which deletes $x$. This means that, even though $a_1$ and $a_2$ are in a concrete produce-forbid conflict, this conflict can be ``annulated'' by the application of $a_3$, which must then happen before $a_2$. Notice that in this configuration we will probably have that $a_3 <_{df} a_2$\tinytodo{review this, the ``dependency'' may not occur but the order of application must contain $a_3 < a_2$}.
+    \end{itemize}
 
   \item[Triggering element is not related to the action:]
-    Let $a_2$ be not related to $x$ in the existential relation, then we have to possible cases.
+    Let $a_2$ be not related to $x$ in the existential relation.
 
-    Suppose that there is no other action $a_3$ which deletes $x$, then we know for a fact that once $a_1$ has been applied and $x$ created there will no longer be possible to apply $a_2$. Therefore, this produce-forbid is \emph{concrete}, and $a_2 <_{pf} a_1$.
+    Suppose that there is no other action $a_3$ which deletes $x$, then we know for a fact that once $a_1$ has been applied and $x$ has been created it will no longer be possible to apply $a_2$. Therefore, this produce-forbid is \emph{concrete} and we have that $a_2 <_{pf} a_1$.
 
-    On the other hand, if there is an action $a_3$ which deletes $x$ and $a_3$ is not related to $a_2$ by the existential relation, then is this configuration we have an \emph{abstract} conflict that $a_2 <_{pf} a_1$ conditioned to whether $a_3$ is applied before $a_2$. We will represent this \emph{abstract produce-forbid conflict as} \mbox{$[a_2 <_{pf} a_1$ | $a_3 < a_2]$}.
+    On the other hand, if there is an action $a_3$ which deletes $x$ and $a_3$ is not related to $a_2$ by the existential, notice that we have $a_1 <_e a_3$. In this configuration, we have an \emph{abstract} conflict, in the sense that $a_2$ can not be applied after $a_1$ has been applied, unless $a_3$ is also applied before $a_2$, disabling the produce-forbid conflict. We represent this \emph{abstract} produce-forbid conflict as \mbox{$[a_2 <_{pf} a_1$ | $a_3 < a_2]$} or $a_2 \not\in [a_1 \ldots a_3]$.
 \end{description}
 
 \begin{example}[Conditional Relations] Consider the strongly safe grammar show in Figure~\ref{fig:process:order}. It has the following relations:
