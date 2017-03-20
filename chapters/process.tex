@@ -413,8 +413,10 @@ Regarding both unconditional and conditional weak conflict relations, their defi
 \end{figure}
 \end{example}
 
-\begin{definition}[Unconditional Occurrence Relation] Given \doublyTypedGraphGrammarCore{} a strongly safe graph grammar, let $PU$ and $DU$ be the unconditional dependency and unconditional weak conflict relations of this grammar, respectively. Then the \emph{unconditional occurrence relation} of GG is the reflexive and transitive closure of \mbox{$PU \cup DU$}.
+\begin{definition}[Unconditional Occurrence Relation] Given \doublyTypedGraphGrammarCore{} a strongly safe graph grammar, let $\leq_{pu}$ and $\leq_{du}$ be the unconditional dependency and unconditional weak conflict relations of this grammar for $P \cup N(C^T) \cup E(C^T)$. Then the \emph{unconditional occurrence relation} of GG is the reflexive and transitive closure of \mbox{$\leq_{pu} \cup \leq_{du}$}.
 \end{definition}
+
+Similarly to the existential relation,~\cite{Ribeiro1996} proved that if this relation is a partial order, then it is possible to apply all actions of its underlying grammar in any total order that respects the partial order. Again, this condition is not sufficient if the rules may be equipped with NACs\tinytodo{is it necessary to draw another example?}, as it was also shown to be equivalent to the existential relation.
 
 \begin{example}[Unconditional Relations] \tinytodo{Create at least one more rule to show the transitive closure working} For the strongly safe grammar depicted on Figure~\ref{fig:process:unconditional-relation} we have the following relations: 
 
@@ -426,17 +428,25 @@ Regarding both unconditional and conditional weak conflict relations, their defi
 
   In order to know if all action of a strongly safe grammar without NACs can be applied, it would be sufficient to check whether the unconditional occurrence relation is a partial order, as demonstrated in~\cite{Ribeiro1996}.
 
-In particular, notice that if we do not consider the NACs for the grammar in this example, any total order of action compatible with the partial order given by the unconditional occurrence relation would be a valid sequentialization of this grammar. 
+In particular, if we do not consider the NACs for the grammar in Figure~\ref{fig:process:unconditional-relation}, any total order of action compatible with the partial order given by the unconditional occurrence relation would be a valid sequentialization of this grammar. 
 
-  For example, $[a_2, a_1, a_3, a_4]$ and $[a_2, a_4, a_1, a_3]$ are valid serializations (without NACS). However not all previous serializations are valid when NACs come into play. In the grammar used in this example, the sequence $[a_2, a_4, a_1, a_3]$ is not valid, because once $a_4$ is applied before $a_3$ it creates $\curvearrowleft_2$ triggering the NAC of $a_3$, which can no longer be applied.
-
+  As an example, $[a_2, a_1, a_3, a_4]$ and $[a_2, a_4, a_1, a_3]$ are valid serializations (without NACS) of this grammar. However not all previous serializations are valid when NACs come into play. Specifically, the sequence $[a_2, a_4, a_1, a_3]$ is not valid, because once $a_4$ is applied before $a_3$ it creates $\curvearrowleft_2$ triggering the NAC of $a_3$, which can no longer be applied.
 \end{example}
 
-\section{Relations within Strongly Safe Graph Grammars with NACs} \tinytodo{PAREI AQUI}
+\begin{remark}[Existential and Unconditional Occurrence Relations] Since the \emph{existential} and \emph{unconditional occurrence relations} where shown to be equivalent, we will only one of them, the existential relation, as the standard relation without without NACs from now on, as it was originally defined for DPO grammars.
 
-It is important to recall that relationships extracted from strongly safe grammars whose actions do not have NACs are always concrete, in the sense that if an action is dependent on (conflicting with) another one, it happens because the first one creates (resp. deletes) at least one of the concrete elements necessary for the second to be applied.
+  However, we were heavily inspired by the structure of \emph{unconditional causal dependency} and \emph{unconditional weak conflict relations} to define the relations with NACs.
+\end{remark}
 
-On the other hand, not all dependencies and conflicts caused by NACs are always concrete. In fact, according to the possible application orders, such dependencies and conflicts may be classified as \emph{concrete}, the ones that happen no matter the application order; \emph{non existent}, the one that will never happen no matter the application order; or \emph{abstract}, meaning they may or may not happen according to the chosen order.
+\section{Relations within Strongly Safe Graph Grammars with NACs}
+
+The previous relations extracted from strongly safe grammars have the property of being always concrete, in the sense that if an action is dependent on (conflicting with) another one, it happens because the first one creates (resp. deletes) at least one of the concrete elements necessary for the second to be applied (resp. prevented of being applied).
+
+The existential relation must always be respected whenever we try to find a total order in which we are able to apply all the actions of a strongly safe grammar. However, as show before, this relation is not sufficient for grammars with NACs, therefore it is necessary to include the conflicts and dependencies created by NACs in this relation.
+
+The problem here is that we can not simply add the conflicts and dependencies caused by NACs to the relation, as was the case for their unconditional counterparts, because they are not always concrete. Depending on the total order of application chosen among the possibilities given by the existential relation, a conflict or dependency may or may not happen.
+
+In fact, according to the possible application orders, such dependencies and conflicts may be classified as \emph{concrete}, they will happen no matter the chosen order; \emph{non existent}, they will never happen no matter the order; or \emph{abstract}, they may or may not happen according to the chosen order.
 
 Let $a_1, a_2, a_3$ be three actions of the same strongly safe grammar. Suppose that $a_1$ creates elements used by $a_2$ and $a_2$ creates elements used by $a_3$, therefore by the existential relation we know that $a_1 \leq_e a_2 \leq_e a_3$.
 
@@ -452,7 +462,7 @@ Similar reasoning is applied to the dependency that is identified because $a_3$ 
 dependencies/conflicts}. As a consequence, the following problem arises:
 
 \begin{intuition}
-  Given a strongly safe grammar \doublyTypedGraphGrammarCore{} and actions $a_1, a_2 \in P$ in a potential delete-forbid dependency or produce-forbid conflict, we want to know under which circumstances when this dependency/conflict exists and must be considered in the actions application ordering.
+  Given a strongly safe grammar \doublyTypedGraphGrammarCore{} with an existential relation that happens to be a partial order and actions $a_1, a_2 \in P$ in a potential delete-forbid dependency or produce-forbid conflict, we want to know under which circumstances this dependency/conflict exists and must be considered in the actions application ordering.
 \end{intuition}
 
 
