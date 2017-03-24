@@ -494,7 +494,12 @@ In the following, we categorize this conflicts and dependencies according to the
   \item \emph{abstract}: iff $(\exists a_3 \in P \mid x \in R_3 - K_3)$ $\land$ $(x \not\leq_e a_2)$ $\land$ $(a_2 \not\leq_e x)$;\tinytodo{ $(x,a_2)$ or $(a_3, a_2)$?}
   \item \emph{non existent}: otherwise.
 \end{itemize}
+
+  Two elements $x, y \in N(C^T) \cup E(C^T)$ are in a delete-forbid dependency if there are actions $a_1,a_2$ such that (1) $a_1 <_{df} a_2$ and (2) $a_1$ creates $x$ and $a_2$ creates $y$. In this case use say that $x <_{df} y$.
+
+  The delete-forbid between two elements has the same quality (concrete, abstract, non existent) as the one between the actions involved in this dependency.
 \end{definition}
+
 
 The delete-forbid dependency found in the diagram can have different meanings \tinytodo{meanings?} according to the existential relation of its underlying strongly safe graph grammar and also to the existence (or not) of the triggering element in the initial graph. The cases can be summarized as:
 
@@ -539,6 +544,9 @@ Now, let $a_3$ be related to $a_2$. In this configuration, we have that $a_2$ wo
   \item \emph{non existent}: otherwise.
 \end{itemize}
 
+  Two elements $x, y \in N(C^T) \cup E(C^T)$ are in a produce-forbid conflict if there are actions $a_1,a_2$ such that (1) $a_2 <_{pf} a_1$ and (2) $a_1$ creates $x$ and $a_2$ creates $y$. In this case use say that $y <_{pf} x$.
+
+  The produce-forbid between two elements has the same quality (concrete, abstract, non existent) as the one between the actions involved in this conflict.
 \end{definition}
 
   Similarly to the dependency situation, the produce-forbid conflict can have different meanings according to the existential relation of its grammar. Nonetheless, once we are dealing with strongly safe grammars and this element is created by one of the actions involved in the conflict, we do not have to worry about the initial graph. The conflict cases can be summarized as:
@@ -654,6 +662,12 @@ The first condition of the definition assures that it is possible to find a sequ
 The second condition deals with the conflicts and dependencies induced by NACs that do not participate in the concrete relations and generate \emph{intervals} of actions in which specific inside of which specific actions can not be applied.
 
 
-\begin{definition}[Concurrent Graphs]
+\begin{definition}[Concurrent Graphs] Given \doublyTypedGraphGrammarCore{} an occurrence graph grammar and $G$ a subgraph of \coreGraph{}. Let \mbox{$A = \{a \in P | a\in Pre^{\leq_o}(x) \land x \in G\}$}. Then $G$ is a \emph{concurrent graph} iff the following conditions are satisfied for all $x,y \in G$:
+
+\begin{enumerate}
+  \item $x \not\leq_o y \land y \not\leq_o x$
+  \item $x$ satisfies the occurrence restrictions for elements
+\end{enumerate}
+
 \end{definition}
 
