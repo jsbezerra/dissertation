@@ -1,8 +1,16 @@
-\chapter{Verigraph}
+\chapter{Verigraph}\label{ch:verigraph}
+
+Verigraph is a new tool for simulating and verifying graph grammars, implemented in the purely functional programming language Haskell and designed so it can be used as sandbox for new ideas and techniques regarding the topics of graph grammars and other categorial constructions~\cite{BezerraETMF2016,Costa2016,CostaETMF2016, Becker2014}.
+
+Regarding category theory, verigraph implements important basic constructions such as coequalizers, coproducts and colimits, for cocomplete categories; pushout complements, initial pushouts, negative application conditions and constraints, for Adhesive Categories; among others.
+
+Those basic categorial constructions are used to implement important graph grammars techniques such as critical pair analysis (explained on chapter~\ref{ch:gts}), construction of state space from graph grammars and model checking using CTL \tinytodo{cite thiagos's thesis?} and calculation of concurrent rules and occurrence graph grammars, which will be introduced on chapters~\ref{ch:concurrent-rules} and~\ref{ch:process} as part of this work.
+
+The algorithms are implemented in a generic functional style, having the advantage that the constructions are implemented in a very close manner to the formal definitions.  
+
+which makes it easier to inspect for correctness.
 
 
-\section{Motivation}
-Presented in~\cite{BezerraETMF2016,Costa2016, CostaETMF2016}
+\section{Categorial Constructions}
 
-
-\section{Presentation and implementation of the system}
+\section{Graph Grammar Constructions}
