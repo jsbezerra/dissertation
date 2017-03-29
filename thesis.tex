@@ -40,6 +40,7 @@
 \usepackage{pdfpages}
 
 \usepackage{wasysym}
+\usepackage{minted}
 
 %For todo notes, remove in final version
 \setlength{\marginparwidth}{2cm}
@@ -136,8 +137,8 @@
 \input{conf/listings.tex}
 \input{conf/figures.tex}
 
-\captionsetup[figure]{position=t}
-\captionsetup[subfigure]{position=t}
+\captionsetup[figure]{position=below,labelfont=bf}
+\captionsetup[subfigure]{position=bottom}
 
 \sloppy
 \begin{document}
@@ -165,6 +166,7 @@
   \end{abstract}
 
   \begin{listofabbrv}{SPMD}
+          \item[CTL] Computation Tree Logic
           \item[DPO] Double Pushout
           \item[GTS] Graph Transformation System
           \item[NAC] Negative Application Condition

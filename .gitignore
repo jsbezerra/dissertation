@@ -28,3 +28,5 @@ images/process/core_graph/*.pdf
 images/gts/*.pdf
 images/process/existential-relation/*.pdf
 images/**/*.pdf
+
+_minted-thesis/

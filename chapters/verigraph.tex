@@ -1,16 +1,46 @@
 \chapter{Verigraph}\label{ch:verigraph}
 
-Verigraph is a new tool for simulating and verifying graph grammars, implemented in the purely functional programming language Haskell and designed so it can be used as sandbox for new ideas and techniques regarding the topics of graph grammars and other categorial constructions~\cite{BezerraETMF2016,Costa2016,CostaETMF2016, Becker2014}.
+Verigraph is a new tool for simulating and verifying graph grammars, implemented in the purely functional programming language Haskell. Verigraph was designed in a manner that it can be used not only as an implementation of standard constructions and analysis on the topics of category theory graph grammars, but also as a sandbox for new ideas and techniques in these (and related) fields~\cite{BezerraETMF2016,Costa2016,CostaETMF2016, Becker2014}.
 
-Regarding category theory, verigraph implements important basic constructions such as coequalizers, coproducts and colimits, for cocomplete categories; pushout complements, initial pushouts, negative application conditions and constraints, for Adhesive Categories; among others.
+Regarding category theory, verigraph already implements important basic constructions such as coequalizers, coproducts and colimits, for cocomplete categories; pushout complements, initial pushouts, negative application conditions and constraints, for Adhesive Categories; among others.
 
-Those basic categorial constructions are used to implement important graph grammars techniques such as critical pair analysis (explained on chapter~\ref{ch:gts}), construction of state space from graph grammars and model checking using CTL \tinytodo{cite thiagos's thesis?} and calculation of concurrent rules and occurrence graph grammars, which will be introduced on chapters~\ref{ch:concurrent-rules} and~\ref{ch:process} as part of this work.
+Those categorial constructions are used as basis to implement several graph grammars analyses, such as critical pair analysis~\cite{Lambers2006}, state space generation from graph grammars and model checking using computation tree logic (CTL)~\cite{Becker2014} and higher-order graph transformations~\cite{Machado2015}. They were also used to implement the calculation of concurrent rules and occurrence graph grammars, which will be explained in depth on chapters~\ref{ch:concurrent-rules}
+and~\ref{ch:process}, respectively.
 
-The algorithms are implemented in a generic functional style, having the advantage that the constructions are implemented in a very close manner to the formal definitions.  
-
-which makes it easier to inspect for correctness.
-
+The algorithms are implemented in a generic functional style, having the advantage that the constructions are implemented in a very close manner to the formal definitions, which makes it easier reason about them and to inspect for correctness. Moreover, it is easy to reuse the same algorithms for other categories as long as they implement the Type Classes (interfaces) defined on the system.
 
 \section{Categorial Constructions}
 
 \section{Graph Grammar Constructions}
+\begin{figure}[!ht]
+\begin{minted}[linenos=true, breaklines]{haskell}
+class (Morphism m) => Cocomplete m where
+
+-- | Given two morphisms @/f : A -> B/@ and @/g : A -> B/@ retuns the coequalizer morphism
+-- @/h : B -> X/@
+calculateCoequalizer :: m -> m -> m
+
+-- | Given a non-empty list of morphisms of the form @/f : A -> B/@ returns the coequalizer Morphism
+-- @/h : B -> X/@
+calculateNCoequalizer :: NonEmpty m -> m
+
+-- | Given two objects @A@ and @B@ it returns the coproduct @(A+B, f: A -> A+B, g: B -> A+B)@
+calculateCoproduct :: Obj m -> Obj m -> (m,m)
+
+-- | Given a non-empty list of objects @Bi@ it returns the coproduct @fi : Bi -> SUM(Bi)@
+calculateNCoproduct :: NonEmpty (Obj m) -> [m]
+
+calculatePushout :: m -> m -> (m, m)
+calculatePushout f g = (f', g')
+  where
+    b = codomain f
+    c = codomain g
+    (b',c') = calculateCoproduct b c
+    gc' = compose g c'
+    fb' = compose f b'
+    h = calculateCoequalizer fb' gc'
+    g' = compose b' h
+    f' = compose c' h
+\end{minted}
+\caption{Cocomplete Type Class}
+\end{figure}
