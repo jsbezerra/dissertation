@@ -1,6 +1,6 @@
 \chapter{Verigraph}\label{ch:verigraph}
 
-Verigraph is a new tool for simulating and verifying graph grammars, implemented in the purely functional programming language Haskell. Verigraph was designed in a manner that it can be used not only as an implementation of standard constructions and analysis on the topics of category theory graph grammars, but also as a sandbox for new ideas and techniques in these (and related) fields~\cite{BezerraETMF2016,Costa2016,CostaETMF2016, Becker2014}.
+Verigraph is a new tool for simulating and verifying graph grammars, implemented in the purely functional programming language Haskell\footnote{The source code is available at \url{https://github.com/Verites/verigraph}}. Verigraph was designed in a manner that it can be used not only as an implementation of standard constructions and analysis on the topics of category theory graph grammars, but also as a sandbox for new ideas and techniques in these (and related) fields~\cite{BezerraETMF2016,Costa2016,CostaETMF2016, Becker2014}.
 
 Regarding category theory, verigraph already implements important basic constructions such as coequalizers, coproducts and colimits, for cocomplete categories; pushout complements, initial pushouts, negative application conditions and constraints, for Adhesive Categories; among others.
 
@@ -9,9 +9,26 @@ and~\ref{ch:process}, respectively.
 
 The algorithms are implemented in a generic functional style, having the advantage that the constructions are implemented in a very close manner to the formal definitions, which makes it easier reason about them and to inspect for correctness. Moreover, it is easy to reuse the same algorithms for other categories as long as they implement the Type Classes (interfaces) defined on the system.
 
+\section{Graph Grammar Constructions}
+
+\begin{figure}[!ht]
+
+\caption{Graph implementation}
+\begin{minted}[linenos=true, breaklines]{haskell}
+data Node a = Node 
+{ getNodePayload :: Maybe a
+} deriving (Show, Read)
+
+data Edge a = Edge 
+{ getSource      :: NodeId
+, getTarget      :: NodeId
+, getEdgePayload :: Maybe a
+} deriving (Show, Read)
+\end{minted}
+\end{figure}
+
 \section{Categorial Constructions}
 
-\section{Graph Grammar Constructions}
 \begin{figure}[!ht]
 \begin{minted}[linenos=true, breaklines]{haskell}
 class (Morphism m) => Cocomplete m where
