@@ -1,20 +1,22 @@
 \chapter{Verigraph}\label{ch:verigraph}
 
-Verigraph is a new tool for simulating and verifying graph grammars, implemented in the purely functional programming language Haskell\footnote{The source code is available at \url{https://github.com/Verites/verigraph}}. Verigraph was designed in a manner that it can be used not only as an implementation of standard constructions and analysis on the topics of category theory graph grammars, but also as a sandbox for new ideas and techniques in these (and related) fields~\cite{BezerraETMF2016,Costa2016,CostaETMF2016, Becker2014}.
+Verigraph is a new tool for simulating and verifying graph grammars, implemented in the purely functional programming language Haskell\footnote{The source code is available at \url{https://github.com/Verites/verigraph}}. The tool was designed in a manner that it can be used not only as an implementation of standard constructions and analysis of graph grammars, but also as a sandbox for new ideas and techniques in graph grammars and other category theory related topics~\cite{BezerraETMF2016,Costa2016,CostaETMF2016, Becker2014}.
 
-Regarding category theory, verigraph already implements important basic constructions such as coequalizers, coproducts and colimits, for cocomplete categories; pushout complements, initial pushouts, negative application conditions and constraints, for Adhesive Categories; among others.
+Regarding category theory, verigraph implements important basic constructions such as coequalizers, coproducts and colimits, pushout complements, initial pushouts, negative application conditions and constraints, among others.
 
-Those categorial constructions are used as basis to implement several graph grammars analyses, such as critical pair analysis~\cite{Lambers2006}, state space generation from graph grammars and model checking using computation tree logic (CTL)~\cite{Becker2014} and higher-order graph transformations~\cite{Machado2015}. They were also used to implement the calculation of concurrent rules and occurrence graph grammars, which will be explained in depth on chapters~\ref{ch:concurrent-rules}
+Those categorial constructions are used as basis to implement several graph grammar analyses, such as critical pair analysis~\cite{Lambers2006}, state space generation from graph grammars and model checking using computation tree logic~\cite{Becker2014} and higher-order graph transformations~\cite{Machado2015}. They were also used to implement the calculation of concurrent rules and occurrence graph grammars, which will be explained in depth on chapters~\ref{ch:concurrent-rules}
 and~\ref{ch:process}, respectively.
 
-The algorithms are implemented in a generic functional style, having the advantage that the constructions are implemented in a very close manner to the formal definitions, which makes it easier reason about them and to inspect for correctness. Moreover, it is easy to reuse the same algorithms for other categories as long as they implement the Type Classes (interfaces) defined on the system.
+The algorithms are implemented in a generic functional style, having the advantage of being implemented in a very close manner to the formal definitions, which makes it easier reason about them and to inspect for correctness. Moreover, it is easy to reuse the same algorithms for other categorial constructions, as long as they implement the contracts defined by the Type Classes (interfaces) defined on the system.
+
+There exist tools for analysing graph grammars which are similar, in some aspects, to verigraph, such as AGG~\cite{Taentzer2000} and GROOVE~\cite{Rensink2004}. However, to our knowledge, Verigraph is the only tool that integrates static and dynamic analyses, second-order specifications and provides support for new categorial constructions and algorithms, besides being the only tool in this field implemented in a pure functional language~\cite{Costa2016}.
 
 \section{Graph Grammar Constructions}
 
 \begin{figure}[!ht]
 
 \caption{Graph implementation}
-\begin{minted}[linenos=true, breaklines]{haskell}
+\begin{minted}[linenos=true, breaklines,fontsize=\small]{haskell}
 data Node a = Node 
 { getNodePayload :: Maybe a
 } deriving (Show, Read)
@@ -24,13 +26,83 @@ data Edge a = Edge
 , getTarget      :: NodeId
 , getEdgePayload :: Maybe a
 } deriving (Show, Read)
+
+data Graph a b = Graph 
+{ nodeMap :: [(NodeId, Node a)]
+, edgeMap :: [(EdgeId, Edge b)]
+} deriving (Show, Read)
 \end{minted}
 \end{figure}
+
+\begin{figure}[!ht]
+\caption{Morphism Type Class}
+\begin{minted}[linenos=true, breaklines,fontsize=\small]{haskell}
+class (Eq m) => Morphism m where
+    type Obj m :: *
+    compose  :: m -> m -> m
+    domain   :: m -> Obj m
+    codomain :: m -> Obj m
+    id       :: Obj m -> m
+    isMonomorphism :: m -> Bool
+    isEpimorphism :: m -> Bool
+    isIsomorphism :: m -> Bool
+\end{minted}
+\end{figure}
+
+\begin{figure}[!ht]
+\caption{Different Implementations of the Morphism Type Class}
+\begin{minted}[linenos=true, breaklines,fontsize=\small]{haskell}
+data GraphMorphism a b = GraphMorphism 
+{ getDomain    :: Graph a b
+, getCodomain  :: Graph a b
+, nodeRelation :: R.Relation G.NodeId
+, edgeRelation :: R.Relation G.EdgeId
+} deriving (Eq, Show)
+
+-- | A typed graph is a morphism whose codomain is the type graph.
+type TypedGraph a b = GraphMorphism a b
+
+data TypedGraphMorphism a b = TypedGraphMorphism 
+{ getDomain   :: TypedGraph a b
+, getCodomain :: TypedGraph a b
+, mapping     :: GraphMorphism a b
+} deriving (Eq, Show)
+
+data RuleMorphism a b = RuleMorphism 
+{ rmDomain         :: Production (TypedGraphMorphism a b)
+, rmCodomain       :: Production (TypedGraphMorphism a b)
+, mappingLeft      :: TypedGraphMorphism a b
+, mappingInterface :: TypedGraphMorphism a b
+, mappingRight     :: TypedGraphMorphism a b
+} deriving (Eq, Show)
+\end{minted}
+\end{figure}
+
+\begin{figure}[!ht]
+\caption{Delete-Use and Produce-Use Implementation}
+\begin{minted}[linenos=true, breaklines,fontsize=\small]{haskell}
+-- | Rule @p1@ is in a delete-use conflict with @p2@ if @p1@ deletes something that is used by @p2@. This function verifies the non existence of h21: L2 -> D1 such that d1 . h21 = m2
+isDeleteUse :: DPO m => Production m -> (m, m) -> Bool
+isDeleteUse p1 (m1,m2) = null h21
+  where
+    --gets only the morphism d1 from D1 to G
+    (_,d1) = calculatePushoutComplement m1 (getLHS p1) 
+    h21 = findAllPossibleH21 m2 d1
+
+isProduceUse :: DPO m => Production m -> (m, m) -> Bool
+isProduceUse p1 (m1',m2) = null h21
+  where
+   --gets only the morphism d1 from D1 to G
+   (_,e1) = calculatePushoutComplement m1' (getRHS p1)
+   h21 = findAllPossibleH21 m2 e1
+\end{minted}
+\end{figure}
+
 
 \section{Categorial Constructions}
 
 \begin{figure}[!ht]
-\begin{minted}[linenos=true, breaklines]{haskell}
+  \begin{minted}[linenos=true, breaklines, fontsize=\small]{haskell}
 class (Morphism m) => Cocomplete m where
 
 -- | Given two morphisms @/f : A -> B/@ and @/g : A -> B/@ retuns the coequalizer morphism
