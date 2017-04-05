@@ -1,4 +1,4 @@
-\chapter{Graph Grammars}\label{ch:gts}
+\chapter{Category Theory and Graph Grammars}\label{ch:gts}
 
 \section{Category Theory}
 
@@ -9,9 +9,73 @@
   \item category examples in set and maybe in graphs
 \end{itemize}
 
-For a more in-depth explanation of Categories and their applications in Computer Science see~\cite{Pierce1991}.
+\begin{definition}[Category] A category $\cat{C}$ consists of a collection of \emph{objects} and a collection of \emph{arrows} between objects (also called \emph{morphisms}) such that:
 
-\section{Overview of Graph Transformation, definitions, algorithms, etc.}
+  \begin{enumerate}
+    \item for all arrows $f : A \rightarrow B$, $g : B \rightarrow C$ and
+$h : C \rightarrow D$, with objects $A,B,C,D$ not necessarily distinct, the composition of arrows is associative:
+
+  $h \circ (g \circ f) = (h \circ g) \circ f$;
+    \item for every object $A$ there is an \emph{identity} arrow $id_A : A \rightarrow A$ such that for any arrow $f : A \rightarrow B$:
+
+  $id_B \circ f = f$ and $f \circ id_A = f$.
+  \end{enumerate}
+
+\end{definition}
+
+\begin{example}[Category Examples]
+\end{example}
+
+\begin{definition}[Diagram]
+\end{definition}
+
+\begin{example}[Diagram Example]
+\end{example}
+
+\begin{definition}[Monomorphism, Epimorphism and Isomorphism] An arrow \mbox{$f : B \rightarrow C$} in a category $\cat{C}$ is said to be a \emph{monomorphism} if, for any pair of arrows $g : A \rightarrow B$ and $h : A \rightarrow B$, we have that $f \circ g = f \circ h \Rightarrow g = h$.
+
+\diagram{
+  A\ar@<.5ex>[r]^{g}\ar@<-.5ex>[r]_{h} & B\ar[r]^{f} & C
+}
+
+  An arrow \morph{f}{A}{B} is said to be an \emph{epimorphism} if, for any pair of arrows \morph{g}{B}{C}, \morph{h}{B}{C}, we have that \mbox{$g \circ f = h \circ f \Rightarrow g = h$}.
+
+\diagram{
+  A\ar[r]^{f} & B\ar@<.5ex>[r]^{g}\ar@<-.5ex>[r]_{h} & C
+}
+
+  An arrow \morph{f}{A}{B} is an \emph{isomorphism} if there is an arrow \morph{f^{-1}}{B}{A}, the \emph{inverse} of $f$, such that \mbox{$f^{-1} \circ f = id_A$} and \mbox{$f \circ f^{-1} = id_B$}
+
+
+\diagram{ 
+  A\ar@<.5ex>[r]^{f} & B\ar@<.5ex>[l]^{f^{-1}}
+}
+\end{definition}
+
+\begin{example}[Monorphism, Epimorphism and Isomorphism Examples]
+\end{example}
+
+
+\subsection{Categorial Constructions}
+
+Here we present the basic categorial constructions that are used in this work, this is not an extensive list, as we present only the ones necessary to our scope. For a more in-depth explanation of Categories and their applications in Computer Science see~\cite{Pierce1991}.
+
+\begin{definition}[Pushout]
+\end{definition}
+
+\begin{definition}[Pullback]
+\end{definition}
+
+\begin{definition}[Coproduct]
+\end{definition}
+
+\begin{definition}[Coequalizer]
+\end{definition}
+
+\begin{definition}[Colimit]
+\end{definition}
+
+\section{Graph Grammars}
 
 \begin{definition}[Graph] A graph is a tuple $G = \left(V,E,s,t\right)$ where: $V$ is a set of nodes, $E$ is a set of Edges and $s,t : E \rightarrow V$ are two total functions that map each edge in $E$ to its source and target in $V$.
 
