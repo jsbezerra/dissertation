@@ -2,13 +2,6 @@
 
 \section{Category Theory}
 
-\begin{itemize}
-  \item introduction
-  \item category definition
-  \item morphisms explanation and classification (mono, epi, iso)
-  \item category examples in set and maybe in graphs
-\end{itemize}
-
 \begin{definition}[Category] A category $\cat{C}$ consists of a collection of \emph{objects} and a collection of \emph{arrows} between objects (also called \emph{morphisms}) such that:
 
   \begin{enumerate}
@@ -26,10 +19,18 @@ $h : C \rightarrow D$, with objects $A,B,C,D$ not necessarily distinct, the comp
 \begin{example}[Category Examples]
 \end{example}
 
-\begin{definition}[Diagram]
+\begin{definition}[Diagram] Given a category $\cat{C}$, a diagram in $\cat{C}$ is a collection of vertices and directed edges such that, if an edge in the diagram is named with an arrow $f$ and $f$ has domain $A$ and codomain $B$, then the outgoing vertice of the edge must be named $A$ and the incoming vertice $B$.
+
+  A diagram is said to \emph{commute} if, for every pair of objects $A,B$, all the paths in the diagram from $A$ to $B$ are equal. In other words, each path in the diagram determines an arrow and these arrows are equal in $\cat{C}$. Saying that the diagram bellow commutes is equal to say that \mbox{$g' \circ f = f' \circ g$}.
+
+\diagram{
+  A\ar[r]^{f}\ar[d]_{g} & Y\ar[d]^{g'}\\
+  X\ar[r]_{f'} & B
+}
+
 \end{definition}
 
-\begin{example}[Diagram Example]
+\begin{example}[Diagram Examples]
 \end{example}
 
 \begin{definition}[Monomorphism, Epimorphism and Isomorphism] An arrow \mbox{$f : B \rightarrow C$} in a category $\cat{C}$ is said to be a \emph{monomorphism} if, for any pair of arrows $g : A \rightarrow B$ and $h : A \rightarrow B$, we have that $f \circ g = f \circ h \Rightarrow g = h$.
@@ -58,22 +59,56 @@ $h : C \rightarrow D$, with objects $A,B,C,D$ not necessarily distinct, the comp
 
 \subsection{Categorial Constructions}
 
-Here we present the basic categorial constructions that are used in this work, this is not an extensive list, as we present only the ones necessary to our scope. For a more in-depth explanation of Categories and their applications in Computer Science see~\cite{Pierce1991}.
+Here we present the basic categorial constructions that are used in this work, this is not an extensive list, as we present only the ones necessary to our scope. For a more in-depth explanation of Categories and their applications in Computer Science see~\cite{Pierce1991}.\tinytodo{Give an intuitive notion of the constructions before defining it?}
 
-\begin{definition}[Pushout]
+
+\begin{definition}[Coproduct] Given two objects $A$ and $B$, their \emph{coproduct} is an object $A+B$ and two injection arrows \tinytodo{define injections?} \morph{i_1}{A}{A+B} and \morph{i_2}{B}{A+B} such that, for any other object $C$ an pair of arrows \morph{f}{A}{C} and \morph{g}{B}{C} there is one unique arrow \morph{!}{A+B}{C} such that the following diagram commutes:
+
+\diagram{
+  A\ar[r]^{i_1}\ar[dr]_{f} & A+B\ar@{.>}[d]^{!} & B\ar[l]_{i_2}\ar[dl]^{g}\\
+    & C   &
+}
+
+\begin{example}[Coproducts in $\cat{Set}$]
+\end{example}
+
 \end{definition}
 
-\begin{definition}[Pullback]
+\begin{definition}[Coequalizer] Given
+
+\diagram{
+  A\ar@<.5ex>[r]^{f}\ar@<-.5ex>[r]_{g} & B\ar[r]^{h}\ar[dr]_{h'} & X\ar@{.>}[d]^{!}\\
+    &   & X'
+}
 \end{definition}
 
-\begin{definition}[Coproduct]
+\begin{example}[Coequalizers in $\cat{Set}$]
+\end{example}
+
+\begin{definition}[Pushout] Given 
+
+\diagram{
+  A\ar[r]\ar[d] & B\ar[d]\ar[rdd] &\\
+  C\ar[r]\ar[drr]       & X\ar[dr]&\\
+                &         &X'
+}
+
 \end{definition}
 
-\begin{definition}[Coequalizer]
+\begin{example}[Pushouts in $\cat{Set}$]
+\end{example}
+
+\begin{definition}[Pullback] \tinytodo{Maintain only if we are going to use the concurrent rules chapter} Given two objects $A$ and $B$
 \end{definition}
+
+\begin{example}[Pullbacks in $\cat{Set}$]
+\end{example}
 
 \begin{definition}[Colimit]
 \end{definition}
+
+\begin{example}[Colimts in $\cat{Set}$]
+\end{example}
 
 \section{Graph Grammars}
 
