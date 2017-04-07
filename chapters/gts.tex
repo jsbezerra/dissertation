@@ -1,4 +1,4 @@
-\chapter{Category Theory and Graph Grammars}\label{ch:gts}
+\chapter{Category Theory and Graph Grammars Basic Notions}\label{ch:gts}
 
 \section{Category Theory}
 
@@ -85,11 +85,11 @@ Here we present the basic categorial constructions that are used in this work, t
 \begin{example}[Coequalizers in $\cat{Set}$]
 \end{example}
 
-\begin{definition}[Pushout] Given 
+\begin{definition}[Pushout] Given a span of arrows \mbox{$B \xleftarrow{f} A \xrightarrow{g} C$}, its \emph{pushout} is an object $X$ together with a pair of arrows \morph{f'}{C}{X} and \morph{g'}{B}{X} such that (1) \mbox{$f' \circ g = g' \circ f$} and (2) for any other object $X'$ with morphisms \morph{i}{B}{X'} and \morph{j}{C}{X'} such that $i \circ f = j \circ g$ there is a unique morphism \morph{!}{X}{X'} such that \mbox{$i =$ $! \circ g'$} and \mbox{$j =$ $! \circ f'$}.
 
 \diagram{
-  A\ar[r]\ar[d] & B\ar[d]\ar[rdd] &\\
-  C\ar[r]\ar[drr]       & X\ar[dr]&\\
+  A\ar[r]^{f}\ar[d]_{g} & B\ar[d]^{g'}\ar@/^1.1pc/[rdd]^{i} &\\
+  C\ar[r]_{f'}\ar@/_1.1pc/[drr]_{j}       & X\ar@{.>}[dr]^{!}&\\
                 &         &X'
 }
 
@@ -98,13 +98,25 @@ Here we present the basic categorial constructions that are used in this work, t
 \begin{example}[Pushouts in $\cat{Set}$]
 \end{example}
 
-\begin{definition}[Pullback] \tinytodo{Maintain only if we are going to use the concurrent rules chapter} Given two objects $A$ and $B$
+\begin{definition}[Pullback] \tinytodo{Maintain only if we are going to use the concurrent rules chapter} Given 
+
+\diagram{
+  X'\ar@{.>}[dr]^{!}\ar@/^1.1pc/[rrd]^{i}\ar@/_1.1pc/[ddr]_{j}  & &\\
+  & X\ar[r]^{g'}\ar[d]_{f'} & B\ar[d]^{f}\\
+  & C\ar[r]_{g}      & A
+}
 \end{definition}
 
 \begin{example}[Pullbacks in $\cat{Set}$]
 \end{example}
 
-\begin{definition}[Colimit]
+\begin{definition}[Colimit] Given
+
+\diagram{
+  D_i\ar@/_1.1pc/[ddr]_{f'_i}\ar[rr]^{g}\ar[dr]_{f_i} &   & D_j\ar@/^1.1pc/[ddl]^{f'_j}\ar[dl]^{f_j}\\
+      & X\ar@{.>}[d]^{!} &   \\
+      & X'&    \\
+}
 \end{definition}
 
 \begin{example}[Colimts in $\cat{Set}$]
