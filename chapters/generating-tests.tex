@@ -1,9 +1,10 @@
 \chapter{Generating Test Cases}\label{ch:tests}
 
-In this chapter, we show how to use \tinytodo{concurrent rules and} occurrence graph grammars to generate \tinytodo{test contracts and} test cases from (simply-typed) graph grammars. In theory, this technique \tinytodo{these techniques} can be used to generate tests for any graph grammar, however we will use in our examples grammars that were generated using the methodology presented in \cite{Junior2015} and \cite{BezerraWEIT2016}.
+In this chapter, we show how to use occurrence graph grammars to generate test cases from (simply-typed) graph grammars that model systems. In theory, this technique can be used to generate tests for any graph grammar, however we will use in our examples grammars that were generated using the methodology presented in \cite{Junior2015} and \cite{BezerraWEIT2016}.
 
-This methodology is a systematic computer-aided way to extract graph grammars from use
-cases and other text-based requirement documents. Thus, by generating tests from these grammars, we are generating tests for the use cases where they originally came from.
+This methodology is a systematic, computer-aided way to extract graph grammars from use cases and other text-based requirement documents. Thus, by generating tests from these grammars, we are generating tests for the use cases of a system.
+
+Regarding the generation of test cases, we first need to know whether each functionality is executable, i.e. whether all the rules in the subset are applicable. In the positive case, we want to know the input and output data necessary for this functionality, an ordering in which all the rules can be applied in order to fulfill the functionality goals, and which are the valid intermediate states the system may have. In the negative case, we want to know why this functionality can not be executed.
 
 \section{Overview of the original methodology}
 
@@ -19,9 +20,8 @@ Figure~\ref{fig:tests:methodology} summarizes the methodology process.
 
 Given a graph grammar \graphGrammar{} modelling a system $X$ with $n > 0$ functionalities, we want to generate a test case for each subset of rules $F_i \subseteq P$ $\forall i \in 1\ldots n$, where $F_i$ represents a complete functionality \tinytodo{feature} of the system $X$.
 
-Besides having the grammar $GG$ and knowing the subsets of functionalities $F_i$, we will also need an \emph{input-output relation} for each $F_i$ connecting the rules involved in the feature. This \emph{input-output relation} specifies which elements (nodes and edges) must be the same among the rules, as shown in example~\ref{ex:inout}.
+Together with the grammar $GG$ and its subsets of functionalities $F_i$, we will also need an \emph{input-output relation} $IO_i$ for each $F_i$, specifying the connections between the rules involved in the feature. This \emph{input-output relation} specifies which elements (nodes and edges) must be the same among the rules, as shown in example~\ref{ex:inout}.
 
-Therefore, we want to know whether each functionality is executable. In the positive case, we want to know the input and output data necessary for this functionality, an ordering in which the rules can be applied in order to complete it, and which intermediary states can are valid. In the negative case, we want to know why this functionality can not be executed.
 
 \begin{example}[Input-Output Relations]\label{ex:inout}
 \end{example}

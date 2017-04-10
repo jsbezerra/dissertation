@@ -1,13 +1,14 @@
 \chapter{Occurrence Graph Grammars}\label{ch:process}
 
-For each system modelled as a graph grammar, there are many possible ways of 
+Occurrence graph grammars were defined by~\cite{Ribeiro1996} for the SPO approach and by~\cite{Corradini1996} for the DPO approach as a formalism for representing the concurrent semantics of a graph grammar which is still a graph grammar. Thus it is possible to use occurrence graph grammars to describe all possible states and changes of states of the original graph grammars from where they are generated. 
 
-We are interested in a way of representing several (equivalent) possible derivations in a compact notation for later generation of tests. 
+They also contain the entire execution history of the original grammar in the form of (1) a \emph{core graph} that contains all the elements that ever existed in the execution of the grammar and (2) a set of \emph{relations} between the elements of this core graph, which can tell us properties about the existence of those elements: which of them must occur at the same state, which must occur one after the other, which elements must never occur together, and so on.
 
+These properties make occurrence graph grammars a good candidate for the generation of test cases, as we are interested in a way of representing several (equivalent) possible derivations in a compact notation for later generation of tests.
 
-Occurrence graph grammars were defined by~\cite{Ribeiro1996} for the SPO approach and by~\cite{Corradini1996} for the DPO approach. They can be considered as a format for representing the concurrent semantics of a graph grammar that it is still a graph grammar.
+However, the first definitions of occurrence graph grammar do not use negative application conditions, which are nowadays essential to the modelling of complex systems as graph grammars as they provide more possibilities to control the application of rules~\cite{Lambers2008, Corradini2014}.
 
-  This chapter is highly inspired by the works of~\cite{Ribeiro1996} and~\cite{Corradini1996}.
+This chapter extends the works of~\cite{Ribeiro1996} and~\cite{Corradini1996}, by reviewing what occurrence graph grammars are and then extending them to include negative application conditions.
 
 \section{Doubly-Typed Graph Grammars}
 

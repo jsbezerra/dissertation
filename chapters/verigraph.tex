@@ -1,15 +1,15 @@
 \chapter{Verigraph}\label{ch:verigraph}
 
-Verigraph is a new tool for simulating and verifying graph grammars, implemented in the purely functional programming language Haskell\footnote{The source code is available at \url{https://github.com/Verites/verigraph}}. The tool was designed in a manner that it can be used not only as an implementation of standard constructions and analysis of graph grammars, but also as a sandbox for new ideas and techniques in graph grammars and other category theory related topics~\cite{BezerraETMF2016,Costa2016,CostaETMF2016, Becker2014}.
+Verigraph is a new tool for simulating and verifying graph grammars, implemented in the purely functional programming language Haskell\footnote{The source code is available at \url{https://github.com/Verites/verigraph}}. The tool was designed aiming to be used as both an implementation of standard constructions and analysis for graph grammars and a sandbox for new ideas and techniques in graph grammars and other category theory related topics~\cite{BezerraETMF2016,Costa2016,CostaETMF2016, Becker2014}.
 
 Regarding category theory, verigraph implements important basic constructions such as coequalizers, coproducts and colimits, pushout complements, initial pushouts, negative application conditions and constraints, among others.
 
-Those categorial constructions are used as basis to implement several graph grammar analyses, such as critical pair analysis~\cite{Lambers2006}, state space generation from graph grammars and model checking using computation tree logic~\cite{Becker2014} and higher-order graph transformations~\cite{Machado2015}. They were also used to implement the calculation of concurrent rules and occurrence graph grammars, which will be explained in depth on chapters~\ref{ch:concurrent-rules}
-and~\ref{ch:process}, respectively.
+The implemented categorial constructions are used as basis to implement several graph grammar analyses, such as critical pair analysis~\cite{Lambers2006}, state space generation from graph grammars and model checking using computation tree logic~\cite{Becker2014}, concurrent rules generation~\cite{BezerraETMF2016}, higher-order graph transformations~\cite{Machado2015}. They were also used to implement the calculation of occurrence graph grammars, which will be explained in depth on
+chapter~\ref{ch:process} and used for test case generation on chapter~\ref{ch:tests}.
 
 The algorithms are implemented in a generic functional style, having the advantage of being implemented in a very close manner to the formal definitions, which makes it easier reason about them and to inspect for correctness. Moreover, it is easy to reuse the same algorithms for other categorial constructions, as long as they implement the contracts defined by the Type Classes (interfaces) defined on the system.
 
-There exist tools for analysing graph grammars which are similar, in some aspects, to verigraph, such as AGG~\cite{Taentzer2000} and GROOVE~\cite{Rensink2004}. However, to our knowledge, Verigraph is the only tool that integrates static and dynamic analyses, second-order specifications and provides support for new categorial constructions and algorithms, besides being the only tool in this field implemented in a pure functional language~\cite{Costa2016}.
+There exist tools for analysing graph grammars which are similar to verigraph in some aspects, such as AGG~\cite{Taentzer2000} and GROOVE~\cite{Rensink2004}. However, to our knowledge, Verigraph is the only tool that integrates static and dynamic analyses, second-order specifications and provides support for new categorial constructions and algorithms, besides being the only tool in this field implemented in a pure functional language~\cite{Costa2016}.
 
 \section{Graph Grammar Constructions}
 
