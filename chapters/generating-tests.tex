@@ -1,14 +1,23 @@
 \chapter{Generating Test Cases}\label{ch:tests}
 
-In this chapter, we show how to use occurrence graph grammars to generate test cases from (simply-typed) graph grammars that model systems. In theory, this technique can be used to generate tests for any graph grammar, however we will use in our examples grammars that were generated using the methodology presented in \cite{Junior2015} and \cite{BezerraWEIT2016}.
+In this chapter, we show how to use occurrence graph grammars to generate test cases from (simply-typed) graph grammars that model systems. This approach can be used to generate tests for any graph grammar, however we will use in our examples grammars that were built using the methodology presented in \cite{Junior2015} and \cite{BezerraWEIT2016}.
 
 This methodology is a systematic, computer-aided way to extract graph grammars from use cases and other text-based requirement documents. Thus, by generating tests from these grammars, we are generating tests for the use cases of a system.
 
-Regarding the generation of test cases, we first need to know whether each functionality is executable, i.e. whether all the rules in the subset are applicable. In the positive case, we want to know the input and output data necessary for this functionality, an ordering in which all the rules can be applied in order to fulfill the functionality goals, and which are the valid intermediate states the system may have. In the negative case, we want to know why this functionality can not be executed.
+Regarding the generation of test cases, we are interested into knowing whether each functionality is truly executable, i.e. whether all the rules that represent that functionality are applicable. In the positive case, we want to know the input and output data necessary for this functionality, an ordering in which all the rules can be applied to accomplish the functionality goals, and which are the valid (and invalid) intermediate states the system may assume. In the negative case, we want to know why this functionality can not be executed.
 
-\section{Overview of the original methodology}
+We will first present a brief overview of the methodology for extracting graph grammars from use cases, after it we present the process of generating the tests cases with grammars that were built using this methodology.
 
-Figure~\ref{fig:tests:methodology} summarizes the methodology process.
+\section{Overview of the original methodology} \tinytodo{this entire subsection is a copy from the weit article, must be adapted to the needs of this work} A general format of a UC contains a set of sequential steps describing the successful interaction between the primary actor and the system towards the primary goal. A sequence of alternative steps are often included to represent exception flows. Pre- and post-conditions are also listed to indicate, respectively, conditions that must hold before and after the UC execution.
+
+Figure~\ref{fig:tests:methodology} summarizes the methodology process, which is divided into four main phases:
+
+\begin{description}
+  \item[Data Extraction:] where we identify entities and actions in the text of the UC that will be used to construct the model.
+  \item[Primary Verifications:] where we look for problems such as entities or conditions that were found in the previous phase but are never used and also for actions and effects not clearly defined. As these problems might affect or even prevent the creation of the model, they have to be either solved by rewriting the UC or annotated as open issues to be resolved later on if they are not prohibitive to the model construction.
+  \item[GT Generation:] where we construct the GT model by modeling conditions and effects as graphs, building a type graph and then modeling each step of the UC as transition rule from one state graph (the conditions) to other (the effect).
+  \item[UC Analysis:] where we perform a series of automated verifications over the GT model to detect possible flaws in the UC. This is done by using the verigraph tool \tinytodo{generate DOI for the latest version of verigraph} and its concurrent rules, conflict and dependency analyzes.
+\end{description}
 
 \begin{figure}[!ht]
   \centering
@@ -16,12 +25,11 @@ Figure~\ref{fig:tests:methodology} summarizes the methodology process.
   \caption{Overview of the methodology~\cite{Junior2015}.}\label{fig:tests:methodology}
 \end{figure}
 
-\section{Calculating tests using Occurrence Graph Grammars}
+\section{Generating Tests using Occurrence Graph Grammars}
 
 Given a graph grammar \graphGrammar{} modelling a system $X$ with $n > 0$ functionalities, we want to generate a test case for each subset of rules $F_i \subseteq P$ $\forall i \in 1\ldots n$, where $F_i$ represents a complete functionality \tinytodo{feature} of the system $X$.
 
-Together with the grammar $GG$ and its subsets of functionalities $F_i$, we will also need an \emph{input-output relation} $IO_i$ for each $F_i$, specifying the connections between the rules involved in the feature. This \emph{input-output relation} specifies which elements (nodes and edges) must be the same among the rules, as shown in example~\ref{ex:inout}.
-
+Together with the grammar $GG$ and its subsets of functionalities $F_i$, we will also need an \emph{input-output relation} $IO_i$ for each $F_i$, specifying the connections between the rules in $F_i$. This \emph{input-output relation} specifies which elements (nodes and edges) must be the same among the rules, as shown in example~\ref{ex:inout}.
 
 \begin{example}[Input-Output Relations]\label{ex:inout}
 \end{example}
@@ -40,7 +48,7 @@ We want to generate as output:
 \item an amalgamation (colimit) $OGG_i$ of rules for each $F_i$ with respect to $IO_i$
 \item the initial and final graphs $I_i$ and $J_i$ of $OGG_i$, representing the input and output data of the functionality $F_i$
 \item the conflict and dependency relations between rules \tinytodo{and the elements involved in the conflict / dependency}
-\item restrictions \tinytodo{remove or expand?}
+\item restrictions over the ordering of elements existence and rules applicability.
 \end{itemize}
 
 \begin{example}[Amalgamation example]
