@@ -12,6 +12,12 @@ We will first present a brief overview of the methodology for extracting graph g
 
 Figure~\ref{fig:tests:methodology} summarizes the methodology process, which is divided into four main phases:
 
+\begin{figure}[!ht]
+  \centering
+  \fbox{\includegraphics[scale=0.6]{images/generating-tests/methodology}}
+  \caption{Overview of the methodology~\cite{Junior2015}.}\label{fig:tests:methodology}
+\end{figure}
+
 \begin{description}
   \item[Data Extraction:] where we identify entities and actions in the text of the UC that will be used to construct the model.
   \item[Primary Verifications:] where we look for problems such as entities or conditions that were found in the previous phase but are never used and also for actions and effects not clearly defined. As these problems might affect or even prevent the creation of the model, they have to be either solved by rewriting the UC or annotated as open issues to be resolved later on if they are not prohibitive to the model construction.
@@ -19,11 +25,6 @@ Figure~\ref{fig:tests:methodology} summarizes the methodology process, which is 
   \item[UC Analysis:] where we perform a series of automated verifications over the GT model to detect possible flaws in the UC. This is done by using the verigraph tool \tinytodo{generate DOI for the latest version of verigraph} and its concurrent rules, conflict and dependency analyzes.
 \end{description}
 
-\begin{figure}[!ht]
-  \centering
-  \fbox{\includegraphics[scale=0.6]{images/generating-tests/methodology}}
-  \caption{Overview of the methodology~\cite{Junior2015}.}\label{fig:tests:methodology}
-\end{figure}
 
 \section{Generating Tests using Occurrence Graph Grammars}
 
@@ -34,22 +35,14 @@ Together with the grammar $GG$ and its subsets of functionalities $F_i$, we will
 \begin{example}[Input-Output Relations]\label{ex:inout}
 \end{example}
 
-For the test cases generation we receive as input:
+Given as input the grammar $GG$ and its set of rules $P$, together with $F_i$ and $IO_i$, we generate as output:
 
-\begin{itemize}
-\item set of rules $P$
-\item subsets representing functionalities $F_i$
-\item input-output relations $IO_i$ for each $F_i$
-\end{itemize}
-
-We want to generate as output:
-
-\begin{itemize}
+\begin{enumerate}
 \item an amalgamation (colimit) $OGG_i$ of rules for each $F_i$ with respect to $IO_i$
 \item the initial and final graphs $I_i$ and $J_i$ of $OGG_i$, representing the input and output data of the functionality $F_i$
 \item the conflict and dependency relations between rules \tinytodo{and the elements involved in the conflict / dependency}
 \item restrictions over the ordering of elements existence and rules applicability.
-\end{itemize}
+\end{enumerate}
 
 \begin{example}[Amalgamation example]
 \end{example}
