@@ -33,9 +33,17 @@ Given a graph grammar \graphGrammar{} modelling a system $X$ with $n > 0$ functi
 Together with the grammar $GG$ and its subsets of functionalities $F_i$, we will also need an \emph{input-output relation} $IO_i$ for each $F_i$, specifying the connections between the rules in $F_i$. This \emph{input-output relation} specifies which elements (nodes and edges) must be the same among the rules, as shown in example~\ref{ex:inout}.
 
 \begin{example}[Input-Output Relations]\label{ex:inout}
+
+
+\begin{figure}[!ht]
+  \centering
+  \fbox{\includegraphics[scale=0.7]{images/generating-tests/inout}}
+  \caption{Input-Output relation structure.}\label{fig:tests:inout}
+\end{figure}
+
 \end{example}
 
-Given as input the grammar $GG$ and its set of rules $P$, together with $F_i$ and $IO_i$, we generate as output:
+Given as input the grammar $GG$, its set of rules $P$, together with $F_i$ and $IO_i$, we generate as output:
 
 \begin{enumerate}
 \item an amalgamation (colimit) $OGG_i$ of rules for each $F_i$ with respect to $IO_i$
@@ -44,16 +52,32 @@ Given as input the grammar $GG$ and its set of rules $P$, together with $F_i$ an
 \item restrictions over the ordering of elements existence and rules applicability.
 \end{enumerate}
 
-\begin{example}[Amalgamation example]
+First, amalgamation of rules in $F_i$ w.r.t. $IO_i$ is responsible to ``glue'' the graphs of all rules in on single graph at the same that it identifies the items in different rules as the same element. If this element is a \emph{core graph}, according to definition~\ref{def:core-graph}, we can create a doubly-typed graph grammar $OGG_i$ that is also a strongly-safe grammar and therefore a candidate to be an occurrence graph grammar. Otherwise, there is more than one rule that deletes or creates
+the same element, therefore it is not possible to apply all rules of this functionality.
+
+\begin{figure}[!ht]
+  \centering
+  \fbox{\includegraphics[scale=0.7]{images/generating-tests/colimit}}
+  \caption{Amalgamation (colimit) of rules according to the IO relation.}\label{fig:tests:colimit}
+\end{figure}
+
+\begin{example}[Amalgamation example]\label{ex:amalgamation}
 \end{example}
+
+After identifying that $OGG_i$ is in fact a strongly-safe graph grammar, we can extract the initial and final graphs of $OGG_i$, i.e. the core graph ``minus'' the created elements and ``deleted'' elements, respectively. If they are valid graphs, we have the input and output data for the test case. Otherwise, if they have dangling edges, it is not possible to apply all rules of the functionality, since they would begin in or lead to an inconsistent state.
 
 \begin{example}[Initial and Final Graphs Example]
 \end{example}
 
-Once we have the output, we test whether $OGG_i$ is an occurrence graph grammar and $I_i, J_i$ are valid graphs.
+If the previous verifications were successful, we can build the occurrence relation (and any other relation discussed on chapter~\ref{ch:process}) to verify if $OGG_i$ can be really an occurrence graph grammar. If no abstract dependencies or conflicts are found, then the concrete relations are sufficient to do this verification and we simply need to check if there is a total ordering compatible with the relations.
 
-\begin{example}[]
+
+\begin{example}[Conflict and Dependency Relations]
 \end{example}
+
+If the set $R$ of \emph{occurrence relation restrictions} is not empty, we also need to check if there is a total ordering of the occurrence relation that respects these restrictions.
+
+As this seems to be a hard problem, in the complexity sense, we left this last implementation as a future work. However, we still use the restrictions to generate a set of tests regarding the consistency of the system states.
 
 \section{Building test cases with Verigraph}
 
