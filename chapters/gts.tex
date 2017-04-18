@@ -2,7 +2,7 @@
 
 \section{Category Theory}
 
-\begin{definition}[Category] A category $\cat{C}$ consists of a collection of \emph{objects} and a collection of \emph{arrows} between objects (also called \emph{morphisms}) such that:
+\begin{definition}[Category] A category \cat{C} consists of a collection of \emph{objects} and a collection of \emph{arrows} between objects (also called \emph{morphisms}) such that:
 
   \begin{enumerate}
     \item for all arrows $f : A \rightarrow B$, $g : B \rightarrow C$ and
@@ -19,9 +19,9 @@ $h : C \rightarrow D$, with objects $A,B,C,D$ not necessarily distinct, the comp
 \begin{example}[Category Examples]
 \end{example}
 
-\begin{definition}[Diagram] Given a category $\cat{C}$, a diagram in $\cat{C}$ is a collection of vertices and directed edges such that, if an edge in the diagram is named with an arrow $f$ and $f$ has domain $A$ and codomain $B$, then the outgoing vertice of the edge must be named $A$ and the incoming vertice $B$.
+\begin{definition}[Diagram] Given a category \cat{C}, a diagram in \cat{C} is a collection of vertices and directed edges such that, if an edge in the diagram is named with an arrow $f$ and $f$ has domain $A$ and codomain $B$, then the outgoing vertice of the edge must be named $A$ and the incoming vertice $B$.
 
-  A diagram is said to \emph{commute} if, for every pair of objects $A,B$, all the paths in the diagram from $A$ to $B$ are equal. In other words, each path in the diagram determines an arrow and these arrows are equal in $\cat{C}$. Saying that the diagram bellow commutes is equal to say that \mbox{$g' \circ f = f' \circ g$}.
+  A diagram is said to \emph{commute} if, for every pair of objects $A,B$, all the paths in the diagram from $A$ to $B$ are equal. In other words, each path in the diagram determines an arrow and these arrows are equal in \cat{C}. Saying that the diagram bellow commutes is equal to say that \mbox{$g' \circ f = f' \circ g$}.
 
 \diagram{
   A\ar[r]^{f}\ar[d]_{g} & Y\ar[d]^{g'}\\
@@ -33,7 +33,7 @@ $h : C \rightarrow D$, with objects $A,B,C,D$ not necessarily distinct, the comp
 \begin{example}[Diagram Examples]
 \end{example}
 
-\begin{definition}[Monomorphism, Epimorphism and Isomorphism] An arrow \mbox{$f : B \rightarrow C$} in a category $\cat{C}$ is said to be a \emph{monomorphism} if, for any pair of arrows $g : A \rightarrow B$ and $h : A \rightarrow B$, we have that $f \circ g = f \circ h \Rightarrow g = h$.
+\begin{definition}[Monomorphism, Epimorphism and Isomorphism] An arrow \mbox{$f : B \rightarrow C$} in a category \cat{C} is said to be a \emph{monomorphism} if, for any pair of arrows $g : A \rightarrow B$ and $h : A \rightarrow B$, we have that $f \circ g = f \circ h \Rightarrow g = h$.
 
 \diagram{
   A\ar@<.5ex>[r]^{g}\ar@<-.5ex>[r]_{h} & B\ar[r]^{f} & C
@@ -69,7 +69,7 @@ Here we present the basic categorial constructions that are used in this work, t
     & C   &
 }
 
-\begin{example}[Coproducts in $\cat{Set}$]
+\begin{example}[Coproducts in \cat{Set}]
 \end{example}
 
 \end{definition}
@@ -82,7 +82,7 @@ Here we present the basic categorial constructions that are used in this work, t
 }
 \end{definition}
 
-\begin{example}[Coequalizers in $\cat{Set}$]
+\begin{example}[Coequalizers in \cat{Set}]
 \end{example}
 
 \begin{definition}[Pushout] Given a span of arrows \mbox{$B \xleftarrow{f} A \xrightarrow{g} C$}, its \emph{pushout} is an object $X$ together with a pair of arrows \morph{f'}{C}{X} and \morph{g'}{B}{X} such that (1) \mbox{$f' \circ g = g' \circ f$} and (2) for any other object $X'$ with morphisms \morph{i}{B}{X'} and \morph{j}{C}{X'} such that $i \circ f = j \circ g$ there is a unique morphism \morph{!}{X}{X'} such that \mbox{$i =$ $! \circ g'$} and \mbox{$j =$ $! \circ f'$}.
@@ -95,7 +95,7 @@ Here we present the basic categorial constructions that are used in this work, t
 
 \end{definition}
 
-\begin{example}[Pushouts in $\cat{Set}$]
+\begin{example}[Pushouts in \cat{Set}]
 \end{example}
 
 \begin{definition}[Pullback] \tinytodo{Maintain only if we are going to use the concurrent rules chapter} Given 
@@ -107,7 +107,7 @@ Here we present the basic categorial constructions that are used in this work, t
 }
 \end{definition}
 
-\begin{example}[Pullbacks in $\cat{Set}$]
+\begin{example}[Pullbacks in \cat{Set}]
 \end{example}
 
 \begin{definition}[Colimit] Given
@@ -119,7 +119,7 @@ Here we present the basic categorial constructions that are used in this work, t
 }
 \end{definition}
 
-\begin{example}[Colimts in $\cat{Set}$]
+\begin{example}[Colimts in \cat{Set}]
 \end{example}
 
 \section{Graph Grammars}
