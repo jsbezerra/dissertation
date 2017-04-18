@@ -84,7 +84,28 @@ Here we present basic categorial constructions that are used in this work. Notic
 \begin{example}[Coequalizers in \cat{Set}] In the categories \cat{Set} and \cat{Graph} ,the coequalizer generalizes the notion of smallest equivalence relation. \tinytodo{draw examples}.
 \end{example}
 
-\begin{definition}[Pushout] Given a span of arrows \mbox{$B \xleftarrow{f} A \xrightarrow{g} C$}, its \emph{pushout} is an object $X$ together with a pair of arrows \morph{f'}{C}{X} and \morph{g'}{B}{X} such that (1) \mbox{$f' \circ g = g' \circ f$} and (2) for any other object $X'$ with morphisms \morph{i}{B}{X'} and \morph{j}{C}{X'} such that $i \circ f = j \circ g$ there is a unique morphism \morph{!}{X}{X'} such that \mbox{$i =$ $! \circ g'$} and \mbox{$j =$ $! \circ f'$}.
+\begin{definition}[Colimit] Given a diagram $D$ in a category \cat{C}, a \emph{cocone} for $D$ is an object $X$ and a family of morphisms \morph{f_i}{D_i}{X} (one for each object $D_i$ in $D$), such that for each morphism $g$ in $D$ the outer part of the following diagram commutes.
+
+\diagram{
+  D_i\ar[rr]^{g}\ar[dr]_{f_i} &   & D_j\ar[dl]^{f_j}\\
+      & X &   \\
+}
+\hfill
+
+  A \emph{colimit} for a diagram $D$ is a cocone \{\morph{f_i}{D_i}{X}\} such that for any other cocone \{\morph{f'_i}{D'_i}{X'}\} there exists a unique morphism \morph{!}{X}{X'} such that the following diagram commutes for every $D_i$ in $D$.
+
+
+\diagram{
+  D_i\ar@/_1.1pc/[ddr]_{f'_i}\ar[rr]^{g}\ar[dr]_{f_i} &   & D_j\ar@/^1.1pc/[ddl]^{f'_j}\ar[dl]^{f_j}\\
+      & X\ar@{.>}[d]^{!} &   \\
+      & X'&    \\
+}
+\end{definition}
+
+\begin{example}[Colimits in \cat{Set}]
+\end{example}
+
+\begin{definition}[Pushout] Pushouts are a special case of colimits. Given a span of arrows \mbox{$B \xleftarrow{f} A \xrightarrow{g} C$}, its \emph{pushout} is an object $X$ together with a pair of arrows \morph{f'}{C}{X} and \morph{g'}{B}{X} such that (1) \mbox{$f' \circ g = g' \circ f$} and (2) for any other object $X'$ with morphisms \morph{i}{B}{X'} and \morph{j}{C}{X'} such that $i \circ f = j \circ g$ there is a unique morphism \morph{!}{X}{X'} such that \mbox{$i =$ $! \circ g'$} and \mbox{$j =$ $! \circ f'$}.
 
 \diagram{
   A\ar[r]^{f}\ar[d]_{g} & B\ar[d]^{g'}\ar@/^1.1pc/[rdd]^{i} &\\
@@ -111,17 +132,6 @@ Here we present basic categorial constructions that are used in this work. Notic
 \end{example}
 \fi
 
-\begin{definition}[Colimit] Given
-
-\diagram{
-  D_i\ar@/_1.1pc/[ddr]_{f'_i}\ar[rr]^{g}\ar[dr]_{f_i} &   & D_j\ar@/^1.1pc/[ddl]^{f'_j}\ar[dl]^{f_j}\\
-      & X\ar@{.>}[d]^{!} &   \\
-      & X'&    \\
-}
-\end{definition}
-
-\begin{example}[Colimts in \cat{Set}]
-\end{example}
 
 \section{Graph Grammars}
 
