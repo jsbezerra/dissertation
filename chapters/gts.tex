@@ -2,6 +2,12 @@
 
 \section{Category Theory}
 
+Category theory is a powerful mathematical framework, defined by~\cite{Eilenberg1945}, that provides an abstract way to reason about mathematical structures and the relationships between them.
+
+Categories are particularly useful in Computer Science, having several applications such as design of programming languages, implementation techniques, semantic models, concurrency models, type theory, among others~\cite{Pierce1991}.
+
+Category theory is also the basis for graph transformation systems, which is central to the work proposed in this thesis. Therefore, we present a brief introduction of the field and the basic categorial constructions that will be necessary in this work.
+
 \begin{definition}[Category] A category \cat{C} consists of a collection of \emph{objects} and a collection of \emph{arrows} between objects (also called \emph{morphisms}) such that:
 
   \begin{enumerate}
@@ -56,8 +62,7 @@ $h : C \rightarrow D$, with objects $A,B,C,D$ not necessarily distinct, the comp
 
 \subsection{Categorial Constructions}
 
-Here we present basic categorial constructions that are used in this work. Notice that this is not an extensive list, we present only the ones necessary to our scope. For a more in-depth explanation of Categories and their applications in Computer Science see~\cite{Pierce1991}.\tinytodo{Give an intuitive notion of the constructions before defining it?}
-
+Here we present basic categorial constructions that are used throughout in this work. Notice that this is not an extensive list, we present only the ones necessary to our scope. For a more in-depth explanation of Categories and their applications in Computer Science see~\cite{Pierce1991}.\tinytodo{Give an intuitive notion of the constructions before defining it?}
 
 \begin{definition}[Coproduct] Given two objects $A$ and $B$, their \emph{coproduct} (also called \emph{categorical sum}) is an object $A+B$ and two injection arrows \tinytodo{define injections?} \morph{i_1}{A}{A+B} and \morph{i_2}{B}{A+B} such that, for any other object $C$ an pair of arrows \morph{f}{A}{C} and \morph{g}{B}{C} there is one unique arrow \morph{!}{A+B}{C} such that the following diagram commutes:
 
@@ -102,7 +107,9 @@ Here we present basic categorial constructions that are used in this work. Notic
 }
 \end{definition}
 
-\begin{example}[Colimits in \cat{Set}]
+\begin{example}[Colimits in \cat{Set}] In general, colimits generalize constructions such as disjoint unions, direct sums, coproducts and others, where different objects of a diagram are ``glued'' together in only one object respecting existent identifications, if any.
+
+  In \cat{Set} \tinytodo{draw example}
 \end{example}
 
 \begin{definition}[Pushout] Pushouts are a special case of colimits. Given a span of arrows \mbox{$B \xleftarrow{f} A \xrightarrow{g} C$}, its \emph{pushout} is an object $X$ together with a pair of arrows \morph{f'}{C}{X} and \morph{g'}{B}{X} such that (1) \mbox{$f' \circ g = g' \circ f$} and (2) for any other object $X'$ with morphisms \morph{i}{B}{X'} and \morph{j}{C}{X'} such that $i \circ f = j \circ g$ there is a unique morphism \morph{!}{X}{X'} such that \mbox{$i =$ $! \circ g'$} and \mbox{$j =$ $! \circ f'$}.
@@ -115,7 +122,7 @@ Here we present basic categorial constructions that are used in this work. Notic
 
 \end{definition}
 
-\begin{example}[Pushouts in \cat{Set}]
+\begin{example}[Pushouts in \cat{Set}] In \cat{Set} \tinytodo{draw example}
 \end{example}
 
 \iffalse
