@@ -42,7 +42,7 @@ All the other type classes are somehow defined in terms of the morphism one. For
 
 Also notice that any category that implements the functions \code{calculateCoequalizer} and \code{calculateCoproduct} automatically has a standard implementation of the \code{calculatePushout} function based only on this two constructions.
 
-Generally speaking, if a category has coequalizers and coproducts, we can calculate any (finite) colimit based only on this two constructions, as demonstrated in~\cite{Pierce1991}. 
+Generally speaking, whenever a category has coequalizers and coproducts, we can calculate any (finite) colimit based only on this two constructions, as demonstrated in~\cite{Pierce1991}.
 
 \begin{figure}[!ht]
   \begin{minted}[linenos=true, breaklines, fontsize=\small]{haskell}
