@@ -22,7 +22,7 @@ $h : C \rightarrow D$, with objects $A,B,C,D$ not necessarily distinct, the comp
 
 \end{definition}
 
-\begin{example}[Category Examples]
+\begin{example}[Category Examples] \tinytodo{Use set examples and cite some others}
 \end{example}
 
 \begin{definition}[Diagram] Given a category \cat{C}, a diagram in \cat{C} is a collection of vertices and directed edges such that, if an edge in the diagram is named with an arrow $f$ and $f$ has domain $A$ and codomain $B$, then the outgoing vertice of the edge must be named $A$ and the incoming vertice $B$.
@@ -89,6 +89,19 @@ Here we present basic categorial constructions that are used throughout in this 
 \begin{example}[Coequalizers in \cat{Set}] In the categories \cat{Set} and \cat{Graph} ,the coequalizer generalizes the notion of smallest equivalence relation. \tinytodo{draw examples}.
 \end{example}
 
+\begin{definition}[Pushout] Given a span of arrows \mbox{$B \xleftarrow{f} A \xrightarrow{g} C$}, its \emph{pushout} is an object $X$ together with a pair of arrows \morph{f'}{C}{X} and \morph{g'}{B}{X} such that (1) \mbox{$f' \circ g = g' \circ f$} and (2) for any other object $X'$ with morphisms \morph{i}{B}{X'} and \morph{j}{C}{X'} such that $i \circ f = j \circ g$ there is a unique morphism \morph{!}{X}{X'} such that \mbox{$i =$ $! \circ g'$} and \mbox{$j =$ $! \circ f'$}.
+
+\diagram{
+  A\ar[r]^{f}\ar[d]_{g} & B\ar[d]^{g'}\ar@/^1.1pc/[rdd]^{i} &\\
+  C\ar[r]_{f'}\ar@/_1.1pc/[drr]_{j}       & X\ar@{.>}[dr]^{!}&\\
+                &         &X'
+}
+
+\end{definition}
+
+\begin{example}[Pushouts in \cat{Set}] In \cat{Set} \tinytodo{draw example}
+\end{example}
+
 \begin{definition}[Colimit] Given a diagram $D$ in a category \cat{C}, a \emph{cocone} for $D$ is an object $X$ and a family of morphisms \morph{f_i}{D_i}{X} (one for each object $D_i$ in $D$), such that for each morphism $g$ in $D$ the outer part of the following diagram commutes.
 
 \diagram{
@@ -107,23 +120,11 @@ Here we present basic categorial constructions that are used throughout in this 
 }
 \end{definition}
 
-\begin{example}[Colimits in \cat{Set}] In general, colimits generalize constructions such as disjoint unions, direct sums, coproducts and others, where different objects of a diagram are ``glued'' together in only one object respecting existent identifications, if any.
+\begin{example}[Colimits in \cat{Set}] Colimits generalize several constructions such as disjoint unions, direct sums, coproducts, pushouts and others, where different objects of a diagram are ``glued'' together in only one object respecting existent identifications, if any.
 
   In \cat{Set} \tinytodo{draw example}
 \end{example}
 
-\begin{definition}[Pushout] Pushouts are a special case of colimits. Given a span of arrows \mbox{$B \xleftarrow{f} A \xrightarrow{g} C$}, its \emph{pushout} is an object $X$ together with a pair of arrows \morph{f'}{C}{X} and \morph{g'}{B}{X} such that (1) \mbox{$f' \circ g = g' \circ f$} and (2) for any other object $X'$ with morphisms \morph{i}{B}{X'} and \morph{j}{C}{X'} such that $i \circ f = j \circ g$ there is a unique morphism \morph{!}{X}{X'} such that \mbox{$i =$ $! \circ g'$} and \mbox{$j =$ $! \circ f'$}.
-
-\diagram{
-  A\ar[r]^{f}\ar[d]_{g} & B\ar[d]^{g'}\ar@/^1.1pc/[rdd]^{i} &\\
-  C\ar[r]_{f'}\ar@/_1.1pc/[drr]_{j}       & X\ar@{.>}[dr]^{!}&\\
-                &         &X'
-}
-
-\end{definition}
-
-\begin{example}[Pushouts in \cat{Set}] In \cat{Set} \tinytodo{draw example}
-\end{example}
 
 \iffalse
 \begin{definition}[Pullback] \tinytodo{Maintain only if we are going to use the concurrent rules chapter} Given 
@@ -157,7 +158,7 @@ Graph grammars have a wide application in computer science, not only because gra
 \end{figure}
 \end{example}
 
-\begin{definition}[Graph Morphism] Given two graphs $G_1,G_2$ with $G_i = \left(V_i, E_i, s_i, t_i\right)$ for $i$ in $[1,2]$, a graph morphism $f : G_1 \rightarrow G_2$ between them is a pair $f = \left(f_V,f_E\right)$ where $f_V : V_1 \rightarrow V_2$ and $f_E : E_1 \rightarrow E_2$ are total functions that preserve the source and target functions, i.e. $f_V \circ s_1 = s_2 \circ f_E$ and $f_V \circ t_1 = t_2 \circ f_E$. \tinytodo{Talk about injective / surjective / isomorphic morphisms?} \tinytodo{Talk about morphisms composition?}
+\begin{definition}[Graph Morphism] Given two graphs $G_1,G_2$ with $G_i = \left(V_i, E_i, s_i, t_i\right)$ for $i$ in $[1,2]$, a graph morphism $f : G_1 \rightarrow G_2$ between them is a pair $f = \left(f_V,f_E\right)$ where $f_V : V_1 \rightarrow V_2$ and $f_E : E_1 \rightarrow E_2$ are total functions that preserve the source and target functions, i.e. $f_V \circ s_1 = s_2 \circ f_E$ and $f_V \circ t_1 = t_2 \circ f_E$.
 \end{definition}
 
 \begin{example}[Graph Morphisms]Figure~\ref{fig:gts:compact-graph-morphism} shows three morphisms $f : G_0 \rightarrow G_1$, $g : G_0 \rightarrow G_2$ and $h : G_0 \rightarrow G_3$, which are a monomorphism, an epimorphism and a isomorphism, respectively.
