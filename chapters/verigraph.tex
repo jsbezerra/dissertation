@@ -2,14 +2,66 @@
 
 Verigraph is a new tool for simulating and verifying graph grammars, implemented in the purely functional programming language Haskell\footnote{The source code is available at \url{https://github.com/Verites/verigraph}}. The tool was designed aiming to be used as both an implementation of standard constructions and analysis for graph grammars and a sandbox for new ideas and techniques in graph grammars and other category theory related topics~\cite{BezerraETMF2016,Costa2016,CostaETMF2016, Becker2014}.
 
-Regarding category theory, verigraph implements important basic constructions such as coequalizers, coproducts and colimits, pushout complements, initial pushouts, negative application conditions and constraints, among others.
+Regarding category theory, verigraph implements important basic constructions such as coequalizers, coproducts and colimits, pushout complements, initial pushouts, pullbacks, negative application conditions and constraints, among others.
 
 The implemented categorial constructions are used as basis to implement several graph grammar analyses, such as critical pair analysis~\cite{Lambers2006}, state space generation from graph grammars and model checking using computation tree logic~\cite{Becker2014}, concurrent rules generation~\cite{BezerraETMF2016}, higher-order graph transformations~\cite{Machado2015}. They were also used to implement the calculation of occurrence graph grammars, which will be explained in depth on
 chapter~\ref{ch:process} and used for test case generation on chapter~\ref{ch:tests}.
 
-The algorithms are implemented in a generic functional style, having the advantage of being implemented in a very close manner to the formal definitions, which makes it easier reason about them and to inspect for correctness. Moreover, it is easy to reuse the same algorithms for other categorial constructions, as long as they implement the contracts defined by the Type Classes (interfaces) defined on the system.
+The analyses algorithms are implemented in a generic functional style, having the advantage of being very close to the formal definitions, thus making it easier to reason about them and to inspect for correctness. Moreover, it is easy to reuse the same algorithms for other categories different than \cat{TGraph_T}, as long as they implement the contracts defined by the type classes (interfaces) defined on the system. Some examples of such type classes are show on
+Figures~\ref{fig:verigraph:morphism-type-class} and \ref{fig:verigraph:cocomplete-type-class}.
 
 There exist tools for analysing graph grammars which are similar to verigraph in some aspects, such as AGG~\cite{Taentzer2000} and GROOVE~\cite{Rensink2004}. However, to our knowledge, Verigraph is the only tool that integrates static and dynamic analyses, second-order specifications and provides support for new categorial constructions and algorithms, besides being the only tool in this field implemented in a pure functional language~\cite{Costa2016}.
+
+\section{Categorial Constructions}
+
+\begin{figure}[!ht]
+\caption{Morphism Type Class}
+\begin{minted}[linenos=true, breaklines,fontsize=\small]{haskell}
+class (Eq m) => Morphism m where
+    type Obj m :: *
+    compose  :: m -> m -> m
+    domain   :: m -> Obj m
+    codomain :: m -> Obj m
+    id       :: Obj m -> m
+    isMonomorphism :: m -> Bool
+    isEpimorphism :: m -> Bool
+    isIsomorphism :: m -> Bool
+\end{minted}
+\label{fig:verigraph:morphism-type-class}
+\end{figure}
+
+\begin{figure}[!ht]
+  \begin{minted}[linenos=true, breaklines, fontsize=\small]{haskell}
+class (Morphism m) => Cocomplete m where
+
+-- | Given two morphisms @/f : A -> B/@ and @/g : A -> B/@ retuns the coequalizer morphism
+-- @/h : B -> X/@
+calculateCoequalizer :: m -> m -> m
+
+-- | Given a non-empty list of morphisms of the form @/f : A -> B/@ returns the coequalizer Morphism
+-- @/h : B -> X/@
+calculateNCoequalizer :: NonEmpty m -> m
+
+-- | Given two objects @A@ and @B@ it returns the coproduct @(A+B, f: A -> A+B, g: B -> A+B)@
+calculateCoproduct :: Obj m -> Obj m -> (m,m)
+
+-- | Given a non-empty list of objects @Bi@ it returns the coproduct @fi : Bi -> SUM(Bi)@
+calculateNCoproduct :: NonEmpty (Obj m) -> [m]
+
+calculatePushout :: m -> m -> (m, m)
+calculatePushout f g = (f', g')
+  where
+    b = codomain f
+    c = codomain g
+    (b',c') = calculateCoproduct b c
+    gc' = compose g c'
+    fb' = compose f b'
+    h = calculateCoequalizer fb' gc'
+    g' = compose b' h
+    f' = compose c' h
+\end{minted}
+\caption{Cocomplete Type Class}\label{fig:verigraph:cocomplete-type-class}
+\end{figure}
 
 \section{Graph Grammar Constructions}
 
@@ -31,21 +83,6 @@ data Graph a b = Graph
 { nodeMap :: [(NodeId, Node a)]
 , edgeMap :: [(EdgeId, Edge b)]
 } deriving (Show, Read)
-\end{minted}
-\end{figure}
-
-\begin{figure}[!ht]
-\caption{Morphism Type Class}
-\begin{minted}[linenos=true, breaklines,fontsize=\small]{haskell}
-class (Eq m) => Morphism m where
-    type Obj m :: *
-    compose  :: m -> m -> m
-    domain   :: m -> Obj m
-    codomain :: m -> Obj m
-    id       :: Obj m -> m
-    isMonomorphism :: m -> Bool
-    isEpimorphism :: m -> Bool
-    isIsomorphism :: m -> Bool
 \end{minted}
 \end{figure}
 
@@ -99,37 +136,3 @@ isProduceUse p1 (m1',m2) = null h21
 \end{figure}
 
 
-\section{Categorial Constructions}
-
-\begin{figure}[!ht]
-  \begin{minted}[linenos=true, breaklines, fontsize=\small]{haskell}
-class (Morphism m) => Cocomplete m where
-
--- | Given two morphisms @/f : A -> B/@ and @/g : A -> B/@ retuns the coequalizer morphism
--- @/h : B -> X/@
-calculateCoequalizer :: m -> m -> m
-
--- | Given a non-empty list of morphisms of the form @/f : A -> B/@ returns the coequalizer Morphism
--- @/h : B -> X/@
-calculateNCoequalizer :: NonEmpty m -> m
-
--- | Given two objects @A@ and @B@ it returns the coproduct @(A+B, f: A -> A+B, g: B -> A+B)@
-calculateCoproduct :: Obj m -> Obj m -> (m,m)
-
--- | Given a non-empty list of objects @Bi@ it returns the coproduct @fi : Bi -> SUM(Bi)@
-calculateNCoproduct :: NonEmpty (Obj m) -> [m]
-
-calculatePushout :: m -> m -> (m, m)
-calculatePushout f g = (f', g')
-  where
-    b = codomain f
-    c = codomain g
-    (b',c') = calculateCoproduct b c
-    gc' = compose g c'
-    fb' = compose f b'
-    h = calculateCoequalizer fb' gc'
-    g' = compose b' h
-    f' = compose c' h
-\end{minted}
-\caption{Cocomplete Type Class}
-\end{figure}
