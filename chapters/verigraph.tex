@@ -7,12 +7,20 @@ Regarding category theory, verigraph implements important basic constructions su
 The implemented categorial constructions are used as basis to implement several graph grammar analyses, such as critical pair analysis~\cite{Lambers2006}, state space generation from graph grammars and model checking using computation tree logic~\cite{Becker2014}, concurrent rules generation~\cite{BezerraETMF2016}, higher-order graph transformations~\cite{Machado2015}. They were also used to implement the calculation of occurrence graph grammars, which will be explained in depth on
 chapter~\ref{ch:process} and used for test case generation on chapter~\ref{ch:tests}.
 
-The analyses algorithms are implemented in a generic functional style, having the advantage of being very close to the formal definitions, thus making it easier to reason about them and to inspect for correctness. Moreover, it is easy to reuse the same algorithms for other categories different than \cat{TGraph_T}, as long as they implement the contracts defined by the type classes (interfaces) defined on the system. Some examples of such type classes are show on
+The analyses algorithms are implemented in a generic functional style, having the advantage of being very close to the formal definitions, thus making it easier to reason about them and to inspect for correctness. In addition, verigraph benefits from a layered architecture (see Figure~\ref{fig:verigraph:layers} \tinytodo{update figure}) where it is easy to reuse the same algorithms for other categories different than \cat{TGraph_T}, as long as they implement the contracts defined by the type classes (interfaces) defined on the system. Some examples of such type classes are show on
 Figures~\ref{fig:verigraph:morphism-type-class} and \ref{fig:verigraph:cocomplete-type-class}.
+
+\begin{figure}[!ht]
+  \centering
+  \fbox{\includegraphics[scale=0.3]{images/verigraph/layers}}
+  \caption{Verigraph layers: Analyses Algorithms, Type Classes (Categorial Constructions) and Concrete Categories}\label{fig:verigraph:layers}
+\end{figure}
 
 There exist tools for analysing graph grammars which are similar to verigraph in some aspects, such as AGG~\cite{Taentzer2000} and GROOVE~\cite{Rensink2004}. However, to our knowledge, Verigraph is the only tool that integrates static and dynamic analyses, second-order specifications and provides support for new categorial constructions and algorithms, besides being the only tool in this field implemented in a pure functional language~\cite{Costa2016}.
 
 \section{Categorial Constructions}
+
+The first basic type class in Verigraph is the \code{Morphism}, shown in Figure~\ref{fig:verigraph:morphism-type-class}, which serve as the minimal contract for every Category to be implemented in the tool. Notice how the contract of this type class reflects the category definition (see Definition~\ref{def:category}).
 
 \begin{figure}[!ht]
 \caption{Morphism Type Class}
@@ -29,6 +37,12 @@ class (Eq m) => Morphism m where
 \end{minted}
 \label{fig:verigraph:morphism-type-class}
 \end{figure}
+
+All the other type classes are somehow defined in terms of the morphism one. For example, the \code{Cocomplete} type class shown in Figure~\ref{fig:verigraph:cocomplete-type-class} defines some of the basic categorial constructions used in verigraph, such as coequalizers and coproducts. 
+
+Also notice that any category that implements the functions \code{calculateCoequalizer} and \code{calculateCoproduct} automatically has a standard implementation of the \code{calculatePushout} function based only on this two constructions.
+
+Generally speaking, if a category has coequalizers and coproducts, we can calculate any (finite) colimit based only on this two constructions, as demonstrated in~\cite{Pierce1991}. 
 
 \begin{figure}[!ht]
   \begin{minted}[linenos=true, breaklines, fontsize=\small]{haskell}
@@ -62,6 +76,13 @@ calculatePushout f g = (f', g')
 \end{minted}
 \caption{Cocomplete Type Class}\label{fig:verigraph:cocomplete-type-class}
 \end{figure}
+
+Verigraph has several other important type classes, some examples are:
+\begin{itemize}
+  \item \code{FindMorphism} for finding morphisms between objects of a category;
+  \item \code{AdhesiveHLR} for operations that AdhesiveHLR categories, e.g. \cat{TGraph_T}, are guaranteed to have such as calculating initial pushouts and pushout complements;
+  \item \code{DPO} for operations related to DPO graph rewriting approach, such as inversion of rules.
+\end{itemize}
 
 \section{Graph Grammar Constructions}
 
