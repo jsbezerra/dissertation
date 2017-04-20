@@ -13,14 +13,14 @@ Figures~\ref{fig:verigraph:morphism-type-class} and \ref{fig:verigraph:cocomplet
 \begin{figure}[!ht]
   \centering
   \fbox{\includegraphics[scale=0.3]{images/verigraph/layers}}
-  \caption{Verigraph layers: Analyses Algorithms, Type Classes (Categorial Constructions) and Concrete Categories}\label{fig:verigraph:layers}
+  \caption{Verigraph layers: analyses algorithms (top layer), abstract categorial constructions (middle layer) and concrete categories (bottom layer).}\label{fig:verigraph:layers}
 \end{figure}
 
 There exist tools for analysing graph grammars which are similar to verigraph in some aspects, such as AGG~\cite{Taentzer2000} and GROOVE~\cite{Rensink2004}. However, to our knowledge, Verigraph is the only tool that integrates static and dynamic analyses, second-order specifications and provides support for new categorial constructions and algorithms, besides being the only tool in this field implemented in a pure functional language~\cite{Costa2016}.
 
 \section{Categorial Constructions}
 
-The first basic type class in Verigraph is the \code{Morphism}, shown in Figure~\ref{fig:verigraph:morphism-type-class}, which serve as the minimal contract for every Category to be implemented in the tool. Notice how the contract of this type class reflects the category definition (see Definition~\ref{def:category}).
+The first basic type class in Verigraph is \code{Morphism}, shown in Figure~\ref{fig:verigraph:morphism-type-class}, which serve as the minimal contract for every Category to be implemented in the tool. Notice how the contract of this type class reflects the category definition (see Definition~\ref{def:category}).
 
 \begin{figure}[!ht]
 \caption{Morphism Type Class}
@@ -38,17 +38,15 @@ class (Eq m) => Morphism m where
 \label{fig:verigraph:morphism-type-class}
 \end{figure}
 
-All the other type classes are somehow defined in terms of the morphism one. For example, the \code{Cocomplete} type class shown in Figure~\ref{fig:verigraph:cocomplete-type-class} defines some of the basic categorial constructions used in verigraph, such as coequalizers and coproducts. 
+All the other type classes related to category theory are somehow defined in terms of the \code{Morphism}. For example, the \code{Cocomplete} type class (shown in Figure~\ref{fig:verigraph:cocomplete-type-class}) defines some of the most basic categorial constructions used in verigraph, such as coequalizers and coproducts.
 
-Also notice that any category that implements the functions \code{calculateCoequalizer} and \code{calculateCoproduct} automatically has a standard implementation of the \code{calculatePushout} function based only on this two constructions.
-
-Generally speaking, whenever a category has coequalizers and coproducts, we can calculate any (finite) colimit based only on this two constructions, as demonstrated in~\cite{Pierce1991}.
+Notice that any category that implements the functions \code{calculateCoequalizer} and \code{calculateCoproduct} automatically has a standard implementation of the \code{calculatePushout} function based only on this two constructions. Furthermore, whenever a category has coequalizers and coproducts, it is possible to calculate any (finite) colimit based only on this two constructions, as demonstrated in~\cite{Pierce1991}.
 
 \begin{figure}[!ht]
   \begin{minted}[linenos=true, breaklines, fontsize=\small]{haskell}
 class (Morphism m) => Cocomplete m where
 
--- | Given two morphisms @/f : A -> B/@ and @/g : A -> B/@ retuns the coequalizer morphism
+-- | Given two morphisms @/f : A -> B/@ and @/g : A -> B/@ returns the coequalizer morphism
 -- @/h : B -> X/@
 calculateCoequalizer :: m -> m -> m
 
@@ -80,8 +78,16 @@ calculatePushout f g = (f', g')
 Verigraph has several other important type classes, some examples are:
 \begin{itemize}
   \item \code{FindMorphism} for finding morphisms between objects of a category;
-  \item \code{AdhesiveHLR} for operations that AdhesiveHLR categories, e.g. \cat{TGraph_T}, are guaranteed to have such as calculating initial pushouts and pushout complements;
+  \item \code{AdhesiveHLR} for operations that AdhesiveHLR categories (e.g. \cat{TGraph_T}) are guaranteed to have such as calculating initial pushouts and pushout complements;
   \item \code{DPO} for operations related to DPO graph rewriting approach, such as inversion of rules.
+\end{itemize}
+
+Currently, there are three categories implemented on Verigraph: 
+
+\begin{itemize}
+  \item \cat{Graph}: graphs as objects and graph morphisms as arrows; 
+  \item \cat{TGraph_T}: $T-$typed graphs as objects and $T-$typed graph morphisms as arrows; 
+  \item \cat{T-Span}: $T-$typed graph morphism spans as objects and span morphisms as arrows (e.g. DPO graph rules and rule morphisms, respectively).
 \end{itemize}
 
 \section{Graph Grammar Constructions}
@@ -133,6 +139,22 @@ data RuleMorphism a b = RuleMorphism
 , mappingInterface :: TypedGraphMorphism a b
 , mappingRight     :: TypedGraphMorphism a b
 } deriving (Eq, Show)
+\end{minted}
+\end{figure}
+
+\begin{figure}[!ht]
+\caption{Typed graph morphism implementation of the morphism type class.}
+\begin{minted}[linenos=true, breaklines,fontsize=\small]{haskell}
+instance Morphism (TypedGraphMorphism a b) where
+  type Obj (TypedGraphMorphism a b) = TypedGraph a b
+  domain = getDomain
+  codomain = getCodomain
+  compose t1 t2 = TypedGraphMorphism (domain t1) (codomain t2) $ compose (mapping t1) (mapping t2)
+  id t = TypedGraphMorphism t t (M.id $ domain t)
+  isMonomorphism = isMonomorphism . mapping
+  isEpimorphism = isEpimorphism . mapping
+  isIsomorphism = isIsomorphism . mapping
+
 \end{minted}
 \end{figure}
 
