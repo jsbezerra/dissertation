@@ -87,7 +87,7 @@ Currently, there are three categories implemented on Verigraph:
 \begin{itemize}
   \item \cat{Graph}: graphs as objects and graph morphisms as arrows; 
   \item \cat{TGraph_T}: $T-$typed graphs as objects and $T-$typed graph morphisms as arrows; 
-  \item \cat{T-Span}: $T-$typed graph morphism spans as objects and span morphisms as arrows (e.g. DPO graph rules and rule morphisms, respectively).
+  \item \cat{TSpan_T}: $T-$typed graph morphism spans as objects and span morphisms as arrows (e.g. DPO graph rules and morphisms between rules, respectively).
 \end{itemize}
 
 \section{Graph Grammar Constructions}
@@ -143,7 +143,7 @@ data RuleMorphism a b = RuleMorphism
 \end{figure}
 
 \begin{figure}[!ht]
-\caption{Typed graph morphism implementation of the morphism type class.}
+\caption{Typed graph morphism implementing morphism type class.}
 \begin{minted}[linenos=true, breaklines,fontsize=\small]{haskell}
 instance Morphism (TypedGraphMorphism a b) where
   type Obj (TypedGraphMorphism a b) = TypedGraph a b
@@ -178,4 +178,5 @@ isProduceUse p1 (m1',m2) = null h21
 \end{minted}
 \end{figure}
 
+\section{Analyses}
 
