@@ -357,7 +357,7 @@ Sometimes we will use the compact notation to make the figures smaller. Notice t
   A typed graph grammar is a pair $GG = \left(GTS,S\right)$ where $GTS$ is a typed graph transformation system and $S$ is a typed start graph.
 \end{definition}
 
-\begin{example}[Mail Server Graph Grammar] In the following, we describe graph grammar that models a client-server scenario for a very simple e-mail application. This system has only four actions: 
+\begin{example}[Mail Server] Fig~\ref{fig:gts:mail} \tinytodo{Draw type graph} depicts a graph transformation system that models a client-server scenario for a very simple e-mail application. This system has only four actions: 
   
 \begin{enumerate}
   \item \emph{sendMessage}: a client sends a message to a server,
@@ -365,8 +365,6 @@ Sometimes we will use the compact notation to make the figures smaller. Notice t
   \item \emph{receiveMessage}: a server sends a message to a client,
   \item \emph{deleteMessage}: a client obtains a piece of data from a received message and the message is destroyed.
 \end{enumerate}
-
-The rules for this grammar are depicted in Fig~\ref{fig:gts:mail}\tinytodo{Draw type graph}. 
 
 \begin{figure}[!ht]
   \centering
