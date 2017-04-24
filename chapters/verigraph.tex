@@ -1,6 +1,6 @@
 \chapter{Verigraph}\label{ch:verigraph}
 
-Verigraph is a new tool for simulating and verifying graph grammars, implemented in the purely functional programming language Haskell\footnote{The source code is available at \url{https://github.com/Verites/verigraph}}. The tool was designed aiming to be used as both an implementation of standard constructions and analysis for graph grammars and a sandbox for new ideas and techniques in graph grammars and other category theory related topics~\cite{BezerraETMF2016,Costa2016,CostaETMF2016, Becker2014}.
+Verigraph is a new tool for simulating and verifying graph grammars, implemented in the purely functional programming language Haskell\footnote{The source code is available at \url{https://github.com/Verites/verigraph}}. The tool is being developed by the Verites group\footnote{\url{http://www.ufrgs.br/verites}} and it was designed to serve both as an implementation of standard constructions and analysis for graph grammars and as a sandbox for new ideas and techniques in graph grammars and other category theory related topics~\cite{BezerraETMF2016,Costa2016,CostaETMF2016, Becker2014}.
 
 Regarding category theory, verigraph implements important basic constructions such as coequalizers, coproducts and colimits, pushout complements, initial pushouts, pullbacks, negative application conditions and constraints, among others.
 
@@ -20,7 +20,7 @@ There exist tools for analysing graph grammars which are similar to verigraph in
 
 \section{Categorial Constructions}
 
-The first basic type class in Verigraph is \code{Morphism}, shown in Figure~\ref{fig:verigraph:morphism-type-class}, which serve as the minimal contract for every Category to be implemented in the tool. Notice how the contract of this type class reflects the category definition (see Definition~\ref{def:category}).
+The first basic type class in Verigraph is \code{Morphism}, shown in Figure~\ref{fig:verigraph:morphism-type-class}, which serve as the minimal contract for any category to be implemented in the tool. Notice how the contract of this type class reflects the category definition (see Definition~\ref{def:category}).
 
 \begin{figure}[!ht]
 \caption{Morphism Type Class}
@@ -40,7 +40,7 @@ class (Eq m) => Morphism m where
 
 All the other type classes related to category theory are somehow defined in terms of the \code{Morphism}. For example, the \code{Cocomplete} type class (shown in Figure~\ref{fig:verigraph:cocomplete-type-class}) defines some of the most basic categorial constructions used in verigraph, such as coequalizers and coproducts.
 
-Notice that any category that implements the functions \code{calculateCoequalizer} and \code{calculateCoproduct} automatically has a standard implementation of the \code{calculatePushout} function based only on this two constructions. Furthermore, whenever a category has coequalizers and coproducts, it is possible to calculate any (finite) colimit based only on this two constructions, as demonstrated in~\cite{Pierce1991}.
+Moreover, any category that implements the functions \code{calculateCoequalizer} and \code{calculateCoproduct} automatically has a standard implementation of the \code{calculatePushout} function based only on this two constructions. Furthermore, whenever a category has coequalizers and coproducts, it is possible to calculate any (finite) colimit based only on this two constructions, as demonstrated in~\cite{Pierce1991}.
 
 \begin{figure}[!ht]
   \begin{minted}[linenos=true, breaklines, fontsize=\small]{haskell}
@@ -92,6 +92,10 @@ Currently, there are three categories implemented on Verigraph:
 
 \section{Graph Grammar Constructions}
 
+The main concrete structures in verigraph are (typed) graph grammars, which is currently the focus of the Verites group. 
+
+The basic \code{Graph} type consists of a list of nodes and a list of edges, and an API for graph manipulation with basic functions such as \code{insertNode}, \code{insertEdge}, \code{removeNode}, \code{removeEdge}, \code{incomingEdges}, \code{outgoinEdges}, \code{sourceOf}, \code{targetOf}, among others. The \code{Graph} implementation is show in Figure~\ref{fig:verigraph:graph}.
+
 \begin{figure}[!ht]
 
 \caption{Graph implementation}
@@ -111,10 +115,17 @@ data Graph a b = Graph
 , edgeMap :: [(EdgeId, Edge b)]
 } deriving (Show, Read)
 \end{minted}
+\label{fig:verigraph:graph}
 \end{figure}
 
+Using \code{Graph} we can be build the morphisms necessary to implement the categories \cat{Graph}, \cat{TGraph_T} and \cat{TSpan_T}. A graph morphism consists of a graph as domain, a graph as codomain and relations that map the nodes and edges in the domain graph to the ones in the codomain one. Similarly, a typed graph morphism consists of a typed graph as domain, a typed graph as codomain and a graph morphism relating the two of them.
+
+Figure~\ref{fig:verigraph:concrete-morphisms} shows all concrete morphism types currently implemented in verigraph. Moreover, all concrete morphisms presented implement the \code{Morphism} type class. Figure~\ref{fig:verigraph:morphism-implementation} shows how \code{TypedGraphMorphism} implements \code{Morphism} type class in order to provide the \cat{TGraph_T} category.
+
+Similar implementations were done for \code{GraphMorphism} and \code{RuleMorphism}.
+
 \begin{figure}[!ht]
-\caption{Different Implementations of the Morphism Type Class}
+\caption{Basic concrete morphisms of verigraph.}
 \begin{minted}[linenos=true, breaklines,fontsize=\small]{haskell}
 data GraphMorphism a b = GraphMorphism 
 { getDomain    :: Graph a b
@@ -123,7 +134,7 @@ data GraphMorphism a b = GraphMorphism
 , edgeRelation :: R.Relation G.EdgeId
 } deriving (Eq, Show)
 
--- | A typed graph is a morphism whose codomain is the type graph.
+-- | A typed graph is a graph morphism whose codomain is the type graph.
 type TypedGraph a b = GraphMorphism a b
 
 data TypedGraphMorphism a b = TypedGraphMorphism 
@@ -140,6 +151,7 @@ data RuleMorphism a b = RuleMorphism
 , mappingRight     :: TypedGraphMorphism a b
 } deriving (Eq, Show)
 \end{minted}
+\label{fig:verigraph:concrete-morphisms}
 \end{figure}
 
 \begin{figure}[!ht]
@@ -156,27 +168,32 @@ instance Morphism (TypedGraphMorphism a b) where
   isIsomorphism = isIsomorphism . mapping
 
 \end{minted}
+\label{fig:verigraph:morphism-implementation}
 \end{figure}
+
+\section{Analyses}
+
+Notice how the algorithms depicted in Figure~\ref{fig:verigraph:delete-use-produce-use} resembles the definitions of delete-use conflict (Definition~\ref{def:classic-conflict}) and produce-use dependency (Definition~\ref{def:classic-dependency}).
 
 \begin{figure}[!ht]
 \caption{Delete-Use and Produce-Use Implementation}
 \begin{minted}[linenos=true, breaklines,fontsize=\small]{haskell}
 -- | Rule @p1@ is in a delete-use conflict with @p2@ if @p1@ deletes something that is used by @p2@. This function verifies the non existence of h21: L2 -> D1 such that d1 . h21 = m2
-isDeleteUse :: DPO m => Production m -> (m, m) -> Bool
+isDeleteUse :: (DPO m) => Production m -> (m, m) -> Bool
 isDeleteUse p1 (m1,m2) = null h21
   where
     --gets only the morphism d1 from D1 to G
     (_,d1) = calculatePushoutComplement m1 (getLHS p1) 
     h21 = findAllPossibleH21 m2 d1
 
-isProduceUse :: DPO m => Production m -> (m, m) -> Bool
+isProduceUse :: (DPO m) => Production m -> (m, m) -> Bool
 isProduceUse p1 (m1',m2) = null h21
   where
    --gets only the morphism d1 from D1 to G
    (_,e1) = calculatePushoutComplement m1' (getRHS p1)
    h21 = findAllPossibleH21 m2 e1
 \end{minted}
+\label{fig:verigraph:delete-use-produce-use}
 \end{figure}
 
-\section{Analyses}
 
