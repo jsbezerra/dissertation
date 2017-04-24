@@ -357,6 +357,50 @@ Sometimes we will use the compact notation to make the figures smaller. Notice t
   A typed graph grammar is a pair $GG = \left(GTS,S\right)$ where $GTS$ is a typed graph transformation system and $S$ is a typed start graph.
 \end{definition}
 
+\begin{example}[Mail Server Graph Grammar] In the following, we describe graph grammar that models a client-server scenario for a very simple e-mail application. This system has only four actions: 
+  
+\begin{enumerate}
+  \item \emph{sendMessage}: a client sends a message to a server,
+  \item \emph{getData}: a piece of data is obtained from a server,
+  \item \emph{receiveMessage}: a server sends a message to a client,
+  \item \emph{deleteMessage}: a client obtains a piece of data from a received message and the message is destroyed.
+\end{enumerate}
+
+The rules for this grammar are depicted in Fig~\ref{fig:gts:mail}\tinytodo{Draw type graph}. 
+
+\begin{figure}[!ht]
+  \centering
+  \begin{subfigure}[t]{.5\textwidth}
+    \centerline{\fbox{\includegraphics[scale=0.3]{gts/grammar/sendMessage}}}
+    \caption{Send message}
+  \end{subfigure}%
+  \begin{subfigure}[t]{.5\textwidth}
+    \centerline{\fbox{\includegraphics[scale=0.3]{gts/grammar/getData}}}
+    \caption{Get data}
+  \end{subfigure}
+  \begin{subfigure}[t]{.5\textwidth}
+    \centerline{\fbox{\includegraphics[scale=0.3]{gts/grammar/receiveMessage}}}
+    \caption{Receive message}
+  \end{subfigure}%
+  \begin{subfigure}[t]{.5\textwidth}
+    \centerline{\fbox{\includegraphics[scale=0.3]{gts/grammar/deleteMessage}}}
+    \caption{Delete message}
+  \end{subfigure}
+  \caption{Mail application graph grammar}\label{fig:gts:mail}
+\end{figure}
+
+\iffalse
+\begin{figure}
+\centering
+\includegraphics[width=6.5cm]{gts/grammar/sendMessage}
+\includegraphics[width=5cm]{gts/grammar/getData}
+\includegraphics[width=5cm]{gts/grammar/receiveMessage}
+\includegraphics[width=5cm]{gts/grammar/deleteMessage}
+\caption{\label{fig:gts:mail} Graph rules for Server}
+\end{figure}
+\fi
+\end{example}
+
 \section{Parallel and Sequential Independence}
 
 One of the characteristics that make Graph Transformation Systems and Graph Grammars suitable formalisms to model and reason about parallel and/or concurrent systems is the possibility to check whether two graph rules (or two graph transformations) can be applied together at the same time (parallel independence) or in any interchangeable order (sequential independence).
