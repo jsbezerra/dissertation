@@ -6,7 +6,7 @@ Category theory is a powerful mathematical framework, defined by~\cite{Eilenberg
 
 Categories are particularly useful in Computer Science, having several applications such as design of programming languages, implementation techniques, semantic models, concurrency models, type theory, among others~\cite{Pierce1991}.
 
-Category theory is also the basis for graph transformation systems, which is central to the work proposed in this thesis. Therefore, we present a brief introduction of the field and the basic categorial constructions that will be necessary in this work.
+Category theory is also the basis for graph transformation systems, which is central to the work proposed in this thesis. Therefore, we present a brief introduction of the field and basic categorial constructions that will be necessary in this work.
 
 \begin{definition}[Category]\label{def:category} A category \cat{C} consists of a collection of \emph{objects} and a collection of \emph{arrows} between objects (also called \emph{morphisms}) such that:
 
@@ -22,10 +22,21 @@ $h : C \rightarrow D$, with objects $A,B,C,D$ not necessarily distinct, the comp
 
 \end{definition}
 
-\begin{example}[Category Examples] \tinytodo{Use set examples and cite some others}
+\begin{example}[Category of Sets] \cat{Set} is the category whose objects are \emph{sets} and the arrows and the arrows are \emph{total functions} between sets.
+
+  The proof follows form the fact that: \tinytodo{review proof} 
+
+\begin{enumerate}
+  \item given any sets $A,B,C,D$, for all total functions $f : A \rightarrow B$, $g : B \rightarrow C$ and $h : C \rightarrow D$ we have that $h \circ (g \circ f) = (h \circ g) \circ f$;
+
+  \item given any sets $A$ and $B$, there exist \emph{identity} functions $id_A : A \rightarrow A$ such that for any function $f : A \rightarrow B$ such that $id_B \circ f = f$ and $f \circ id_A = f$.
+\end{enumerate}
 \end{example}
 
-\begin{definition}[Diagram] Given a category \cat{C}, a diagram in \cat{C} is a collection of vertices and directed edges such that, if an edge in the diagram is named with an arrow $f$ and $f$ has domain $A$ and codomain $B$, then the outgoing vertice of the edge must be named $A$ and the incoming vertice $B$.
+\begin{example}[Category of Graphs] \cat{Graph} is the category whose objects are graphs and the arrows are \emph{total graph homomorphisms}, i.e. graphs morphisms that preserve sources and targets of edges (see Definitions~\ref{def:graph} and~\ref{def:graph-morphism}). \tinytodo{Put proof or remove it.}
+\end{example}
+
+\begin{definition}[Diagram] Given a category \cat{C}, a diagram in \cat{C} is a collection of vertices and directed edges such that, if an edge in the diagram is named with an arrow $f$ and $f$ has domain $A$ and codomain $B$, then the outgoing vertex of the edge must be named $A$ and the incoming vertex $B$.
 
   A diagram is said to \emph{commute} if, for every pair of objects $A,B$, all the paths in the diagram from $A$ to $B$ are equal. In other words, each path in the diagram determines an arrow and these arrows are equal in \cat{C}. To say that the diagram bellow commutes is equal to say that \mbox{$g' \circ f = f' \circ g$}.
 
@@ -56,7 +67,12 @@ $h : C \rightarrow D$, with objects $A,B,C,D$ not necessarily distinct, the comp
 }
 \end{definition}
 
-\begin{example}[Monorphism, Epimorphism and Isomorphism Examples]
+\begin{example}[Monomorphism, Epimorphism and Isomorphism Examples]
+
+  In \cat{Set}, the monomorphism, epimorphism and isomorphism concepts correspond to injective, surjective and bijective functions, respectively.\tinytodo{put examples}
+
+  In \cat{Graph}\ldots \tinytodo{put examples}
+
 \end{example}
 
 
@@ -150,7 +166,7 @@ Graph grammars have a wide application in computer science, not only because gra
 
 \end{definition}
 
-\begin{example}[Graph] Figure~\ref{fig:gts:graph} shows a simple graph $G$ with $V = \{1,2,3,4\}$, $E = \{1,2\}$, $s =\{(1,1),(2,3)\}$ and $t = \{(1,2),(2,3)\}$.
+\begin{example}[Graph]\label{def:graph} Figure~\ref{fig:gts:graph} shows a simple graph $G$ with $V = \{1,2,3,4\}$, $E = \{1,2\}$, $s =\{(1,1),(2,3)\}$ and $t = \{(1,2),(2,3)\}$.
 \begin{figure}[!ht]
   \centering
   \includegraphics[scale=0.8]{images/gts/graph}
@@ -158,7 +174,7 @@ Graph grammars have a wide application in computer science, not only because gra
 \end{figure}
 \end{example}
 
-\begin{definition}[Graph Morphism] Given two graphs $G_1,G_2$ with $G_i = \left(V_i, E_i, s_i, t_i\right)$ for $i$ in $[1,2]$, a graph morphism $f : G_1 \rightarrow G_2$ between them is a pair $f = \left(f_V,f_E\right)$ where $f_V : V_1 \rightarrow V_2$ and $f_E : E_1 \rightarrow E_2$ are total functions that preserve the source and target functions, i.e. $f_V \circ s_1 = s_2 \circ f_E$ and $f_V \circ t_1 = t_2 \circ f_E$.
+\begin{definition}[Graph Morphism]\label{def:graph-morphism} Given two graphs $G_1,G_2$ with $G_i = \left(V_i, E_i, s_i, t_i\right)$ for $i$ in $[1,2]$, a graph morphism $f : G_1 \rightarrow G_2$ between them is a pair $f = \left(f_V,f_E\right)$ where $f_V : V_1 \rightarrow V_2$ and $f_E : E_1 \rightarrow E_2$ are total functions that preserve the source and target functions, i.e. $f_V \circ s_1 = s_2 \circ f_E$ and $f_V \circ t_1 = t_2 \circ f_E$.
 \end{definition}
 
 \begin{example}[Graph Morphisms]Figure~\ref{fig:gts:compact-graph-morphism} shows three morphisms $f : G_0 \rightarrow G_1$, $g : G_0 \rightarrow G_2$ and $h : G_0 \rightarrow G_3$, which are a monomorphism, an epimorphism and a isomorphism, respectively.
