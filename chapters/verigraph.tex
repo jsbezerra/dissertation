@@ -38,9 +38,13 @@ class (Eq m) => Morphism m where
 \label{fig:verigraph:morphism-type-class}
 \end{figure}
 
-All the other type classes related to category theory are somehow defined in terms of the \code{Morphism}. For example, the \code{Cocomplete} type class, shown in Figure~\ref{fig:verigraph:cocomplete-type-class}, defines some of the most basic categorial constructions used in verigraph, such as coequalizers and coproducts.
+All the other type classes related to category theory are somehow defined in terms of the \code{Morphism}. For example, the \code{Cocomplete} type class, shown in Figure~\ref{fig:verigraph:cocomplete-type-class}, defines some of the most basic categorial constructions used in verigraph, such as coequalizers, coproducts and pushouts.
 
-Any category that implements the functions \code{calculateCoequalizer} and \code{calculateCoproduct} automatically has a standard implementation of the \code{calculatePushout} function based only on this two constructions. Moreover, whenever a category has coequalizers and coproducts, it is possible to calculate any (finite) colimit based only on this two constructions, as demonstrated in~\cite{Pierce1991}.
+Any category that implements the functions \code{calculateCoequalizer} and \code{calculateCoproduct} automatically has a standard implementation of the \code{calculatePushout} function based only on this two constructions. Besides having pushouts, whenever a category has coequalizers and coproducts, it is possible to calculate any (finite) colimit based only on this two constructions, as demonstrated in~\cite{Pierce1991}.
+
+We took advantage of this result to implement the calculation of the \code{colimit} of a diagram in terms of those basic operations, which will be necessary for our work as demonstrated in chapters~\ref{ch:process} and~\ref{ch:tests}.
+
+Another interesting characteristic of \code{Morphism} type class is that, even though \code{pushouts} and \code{colimits} are implemented in terms of \code{coproducts} and \code{coequalizers}, the programmer can override the default implementation and provide her/his own (categorial specific) implementation. For example, this could be useful when, given category \cat{C}, there is a method to calculate this constructions in a more optimized way than using the composition of the basic operations.
 
 \begin{figure}[!ht]
   \begin{minted}[linenos=true, breaklines, fontsize=\small]{haskell}
@@ -75,7 +79,7 @@ calculatePushout f g = (f', g')
 \caption{Cocomplete Type Class}\label{fig:verigraph:cocomplete-type-class}
 \end{figure}
 
-Verigraph has several other important type classes, some examples are:
+In addition to \code{Morphism}, verigraph has several other important type classes, some examples are:
 \begin{itemize}
   \item \code{FindMorphism} for finding morphisms between objects of a category;
   \item \code{AdhesiveHLR} for operations that AdhesiveHLR categories (e.g. \cat{TGraph_T}) are guaranteed to have such as calculating initial pushouts and pushout complements;
