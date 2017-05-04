@@ -41,9 +41,15 @@ Given a graph grammar \graphGrammar{} modelling a system $X$ with $n > 0$ functi
 
 Together with the grammar $GG$ and its subsets of functionalities $F_i$, we will also need an \emph{input-output relation} $IO_i$ for each $F_i$, specifying the connections between the rules in $F_i$. This \emph{input-output relation} specifies which elements (nodes and edges) must be the same among the rules, as shown in example~\ref{ex:inout}.
 
-\begin{example}[Input-Output Relations]\label{ex:inout}
+\begin{example}[Input-Output Relations]\label{ex:inout} In the
 
 
+\diagram{
+  & & & & IO_6\ar@{-->}[dddrrrr]\ar@{-->}[dddllll] & & & & &\\
+  & IO_3\ar@{-->}[ddl]\ar@{-->}[ddrrrr] & & & & & & IO_4\ar@{-->}[ddr]\ar@{-->}[ddllll] & &\\
+  & & IO_1\ar@{-->}[d]\ar@{-->}[dr] & & IO_5\ar@{-->}[drr]\ar@{-->}[dll] & & IO_2\ar@{-->}[d]\ar@{-->}[dl] & & & \\
+  L_1 & K_1\ar[l]\ar[r] & R_1 & L_2 & K_2\ar[l]\ar[r] & R_2 & L_3 & K_3\ar[l]\ar[r] & R_3 & \\
+}
 \begin{figure}[!ht]
   \centering
   \fbox{\includegraphics[scale=0.7]{images/generating-tests/inout}}
