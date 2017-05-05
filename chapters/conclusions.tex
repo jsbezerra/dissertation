@@ -18,18 +18,24 @@ and collateral contributions:
 
 \begin{itemize}
   %\item Investigate Conflicts, Dependencies and Local Church-Rosser with Graph Constraints
+  \item other basic categorial operations and type classes (e.g. \code{Complete}, \code{equalizer, product, pullback, limits}
+  \item investigate approaches other than DPO?
   \item NACs over concrete elements of the core graph and not only over the type graph. 
   \item Investigate whether there are a better algorithm than backtracking to compute occurrence relations
-  \item GUI for presenting Doubly-Typed Graph Grammars
 
 \end{itemize}
 
   To this point, it is not clear to us what is the complexity of an algorithm to find (or to check if it is possible to find) a total ordering of actions of a strongly safe grammar that respects both the occurrence relation and arbitrary abstract restrictions.
 
-  Although for our practical applications so far it is unlikely that the strongly safe grammars have any restriction at all, given that grammars generated from use cases usually have an existential relation that will avoid this problem, it is not difficult to come up with other applications and grammars where this situation happens.
+  Although for our practical applications so far it is unlikely that the strongly safe grammars have any restrictions at all, given that grammars generated from use cases usually have an existential relation that will avoid this problem, it is not difficult to come up with other applications and grammars where this situation happens.
 
-  Therefore, more study is necessary in which 
+  Therefore, more study is necessary in which in regarding this aspect, specifically, we want to be sure whether it is possible to find total orderings for arbitrary strongly safe graph grammars or at least under which conditions (besides an empty set of abstract restrictions) would it still be feasible. After that, we will know if this process is suitable to generate tests for grammars the model arbitrary systems, not only those described by use cases.
 
  The entire process of calculating the occurrence graph grammars and the later generation of test cases depends on all the NACs of the input grammar being incremental. Despite incremental NACs being sufficient for most applications and that our case studies only used grammars which respect this restriction, there may be cases where it is needed to use grammars with general NACs.
 
   Verigraph current implementation assumes the input grammars have incremental NACs only, therefore it remains as a future work to implement the algorithm that compiles arbitrary NACs to incremental ones and use it as a previous step to our main work.
+
+  Regarding input and output, verigraph does not have an operational graphical user interface yet, using the AGG tool and its \code{.ggx} file format for providing this operations. However, AGG does not support doubly-typed graph grammars nor NACs under this framework, thus the graphical visualization of the output of the test generation process is not completely possible, which makes the development of a GUI dedicated to verigraph a necessary step to address this issue\footnote{the development
+  of a responsive, dedicated GUI is currently one of the main focus of the verites group}.
+
+  Translation of the generated test cases into code.
