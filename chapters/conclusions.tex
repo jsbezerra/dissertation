@@ -14,28 +14,37 @@ and collateral contributions:
 
     Furthermore, verigraph is a free and open source tool, publicly available at github. Thus, we expect that any users in the community of graph grammars and category theory in general can find and use it, besides making suggestions and even implementing new features according to their specific needs.
 
-\section{Future Work}
+\section{Open Questions and Future Work}
 
-\begin{itemize}
+Although our main objectives were accomplished during the work of this thesis, there are several other open paths that could (should) be investigated. 
+
+%\begin{itemize}
   %\item Investigate Conflicts, Dependencies and Local Church-Rosser with Graph Constraints
-  \item other basic categorial operations and type classes (e.g. \code{Complete}, \code{equalizer, product, pullback, limits}
-  \item investigate approaches other than DPO?
-  \item NACs over concrete elements of the core graph and not only over the type graph. 
-  \item Investigate whether there are a better algorithm than backtracking to compute occurrence relations
+  %\item Investigate whether there are a better algorithm than backtracking to compute occurrence relations
 
-\end{itemize}
+%\end{itemize}
 
-  To this point, it is not clear to us what is the complexity of an algorithm to find (or to check if it is possible to find) a total ordering of actions of a strongly safe grammar that respects both the occurrence relation and arbitrary abstract restrictions.
+\textbf{Basic categorial operations:} and type classes (e.g. \code{Complete}, \code{equalizer, product, pullback, limits}.
 
-  Although for our practical applications so far it is unlikely that the strongly safe grammars have any restrictions at all, given that grammars generated from use cases usually have an existential relation that will avoid this problem, it is not difficult to come up with other applications and grammars where this situation happens.
+\textbf{Complexity:} To this point, it is not clear to us what is the complexity of an algorithm to find (or to check if it is possible to find) a total ordering of actions of a strongly safe grammar that respects both the concrete occurrence relation and arbitrary abstract restrictions.
+
+  Although for our practical applications so far it is unlikely that the strongly safe grammars have many restrictions (or nay restrictions at all), given that grammars generated from use cases usually have an existential relation that will avoid this problem, it is not difficult to come up with other applications and grammars where this situation happens.
 
   Therefore, more study is necessary in which in regarding this aspect, specifically, we want to be sure whether it is possible to find total orderings for arbitrary strongly safe graph grammars or at least under which conditions (besides an empty set of abstract restrictions) would it still be feasible. After that, we will know if this process is suitable to generate tests for grammars the model arbitrary systems, not only those described by use cases.
 
- The entire process of calculating the occurrence graph grammars and the later generation of test cases depends on all the NACs of the input grammar being incremental. Despite incremental NACs being sufficient for most applications and that our case studies only used grammars which respect this restriction, there may be cases where it is needed to use grammars with general NACs.
+\textbf{Incremental NACs:} The entire process of calculating the occurrence graph grammars and the later generation of test cases depends on all the NACs of the input grammar being incremental. Despite incremental NACs being sufficient for most applications and that our case studies only used grammars which respect this restriction, there may be cases where it is needed to use grammars with general NACs.
 
   Verigraph current implementation assumes the input grammars have incremental NACs only, therefore it remains as a future work to implement the algorithm that compiles arbitrary NACs to incremental ones and use it as a previous step to our main work.
 
-  Regarding input and output, verigraph does not have an operational graphical user interface yet, using the AGG tool and its \code{.ggx} file format for providing this operations. However, AGG does not support doubly-typed graph grammars nor NACs under this framework, thus the graphical visualization of the output of the test generation process is not completely possible, which makes the development of a GUI dedicated to verigraph a necessary step to address this issue\footnote{the development
+\textbf{NACs in strongly safe grammars:}
+
+\textbf{Different graph rewriting approaches:}
+
+\textbf{Interface:} Regarding input and output, verigraph does not have an operational graphical user interface yet (GUI), using the AGG tool and its \code{.ggx} file format for providing this operations. However, AGG does not support doubly-typed graph grammars nor NACs under this framework, thus the graphical visualization of the output of the test generation process is not completely possible, which makes the development of a GUI dedicated to verigraph a necessary step to address this issue\footnote{the development
   of a responsive, dedicated GUI is currently one of the main focus of the verites group}.
 
-  Translation of the generated test cases into code.
+\textbf{Interactive test case generation:} With respect to the test case generation, the GUI will also be helpful to the guided generation of different cases, where the user can interactively guide the system to create other sequences of rule applications and automatically test whether they are a valid execution path\tinytodo{elaborate}.
+
+
+\textbf{Automated source code generation:}
+  Finally, the generation of test cases is done in a textual manner, thus leaving to the test engineer \tinytodo{analyst?} the responsibility of translating it into real source code. A very interesting research would be how to translate it directly to source code of specific programming languages and/or test frameworks.
