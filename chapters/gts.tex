@@ -22,9 +22,7 @@ $h : C \rightarrow D$, with objects $A,B,C,D$ not necessarily distinct, the comp
 
 \end{definition}
 
-\begin{example}[Category of Sets] \cat{Set} is the category whose objects are \emph{sets} and the arrows and the arrows are \emph{total functions} between sets.
-
-  The proof follows form the fact that: \tinytodo{review proof} 
+\begin{example}[Category of Sets] \cat{Set} is the category whose objects are \emph{sets} and the arrows and the arrows are \emph{total functions} between sets. The proof follows form the fact that:
 
 \begin{enumerate}
   \item given any sets $A,B,C,D$, for all total functions $f : A \rightarrow B$, $g : B \rightarrow C$ and $h : C \rightarrow D$ we have that $h \circ (g \circ f) = (h \circ g) \circ f$;
@@ -33,12 +31,12 @@ $h : C \rightarrow D$, with objects $A,B,C,D$ not necessarily distinct, the comp
 \end{enumerate}
 \end{example}
 
-\begin{example}[Category of Graphs] \cat{Graph} is the category whose objects are graphs and the arrows are \emph{total graph homomorphisms}, i.e. graphs morphisms that preserve sources and targets of edges (see Definitions~\ref{def:graph} and~\ref{def:graph-morphism}). \tinytodo{Put proof or remove it.}
-\end{example}
+%\begin{example}[Category of Graphs] \cat{Graph} is the category whose objects are graphs and the arrows are \emph{total graph homomorphisms}, i.e. graphs morphisms that preserve sources and targets of edges (see Definitions~\ref{def:graph} and~\ref{def:graph-morphism}). \tinytodo{Put proof or remove it.}
+%\end{example}
 
 \begin{definition}[Diagram] Given a category \cat{C}, a diagram in \cat{C} is a collection of vertices and directed edges such that, if an edge in the diagram is named with an arrow $f$ and $f$ has domain $A$ and codomain $B$, then the outgoing vertex of the edge must be named $A$ and the incoming vertex $B$.
 
-  A diagram is said to \emph{commute} if, for every pair of objects $A,B$, all the paths in the diagram from $A$ to $B$ are equal. In other words, each path in the diagram determines an arrow and these arrows are equal in \cat{C}. To say that the diagram bellow commutes is equal to say that \mbox{$g' \circ f = f' \circ g$}.
+  A diagram is said to \emph{commute} if, for every pair of objects $A,B$, all the paths in the diagram from $A$ to $B$ are equal. In other words, each path in the diagram determines an arrow and these arrows are equal in \cat{C}. If the following diagram commutes than we can say that \mbox{$g' \circ f = f' \circ g$}.
 
 \diagram{
   A\ar[r]^{f}\ar[d]_{g} & Y\ar[d]^{g'}\\
@@ -71,28 +69,26 @@ $h : C \rightarrow D$, with objects $A,B,C,D$ not necessarily distinct, the comp
 
   In \cat{Set}, the monomorphism, epimorphism and isomorphism concepts correspond to injective, surjective and bijective functions, respectively.\tinytodo{put examples}
 
-  In \cat{Graph}\ldots \tinytodo{put examples}
-
 \end{example}
 
 
 \subsection{Categorial Constructions}
 
-Here we present basic categorial constructions that are used throughout in this work. Notice that this is not an extensive list, we present only the ones necessary to our scope. For a more in-depth explanation of Categories and their applications in Computer Science see~\cite{Pierce1991}.\tinytodo{Give an intuitive notion of the constructions before defining it?}
+Here we present basic categorial constructions that are used throughout in this work. Notice that this is not an extensive list, we present only the constructions necessary to our scope. For a more in-depth explanation of Category Theory and its application in Computer Science refer to~\cite{Pierce1991}.
 
-\begin{definition}[Coproduct] Given two objects $A$ and $B$, their \emph{coproduct} (also called \emph{categorical sum}) is an object $A+B$ and two injection arrows \tinytodo{define injections?} \morph{i_1}{A}{A+B} and \morph{i_2}{B}{A+B} such that, for any other object $C$ an pair of arrows \morph{f}{A}{C} and \morph{g}{B}{C} there is one unique arrow \morph{!}{A+B}{C} such that the following diagram commutes:
+\begin{definition}[Coproduct] Given two objects $A$ and $B$, their \emph{coproduct} (also called \emph{categorical sum}) is an object $A+B$ and two injection arrows \morph{i_1}{A}{A+B} and \morph{i_2}{B}{A+B} such that, for any other object $C$ an pair of arrows \morph{f}{A}{C} and \morph{g}{B}{C} there is one unique arrow \morph{!}{A+B}{C} such that the following diagram commutes:
 
 \diagram{
   A\ar[r]^{i_1}\ar[dr]_{f} & A+B\ar@{.>}[d]^{!} & B\ar[l]_{i_2}\ar[dl]^{g}\\
     & C   &
 }
 
-  \begin{example}[Coproducts in \cat{Set}] In the category \cat{Set}, the coproduct construction generalizes the notion of disjoint union. \tinytodo{draw example}
+\end{definition}
 
-    It also generalizes the notion of disjoint union in the category \cat{Graph}. \tinytodo{draw examples}
+\begin{example}[Coproducts in \cat{Set}] Coproducts can be used to generalize the notion of disjoint union. Particularly, in \cat{Set} we have:\tinytodo{draw example}
+
 \end{example}
 
-\end{definition}
 
 \begin{definition}[Coequalizer] Given two objects $A$ and $B$ with two parallel morphisms \morph{f}{A}{B} \morph{g}{A}{B}, the coequalizer of the diagram is an object $X$ together with a morphism \morph{h}{B}{X} such that \mbox{$h \circ f = h \circ g$} and, for any other such objects $X'$ with a morphism $h'$, there is a unique morphism \morph{!}{X}{X'} such that the following diagram commutes.
 
@@ -102,7 +98,7 @@ Here we present basic categorial constructions that are used throughout in this 
 }
 \end{definition}
 
-\begin{example}[Coequalizers in \cat{Set}] In the categories \cat{Set} and \cat{Graph} ,the coequalizer generalizes the notion of smallest equivalence relation. \tinytodo{draw examples}.
+\begin{example}[Coequalizers in \cat{Set}] Coequalizers generalize the notion of smallest equivalence relation. In \cat{Set} \tinytodo{draw examples}.
 \end{example}
 
 \begin{definition}[Pushout] Given a span of arrows \mbox{$B \xleftarrow{f} A \xrightarrow{g} C$}, its \emph{pushout} is an object $X$ together with a pair of arrows \morph{f'}{C}{X} and \morph{g'}{B}{X} such that (1) \mbox{$f' \circ g = g' \circ f$} and (2) for any other object $X'$ with morphisms \morph{i}{B}{X'} and \morph{j}{C}{X'} such that $i \circ f = j \circ g$ there is a unique morphism \morph{!}{X}{X'} such that \mbox{$i =$ $! \circ g'$} and \mbox{$j =$ $! \circ f'$}.
