@@ -156,7 +156,9 @@ Here we present basic categorial constructions that are used throughout in this 
 
 The theory of graph grammars and graph transformation systems is based on the application of rules that are able to modify graphs. Using this framework, it is possible to model complex systems as graph transformation systems, where graphs represent the system states and the rules model transitions between states.\tinytodo{talk about connection um M-Adhesive categories.}
 
-Graph grammars have a wide application in computer science, not only because graphs are very natural and intuitive way to model complex situations, but also because it is possible to reason about several properties of the modelled systems using the its formalism~\cite{Ehrig2006,Rozenberg1997}.
+Graph grammars have a wide application in computer science, not only because graphs are very natural and intuitive way to model complex situations, but also because it is possible to reason about several properties of the modelled systems using its formalism~\cite{Ehrig2006,Rozenberg1997}.
+
+We now review the basic concepts and analysis techniques for graph transformations that are used in this work.
 
 \begin{definition}[Graph] A graph is a tuple $G = \left(V,E,s,t\right)$ where: $V$ is a set of nodes, $E$ is a set of Edges and $s,t : E \rightarrow V$ are two total functions that map each edge in $E$ to its source and target in $V$.
 
@@ -170,14 +172,14 @@ Graph grammars have a wide application in computer science, not only because gra
 \end{figure}
 \end{example}
 
-\begin{definition}[Graph Morphism]\label{def:graph-morphism} Given two graphs $G_1,G_2$ with $G_i = \left(V_i, E_i, s_i, t_i\right)$ for $i$ in $[1,2]$, a graph morphism $f : G_1 \rightarrow G_2$ between them is a pair $f = \left(f_V,f_E\right)$ where $f_V : V_1 \rightarrow V_2$ and $f_E : E_1 \rightarrow E_2$ are total functions that preserve the source and target functions, i.e. $f_V \circ s_1 = s_2 \circ f_E$ and $f_V \circ t_1 = t_2 \circ f_E$.
+\begin{definition}[Graph Morphism]\label{def:graph-morphism} Given two graphs $G_1,G_2$ with \mbox{$G_i = \left(V_i, E_i, s_i, t_i\right)$} for $i$ in $[1,2]$, a graph morphism $f : G_1 \rightarrow G_2$ between them is a pair $f = \left(f_V,f_E\right)$ where $f_V : V_1 \rightarrow V_2$ and $f_E : E_1 \rightarrow E_2$ are total functions that preserve the source and target functions, i.e. $f_V \circ s_1 = s_2 \circ f_E$ and $f_V \circ t_1 = t_2 \circ f_E$.
 \end{definition}
 
 \begin{example}[Graph Morphisms]Figure~\ref{fig:gts:compact-graph-morphism} shows three morphisms $f : G_0 \rightarrow G_1$, $g : G_0 \rightarrow G_2$ and $h : G_0 \rightarrow G_3$, which are a monomorphism, an epimorphism and a isomorphism, respectively.
 
   The morphism $f$ maps node $\Circle_1$ to $\Circle_a$, node $\Circle_2$ to $\Circle_b$ and edge $\curvearrowleft_1$ to $\curvearrowleft_q$; $g$ maps both nodes $\Circle_1$ and $\Circle_2$ to $\Circle_c$ and edge $\curvearrowleft_1$ to $\curvearrowleft_r$; and $h$ maps node $\Circle_1$ to $\Circle_d$, node $\Circle_2$ to $\Circle_e$ and edge $\curvearrowleft_1$ to $\curvearrowleft_s$.
 
-  Figure~\ref{fig:gts:expanded-graph-morphism} shows the morphism $f$ in an expanded (explicit) notation. Both notations will be used through this work according to which one will be the better to clarify the meaning at the moment.
+  Figure~\ref{fig:gts:expanded-graph-morphism} shows the morphism $f$ in an expanded (explicit) notation. Both notations will be used through this work, according to which one will be the better to clarify the meaning at the moment.
 \begin{figure}[!ht]
   \centering
   \fbox{\includegraphics[scale=0.8]{images/gts/compact-graph-morphism}}
@@ -201,7 +203,6 @@ Graph grammars have a wide application in computer science, not only because gra
   G_1\ar[rr]^{f}\ar[dr]_{type_1} & & G_2\ar[dl]^{type_2}\\
   \ar@{}[rur]|{=}& TG &
 }
-  \tinytodo{Talk about he category of graphs typed over T}
 \end{definition}
 
 \begin{example}[Typed Graph and Typed Graph Morphism Example] Figure~\ref{fig:gts:typed-graphs} shows a type graph $T$, and four graphs $G_0, G_1, G_2, G_3$ where only $G_0$ and $G_1$ are valid \emph{T-typed} graphs. 
@@ -222,6 +223,10 @@ Graph grammars have a wide application in computer science, not only because gra
 \end{figure}
 \end{example}
 
+\begin{remark}[Categories of Graphs and Typed Graphs] We call \cat{Graph} the category whose objects are graphs and arrows are graph morphisms. Similarly, we have that \cat{TGraph_T} is the category whose objects are $T-$typed graphs and whose arrows are $T-$typed graph morphisms.
+\end{remark}
+
+\iffalse
 \begin{definition}[Positive Atomic Constraint] A \emph{positive} atomic (typed) graph constraint is of the form $PC\left(a\right)$, where $a : P \rightarrow C$ is a (typed) graph morphism. A (typed) graph $G$ satisfies $PC\left(a\right)$ if for every injective (typed) graph morphism $p : P \rightarrow G$ there is at least one injective (typed) graph morphism $q : P \rightarrow C$ such that $p = q \circ a$.
 
   A positive (typed) graph constraint with $a : \emptyset \rightarrow C$ is also notated $PC\left(C\right)$. Given a (typed) graph $G$, it satisfies $PC\left(C\right)$ if there is an injective (typed) graph morphism $q : C \rightarrow  G$.
@@ -244,7 +249,7 @@ A \emph{negative} atomic (typed) graph constraint is of the form $NC\left(a\righ
 
 \end{definition}
 
-\begin{remark} It was shown in ~\cite{Ehrig2006} that negative atomic constraints do not give more expressive power. However, we introduced this concept because it makes easier to reason about some of the purposes of this thesis in a negative rather than a positive manner.\tinytodo{related to the graph constraint definition, maybe this is not necessary}
+\begin{remark} It was shown in ~\cite{Ehrig2006} that negative atomic constraints do not give more expressive power. However, we introduced this concept because it makes easier to reason about some of the purposes of this thesis in a negative rather than a positive manner.%\tinytodo{related to the graph constraint definition, maybe this is not necessary}
 \end{remark}
 
 \begin{definition}[Graph Constraint] A (typed) graph constraint is a \emph{boolean} formula over atomic (typed) graph constraints, in such way that $true$, $false$ and every atomic constraint are also graph constraints. Also, if $c$ and $c_i$, with $i \in I$ for some index set $I$, are graph constraints, then $\neg c$, $\land_{i \in I} c_i$ and $\lor_{i \in I} c_i$ are also graph constraints.
@@ -261,17 +266,18 @@ A \emph{negative} atomic (typed) graph constraint is of the form $NC\left(a\righ
 
 \begin{example}[Constraints Example]
 \end{example}
+\fi
 
-\begin{definition}[Graph Rule]\label{def:graph-rule} A (typed) graph rule\footnote{Also called graph transformation rule or graph production.} \graphrule{} is a span of injective (typed) graph morphisms \lefthand{} and \righthand{}  where the (typed) graphs $L$, $K$ and $R$ are called the left-hand side, gluing graph and right-hand side, respectively.
+\begin{definition}[Graph Rule]\label{def:graph-rule} A (typed) graph rule\footnote{Also called graph transformation rule or graph production.} \graphrule{} is a span of (typed) graph monomorphisms \lefthand{} and \righthand{}  where the (typed) graphs $L$, $K$ and $R$ are called the left-hand side, gluing graph and right-hand side, respectively.
 
   Given a (typed) graph rule $p$, its inverse rule is defined by \inversegraphrule.
 \end{definition}
 
 \begin{example}[Graph Rule Example and Notation] Figure~\ref{fig:gts:rule} shows an example of a graph rule which reads a node of the type $\Circle$, deletes a node of the type $\triangle$ and then creates a node of the type $\Square$ with an edge between the $\Circle$ and the \Square. 
   
-Figure ~\ref{fig:gts:rule-standard} presents the rule in the standard DPO notation, while Figure~\ref{fig:gts:rule-compact} depicts the same rule in a compact notation, where the gluing graph is omitted. 
+Figure~\ref{fig:gts:rule-standard} presents the rule in the standard DPO notation, while Figure~\ref{fig:gts:rule-compact} depicts the same rule in a compact notation, where the gluing graph is omitted. 
 
-Sometimes we will use the compact notation to make the figures smaller. Notice that the compact notation does not cause any loss as the gluing graph can be obtained as the ``intersection'' of the left and right graphs, and the morphisms $l$ and $r$ as the inclusions of $K$ in $L$ and $R$, respectively.
+Sometimes we will use the compact notation to make the figures smaller. Notice that the compact notation does not cause any semantic loss as the gluing graph can be obtained as the ``intersection'' between the left and right graphs, and the morphisms $l$ and $r$ as the inclusions of $K$ in $L$ and $R$, respectively.
 
 \begin{figure}[!ht]
   \centering
@@ -288,17 +294,21 @@ Sometimes we will use the compact notation to make the figures smaller. Notice t
 \end{figure}
 \end{example}
 
-\begin{definition}[Graph Transformation] Given a (typed) graph rule \graphrule{} and a (typed) graph $G$ with a (typed) graph morphism \match, called match, a direct (typed) graph transformation $G \xRightarrow{p,m} H$ from $G$ to a (typed) graph $H$ is a double-pushout (DPO) diagram such as:\tinytodo{Explain gluing conditions.}
+\begin{definition}[Graph Transformation] Given a (typed) graph rule \graphrule{} and a (typed) graph $G$ with a (typed) graph morphism \match, called match, a direct (typed) graph transformation $G \xRightarrow{p,m} H$ from $G$ to a (typed) graph $H$ is a double-pushout (DPO) diagram such as:
 
 \diagram{
   L\ar[d]_{m}        & & K\ar[ll]_{l}\ar[rr]^{r}\ar[d]|{k} & & R\ar[d]^{m'}\\
   G\ar@{}[urr]|{\left(1\right)} & & D\ar[ll]^{f}\ar[rr]_{g}             & & H\ar@{}[ull]|{\left(2\right)}
 }
+
+  For \cat{TGraph_T} there are two conditions, called \emph{gluing conditions}, that must be satisfied so that the pushouts (1) and (2) exist and the rule graph rule can be applied:
+  
+  First, the \emph{dangling condition} requires that no node can be deleted if it has incident edges that are not also deleted (otherwise the result of this deletion would not be a graph).  Second, the \emph{identification condition} requires the match to not identify a deleted element with a preserved or (another) deleted one.
 \end{definition}
 
 \begin{example}[Graph Transformation Examples] Figure~\ref{fig:gts:transformation-success} shows a transformation where the rule depicted in Figure~\ref{fig:gts:rule} is successfully applied over a graph instance $G_0$.
 
-  Figure~\ref{fig:gts:transformation-fail} shows the same rule being applied over a graph instance $G_1$ which does not satisfy the gluing conditions (more specifically the dangling condition), therefore the transformation can not be applied as the result would not be a valid graph.
+  Figure~\ref{fig:gts:transformation-fail} shows the same rule being applied over a graph instance $G_1$ which does not satisfy the gluing conditions, more specifically it does not satisfy the dangling condition.
 
 \begin{figure}[!ht]
   \centering
@@ -336,8 +346,8 @@ Sometimes we will use the compact notation to make the figures smaller. Notice t
 
 \begin{example}[NAC and NAC satisfiability] Figure~\ref{fig:gts:nacs:satisfied} shows a NAC that is satisfied (i.e. not triggered) over a match $m$, as there is no possible way of mapping the edge between $\Circle_1$ and $\Square_1$ in $N$ to an edge in $G_0$ such that the resulting triangle commutes. Therefore, if $G_0$ also satisfies the gluing conditions for the corresponding rule the transformation can be applied.
 
-  On the other hand, Figure~\ref{fig:gts:nacs:triggered} shows a NAC that is triggered (i.e. not satisfied) over the match $m$: all the elements in $N$ can be mapped to $G_0$ such that the resulting triangle commutes. Therefore, even if $G_0$ satisfies the gluing conditions, the transformation can never be applied, as the forbidden pattern of the NAC was found on the instance graph.
-  
+  On the other hand, Figure~\ref{fig:gts:nacs:triggered} shows a NAC that is triggered (i.e. not satisfied) over the match $m$: all the elements in $N$ can be mapped to $G_0$ such that the resulting triangle commutes. Therefore, even if $G_0$ satisfies the gluing conditions, the transformation can not be applied, as the pattern forbidden by the NAC was found on the instance graph.
+
 \begin{figure}[!ht]
   \centering
   \begin{subfigure}[t]{.5\textwidth}
@@ -356,21 +366,22 @@ Sometimes we will use the compact notation to make the figures smaller. Notice t
 \end{figure}
 \end{example}
 
-\begin{assumption}[Left NACs] Unless stated otherwise, we will work with graph rules that have only left $NACs$ for the rest of this thesis. This is without loss of generality once right $NACs$ can be translated to left ones as it is shown in Definition~\ref{def:shift-nac}.
-\end{assumption}
+%\begin{assumption}[Left NACs] Unless stated otherwise, we will work with graph rules that have only left $NACs$ for the rest of this thesis. This is without loss of generality once right $NACs$ can be translated to left ones as it is shown in Definition~\ref{def:shift-nac}.
+%\end{assumption}
 
-\begin{definition}[Trivially-Triggered NACs] \tinytodo{explain that this occurs only with injective matches} Given a $NAC(n)$, where $n : L \rightarrow \hat{L}$ is a isomorphism, we call $NAC(n)$ a \emph{trivially-triggered NAC} as for each match \match{} there will always exist a $q : \hat{L} \rightarrow G$ injective such that $q \circ n = m$.
+\begin{definition}[Trivially-Triggered NACs] Given a $NAC(n)$, where $n : L \rightarrow \hat{L}$ is a isomorphism, and a match \match{} which is also a monomorphism, we call $NAC(n)$ a \emph{trivially-triggered NAC} as, for every monomorphic $m$, there will always exist a $q : \hat{L} \rightarrow G$ injective such that $q \circ n = m$.
 
   A trivially-triggered NAC $n : L \rightarrow \hat{L}$ is also notated $NAC(L)$. If a rule $p$ has a trivially-triggered NAC then $p$ can never be applied whatsoever, as the NAC will never be satisfied. An example of a trivially-triggered NAC is shown on Figure~\ref{fig:gts:nacs:trivial}.
 \end{definition}
 
 \begin{definition}[Graph Transformation System and Graph Grammar] A typed graph transformation system is a pair $GTS = \left(TG,P\right)$ where $TG$ is the type graph of the system and $P$ is a set of typed graph rules with NACs.
 
-  A typed graph grammar is a pair $GG = \left(GTS,S\right)$ where $GTS$ is a typed graph transformation system and $S$ is a typed start graph.
+  A typed graph grammar is a pair $GG = \left(GTS,I\right)$ where $TGS$ is a typed graph transformation system and $I$ is a typed start graph. It can also be notated as $GG = \left(TG, I^{TG},P \right)$.
+
 \end{definition}
 
-\begin{example}[Mail Server] Fig~\ref{fig:gts:mail} \tinytodo{Draw type graph} depicts a graph transformation system that models a client-server scenario for a very simple e-mail application. This system has only four actions: 
-  
+\begin{example}[Mail Server Grammar] Fig~\ref{fig:gts:mail} \tinytodo{Draw type graph} depicts a graph grammar that models a client-server scenario for a very simple e-mail application. This system has only four actions: 
+
 \begin{enumerate}
   \item \emph{sendMessage}: a client sends a message to a server,
   \item \emph{getData}: a piece of data is obtained from a server,
@@ -413,9 +424,9 @@ Sometimes we will use the compact notation to make the figures smaller. Notice t
 
 \section{Parallel and Sequential Independence}
 
-One of the characteristics that make Graph Transformation Systems and Graph Grammars suitable formalisms to model and reason about parallel and/or concurrent systems is the possibility to check whether two graph rules (or two graph transformations) can be applied together at the same time (parallel independence) or in any interchangeable order (sequential independence).
+One of the characteristics that make Graph Transformation Systems and Graph Grammars suitable formalisms to model and reason about parallel and/or concurrent systems is the possibility to check whether the transformations given by two graph rules over the same instance graph can be applied (1) at the same time or (2) in any interchangeable order. In the first case we say that the transformations are parallel independent; in the later we say that they are sequential independent.
 
-In this section, we show both what it means for two graph rules (graph transformations) to be independent and how to check it. Notice that when we are reasoning about graph transformations the (in)dependence is concrete, while for the case of graph rules the (in)dependence is potential, as it would depend on a particular pattern being found on an instance graph.
+In this section, we show both what it means for two graph transformations to be independent and how to check it. Notice that when we are reasoning about graph transformations the (in)dependence is concrete, while for the case of graph rules the (in)dependence is potential, as it would depend on a particular pattern being found on an instance graph.
 
 \begin{definition}[Causal Dependency]\label{def:classic-dependency} Given two graph rules $p_1,p_2$ with NACs, they are \emph{causally dependent} for a given graph $E$ in which they overlap iff one of the following situations occur in the diagram where all the squares are pushouts of the DPO rewriting: \tinytodo{change explanation to use graph transformations instead of graph rules?}
 
@@ -443,6 +454,10 @@ Intuitively, each dependency case can be regarded as follows:
   \item a \emph{delete-forbid} dependency: $p_1$ deletes (from graph $H_1$) at least one element that would trigger the NAC $N_2$, thus allowing the application of $p_2$ on $E$.
 \end{enumerate}
 
+\begin{example}[Dependency situation in the mail server grammar]
+  \tinytodo{draw example}
+\end{example}
+
 \begin{definition}[Conflict]\label{def:classic-conflict} Given two graph rules $p_1, p_2$ with NACs they are in conflict for a given graph $E$ in which they overlap iff one of the following situations occur:
 
 \begin{enumerate}
@@ -468,3 +483,7 @@ Intuitively, each conflict case can be regarded as:
   \item a \emph{delete-use} conflict: $p_1$ deletes at least one element needed for $p_2$ to be applied
   \item a \emph{produce-forbid} conflict: $p_1$ creates at least one element that triggers the NAC $N_2$.
 \end{enumerate}
+
+\begin{example}[Conflict situation in the mail server grammar]
+  \tinytodo{draw example}
+\end{example}
