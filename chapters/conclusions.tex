@@ -24,7 +24,11 @@ Although our main objectives were accomplished during the work of this thesis, t
 
 %\end{itemize}
 
-\textbf{Basic categorial operations:} and type classes (e.g. \code{Complete}, \code{equalizer, product, pullback, limits}.
+\textbf{Basic categorial operations:} One of the features Verigraph provides is to support for different categories and analysis, nonetheless there are basic operations and different types of categories which are not contemplated by verigraph current state.
+
+One of such basic features would be the dual operations of cocomplete categories, such as equalizers, products, pullbacks and limits, implemented in a \code{Complete} type class so it can be reused in the same manner as the \code{Cocomplete} one.
+
+Also, verigraph does not support categories that have different morphism classes besides mono-, epi- and isomorphisms. In particular, some categories are adhesive with respect to a subclass $N$ of monomorphisms or that restrict which kind of morphisms are allowed in productions.
 
 \textbf{Complexity:} To this point, it is not clear to us what is the complexity of an algorithm to find (or to check if it is possible to find) a total ordering of actions of a strongly safe grammar that respects both the concrete occurrence relation and arbitrary abstract restrictions.
 
@@ -36,7 +40,11 @@ Although our main objectives were accomplished during the work of this thesis, t
 
   Verigraph current implementation assumes the input grammars have incremental NACs only, therefore it remains as a future work to implement the algorithm that compiles arbitrary NACs to incremental ones and use it as a previous step to our main work.
 
-\textbf{NACs in strongly safe grammars:}
+\textbf{NACs in strongly safe grammars:} In our work, we defined NACs in strongly safe grammars that are only single-typed. However, the definition of doubly-typed NACs seems be useful when to point concretely each element in the core graph that triggers the NAC of an action.
+
+The idea is to create a doubly-typed NAC for each concrete triggering of the original NAC over the core graph. Moreover, this translation may yield the creation of (possibly) many doubly-typed NACs for each original single-typed. 
+
+Thus, it remains as future work to formally define this other kind of NAC, to verify whether and when it would really be useful, how to use it to improve the expressiveness for test cases generation and then implement it on verigraph.
 
 \textbf{Different graph rewriting approaches:}
 
