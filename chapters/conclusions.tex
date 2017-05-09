@@ -30,12 +30,6 @@ One of such basic features would be the dual operations of cocomplete categories
 
 Also, verigraph does not support categories that have different morphism classes besides mono-, epi- and isomorphisms. In particular, some categories are adhesive with respect to a subclass $N$ of monomorphisms or that restrict which kind of morphisms are allowed in productions.
 
-\textbf{Complexity:} To this point, it is not clear to us what is the complexity of an algorithm to find (or to check if it is possible to find) a total ordering of actions of a strongly safe grammar that respects both the concrete occurrence relation and arbitrary abstract restrictions.
-
-  Although for our practical applications so far it is unlikely that the strongly safe grammars have many restrictions (or nay restrictions at all), given that grammars generated from use cases usually have an existential relation that will avoid this problem, it is not difficult to come up with other applications and grammars where this situation happens.
-
-  Therefore, more study is necessary in which in regarding this aspect, specifically, we want to be sure whether it is possible to find total orderings for arbitrary strongly safe graph grammars or at least under which conditions (besides an empty set of abstract restrictions) would it still be feasible. After that, we will know if this process is suitable to generate tests for grammars the model arbitrary systems, not only those described by use cases.
-
 \textbf{Incremental NACs:} The entire process of calculating the occurrence graph grammars and the later generation of test cases depends on all the NACs of the input grammar being incremental. Despite incremental NACs being sufficient for most applications and that our case studies only used grammars which respect this restriction, there may be cases where it is needed to use grammars with general NACs.
 
   Verigraph current implementation assumes the input grammars have incremental NACs only, therefore it remains as a future work to implement the algorithm that compiles arbitrary NACs to incremental ones and use it as a previous step to our main work.
@@ -46,7 +40,14 @@ The idea is to create a doubly-typed NAC for each concrete triggering of the ori
 
 Thus, it remains as future work to formally define this other kind of NAC, to verify whether and when it would really be useful, how to use it to improve the expressiveness for test cases generation and then implement it on verigraph.
 
-\textbf{Different graph rewriting approaches:}
+\textbf{Different graph rewriting approaches:} Occurrence graph grammars were originally defined for DPO and SPO approach without NACs, our extension adds NACs to the DPO approach. It remains open how to extend them for SPO or even other different approaches, such as SqPO and AGREE.
+
+\textbf{Complexity:} To this point, it is not clear to us what is the complexity of an algorithm to find (or to check if it is possible to find) a total ordering of actions of a strongly safe grammar that respects both the concrete occurrence relation and arbitrary abstract restrictions.
+
+  Although for our practical applications so far it is unlikely that the strongly safe grammars have many restrictions (or nay restrictions at all), given that grammars generated from use cases usually have an existential relation that will avoid this problem, it is not difficult to come up with other applications and grammars where this situation happens.
+
+  Therefore, more study is necessary in which in regarding this aspect, specifically, we want to be sure whether it is possible to find total orderings for arbitrary strongly safe graph grammars or at least under which conditions (besides an empty set of abstract restrictions) would it still be feasible. After that, we will know if this process is suitable to generate tests for grammars the model arbitrary systems, not only those described by use cases.
+
 
 \textbf{Interface:} Regarding input and output, verigraph does not have an operational graphical user interface yet (GUI), using the AGG tool and its \code{.ggx} file format for providing this operations. However, AGG does not support doubly-typed graph grammars nor NACs under this framework, thus the graphical visualization of the output of the test generation process is not completely possible, which makes the development of a GUI dedicated to verigraph a necessary step to address this issue\footnote{the development
   of a responsive, dedicated GUI is currently one of the main focus of the verites group}.
