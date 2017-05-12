@@ -184,7 +184,10 @@ instance Morphism (TypedGraphMorphism a b) where
 
 \section{Implementation of the Analysis Algorithms}
 
-The analysis algorithms are also implemented at a highly abstract level, based on categorial definitions and their implementation as type classes. Figure~\ref{fig:verigraph:delete-use-produce-use} shows a piece of code with functions to test whether an overlapping pair of two rules rises a conflict or a dependency for one of those rules. 
+The analysis algorithms are also implemented at a high level of abstraction, based on categorial definitions and their implementation as type classes. For example, the code for calculating the conflict or dependecy between two rules was first implemented for \cat{TGraph_T}, but since it is based on the \code{DPO} type class the code can be reused for any category that implements this contract.
+
+Furthermore, Figure~\ref{fig:verigraph:delete-use-produce-use} shows a piece of code with functions to test whether an overlapping pair of two rules rises a conflict or a dependency for one of those rules. Notice how this code resembles the definitions of delete-use conflict (Definition~\ref{def:classic-conflict}) and produce-use dependency (Definition~\ref{def:classic-dependency}).
+
 
 \begin{figure}[!ht]
 \caption{Delete-Use and Produce-Use Implementation}
@@ -207,8 +210,6 @@ isProduceUse p1 (m1',m2) = null h21
 \label{fig:verigraph:delete-use-produce-use}
 \end{figure}
 
-Notice how this code resembles the definitions of delete-use conflict (Definition~\ref{def:classic-conflict}) and produce-use dependency (Definition~\ref{def:classic-dependency}).
-
-Moreover, this code does not work only for \cat{TGraph_T}, but for any category that implements the \cat{DPO} type class. It is the case of one of the other categories implemented in verigraph, \cat{TSpan_T} but is also could be used for different categories based on graphs, algebras, logic and so on.
+As an example of its application at other categories we have \cat{TSpan_T}, which also implements the \code{DPO} type class and benefits from the same algorithms for finding conflicts and dependencies. This also can be used for different categories based on graphs, algebras, logic and so on.
 
 
