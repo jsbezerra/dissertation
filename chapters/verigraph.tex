@@ -23,6 +23,8 @@ Figures~\ref{fig:verigraph:morphism-type-class} and \ref{fig:verigraph:cocomplet
 
 There exist tools for analysing graph grammars which are similar to verigraph in some aspects, such as AGG~\cite{Taentzer2000} and GROOVE~\cite{Rensink2004}. However, to our knowledge, Verigraph is the only tool that integrates static and dynamic analyses, second-order specifications and provides support for new categorial constructions and algorithms, besides being the only tool in this field implemented in a pure functional language~\cite{Costa2016}.
 
+Moreover, verigraph is a free and open source software, available online for the community in one of the biggest platform for software repositories currently available. In addition to it, not only its source code, but also its roadmap are public and open to suggestions and collaborations from outside the Verites group.
+
 \section{Implementation of Categorial Constructions}
 
 The first basic type class in Verigraph is \code{Morphism}, shown in Figure~\ref{fig:verigraph:morphism-type-class}, which serves as the minimal contract for any category to be implemented in the tool. Notice how the contract of this type class reflects the category definition (see Definition~\ref{def:category}).
@@ -49,7 +51,7 @@ Notice that, in the \code{Cocomplete} definition, any category that implements t
 
 We took advantage of this result to implement not only the \code{calculatePushout}, but also the calculation of the \code{colimit} of a diagram. The later being used in the calculation of occurrence graph grammars as demonstrated in chapters~\ref{ch:process} and~\ref{ch:tests}.
 
-Another interesting characteristic of the \code{Morphism} type class is that, even though \code{pushouts} and \code{colimits} are implemented in terms of \code{coproducts} and \code{coequalizers}, the programmer can override the default implementation and provide her/his own (categorial specific) implementation. For example, this could be useful when, for a given category \cat{C}, a particular algorithm to calculate the pushout is known to more optimized than using the composition of the basic operations.
+Another interesting characteristic of the \code{Morphism} type class is that, even though \code{pushouts} and \code{colimits} are implemented in terms of \code{coproducts} and \code{coequalizers}, the programmer can override the default implementation and provide her/his own (categorial specific) implementation. For example, this could be useful when for a given category \cat{C}, a particular algorithm to calculate the pushout is known to more optimized than using the composition of the basic operations.
 
 \begin{figure}[!ht]
   \begin{minted}[linenos=true, breaklines, fontsize=\small]{haskell}
@@ -99,11 +101,11 @@ Currently, there are three categories implemented on Verigraph:
   \item \cat{TSpan_T}: $T-$typed graph morphism spans as objects and span morphisms as arrows (e.g. DPO graph rules and morphisms between rules, respectively).
 \end{itemize}
 
-\section{Graph Grammar Constructions}
+\section{Implementation of Graph Grammars}
 
-The main concrete structures in verigraph are (typed) graph grammars, which is currently the focus of the Verites group. 
+The main concrete structures in verigraph are (typed) graph grammars, which is currently the focus of the Verites group. The basic implementation begins with the \code{Graph} type, which consists of a list of nodes and a list of edges together with an API for graph manipulation with basic functions.
 
-The basic \code{Graph} type consists of a list of nodes and a list of edges, and an API for graph manipulation with basic functions such as \code{insertNode}, \code{insertEdge}, \code{removeNode}, \code{removeEdge}, \code{incomingEdges}, \code{outgoinEdges}, \code{sourceOf}, \code{targetOf}, among others. The \code{Graph} implementation is show in Figure~\ref{fig:verigraph:graph}.
+The \code{Graph} definition on Haskell is show on Figure~\ref{fig:verigraph:graph}. The API is not shown, but it includes basic graph operations such as \code{insertNode}, \code{insertEdge}, \code{removeNode}, \code{removeEdge}, \code{incomingEdges}, \code{outgoinEdges}, \code{sourceOf}, \code{targetOf}, among others. 
 
 \begin{figure}[!ht]
 
@@ -127,9 +129,9 @@ data Graph a b = Graph
 \label{fig:verigraph:graph}
 \end{figure}
 
-Using \code{Graph} we can be build the morphisms necessary to implement the categories \cat{Graph}, \cat{TGraph_T} and \cat{TSpan_T}. A graph morphism consists of a graph as domain, a graph as codomain and relations that map the nodes and edges in the domain graph to the ones in the codomain one. Similarly, a typed graph morphism consists of a typed graph as domain, a typed graph as codomain and a graph morphism relating the two of them.
+We use \code{Graph} to build the morphisms necessary to implement the categories \cat{Graph}, \cat{TGraph_T} and \cat{TSpan_T}. A graph morphism consists of a graph as domain, a graph as codomain and relations that map the nodes and edges in the domain graph to the ones in the codomain one. A typed graph is regarded as a simple graph morphism and a typed graph morphism consists of a typed graph as domain, a typed graph as codomain and a graph morphism relating the two of them.
 
-Figure~\ref{fig:verigraph:concrete-morphisms} shows all concrete morphism types currently implemented in verigraph. Moreover, all concrete morphisms presented implement the \code{Morphism} type class. Figure~\ref{fig:verigraph:morphism-implementation} shows how \code{TypedGraphMorphism} implements \code{Morphism} type class in order to provide the \cat{TGraph_T} category.
+Figure~\ref{fig:verigraph:concrete-morphisms} shows all categories currently implemented in verigraph based on their morphisms. Moreover, all concrete morphisms presented implement the \code{Morphism} type class. Figure~\ref{fig:verigraph:morphism-implementation} shows how \code{TypedGraphMorphism} implements \code{Morphism} type class in order to provide the \cat{TGraph_T} category.
 
 Similar implementations were done for \code{GraphMorphism} and \code{RuleMorphism}.
 
@@ -180,9 +182,9 @@ instance Morphism (TypedGraphMorphism a b) where
 \label{fig:verigraph:morphism-implementation}
 \end{figure}
 
-\section{Analyses}
+\section{Implementation of the Analysis Algorithms}
 
-Notice how the algorithms depicted in Figure~\ref{fig:verigraph:delete-use-produce-use} resembles the definitions of delete-use conflict (Definition~\ref{def:classic-conflict}) and produce-use dependency (Definition~\ref{def:classic-dependency}).
+The analysis algorithms are also implemented at a highly abstract level, based on categorial definitions and their implementation as type classes. Figure~\ref{fig:verigraph:delete-use-produce-use} shows a piece of code with functions to test whether an overlapping pair of two rules rises a conflict or a dependency for one of those rules. 
 
 \begin{figure}[!ht]
 \caption{Delete-Use and Produce-Use Implementation}
@@ -204,5 +206,9 @@ isProduceUse p1 (m1',m2) = null h21
 \end{minted}
 \label{fig:verigraph:delete-use-produce-use}
 \end{figure}
+
+Notice how this code resembles the definitions of delete-use conflict (Definition~\ref{def:classic-conflict}) and produce-use dependency (Definition~\ref{def:classic-dependency}).
+
+Moreover, this code does not work only for \cat{TGraph_T}, but for any category that implements the \cat{DPO} type class. It is the case of one of the other categories implemented in verigraph, \cat{TSpan_T} but is also could be used for different categories based on graphs, algebras, logic and so on.
 
 
