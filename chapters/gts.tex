@@ -69,6 +69,8 @@ $h : C \rightarrow D$, with objects $A,B,C,D$ not necessarily distinct, the comp
 
   In \cat{Set}, the monomorphism, epimorphism and isomorphism concepts correspond to injective, surjective and bijective functions, respectively.\tinytodo{put examples}
 
+  \tinytodo{explain ``up to isomorphism''}
+
 \end{example}
 
 
@@ -76,16 +78,18 @@ $h : C \rightarrow D$, with objects $A,B,C,D$ not necessarily distinct, the comp
 
 Here we present basic categorial constructions that are used throughout in this work. Notice that this is not an extensive list, we present only the constructions necessary to our scope. For a more in-depth explanation of Category Theory and its application in Computer Science refer to~\cite{Pierce1991}.
 
-\begin{definition}[Coproduct] Given two objects $A$ and $B$, their \emph{coproduct} (also called \emph{categorical sum}) is an object $A+B$ and two injection arrows \morph{i_A}{A}{A+B} and \morph{i_B}{B}{A+B} such that, for any other object $C$ an pair of arrows \morph{f}{A}{C} and \morph{g}{B}{C} there is one unique arrow \morph{!}{A+B}{C} such that the following diagram commutes:
+\begin{definition}[Coproduct] Given two objects $A$ and $B$, their \emph{coproduct} (also called \emph{categorical sum}) is an object $A+B$ and two injection arrows \morph{i_A}{A}{A+B} and \morph{i_B}{B}{A+B} such that, for any other object $X$ and pair of arrows \morph{f}{A}{X} and \morph{g}{B}{X}, there is one unique arrow \morph{!}{A+B}{X} such that the following diagram commutes:
 
 \diagram{
   A\ar[r]^{i_A}\ar[dr]_{f} & A+B\ar@{.>}[d]^{!} & B\ar[l]_{i_B}\ar[dl]^{g}\\
-    & C   &
+    & X   &
 }
 
 \end{definition}
 
-\begin{example}[Coproducts in \cat{Set}] Coproducts can be used to generalize the notion of disjoint union. Figue~\ref{fig:gts:coproduct} shows an example of a coproduct in \cat{Set}.
+\begin{example}[Coproducts in \cat{Set}] Coproducts can be used to generalize the notion of disjoint union. Figure~\ref{fig:gts:coproduct} shows an example of it in the category \cat{Set}\footnote{The morphisms are represented in an expanded notation to explicitly show how the mappings were done.}.
+
+  Having the sets $A = \{1,2,3\}$ and $B = \{1,2\}$ as objects, we have that the set $A+B$ together with morphisms $i_A$ and $i_B$ is their coproduct: all elements of $A$ and $B$ are mapped to $A+B$, no elements from the source objects are identified in the target, and it is possible to find a unique function from $A+B$ to any other candidate satisfying the commutative restriction.
 
 \begin{figure}[!ht]
   \centering
@@ -93,11 +97,10 @@ Here we present basic categorial constructions that are used throughout in this 
   \caption{A coproduct in \cat{Set}}\label{fig:gts:coproduct}
 \end{figure}
 
-  Having the sets $A = \{1,2,3\}$ and $B = \{1,2\}$ as objects, we have that the set $A+B$ together with morphisms $i_A,i_B$ is a coproduct because the morphisms are total (all elements of $A$ and $B$ are mapped to $A+B$) and no element is identified of the sets is identified in $A+B$.
 
-  In this example, $C$ can not be a coproduct because we can not find a unique arrow \morph{!}{C}{A+B}: there are multiple choices due to the different possible functions mapping $A$ and $B$ to $C$. Also, an object such as $D = \{(1,A),(2,AB),(3,A),(1,B)\}$ can not be a coproduct because is not possible to find an arrow such that the diagram commutes: all the possible functions from $A$ and $B$ would identify some elements of the sources.
+  Take as a candidate a set $C = {(0,A),(1,A),(2,A),(3,A),(1,B},(2,B),(3,B)$. $C$ can not be a coproduct because we can not find a \emph{unique} arrow from $C$ to an arbitrary candidate $X$, as there are multiple choices due to the different possible functions mapping $A$ and $B$ to $C$. Also, an object such as $D = \{(1,A),(2,AB),(3,A),(1,B)\}$ can not be a coproduct because it is not possible to find an arrow from $D$ an $X$ such that the diagram commutes, because all the possible functions from $A$ and $B$ would identify some elements of the sources.
 
-  Notice that $(A+B)' = \{(1,0),(2,0),(3,0),(1,1),(2,1)\}$ or $(A+B)'' = \{a,b,c,d,e\}$ would also be equally valid as coproducts. This is due to the fact the categories deal with their objects up to isomorphism, i.e. all this objects have the same format regardless of their internal representations. Therefore, they can be considered equivalent.\tinytodo{rephrase.}
+  Notice that $(A+B)' = \{(1,0),(2,0),(3,0),(1,1),(2,1)\}$ or $(A+B)'' = \{a,b,c,d,e\}$ or any other set with five elements would be equally valid as coproducts for this case. This is due to the fact the categories deal with their objects up to isomorphism, i.e. all this objects have the same format regardless of their internal representations.
 \end{example}
 
 
@@ -109,7 +112,7 @@ Here we present basic categorial constructions that are used throughout in this 
 }
 \end{definition}
 
-\begin{example}[Coequalizers in \cat{Set}] Coequalizers generalize the notion of smallest equivalence relation. In \cat{Set} \tinytodo{draw examples}.
+\begin{example}[Coequalizers in \cat{Set}] Coequalizers generalize the notion of smallest equivalence relation. Figure~\ref{fig:gts:coequalizer} shows the coequalizer for two functions from $A$ to $B$, one of the functions is represented with a solid line and the other with a dashed one.
 
 \begin{figure}[!ht]
   \centering
