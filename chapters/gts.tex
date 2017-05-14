@@ -134,7 +134,7 @@ Here we present basic categorial constructions that are used throughout in this 
 
 \end{definition}
 
-\begin{example}[Pushouts in \cat{Set}] In \cat{Set} \tinytodo{draw example}
+\begin{example}[Pushouts in \cat{Set}] A pushout in \cat{Set} can be seen on Figure~\ref{fig:gts:pushout}. Notice that a pushout maps all elements of sets $B$ and $C$ into set $X$, ``gluing'' the ones that are identified via the morphisms \morph{f}{A}{B} and \morph{g}{A}{C}.
 
 \begin{figure}[!ht]
   \centering
@@ -162,15 +162,16 @@ Here we present basic categorial constructions that are used throughout in this 
 }
 \end{definition}
 
-\begin{example}[Colimits in \cat{Set}] Colimits generalize several constructions such as disjoint unions, direct sums, coproducts, pushouts and others, where different objects of a diagram are ``glued'' together in only one object respecting existent identifications, if any.
+\begin{example}[Colimits in \cat{Set}] Colimits generalize several constructions such as disjoint unions, direct sums, coproducts, pushouts and others, where different objects of a diagram are ``glued'' together in one single object respecting commutativity.
+
+  All previous examples of coproduct, coequalizer and pushout are special cases of colimits. Figure~\ref{fig:gts:colimit} shows a colimit for a diagram that can not be calculated in (one step) by any of the previous constructions.
 
 \begin{figure}[!ht]
   \centering
   \includegraphics[scale=0.4]{images/gts/colimit}
-  \caption{A pushout in \cat{Set}}\label{fig:gts:colimit}
+  \caption{A colimit in \cat{Set}}\label{fig:gts:colimit}
 \end{figure}
 
-  In \cat{Set} \tinytodo{draw example}
 \end{example}
 
 
@@ -428,6 +429,10 @@ Sometimes we will use the compact notation to make the figures smaller. Notice t
 \begin{figure}[!ht]
   \centering
   \begin{subfigure}[t]{.5\textwidth}
+    \centerline{\fbox{\includegraphics[scale=0.5]{gts/grammar/grammar-type-graph}}}
+    \caption{Type Graph}
+  \end{subfigure}
+  \begin{subfigure}[t]{.5\textwidth}
     \centerline{\fbox{\includegraphics[scale=0.3]{gts/grammar/sendMessage}}}
     \caption{Send message}
   \end{subfigure}%
@@ -443,7 +448,7 @@ Sometimes we will use the compact notation to make the figures smaller. Notice t
     \centerline{\fbox{\includegraphics[scale=0.3]{gts/grammar/deleteMessage}}}
     \caption{Delete message}
   \end{subfigure}
-  \caption{Mail application graph grammar}\label{fig:gts:mail}
+  \caption{Mail application graph transformation system}\label{fig:gts:mail}
 \end{figure}
 
 \iffalse

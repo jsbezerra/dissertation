@@ -23,6 +23,10 @@
 *.synctex.gz
 thesis.pdf
 
+.refresh
+*.fls
+*.fdb_latexmk
+
 *eps-converted-to.pdf
 
 _minted-thesis/
