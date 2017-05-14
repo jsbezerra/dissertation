@@ -112,7 +112,7 @@ Here we present basic categorial constructions that are used throughout in this 
 }
 \end{definition}
 
-\begin{example}[Coequalizers in \cat{Set}] Coequalizers generalize the notion of smallest equivalence relation. Figure~\ref{fig:gts:coequalizer} shows the coequalizer for two functions from $A$ to $B$, one of the functions is represented with a solid line and the other with a dashed one.
+\begin{example}[Coequalizers in \cat{Set}] Coequalizers generalize the notion of smallest equivalence relation. Figure~\ref{fig:gts:coequalizer} shows the coequalizer for two functions from $A$ to $B$, let $f$ be the one represented with a solid line and $g$ the one with a dashed line.
 
 \begin{figure}[!ht]
   \centering
@@ -120,6 +120,7 @@ Here we present basic categorial constructions that are used throughout in this 
   \caption{A coequalizer in \cat{Set}}\label{fig:gts:coequalizer}
 \end{figure}
 
+  It is easy to see that the the function $h$ from $B$ to $X$ corresponds to the equivalence relation that glues together the items that are identified by the functions $f$ and $g$. Notice that $X$ does not contain any other element which is not mapped from $B$ and no element in $X$ was glued together without respecting $f$ and $g$.
 
 \end{example}
 
@@ -162,6 +163,12 @@ Here we present basic categorial constructions that are used throughout in this 
 \end{definition}
 
 \begin{example}[Colimits in \cat{Set}] Colimits generalize several constructions such as disjoint unions, direct sums, coproducts, pushouts and others, where different objects of a diagram are ``glued'' together in only one object respecting existent identifications, if any.
+
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[scale=0.4]{images/gts/colimit}
+  \caption{A pushout in \cat{Set}}\label{fig:gts:colimit}
+\end{figure}
 
   In \cat{Set} \tinytodo{draw example}
 \end{example}
