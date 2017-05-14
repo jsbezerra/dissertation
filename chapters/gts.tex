@@ -76,22 +76,28 @@ $h : C \rightarrow D$, with objects $A,B,C,D$ not necessarily distinct, the comp
 
 Here we present basic categorial constructions that are used throughout in this work. Notice that this is not an extensive list, we present only the constructions necessary to our scope. For a more in-depth explanation of Category Theory and its application in Computer Science refer to~\cite{Pierce1991}.
 
-\begin{definition}[Coproduct] Given two objects $A$ and $B$, their \emph{coproduct} (also called \emph{categorical sum}) is an object $A+B$ and two injection arrows \morph{i_1}{A}{A+B} and \morph{i_2}{B}{A+B} such that, for any other object $C$ an pair of arrows \morph{f}{A}{C} and \morph{g}{B}{C} there is one unique arrow \morph{!}{A+B}{C} such that the following diagram commutes:
+\begin{definition}[Coproduct] Given two objects $A$ and $B$, their \emph{coproduct} (also called \emph{categorical sum}) is an object $A+B$ and two injection arrows \morph{i_A}{A}{A+B} and \morph{i_B}{B}{A+B} such that, for any other object $C$ an pair of arrows \morph{f}{A}{C} and \morph{g}{B}{C} there is one unique arrow \morph{!}{A+B}{C} such that the following diagram commutes:
 
 \diagram{
-  A\ar[r]^{i_1}\ar[dr]_{f} & A+B\ar@{.>}[d]^{!} & B\ar[l]_{i_2}\ar[dl]^{g}\\
+  A\ar[r]^{i_A}\ar[dr]_{f} & A+B\ar@{.>}[d]^{!} & B\ar[l]_{i_B}\ar[dl]^{g}\\
     & C   &
 }
 
 \end{definition}
 
-\begin{example}[Coproducts in \cat{Set}] Coproducts can be used to generalize the notion of disjoint union. Particularly, in \cat{Set} we have:\tinytodo{draw example}
+\begin{example}[Coproducts in \cat{Set}] Coproducts can be used to generalize the notion of disjoint union. Figue~\ref{fig:gts:coproduct} shows an example of a coproduct in \cat{Set}.
 
 \begin{figure}[!ht]
   \centering
-  \includegraphics[scale=0.4]{images/gts/coproduct}
-  \caption{A coproduct example}\label{fig:gts:coproduct}
+  \includegraphics[scale=0.4]{images/gts/coproduct-open}
+  \caption{A coproduct in \cat{Set}}\label{fig:gts:coproduct}
 \end{figure}
+
+  Having the sets $A = \{1,2,3\}$ and $B = \{1,2\}$ as objects, we have that the set $A+B$ together with morphisms $i_A,i_B$ is a coproduct because the morphisms are total (all elements of $A$ and $B$ are mapped to $A+B$) and no element is identified of the sets is identified in $A+B$.
+
+  In this example, $C$ can not be a coproduct because we can not find a unique arrow \morph{!}{C}{A+B}: there are multiple choices due to the different possible functions mapping $A$ and $B$ to $C$. Also, an object such as $D = \{(1,A),(2,AB),(3,A),(1,B)\}$ can not be a coproduct because is not possible to find an arrow such that the diagram commutes: all the possible functions from $A$ and $B$ would identify some elements of the sources.
+
+  Notice that $(A+B)' = \{(1,0),(2,0),(3,0),(1,1),(2,1)\}$ or $(A+B)'' = \{a,b,c,d,e\}$ would also be equally valid as coproducts. This is due to the fact the categories deal with their objects up to isomorphism, i.e. all this objects have the same format regardless of their internal representations. Therefore, they can be considered equivalent.\tinytodo{rephrase.}
 \end{example}
 
 
@@ -104,6 +110,14 @@ Here we present basic categorial constructions that are used throughout in this 
 \end{definition}
 
 \begin{example}[Coequalizers in \cat{Set}] Coequalizers generalize the notion of smallest equivalence relation. In \cat{Set} \tinytodo{draw examples}.
+
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[scale=0.4]{images/gts/coequalizer}
+  \caption{A coequalizer in \cat{Set}}\label{fig:gts:coequalizer}
+\end{figure}
+
+
 \end{example}
 
 \begin{definition}[Pushout] Given a span of arrows \mbox{$B \xleftarrow{f} A \xrightarrow{g} C$}, its \emph{pushout} is an object $X$ together with a pair of arrows \morph{f'}{C}{X} and \morph{g'}{B}{X} such that (1) \mbox{$f' \circ g = g' \circ f$} and (2) for any other object $X'$ with morphisms \morph{i}{B}{X'} and \morph{j}{C}{X'} such that $i \circ f = j \circ g$ there is a unique morphism \morph{!}{X}{X'} such that \mbox{$i =$ $! \circ g'$} and \mbox{$j =$ $! \circ f'$}.
@@ -117,6 +131,13 @@ Here we present basic categorial constructions that are used throughout in this 
 \end{definition}
 
 \begin{example}[Pushouts in \cat{Set}] In \cat{Set} \tinytodo{draw example}
+
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[scale=0.4]{images/gts/pushout}
+  \caption{A pushout in \cat{Set}}\label{fig:gts:pushout}
+\end{figure}
+
 \end{example}
 
 \begin{definition}[Colimit] Given a diagram $D$ in a category \cat{C}, a \emph{cocone} for $D$ is an object $X$ and a family of morphisms \morph{f_i}{D_i}{X} (one for each object $D_i$ in $D$), such that for each morphism $g$ in $D$ the outer part of the following diagram commutes.
@@ -460,7 +481,13 @@ Intuitively, each dependency case can be regarded as follows:
 \end{enumerate}
 
 \begin{example}[Dependency situation in the mail server grammar]
-  \tinytodo{draw example}
+  Figure\tinytodo{explain}
+
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[scale=0.5]{images/gts/dependency}
+  \caption{A dependency in the server grammar}\label{fig:gts:dependency}
+\end{figure}
 \end{example}
 
 \begin{definition}[Conflict]\label{def:classic-conflict} Given two graph rules $p_1, p_2$ with NACs they are in conflict for a given graph $E$ in which they overlap iff one of the following situations occur:
@@ -490,5 +517,11 @@ Intuitively, each conflict case can be regarded as:
 \end{enumerate}
 
 \begin{example}[Conflict situation in the mail server grammar]
-  \tinytodo{draw example}
+  Figure\tinytodo{explain}
+
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[scale=0.5]{images/gts/conflict}
+  \caption{A conflict in the server grammar}\label{fig:gts:conflict}
+\end{figure}
 \end{example}
