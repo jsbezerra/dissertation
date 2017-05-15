@@ -1,16 +1,14 @@
 \chapter{Occurrence Graph Grammars}\label{ch:process}
 
-Occurrence graph grammars were defined by~\cite{Ribeiro1996} for the SPO approach and by~\cite{Corradini1996} for the DPO approach as a formalism for representing the concurrent semantics of a graph grammar which is still a graph grammar. Thus it is possible to use occurrence graph grammars to describe all possible states and changes of states of the original graph grammars from where they are generated. 
+Occurrence graph grammars were defined by~\cite{Ribeiro1996} for the SPO approach and by~\cite{Corradini1996} for the DPO approach as a formalism for representing the concurrent semantics of a graph grammar which is still a graph grammar. Their main object was to use occurrence graph grammars to describe all possible states and changes of states of (plain) graph grammars from where they are generated. 
 
-They also contain the entire execution history of the original grammar in the form of (1) a \emph{core graph} that contains all the elements that ever existed in the execution of the grammar and (2) a set of \emph{relations} between the elements of this core graph, which can tell us properties about the existence of those elements: which of them must occur at the same state, which must occur one after the other, which elements must never occur together, and so on.
+This is possible because occurrence grammars contain the entire execution history of the original grammars, which is coded under the forms of (1) a \emph{core graph} that contains all elements that ever existed in the execution of the grammar and (2) a set of \emph{relations} between the elements of this core graph. These relations can tell us properties about the existence of the core graph elements: which of them must occur at the same state, which must be created/deleted one after the other, which elements must never occur together, and so on.
 
-These properties make occurrence graph grammars a good candidate for the generation of test cases, as we are interested in a way of representing several (equivalent) possible derivations in a compact notation for later generation of tests.
+These properties make occurrence graph grammars an excellent candidate for the generation of test cases, as we are interested in a way of representing several (equivalent) possible derivations in a compact notation. However, a theoretical problem arises from this: NACs are nowadays essential to the modelling of complex systems as graph grammars, since they provide more possibilities to control the application of rules~\cite{Lambers2008, Corradini2014}, however the first definitions of occurrence grammars did not use the notion of negative application conditions.
 
-However, the first definitions of occurrence graph grammar do not use negative application conditions, which are nowadays essential to the modelling of complex systems as graph grammars as they provide more possibilities to control the application of rules~\cite{Lambers2008, Corradini2014}.
+Thus, in order to use them for our purpose, we first need to extend them so they contemplate negative application conditions. In the next sections of this chapter we review the works done by~\cite{Ribeiro1996} and~\cite{Corradini1996} in occurrence graph grammars, after which we propose an extension to deal with NACs.
 
-This chapter extends the works of~\cite{Ribeiro1996} and~\cite{Corradini1996}, by reviewing what occurrence graph grammars are and then extending them to include negative application conditions.
-
-\section{Doubly-Typed Graph Grammars}
+\section{Occurrence Graph Grammars}
 
 \begin{definition}[Doubly-Typed Graph] Given a type graph $T$, a \emph{doubly-typed graph} \doublyTypedGraph{} over $T$ is a tuple \doublyTypedGraph $= \left(G^T,TG^T, t^{G^T} : G^T \rightarrow TG^T\right)$ where $G^T$ and $TG^T$ are typed graphs over $T$ and \mbox{$t^{G^T} : G^T \rightarrow TG^T$} is a typed graph morphism in \typedGraphCategory{}. We call $TG^T$ the \emph{double-type graph} and $t^{G^T}$ the double-typing morphism.
 \end{definition}
@@ -22,7 +20,7 @@ This chapter extends the works of~\cite{Ribeiro1996} and~\cite{Corradini1996}, b
 
 \begin{figure}[!ht]
   \centering
-  \fbox{\includegraphics[scale=0.4]{images/process/doubly-typed-graph-example}}
+  \fbox{\includegraphics[scale=0.5]{images/process/doubly-typed-graph-example}}
   \caption{Doubly-typed graph}\label{fig:process:doubly-typed-graph}
 \end{figure}
 
@@ -44,14 +42,12 @@ Notice that the (single) type morphisms $type_G : G \rightarrow T$ and $type_H :
 
 \begin{figure}[!ht]
   \centering
-  \fbox{\includegraphics[scale=0.4]{images/process/doubly-typed-graph-morphism-example}}
+  \fbox{\includegraphics[scale=0.5]{images/process/doubly-typed-graph-morphism-example}}
   \caption{Doubly-typed graph morphism}\label{fig:process:doubly-typed-graph-morphism}
 \end{figure}
 \end{example}
 
-\begin{remark} There could be defined different kinds of doubly-typed graph morphisms depending on whether the doubly-type graphs and the type graphs are or not the same. However, we are here only interested in the case where all doubly-typed graphs share the same double-type and type graphs.
-
-Therefore we will call \mbox{\emph{$TG^T$-doubly-typed graph morphisms}} simply by \emph{doubly-typed graph morphisms} through the rest of this work.
+\begin{remark} \cite{Ribeiro1996} defined different kinds of doubly-typed graph morphisms based on whether the doubly-type graphs and the type graphs are or not the same. In this work we are only interested in the case where all doubly-typed graphs share the same double-type and type graphs. Therefore we will call the \mbox{\emph{$TG^T$-doubly-typed graph morphisms}} simply by \emph{doubly-typed graph morphisms} through the rest of this thesis.
 
 \end{remark}
 
@@ -122,7 +118,7 @@ When dealing with the classical notion of NACs, there may occur situations where
 
 \begin{figure}[!ht]
   \centering
-  \fbox{\includegraphics[scale=0.4]{images/process/instability-example}}
+  \fbox{\includegraphics[scale=0.5]{images/process/instability-example}}
   \caption{Instability of conflicts under shift\\}\label{fig:process:instability}
 \end{figure}
 
