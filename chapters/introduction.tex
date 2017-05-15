@@ -1,10 +1,14 @@
 \chapter{Introduction}
 
-\section{Overview of Software Engineering / Requirement Engineering / Tests}
+\begin{itemize}
+  \item{Overview of Software Engineering / Requirement Engineering / Tests}
 
-\section{Formal Methods}
+  \item {Formal Methods}
 
-\section{Test covering}
+  \item {Test covering}
+\end{itemize}
+
+
 
 We want to generate a set of test cases that:
 
@@ -13,9 +17,20 @@ We want to generate a set of test cases that:
   \item avoids repetition of equivalent paths due to concurrency: \textbf{compactness}.
 \end{itemize}
 
-\section{Objective and expected contributions}
+\section{Thesis aims}
 
-We assume the reader has familiarity with the framework of category theory. A good introduction can be found on~\cite{Pierce1991}.
+The main objective of this thesis is to address the following problem:
+
+\begin{intuition}
+  Given the graph grammar modelling of a system, how to generate a set of test cases that covers all possible paths of the system's execution avoiding repetition of equivalent paths.
+\end{intuition}
+
+To what we propose the following approach:
+
+\begin{enumerate}
+  \item
+  \item
+\end{enumerate}
 
 \hfill \break
 \textbf{Structure of the Thesis:}
@@ -23,12 +38,15 @@ We assume the reader has familiarity with the framework of category theory. A go
 \begin{description}
   \item[Chapter~\ref{ch:gts}:] In this chapter we present a brief introduction to category theory, focusing on the constructions the will be needed throughout this work.  We also review the basic notions of DPO graph transformation systems, as well as the notions of parallel and sequential independency of rules.
   \item[Chapter~\ref{ch:verigraph}:] This chapter presents an overview of the verigraph tool, its general purpose and basic constructions. This tool was also used to implement the techniques discussed in the following chapters.
-%  \item[Chapter~\ref{ch:concurrent-rules}:] In this chapter we present the construction of concurrent rules in addition to the problems that may arise from their calculation. Moreover, we present techniques that can be used to work around the problems.
+\iffalse
+  \item[Chapter~\ref{ch:concurrent-rules}:] In this chapter we present the construction of concurrent rules in addition to the problems that may arise from their calculation. Moreover, we present techniques that can be used to work around the problems.
+\fi
   \item[Chapter~\ref{ch:process}:] In this chapter we present an overview of doubly-typed graph grammars and other constructions necessary to accomplish occurrence graph grammars, and how occurrence graph grammars can be used to represent the concurrent semantics of a graph grammar.
 
     We also extend previous works in occurrence graph grammars to include the notion of negative application conditions, which are commonly used in the modelling of systems as graph transformations systems nowadays.
   \item[Chapter~\ref{ch:tests}:] This chapter presents how we can use occurrence graph grammars to generate test cases using verigraph.
   \item[Chapter~\ref{ch:related-work}:] In this chapter, we show related works, focusing on the generation of test cases based on models and formal methods.
   \item[Chapter~\ref{ch:conclusions}:] This chapter summarizes our results and presents the conclusions. Moreover, it shows remaining open problems and future work.
-  \item[Apendix~\ref{app:tutorial}:] This appendix contains the verigraph manual, explaining in the details how the tool can be downloaded, installed and used.
+  \item[Appendix~\ref{app:tutorial}:] This appendix contains the verigraph manual, explaining in the details how the tool can be downloaded, installed and used.
+  \item[Appendix~\ref{app:marvel-grammar}] This appendix contains the use cases and modelled graph grammar used as case study on section~\ref{ch:tests}.
 \end{description}
