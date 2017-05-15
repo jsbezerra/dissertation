@@ -1,39 +1,50 @@
 \chapter{Generating Test Cases}\label{ch:tests}
 
-In this chapter, we show how to use occurrence graph grammars to generate test cases from (simply-typed) graph grammars that model systems. This approach can be used to generate tests for any graph grammar, in our examples however, we will use grammars that were built using the methodology presented in \cite{Junior2015} and \cite{BezerraWEIT2016}.
+In this chapter, we show how to use occurrence graph grammars to generate test cases from (simply-typed) graph grammars that model systems. In theory, this approach can be used to generate tests for any graph grammar, since it is based only on the properties of the formalism. However, in our running example, we use a grammar that was built using the methodology presented in \cite{Junior2015} and \cite{BezerraWEIT2016}.
 
-This methodology is a systematic, computer-aided way to extract graph grammars from use cases and other text-based requirement documents. Thus, by generating tests from these grammars, we are generating tests for the use cases where they came from.
+The methodology used is a systematic, computer-aided way to extract graph grammars from use cases and other text-based requirement documents. Thus, by generating tests from these grammars, we are (indirectly) generating tests from the use cases where they came from.
 
-Regarding the generation of test cases, we are interested in knowing whether each functionality is truly executable, i.e. whether all the rules that represent that functionality are applicable. If the functionality is not executable we want to know exactly what is the problem in te execution, if it is executable, we wnat to know:
+The generation of test cases was implemented in verigraph, based on previously discussed occurrence graph grammars. With this, we are interested in knowing whether each functionality of a system is truly executable, i.e. whether all the rules that represent that functionality are applicable. 
+
+If a functionality is not executable we want to know exactly what is the problem that prevents is execution. On the other hand, if it is executable, we are interested in:
 
 \begin{enumerate}
 \item the input data necessary for this functionality to execute, as well as the output data of a successful execution;
 
-\item a characterization of the possible orderings in which all the rules can be applied to accomplish the functionality goals, together with some total orderings that respect this characterization and others that do not;
+\item at least one path in which the rules can be applied to accomplish the functionality goals;
 
-\item which are the valid (and invalid) intermediate states the system may assume.
+\item a set of constraints which can tell the test analyst how two characterize the tests into those which should pass and those which should fail;
+
+\item a set of constraints which can tell which intermediate states of the system are valid and those that are not.
 \end{enumerate}
 
-First, we present a brief overview of the methodology for extracting graph grammars from use cases, after what we present the process of generating the tests cases from the the grammars.
+First, we present a brief overview of the methodology for extracting graph grammars from use cases, after what we present the process of generating the tests cases from the extracted grammars.
 
-\section{Overview of the extracting methodology} \tinytodo{this entire subsection is a copy from the weit article, must be adapted to the needs of this work} A general format of a UC contains a set of sequential steps describing the successful interaction between the primary actor and the system towards the primary goal. A sequence of alternative steps are often included to represent exception flows. Pre- and post-conditions are also listed to indicate, respectively, conditions that must hold before and after the UC execution.
+\section{Overview of the extracting methodology}
 
-Figure~\ref{fig:tests:methodology} summarizes the methodology process, which is divided into four main phases:
+Usually, use case documents consist of sets of sequential steps describing the interaction between a primary actor and a system in order to accomplish an specific goal. In general, this document one of these sets represents a successful, or desired, execution of the system, while other represent sequences of alternative or exception flows. Moreover, use cases may also contain pre- and post-conditions used to indicate the configurations that must hold before and after the use cases execution.
+
+Figure~\ref{fig:tests:methodology} summarizes the methodology process proposed in \cite{Junior2015}, showing how to extract a graph grammar from a text-based requirements document. This methodology is divided into four main phases:
+
+\begin{description}
+  \item[Data Extraction:] identification of entities and actions that will be used to construct the model.
+
+  \item[Primary Verifications:] checking for problems that might affect or even prevent the creation of the model and their consequently removal from the original use case, such as entities or conditions that were found in the previous phase but are never used and also for actions and effects not clearly defined.
+
+  \item[GT Generation:] construction of graph transformation model by modelling conditions and effects as graphs, building a type graph and then modelling each step of the use case as a transition rule from one state graph to another.
+
+  \item[UC Analysis:] automated verifications over the model in order to detect possible flaws in the use case. This is step is done using verigraph and its concurrent rules, conflict and dependency analyses.
+\end{description}
+
+In our running example, we use a grammar that models an e-store system. This grammar was extracted from a set of use cases of use cases presented in~\cite{Goins2007}. These use cases model basic e-store functionalities such as \emph{browse catalogue, user registration, login, update user information, maintain shopping cart}, among others. 
+
+Some excerpts of this model are shown throughout this chapter, while the complete extracted grammar can be found on appendix~\ref{app:marvel-grammar} and at the Verites repository for case studies\footnote{https://github.com/Verites/case-studies}.
 
 \begin{figure}[!ht]
   \centering
   \fbox{\includegraphics[scale=0.6]{images/generating-tests/methodology}}
   \caption{Overview of the methodology~\cite{Junior2015}.}\label{fig:tests:methodology}
 \end{figure}
-
-\begin{description}
-  \item[Data Extraction:] where we identify entities and actions in the text of the UC that will be used to construct the model.
-  \item[Primary Verifications:] where we look for problems such as entities or conditions that were found in the previous phase but are never used and also for actions and effects not clearly defined. As these problems might affect or even prevent the creation of the model, they have to be either solved by rewriting the UC or annotated as open issues to be resolved later on if they are not prohibitive to the model construction.
-  \item[GT Generation:] where we construct the GT model by modelling conditions and effects as graphs, building a type graph and then modelling each step of the UC as transition rule from one state graph (the conditions) to other (the effect).
-  \item[UC Analysis:] where we perform a series of automated verifications over the GT model to detect possible flaws in the UC. This is done by using the verigraph tool \tinytodo{generate DOI for the latest version of verigraph} and its concurrent rules, conflict and dependency analyses.
-\end{description}
-
-Figure~\ref{} shows a piece of the graph grammar extracted from the set of use cases presented in~\cite{Goins2007}. These use cases model an e-store, with basic functionalities such as \emph{browse catalogue, user registration, login, update user information, maintain shopping cart}, among others. The complete extracted grammar can be seen on appendix~\ref{app:marvel-grammar}.
 
 \section{Generating Tests using Occurrence Graph Grammars}
 
