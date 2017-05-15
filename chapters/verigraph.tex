@@ -9,7 +9,7 @@ Regarding category theory, verigraph implements important basic constructions su
 The implemented categorial constructions are used as basis to implement several graph grammar analyses, such as critical pair analysis~\cite{Lambers2006}, state space generation and model checking~\cite{Becker2014}, concurrent rules generation~\cite{BezerraETMF2016} and higher-order graph transformations~\cite{Machado2015}. They were also used to implement the calculation of occurrence graph grammars, which will be explained in depth on
 chapter~\ref{ch:process} and used for test case generation on chapter~\ref{ch:tests}.
 
-The analysis algorithms are implemented in a generic functional style, having the advantage of being very close to the formal definitions, thus making it easier to reason about them and to inspect for correctness. In addition, verigraph benefits from a layered architecture (see Figure~\ref{fig:verigraph:layers}) \tinytodo{update figure} where it is easy to reuse the same algorithms for other categories different than \cat{TGraph_T}, as long as they implement the contracts given by the type
+The analysis algorithms are implemented in a generic functional style, having the advantage of being very close to the formal definitions, thus making it easier to reason about them and to inspect for correctness. In addition, verigraph benefits from a layered architecture (see Figure~\ref{fig:verigraph:layers}) where it is easy to reuse the same algorithms for other categories different than \cat{TGraph_T}, as long as they implement the contracts given by the type
 classes (interfaces) defined on the system. 
 
 Some examples of such type classes are shown on
@@ -17,10 +17,16 @@ Figures~\ref{fig:verigraph:morphism-type-class} and \ref{fig:verigraph:cocomplet
 
 \begin{figure}[!ht]
   \centering
-  \fbox{\includegraphics[scale=0.3]{images/verigraph/layers}}
-  \caption{Verigraph layers: analyses algorithms (top layer), abstract categorial constructions (middle layer) and concrete categories (bottom layer).}\label{fig:verigraph:layers}
+  \begin{subfigure}[t]{.5\textwidth}
+    \centerline{\includegraphics[scale=0.5]{images/verigraph/layers}}
+%    \caption{Detailed Layers}
+  \end{subfigure}
+%  \begin{subfigure}[t]{.5\textwidth}
+%    \centerline{\includegraphics[scale=0.5]{images/verigraph/layers-abstract}}
+%    \caption{Example}
+%  \end{subfigure}%
+  \caption{Verigraph architecture}\label{fig:verigraph:layers}
 \end{figure}
-
 There exist tools for analysing graph grammars which are similar to verigraph in some aspects, such as AGG~\cite{Taentzer2000} and GROOVE~\cite{Rensink2004}. However, to our knowledge, Verigraph is the only tool that integrates static and dynamic analyses, second-order specifications and provides support for new categorial constructions and algorithms, besides being the only tool in this field implemented in a pure functional language~\cite{Costa2016}.
 
 Moreover, verigraph is a free and open source software, available online for the community in one of the biggest platform for software repositories currently available. In addition to it, not only its source code, but also its roadmap are public and open to suggestions and collaborations from outside the Verites group.
