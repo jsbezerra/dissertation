@@ -144,8 +144,8 @@ As we are interested in constructing a canonical representation of several possi
 
 \begin{figure}[!ht]
   \centering
-  \fbox{\includegraphics[scale=0.65]{images/process/incremental-nacs}}
-  \caption{Incremental NACs possible formats}\label{fig:process:incremental-nacs}
+  \fbox{\includegraphics[scale=0.8]{images/process/incremental-nacs}}
+  \caption{Canonical Incremental NACs}\label{fig:process:incremental-nacs}
 \end{figure}
 \end{example}
 
@@ -166,7 +166,7 @@ Despite of it, the implementation of the compiling algorithm is out of the scope
 \end{definition}
 
 \begin{example}[Triggering Element]
-Since incremental NACs extend the match by forbidding only one element at a time, this element can be easily identified when looking at the instance graph.\tinytodo{Prepare example}
+Since incremental NACs extend the match by forbidding only one element at a time, this element can be easily identified when looking at the instance graph, where it corresponds to the element which is not mapped by the morphism $n$ from the NAC to the instance graph.\tinytodo{Prepare example}
 \end{example}
 
 \begin{definition}[Doubly-Typed Graph Grammars] A \emph{doubly-typed graph grammar} is a tuple $GG = \left(TG^T, I^{TG^T},P \right)$ where $TG^T$ is the double-type graph of the grammar, $I^{TG^T}$ is a doubly-typed graph, called the \emph{initial graph} of the grammar and $P$ is a set of doubly-typed graph rules.
@@ -191,7 +191,7 @@ Since incremental NACs extend the match by forbidding only one element at a time
     \end{cases}
    \]\end{enumerate}
 
-  The first condition assures that every element in the \emph{core graph} was either already present in the initial graph or was created by one and only rule. The second condition assures that for every element that is deleted, it is deleted only once by only one rule.
+  The first condition assures that every element in the \emph{core graph} was either already present in the initial graph or was created by one and only one rule. The second condition assures that for every element that is deleted, it is deleted only once by only one rule.
 \end{definition}
 
 The idea is that each element within a \emph{core graph} has a unique origin. At the same time, the \emph{core graph} contains all elements necessary (created, deleted and preserved) by all rules in its underlying grammar.
@@ -239,7 +239,7 @@ In~\cite{Ribeiro1996}, causal, conflict and occurrence relations for strongly sa
 
 \cite{Corradini1996} also defined a different notion of causal relation, equivalent to the occurrence relation in the previous mentioned work, with respect to the DPO approach without NACs.
 
-Both authors use these relations to find out whether all the actions of a strongly safe graph grammar are applicable and prove some properties about it\tinytodo{which properties?}. However, this relations alone are not sufficient for our purpose when the actions may have NACs, which are nowadays essential for modelling complex systems~\cite{Corradini2014}\tinytodo{Redo this paragraph, explain better our needs}.
+Both authors use these relations to find out whether all the actions of a strongly safe graph grammar are applicable and prove the above mentioned properties about them. However, this relations alone are not sufficient for our purpose when the actions may have NACs.
 
 Here we recall these definitions, which correspond to the \emph{existential relation} and the \emph{unconditional causal dependency and conflict relations} defined in the following, and extend them to create an equivalent notion of \emph{conditional relations} that work for grammars in the DPO approach with NACs.
 
@@ -256,10 +256,13 @@ First, actions are always applied over the core graph: the match of an action is
 
   Third, given an action $a$ with NACs and its underlying graph transformation, we restrict the search of the injective morphism $q : N \rightarrow C^T$ to the image of the match $q : N \rightarrow C^T_{L_a}$ (comatch $q : N \rightarrow C^T_{R_a}$) rather than the entire core graph. Similarly, when searching for conflicts or dependencies within two actions $a_1, a_2$ with NACs, the test of NAC satisfiability performed on the overlapping between the actions is restricted to the jointly image of the respective morphisms onto the core graph.
 
-  The ``restricted to the image'' search is meant to avoid the triggering of NACs by elements that are present in the core graph, therefore present in the match/comatch, but that do not exist when looking only at the actions interacting at the moment. \tinytodo{It also avoids the dangling condition in the core graph out of the scope of the actions, find the proper place to explain it.} This restriction together with the use of incremental NACs allow us to locally compute the conflicts and dependencies for each pair of actions, without having to be concerned about global effects of other actions coming into play.
+  The ``restricted to the image'' search is meant to avoid the triggering of NACs by elements that are present in the core graph, therefore present in the match/comatch, but that do not exist when looking only at the actions interacting at the moment. It also avoids the dangling condition in the core graph out of the scope of the actions. 
+  
+  This restriction together with the use of incremental NACs allow us to locally compute the conflicts and dependencies for each pair of actions, without having to be concerned about global effects of other actions coming into play.
+
 \end{remark}
 
-\begin{definition}[Existential Relation] \tinytodo{I need a better name for this relation}This is the \emph{causal relation} defined in \cite{Corradini1996} for the DPO approach without NACs. Given  \doublyTypedGraphGrammarCore{} a strongly safe graph grammar. Let actions \mbox{$a_1, a_2 \in P, a_1 \ne a_2$} and element \mbox{$e_1 \in N(C^T) \cup E(C^T)$}, then:
+\begin{definition}[Existential Relation] \tinytodo{I need a better name for this relation}This is the \emph{causal relation} defined in \cite{Corradini1996} for the DPO approach without NACs. Given  \doublyTypedGraphGrammarCore{} a strongly safe graph grammar, actions \mbox{$a_1, a_2 \in P, a_1 \ne a_2$} and an element \mbox{$e_1 \in N(C^T) \cup E(C^T)$}, then:
 
   \begin{enumerate}
     \item If $a_1$ deletes $e_1$, then $e_1 <_e a_1$.
@@ -272,7 +275,7 @@ First, actions are always applied over the core graph: the match of an action is
 
 This relation represents restrictions over creation, use (preservation) and deletion of elements by actions that must be respected for the actions to be applicable. In other words, an action $a$ must occur after all the actions that create the elements which it depends on. Analogously, $a$ must occur before all actions that delete those same elements.
 
-In \cite{Corradini1996} it is shown that if this relation is a \emph{partial order}, then there exists at least one total order in respect to it in which all productions of the underlying grammar are applicable. However, this condition is not sufficient in grammars whose rules may be equipped with NACs, as shown in example~\ref{ex:process:existential-relation-fail}.
+In \cite{Corradini1996} it is shown that if this relation is a \emph{partial order}, then any total order with respect to it is a sequentialization in which all productions of the underlying grammar are applicable. However, this condition is not sufficient in grammars whose rules may be equipped with NACs, as shown in example~\ref{ex:process:existential-relation-fail}.
 
 \begin{example}[Existencial Relation in Grammars without NACs]\label{ex:process:existential-relation} Given the strongly safe grammar corresponding to the core and initial graphs in Figure~\ref{fig:process:existential-relation:core-graph} and the set of rules in Figure~\ref{fig:process:existential-relation:example}, we have that:
 
@@ -283,22 +286,22 @@ In \cite{Corradini1996} it is shown that if this relation is a \emph{partial ord
   \item $a_2 <_e a_1$ by creation/preservation of $\Square_1$
 \end{itemize}
 
-  The existential relation for this grammar is (without the pairs due to reflexivity): \tinytodo{Mount transitive and reflexive closure}.
+  The existential relation for this grammar is (without the pairs due to reflexivity): $a_1 \leq_e \triangle_2$, $a_2 \leq_e \Square_1$, $a_2 \leq_e$ $\curvearrowleft_1$, $a_3 \leq_e$ $\curvearrowleft_2$, $a_2 \leq_e a_1$, $a_2 \leq_e \triangle_2$.
 
-  Therefore, we have that all actions in this grammar can be applied as long as $a_2$ is applied before $a_1$ ($a_2$ crates the element $\Square_1$ which is necessary for $a_1$ to be applied). In particular, the following configurations are valid and lead to the same result: $[a_2,a_1,a_3],[a_2,a_3,a_1],[a_3,a_2,a_1]$.
+  Notice that the only pair in this relation where both elements are actions is \mbox{$a_2 \leq a_1$}, therefore, we have that all actions in this grammar can be applied as long as $a_2$ is applied before $a_1$ ($a_2$ crates the element $\Square_1$ which is necessary for $a_1$ to be applied). In particular, the following configurations are valid and lead to the same result: $[a_2,a_1,a_3],[a_2,a_3,a_1],[a_3,a_2,a_1]$.
 
 \begin{figure}[!ht]
   \centering
   \begin{subfigure}[t]{.5\textwidth}
-    \centerline{\fbox{\includegraphics[scale=0.6]{images/process/existential-relation/core-graph}}}
+    \centerline{\fbox{\includegraphics[scale=0.8]{images/process/existential-relation/core-graph}}}
     \caption{Core and initial graphs}\label{fig:process:existential-relation:core-graph}
   \end{subfigure}
   \begin{subfigure}[t]{.5\textwidth}
-    \centerline{\fbox{\includegraphics[scale=0.6]{images/process/existential-relation/example}}}
+    \centerline{\fbox{\includegraphics[scale=0.8]{images/process/existential-relation/example}}}
     \caption{A strongly safe grammar without NACs}\label{fig:process:existential-relation:example}
   \end{subfigure}
   \begin{subfigure}[t]{.5\textwidth}
-    \centerline{\fbox{\includegraphics[scale=0.6]{images/process/existential-relation/example-nacs}}}
+    \centerline{\fbox{\includegraphics[scale=0.8]{images/process/existential-relation/example-nacs}}}
     \caption{A strongly safe grammar with NACs}\label{fig:process:existential-relation:example-nacs}
   \end{subfigure}
   \stepcounter{doubly-typed-grammar-counter}
@@ -306,24 +309,23 @@ In \cite{Corradini1996} it is shown that if this relation is a \emph{partial ord
 \end{figure}
 \end{example}
 
-The same definition can be attempted in a strongly safe grammar where actions are equipped with Nacs. However, as shown in the next example, it lacks the same properties as the relation in the context without NACs.
+The same definition can be attempted in a strongly safe grammar where actions are equipped with NACs. However, as shown in the next example, it lacks the same properties as in the context without NACs.
 
 \begin{example}[Existential Relation in Grammars with NACs]\label{ex:process:existential-relation-fail}Consider the strongly safe grammar corresponding to the core and initial graphs in Figure~\ref{fig:process:existential-relation:core-graph} and the set of rules in Figure~\ref{fig:process:existential-relation:example-nacs}. 
-  
-  We have the same the same existential relation as the one presented in Example~\ref{ex:process:existential-relation}, since the structure of the actions are the same in both examples, except for the NAC in the action $a_1$ on Figure~\ref{fig:process:existential-relation:example-nacs}.
 
-  Following this example, we still have that $a_2$ must be applied first in order for $a_1$ to be applied. However, besides creating the $\Square_1$ needed for $a_1$, $a_2$ also creates a $\curvearrowleft_1$ from $\Square_1$ to $\Circle_1$ which is a pattern forbidden by NAC of $a_1$. Therefore, we have that $a_2$ also causes a \emph{produce-forbid} conflict with $a_1$.
+  We have the same the same existential relation as the one presented in Example~\ref{ex:process:existential-relation}, since the structure of the actions is the same in both examples, except for the NAC in the action $a_1$ on Figure~\ref{fig:process:existential-relation:example-nacs}.
+
+  Following this example, we still have that $a_2$ must be applied first in order for $a_1$ to be applied. However, besides creating the $\Square_1$ needed for $a_1$, $a_2$ also creates a $\curvearrowleft_1$ from $\Square_1$ to $\Circle_1$ which is a pattern forbidden by the NAC on $a_1$. Therefore, we have that $a_2$ also causes a \emph{produce-forbid} conflict with $a_1$.
 
   Moreover, the only other action $a_3$ does not delete any element that could help undoing the forbidden pattern. Thus, there is no possible way of applying all actions of this grammar, even though the existential relation is a partial order.
 
 \end{example}
 
-The next \emph{unconditional relations} are equivalent to the \emph{causal dependency} and \emph{weak conflict} relations presented at~\cite{Ribeiro1996}, but for the DPO approach, rather than the SPO one. Furthermore, \emph{conditional relations} will be later defined for conflicts and dependencies with NACs.
+The next \emph{unconditional relations} are equivalent to the \emph{causal dependency} and \emph{weak conflict} relations presented at~\cite{Ribeiro1996}, but for the DPO rather than the SPO approach. These relations will be used as basis to the \emph{conditional relations} that will be later defined for conflicts and dependencies with NACs.
 
 Regarding both unconditional and conditional dependency relations, their definitions are based on the following intuition:
 
-\begin{intuition} An action $a_1$ is a direct cause of an action $a_2$ if either $a_1$ creates some element that is needed by $a_2$ (unconditional causal dependency) or $a_1$ deletes an element that is both forbidden by a NAC of $a_2$ and existent before the application of $a_2$ (conditional causal dependency). In both cases, we have that $a_2$ can only happen after $a_1$ has been applied.\tinytodo{Explain that we do not use the notion of irreversible dependency, as we are interested only in the ordered
-  execution of the actions?} 
+\begin{intuition} An action $a_1$ is a direct cause of an action $a_2$ if either $a_1$ creates some element that is needed by $a_2$ (unconditional causal dependency) or $a_1$ deletes an element that is both forbidden by a NAC of $a_2$ and existent before the application of $a_2$ (conditional causal dependency). In both cases, we have that $a_2$ can only happen after $a_1$ has been applied.
 \end{intuition}
 
 \begin{figure}[!ht]
@@ -417,13 +419,13 @@ Regarding both unconditional and conditional weak conflict relations, their defi
 \begin{definition}[Unconditional Occurrence Relation] Given \doublyTypedGraphGrammarCore{} a strongly safe graph grammar, let $\leq_{pu}$ and $\leq_{du}$ be the unconditional dependency and unconditional weak conflict relations of this grammar for $P \cup N(C^T) \cup E(C^T)$. Then the \emph{unconditional occurrence relation} of GG is the reflexive and transitive closure of \mbox{$\leq_{pu} \cup \leq_{du}$}.
 \end{definition}
 
-Similarly to the existential relation,~\cite{Ribeiro1996} proved that if this relation is a partial order, then it is possible to apply all actions of its underlying grammar in any total order that respects the partial order. Again, this condition is not sufficient if the rules may be equipped with NACs\tinytodo{is it necessary to draw another example?}, as it was also shown to be equivalent to the existential relation.
+Similarly to the existential relation,~\cite{Ribeiro1996} proved that if this relation is a partial order, then it is possible to apply all actions of its underlying grammar in any total order that respects the partial order. Again, this condition is not sufficient if the rules may be equipped with NACs, as it was also shown to be equivalent to the existential relation.
 
-\begin{example}[Unconditional Relations] \tinytodo{Create at least one more rule to show the transitive closure working} For the strongly safe grammar depicted on Figure~\ref{fig:process:unconditional-relation} we have the following relations: 
+\begin{example}[Unconditional Relations] \tinytodo{Create at least one more rule to show the transitive closure working?} For the strongly safe grammar depicted on Figure~\ref{fig:process:unconditional-relation} we have the following relations: 
 
 \begin{itemize}
   \item produce-use dependencies: $a_1 <_{pu} a_3$, $a_2 <_{pu} a_3$, $a_2 <_{pu} a_4$. Therefore, the unconditional dependency relation for the actions is $a_1 \leq_{pu} a_3$, $a_2 \leq_{pu} a_3$, $a_2 \leq_{pu} a_4$. 
-  \item delete-use conflicts\tinytodo{define unconditional occurrence relation}: $a_2 <_{du} a_1$. Therefore, the unconditional weak conflict relation for the actions is $a_2 \leq_{du} a_1$.
+  \item delete-use conflicts: $a_2 <_{du} a_1$. Therefore, the unconditional weak conflict relation for the actions is $a_2 \leq_{du} a_1$.
   \item unconditional occurrence relation: $a_1 \leq a_3$, $a_2 \leq a_3$, $a_2 \leq a_4, a_2 \leq a_1$.
 \end{itemize}
 
@@ -442,13 +444,13 @@ Similarly to the existential relation,~\cite{Ribeiro1996} proved that if this re
 
 \section{Relations within Strongly Safe Graph Grammars with NACs}
 
-The previous relations extracted from strongly safe grammars have the property of being always concrete, in the sense that if an action is dependent on (conflicting with) another one, it happens because the one of them creates (resp. deletes) at least one of the concrete elements necessary for the other to be applied (resp. prevented of being applied).
+The previous relations extracted from strongly safe grammars have one thing in common: they are always concrete. This means that if an action is dependent on (conflicting with) another one, it happens because the one of them creates (resp. deletes) at least one of the concrete elements necessary for the other to be applied (resp. prevented of being applied).
 
 Moreover, the existential relation must always be respected whenever we try to find a total order in which all the actions of a strongly safe grammar are applicable. However, for grammars equipped with NACs it is necessary to include the conflicts and dependencies created by NACs in this relation.
 
-The problem here is that we can not just add the conflicts and dependencies caused by NACs directly into the existential relation (as was the case for their unconditional counterparts in the unconditional occurrence relation) because they are not always concrete. This means that depending on the total order of application chosen among the possibilities given by the existential relation, a conflict or dependency may or may not happen.
+The problem here is that we can not just add the conflicts and dependencies caused by NACs directly into the existential relation (as was the case for their unconditional counterparts in the unconditional occurrence relation) because they are not always concrete. In other words: according to the total order of application chosen among the existential relation possibilities, a conflict or dependency may or may not happen.
 
-In fact, according to the possible application orders, such dependencies and conflicts may be classified as \emph{concrete}, they will happen no matter the chosen order; \emph{non existent}, they will never happen no matter the order; or \emph{abstract}, they may occur in only in some total orders.
+In fact, according to the possible application orders, such dependencies and conflicts may be characterized as \emph{concrete}, they will happen no matter the chosen order; \emph{non existent}, they will never happen no matter the order; or \emph{abstract}, they may occur in only in some total orders.
 
 \begin{example}[Interaction between existential relation and NACs]
 Let $a_1, a_2, a_3$ be three actions of the same strongly safe grammar. Suppose that $a_1$ creates elements used by $a_2$ and $a_2$ creates elements used by $a_3$, therefore by the existential relation we know that $a_1 \leq_e a_2 \leq_e a_3$.
@@ -464,8 +466,7 @@ Let $a_1, a_2, a_3$ be three actions of the same strongly safe grammar. Suppose 
 
 However, looking at the existential relation, we can affirm that this configuration ensures that neither the conflict nor the dependency exist in any concrete execution of this grammar. 
 
-  For the conflict, this happens because $a_2$ can only happen after $a_1$, thus the element forbidden by the NAC of $a_1$ can only exist after $a_1$ itself was already applied. Likewise, the dependency that is identified because $a_3$ deletes the element that would be forbidden by the NAC of $a_1$ does not exist either.\tinytodo{Draw the examples for non existent (last paragraph), concrete and potential
-dependencies/conflicts}. 
+  For the conflict, this happens because $a_2$ can only happen after $a_1$, thus the element forbidden by the NAC of $a_1$ can only exist after $a_1$ itself was already applied. Likewise, the dependency that is identified because $a_3$ deletes the element that would be forbidden by the NAC of $a_1$ does not exist either.\tinytodo{Draw examples for non existent (last paragraph), concrete and potential dependencies/conflicts?}. 
 \end{example}
 
 We already know that at least the existential relation must be a partial order in order for the grammar to be executable. Nevertheless, the following problem remains to be solved:
@@ -476,7 +477,7 @@ We already know that at least the existential relation must be a partial order i
 
 In the following, we categorize this conflicts and dependencies according to their triggering elements and their pertinence into the existential relation in order to solve this problem.
 
-\begin{definition}[Delete-Forbid in Strongly Safe Graph Grammars] Let \doublyTypedGraphGrammarCore{} be a strongly-safe graph grammar, where $P$ is a set of actions with incremental, non-trivially triggered NACs only.
+\begin{definition}[Delete-Forbid in Strongly Safe Graph Grammars]\label{def:delete-forbid-strong} Let \doublyTypedGraphGrammarCore{} be a strongly-safe graph grammar, where $P$ is a set of actions with incremental, non-trivially triggered NACs only.
 
 \diagram{
   \mathbf{a_1} & & N^{-1}_1 & & N_2\ar@{.>}@/_1.1pc/[ddllll]_<<<<{q} & & \mathbf{a_2}\\
@@ -488,7 +489,7 @@ In the following, we categorize this conflicts and dependencies according to the
 
 \begin{itemize}
   \item \emph{concrete}: iff $(x \leq_e a_2) \lor (x \in I^{C^T})$;
-  \item \emph{abstract}: iff $(\exists a_3 \in P \mid x \in R_3 - K_3)$ $\land$ $(x \not\leq_e a_2)$ $\land$ $(a_2 \not\leq_e x)$;\tinytodo{ $(x,a_2)$ or $(a_3, a_2)$?}
+  \item \emph{abstract}: iff $(\exists a_3 \in P \mid x \in R_3 - K_3)$ $\land$ $(x \not\leq_e a_2)$ $\land$ $(a_2 \not\leq_e x)$;%\tinytodo{ $(x,a_2)$ or $(a_3, a_2)$?}
   \item \emph{non existent}: otherwise.
 \end{itemize}
 
@@ -497,15 +498,13 @@ In the following, we categorize this conflicts and dependencies according to the
   The delete-forbid between two elements has the same quality (concrete, abstract, non existent) as the one between the actions involved in this dependency.
 \end{definition}
 
+The delete-forbid dependency found in the diagram can have different classifications according to the existential relation of its underlying strongly safe graph grammar and also to the existence (or not) of the triggering element in the initial graph. Thus, we need to demonstrate that
 
-The delete-forbid dependency found in the diagram can have different meanings \tinytodo{meanings?} according to the existential relation of its underlying strongly safe graph grammar and also to the existence (or not) of the triggering element in the initial graph. The cases can be summarized as:
+\begin{thm} The definition~\ref{def:delete-forbid-strong} captures all cases of a \emph{delete-forbid} in strongly safe graph grammars.
+\end{thm}
 
-%\begin{enumerate}
-%  \item $x \in I^{C^T}$.
-%  \item $x \not\in I^{C^T}$ and $a_2$ is related to $x$ by the existential relation.
-%  \item $x \not\in I^{C^T}$ and $a_2$ is not related to $x$ by the existential relation..
-%\end{enumerate}
-
+\begin{proof} Given actions $a_1,a_2 \in P$ in \emph{delete-forbid} and the element $x \in C^T$ which is the triggering element of this dependency, we may have that:
+\hfill
 \begin{description}[style=nextline,leftmargin=*]
 
   \item [Triggering element is present on the initial graph:]
@@ -524,8 +523,9 @@ Let $x$ be not created by any action in $P$, meaning that $x$ is present on the 
 
 Now, let $a_3$ be related to $a_2$. In this configuration, we have that $a_2$ would be related to $x$, as $a_3$ creates $x$, which corresponds to our second case.
 \end{description}
+\end{proof}
 
-\begin{definition}[Produce-Forbid in Strongly Safe Graph Grammars] Given \doublyTypedGraphGrammarCore{} a strongly safe graph grammar, where $P$ is a set of actions with incremental, non-trivially triggered NACs only.
+\begin{definition}[Produce-Forbid in Strongly Safe Graph Grammars]\label{def:produce-forbid-strong} Given \doublyTypedGraphGrammarCore{} a strongly safe graph grammar, where $P$ is a set of actions with incremental, non-trivially triggered NACs only.
 
 \diagram{
   \mathbf{a_1^{-1}}& & N_1 & & N_2\ar@{.>}@/_1.1pc/[ddllll]_<<<<{q} & & \mathbf{a_2}\\
@@ -546,12 +546,13 @@ Now, let $a_3$ be related to $a_2$. In this configuration, we have that $a_2$ wo
   The produce-forbid between two elements has the same quality (concrete, abstract, non existent) as the one between the actions involved in this conflict.
 \end{definition}
 
-  Similarly to the dependency situation, the produce-forbid conflict can have different meanings according to the existential relation of its grammar. Nonetheless, once we are dealing with strongly safe grammars and this element is created by one of the actions involved in the conflict, we do not have to worry about the initial graph. The conflict cases can be summarized as:
+  Similarly to the dependency situation, the produce-forbid conflict can have different meanings according to the existential relation of its grammar. Nonetheless, once we are dealing with strongly safe grammars and this element is created by one of the actions involved in the conflict, we do not have to worry about the initial graph. Thus, we need to demonstrate that:
 
-%  \begin{enumerate}
-%    \item $a_2$ is somehow related to $x$ by the existential relation.
-%    \item $a_2$ is not related to $x$ by the existential relation.
-%  \end{enumerate}
+\begin{thm} The definition~\ref{def:produce-forbid-strong} captures all cases of a \emph{produce-forbid} in strongly safe graph grammars.
+\end{thm}
+
+\begin{proof} Given actions $a_1,a_2 \in P$ in \emph{produce-forbid} and the element $x \in C^T$ which is the triggering element of this conflict, we may have that:
+\hfill
 
 \begin{description}[style=nextline,leftmargin=*]
   \item[Triggering element is related to the action:]
@@ -571,6 +572,7 @@ Now, let $a_3$ be related to $a_2$. In this configuration, we have that $a_2$ wo
 
     On the other hand, suppose that there is an action $a_3$ which deletes $x$ and $a_3$ not related to $a_2$ by the existential, thus we have $a_1 <_e a_3$. In this configuration, we have an \emph{abstract} conflict, in the sense that $a_2$ can not be applied after $a_1$ has been applied, unless $a_3$ is also applied before $a_2$, disabling the produce-forbid conflict. We represent this \emph{abstract} produce-forbid conflict as \mbox{$[a_2 <_{pf} a_1$ | $a_3 < a_2]$} or \mbox{$a_2 \not\in [a_1\ldots a_3]$}.
 \end{description}
+\end{proof}
 
 \begin{example}[Conditional Relations] Consider the strongly safe grammar show in Figure~\ref{fig:process:order} (the core, typed and initial graphs were omitted). 
   
