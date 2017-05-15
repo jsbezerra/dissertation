@@ -9,11 +9,9 @@ Regarding category theory, verigraph implements important basic constructions su
 The implemented categorial constructions are used as basis to implement several graph grammar analyses, such as critical pair analysis~\cite{Lambers2006}, state space generation and model checking~\cite{Becker2014}, concurrent rules generation~\cite{BezerraETMF2016} and higher-order graph transformations~\cite{Machado2015}. They were also used to implement the calculation of occurrence graph grammars, which will be explained in depth on
 chapter~\ref{ch:process} and used for test case generation on chapter~\ref{ch:tests}.
 
-The analysis algorithms are implemented in a generic functional style, having the advantage of being very close to the formal definitions, thus making it easier to reason about them and to inspect for correctness. In addition, verigraph benefits from a layered architecture (see Figure~\ref{fig:verigraph:layers}) where it is easy to reuse the same algorithms for other categories different than \cat{TGraph_T}, as long as they implement the contracts given by the type
-classes (interfaces) defined on the system. 
+The analysis algorithms are implemented in a generic functional style, having the advantage of being very close to the formal definitions, thus making it easier to reason about them and to inspect for correctness. 
 
-Some examples of such type classes are shown on
-Figures~\ref{fig:verigraph:morphism-type-class} and \ref{fig:verigraph:cocomplete-type-class}.
+In addition, verigraph benefits from a layered architecture, shown on Figure~\ref{fig:verigraph:layers}, where it is easy to reuse the same analysis algorithms (top layer) for other categories different than \cat{TGraph_T} (bottom layer), as long as they implement the contracts given by the type classes (middle layer) defined on the system. Some examples of such type classes are shown on Figures~\ref{fig:verigraph:morphism-type-class} and \ref{fig:verigraph:cocomplete-type-class}.
 
 \begin{figure}[!ht]
   \centering
@@ -55,7 +53,7 @@ All the other type classes in the tool that are related to category theory are s
 
 Notice that, in the \code{Cocomplete} definition, any category that implements the functions \code{calculateCoequalizer} and \code{calculateCoproduct} automatically will have a standard implementation of the \code{calculatePushout} function based only on this two constructions. This is due to the fact that, whenever a category has coequalizers and coproducts, it is possible to calculate any (finite) colimit based only on this two constructions, as demonstrated in~\cite{Pierce1991}.
 
-We took advantage of this result to implement not only the \code{calculatePushout}, but also the calculation of the \code{colimit} of a diagram. The later being used in the calculation of occurrence graph grammars as demonstrated in chapters~\ref{ch:process} and~\ref{ch:tests}.
+We took advantage of this result to implement not only the \code{calculatePushout}, but also the calculation of the \code{colimit} of a diagram. The later being used in the generation of occurrence graph grammars as demonstrated in chapters~\ref{ch:process} and~\ref{ch:tests}.
 
 Another interesting characteristic of the \code{Morphism} type class is that, even though \code{pushouts} and \code{colimits} are implemented in terms of \code{coproducts} and \code{coequalizers}, the programmer can override the default implementation and provide her/his own (categorial specific) implementation. For example, this could be useful when for a given category \cat{C}, a particular algorithm to calculate the pushout is known to more optimized than using the composition of the basic operations.
 
@@ -63,18 +61,12 @@ Another interesting characteristic of the \code{Morphism} type class is that, ev
   \begin{minted}[linenos=true, breaklines, fontsize=\small]{haskell}
 class (Morphism m) => Cocomplete m where
 
--- | Given two morphisms @/f : A -> B/@ and @/g : A -> B/@ returns the coequalizer morphism
--- @/h : B -> X/@
 calculateCoequalizer :: m -> m -> m
 
--- | Given a non-empty list of morphisms of the form @/f : A -> B/@ returns the coequalizer Morphism
--- @/h : B -> X/@
 calculateNCoequalizer :: NonEmpty m -> m
 
--- | Given two objects @A@ and @B@ it returns the coproduct @(A+B, f: A -> A+B, g: B -> A+B)@
 calculateCoproduct :: Obj m -> Obj m -> (m,m)
 
--- | Given a non-empty list of objects @Bi@ it returns the coproduct @fi : Bi -> SUM(Bi)@
 calculateNCoproduct :: NonEmpty (Obj m) -> [m]
 
 calculatePushout :: m -> m -> (m, m)
@@ -104,7 +96,7 @@ Currently, there are three categories implemented on Verigraph:
 \begin{itemize}
   \item \cat{Graph}: graphs as objects and graph morphisms as arrows; 
   \item \cat{TGraph_T}: $T-$typed graphs as objects and $T-$typed graph morphisms as arrows; 
-  \item \cat{TSpan_T}: $T-$typed graph morphism spans as objects and span morphisms as arrows (e.g. DPO graph rules and morphisms between rules, respectively).
+  \item \cat{TSpan_T}: $T-$typed graph morphism spans as objects and span morphisms as arrows (DPO graph rules and morphisms between rules, respectively).
 \end{itemize}
 
 \section{Implementation of Graph Grammars}
@@ -135,7 +127,7 @@ data Graph a b = Graph
 \label{fig:verigraph:graph}
 \end{figure}
 
-We use \code{Graph} to build the morphisms necessary to implement the categories \cat{Graph}, \cat{TGraph_T} and \cat{TSpan_T}. A graph morphism consists of a graph as domain, a graph as codomain and relations that map the nodes and edges in the domain graph to the ones in the codomain one. A typed graph is regarded as a simple graph morphism and a typed graph morphism consists of a typed graph as domain, a typed graph as codomain and a graph morphism relating the two of them.
+We use \code{Graph} to progressively build the morphisms necessary to implement the categories \cat{Graph}, \cat{TGraph_T} and \cat{TSpan_T}. A graph morphism consists of a graph as domain, a graph as codomain and relations that map the nodes and edges in the domain graph to the ones in the codomain one. A typed graph is regarded as a simple graph morphism and a typed graph morphism consists of a typed graph as domain, a typed graph as codomain and a graph morphism relating the two of them.
 
 Figure~\ref{fig:verigraph:concrete-morphisms} shows all categories currently implemented in verigraph based on their morphisms. Moreover, all concrete morphisms presented implement the \code{Morphism} type class. Figure~\ref{fig:verigraph:morphism-implementation} shows how \code{TypedGraphMorphism} implements \code{Morphism} type class in order to provide the \cat{TGraph_T} category.
 
@@ -151,7 +143,6 @@ data GraphMorphism a b = GraphMorphism
 , edgeRelation :: R.Relation G.EdgeId
 } deriving (Eq, Show)
 
--- | A typed graph is a graph morphism whose codomain is the type graph.
 type TypedGraph a b = GraphMorphism a b
 
 data TypedGraphMorphism a b = TypedGraphMorphism 
@@ -183,7 +174,6 @@ instance Morphism (TypedGraphMorphism a b) where
   isMonomorphism = isMonomorphism . mapping
   isEpimorphism = isEpimorphism . mapping
   isIsomorphism = isIsomorphism . mapping
-
 \end{minted}
 \label{fig:verigraph:morphism-implementation}
 \end{figure}
@@ -216,6 +206,6 @@ isProduceUse p1 (m1',m2) = null h21
 \label{fig:verigraph:delete-use-produce-use}
 \end{figure}
 
-As an example of its application at other categories we have \cat{TSpan_T}, which also implements the \code{DPO} type class and benefits from the same algorithms for finding conflicts and dependencies. This also can be used for different categories based on graphs, algebras, logic and so on.
+As an example of its application at other categories we have \cat{TSpan_T}, which also implements the \code{DPO} type class and benefits from the same algorithms for finding conflicts and dependencies. This also can be used for different categories based on graphs, algebras, logics and so on.
 
 
