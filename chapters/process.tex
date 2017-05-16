@@ -95,15 +95,11 @@ A (doubly-typed) match morphism $m^{TG^T} : L^{TG^T} \rightarrow G^{TG^T}$ of a 
   A match $m^{TG^T} : L^{TG^T} \rightarrow G^{TG^T}$ satisfies a set \mbox{$NAC_L = \{NAC\left(n^T_i\right)|i \in I\}$} of left $NACs$, iff \mbox{$m \models NAC\left(n^T_i\right)$} $\forall i \in I$.
 
 \emph{Right} negative application conditions are defined analogously for the right hand side of a rule and its comatch.
-
-
 \end{definition}
-
-\begin{example}[NAC Example]\tinytodo{draw example or remove it}
-\end{example}
 
 \begin{remark}
 Although we could have defined NACs whose morphisms are doubly-typed graph morphisms (which would then act specifically over doubly-typed graphs) we will not use this kind of NACs later in our work. Therefore, we will use this \emph{single-typed} NACs as the only NAC type in all of our \emph{doubly-typed graph grammars}, and $NAC(n)$ as a synonym of $NAC(n^T)$.
+
 \end{remark}
 
 When dealing with the classical notion of NACs, there may occur situations where the NAC of a rule can be triggered by the cumulative effect of applying two (or more) other rules, while the same rules would not trigger this NAC without the other. This may lead to a situation where conflicts and dependencies are not stable under switch, as shown in example~\ref{ex:process:instability}.
@@ -221,9 +217,11 @@ The idea is that each element within a \emph{core graph} has a unique origin. At
 \begin{definition}[Strongly Safe (Doubly-Typed) Graph Grammars] Given \doublyTypedGraphGrammarCore{} a doubly-typed graph grammar, $GG$ is said to be \emph{strongly safe} if its double-type graph is also a core graph.
 
   Each rule in a strongly safe graph grammar is also called an \emph{action}. We say that an action $a$ creates an element $e$ iff $e \in R(a) - K(a)$. Similarly, $a$ deletes $e$ iff \mbox{$e \in L(a) - K(a)$}.
+
 \end{definition}
 
 \begin{remark}[Strongly Safe Grammars] Throughout this work, we will use only strongly safe grammars whose set $P$ of actions is finite and each action in $P$ is distinct from the others.
+
 \end{remark}
 
 \begin{example}[Strongly Safe Graph Grammar] Figure~\ref{fig:process:core-graph:example} also depicts a strongly safe graph grammar as the double-type graph of the grammar is, in fact, a core graph.
@@ -262,7 +260,7 @@ First, actions are always applied over the core graph: the match of an action is
 
 \end{remark}
 
-\begin{definition}[Existential Relation] \tinytodo{I need a better name for this relation}This is the \emph{causal relation} defined in \cite{Corradini1996} for the DPO approach without NACs. Given  \doublyTypedGraphGrammarCore{} a strongly safe graph grammar, actions \mbox{$a_1, a_2 \in P, a_1 \ne a_2$} and an element \mbox{$e_1 \in N(C^T) \cup E(C^T)$}, then:
+\begin{definition}[Existential Relation] This is the \emph{causal relation} defined in \cite{Corradini1996} for the DPO approach without NACs. Given  \doublyTypedGraphGrammarCore{} a strongly safe graph grammar, actions \mbox{$a_1, a_2 \in P, a_1 \ne a_2$} and an element \mbox{$e_1 \in N(C^T) \cup E(C^T)$}, then:
 
   \begin{enumerate}
     \item If $a_1$ deletes $e_1$, then $e_1 <_e a_1$.
