@@ -36,7 +36,7 @@ Figure~\ref{fig:tests:methodology} summarizes the methodology process proposed i
   \item[UC Analysis:] automated verifications over the model in order to detect possible flaws in the use case. This is step is done using verigraph and its concurrent rules, conflict and dependency analyses.
 \end{description}
 
-In our running example, we use a grammar that models an e-store system. This grammar was extracted from a set of use cases of use cases presented in~\cite{Goins2007}. These use cases model basic e-store functionalities such as \emph{browse catalogue, user registration, login, update user information, maintain shopping cart}, among others. 
+In our running example, we use a grammar that models an e-store system. This grammar was extracted from a set of use cases presented in~\cite{Goins2007}. These use cases model basic e-store functionalities such as \emph{browse catalogue, user registration, login, update user information, maintain shopping cart}, among others. 
 
 Some excerpts of this model are shown throughout this chapter, while the complete extracted grammar can be found on appendix~\ref{app:marvel-grammar} and at the Verites repository for case studies\footnote{https://github.com/Verites/case-studies}.
 
@@ -52,23 +52,49 @@ Given a graph grammar \graphGrammar{} modelling a system $X$ with $n > 0$ functi
 
 Together with the grammar $GG$ and its subsets of functionalities $F_i$, we will also need an \emph{input-output relation} $IO_i$ for each $F_i$, specifying the connections between the rules in $F_i$. This \emph{input-output relation} specifies which elements (nodes and edges) must be the same among the rules, as shown in example~\ref{ex:inout}.
 
-\begin{example}[Input-Output Relations]\label{ex:inout} In the
+\begin{example} Figure~\ref{fig:tests:grammar} we show a subset of the rules from the e-store grammar that represents the use case \emph{browse catalog}. 
 
+\begin{figure}[!ht]
+  \centering
+  \begin{subfigure}[t]{.5\textwidth}
+    \centerline{\fbox{\includegraphics[scale=0.55]{images/gts/satisfied_nac}}}
+    \caption{A satisfied NAC}
+  \end{subfigure}%
+  \begin{subfigure}[t]{.5\textwidth}
+    \centerline{\fbox{\includegraphics[scale=0.55]{images/gts/triggered_nac}}}
+    \caption{A triggered NAC}
+  \end{subfigure}
+  \begin{subfigure}[t]{.5\textwidth}
+    \centerline{\fbox{\includegraphics[scale=0.55]{images/gts/trivially_triggered_nac}}}
+    \caption{A trivially-triggered NAC}
+  \end{subfigure}
+  \caption{NACs and NAC satisfiability}\label{fig:tests:grammar}
+\end{figure}
+
+  For this use case we have one main execution path and \tinytodo{number} alternative paths. Thus, we have $n$ features.
+  For each one of these features, we have to
+
+  and then crate their input-output relation.\tinytodo{Adjust}
+\end{example}
+
+\begin{example}[Input-Output Relations]\label{ex:inout} A \emph{full} input output-relation for all rules of a subset has the appearance of the following diagram, where we have a set of $IO$ objects that are nothing more then a graph with a pair of morphism mapping one left-hand side of a rule with the right-hand side of another rule.
 
 \diagram{
-  & & & & IO_6\ar@{-->}[dddrrrr]\ar@{-->}[dddllll] & & & & &\\
-  & IO_3\ar@{-->}[ddl]\ar@{-->}[ddrrrr] & & & & & & IO_4\ar@{-->}[ddr]\ar@{-->}[ddllll] & &\\
-  & & IO_1\ar@{-->}[d]\ar@{-->}[dr] & & IO_5\ar@{-->}[drr]\ar@{-->}[dll] & & IO_2\ar@{-->}[d]\ar@{-->}[dl] & & & \\
-  L_1 & K_1\ar[l]\ar[r] & R_1 & L_2 & K_2\ar[l]\ar[r] & R_2 & L_3 & K_3\ar[l]\ar[r] & R_3 & \\
-}
+  & & & & IO_6\ar@{-->}[dddrrrr]\ar@{-->}[dddllll] & & & &\\
+  & IO_3\ar@{-->}[ddl]\ar@{-->}[ddrrrr] & & & & & & IO_4\ar@{-->}[ddr]\ar@{-->}[ddllll] &\\
+  & & IO_1\ar@{-->}[d]\ar@{-->}[dr] & & IO_5\ar@{-->}[drr]\ar@{-->}[dll] & & IO_2\ar@{-->}[d]\ar@{-->}[dl] & &\\
+  L_1 & K_1\ar[l]\ar[r] & R_1 & L_2 & K_2\ar[l]\ar[r] & R_2 & L_3 & K_3\ar[l]\ar[r] & R_3\\
+  }\hfill\break
 
-\iffalse
+    Figure~\ref{fig:tests:inout} shows how an $IO$ object connects two different rules, which is similar to how the interface of object of a rule identifies the elements that are the same in is left and right sides. 
+
+    Usually, a full relation will not be necessary, as the $IO$ relation has some sort of transitivity. For example, in \tinytodo{draw and explain}
+
 \begin{figure}[!ht]
   \centering
   \fbox{\includegraphics[scale=0.7]{images/generating-tests/inout}}
   \caption{Input-Output relation structure.}\label{fig:tests:inout}
 \end{figure}
-\fi
 
 \end{example}
 
@@ -83,35 +109,52 @@ Given a grammar $GG$ modelling a system, its set of rules $P$, together with $F_
 \item one or more total orderings that do not respect the relations or restrictions
 \end{enumerate}
 
-First, the amalgamation of rules in $F_i$ w.r.t. $IO_i$ is responsible to ``glue'' the graphs of all rules in on single graph at the same that it identifies the items that come from different rules but are supposed to be the same element. 
+First, the amalgamation of rules in $F_i$ w.r.t. $IO_i$ is responsible to ``glue'' the graphs of all rules in on single graph at the same that it identifies the items that come from different rules but are supposed to be the same element.
 
-If the result of this amalgamation is a \emph{core graph} according to definition~\ref{def:core-graph}, we can create a doubly-typed graph grammar $OGG_i$ that is also a strongly-safe grammar and therefore a candidate to be an occurrence graph grammar. Otherwise, there is more than one rule that deletes or creates
-the same element, thus it is not possible to apply all rules of this functionality.
+The colimit of a diagram such as the one presented in Example~\ref{ex:inout} has the following format, where $Occ$ is the amalgamation object, i.e. it contains all the concrete elements of the rules where it came from:
 
 \diagram{
-  & & & & IO_6\ar[dddrrrr]\ar[dddllll] & & & & &\\
-  & IO_3\ar[ddl]\ar[ddrrrr] & & & & & & IO_4\ar[ddr]\ar[ddllll] & &\\
-  & & IO_1\ar[d]\ar[dr] & & IO_5\ar[drr]\ar[dll] & & IO_2\ar[d]\ar[dl] & & & \\
-  L_1\ar[dddrrrr] & K_1\ar[l]\ar[r] & R_1\ar[dddrr] & L_2\ar[dddr] & K_2\ar[l]\ar[r] & R_2\ar[dddl] & L_3\ar[dddll] & K_3\ar[l]\ar[r] & R_3\ar[dddllll] & \ldots\ar[dddlllll]\\
-  & & & & & & & & & \\
-  & & & & & & & & & \\
-  In\ar[rrrr] & & & & Occ & & & & Out\ar[llll] &
-}
+  & & & & IO_6\ar[dddrrrr]\ar[dddllll] & & & &\\
+  & IO_3\ar[ddl]\ar[ddrrrr] & & & & & & IO_4\ar[ddr]\ar[ddllll] &\\
+  & & IO_1\ar[d]\ar[dr] & & IO_5\ar[drr]\ar[dll] & & IO_2\ar[d]\ar[dl] & &\\
+  L_1\ar[dddrrrr] & K_1\ar[l]\ar[r] & R_1\ar[dddrr] & L_2\ar[dddr] & K_2\ar[l]\ar[r] & R_2\ar[dddl] & L_3\ar[dddll] & K_3\ar[l]\ar[r] & R_3\ar[dddllll]\\
+  & & & & & & & &\\
+  & & & & & & & &\\
+   & & & & Occ & & & &
+}\hfill\break
 
-\iffalse
+If the result of this colimit is a \emph{core graph} according to definition~\ref{def:core-graph}, we can create a doubly-typed graph grammar $OGG_i$ that is also a strongly-safe grammar and therefore a candidate to be an occurrence graph grammar. Otherwise, there is more than one rule that deletes or creates
+the same element, thus it is not possible to apply all rules of this functionality.
+
+
+\begin{example}[Amalgamation example]\label{ex:amalgamation} Figure~\ref{fig:tests:colimit} shows the object resultant from the amalgamation of the rules in Figure~\ref{fig:tests:grammar}.
+
 \begin{figure}[!ht]
   \centering
   \fbox{\includegraphics[scale=0.7]{images/generating-tests/colimit}}
   \caption{Amalgamation (colimit) of rules according to the IO relation.}\label{fig:tests:colimit}
 \end{figure}
-\fi
 
-\begin{example}[Amalgamation example]\label{ex:amalgamation}
 \end{example}
 
 After identifying that $OGG_i$ is in fact a strongly-safe graph grammar, we can extract the initial and final graphs of $OGG_i$ by removing from the core graph the created and deleted elements, respectively. If they are valid graphs, we have the input and output data for the test case. Otherwise, if they have dangling edges, it is not possible to apply all rules of the functionality, since it would begin in or lead to an inconsistent state.
 
-\begin{example}[Initial and Final Graphs Example]
+\begin{example}[Initial and Final Graphs Example] Figure~\ref{fig:tests:graphs}. 
+
+  Notice that the elements \tinytodo{make list} are created by rules \tinytodo{make list}, and therefore do not appear in the initial graph. Similarly, the elements \tinytodo{make list} are deleted by rules \tinytodo{make list} and do not appear in the final graph.
+
+\begin{figure}[!ht]
+  \centering
+  \begin{subfigure}[t]{.5\textwidth}
+    \centerline{\fbox{\includegraphics[scale=0.55]{images/gts/satisfied_nac}}}
+    \caption{Initial graph}
+  \end{subfigure}%
+  \begin{subfigure}[t]{.5\textwidth}
+    \centerline{\fbox{\includegraphics[scale=0.55]{images/gts/triggered_nac}}}
+    \caption{Final graph}
+  \end{subfigure}
+  \caption{Instance graphs}\label{fig:tests:graphs}
+\end{figure}
 \end{example}
 
 Once the previous verifications were successful, we can build the occurrence relation (and any other relation discussed on chapter~\ref{ch:process}) to verify if $OGG_i$ can really be an occurrence graph grammar. If no abstract dependencies or conflicts are found, then the concrete relations are sufficient to do this verification, thus we simply need to check if there is a total ordering compatible with the relations.

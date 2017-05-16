@@ -51,8 +51,11 @@ Thus, it remains as future work to formally define this other kind of NAC, to ve
 \textbf{Interface:} Regarding input and output, verigraph does not have an operational graphical user interface yet (GUI), using the AGG tool and its \code{.ggx} file format for providing this operations. However, AGG does not support doubly-typed graph grammars nor NACs under this framework, thus the graphical visualization of the output of the test generation process is not completely possible, which makes the development of a GUI dedicated to verigraph a necessary step to address this issue\footnote{the development
   of a responsive, dedicated GUI is currently one of the main focus of the verites group}.
 
-\textbf{Interactive test case generation:} With respect to the test case generation, the GUI will also be helpful to the guided generation of different cases, where the user can interactively guide the system to create other sequences of rule applications and automatically test whether they are a valid execution path\tinytodo{elaborate}.
+\textbf{Interactive test case generation:} With respect to the test case generation, the GUI will also be helpful to the guided generation of different cases. Currently, the user must create the subsets of functionalities manually, as well as the $IO$ relations needed for them.
 
+With a graphical interface, the user will be able to interactively guide the system in the creation of the sets of rules and $IO$ relations. Specially in the case of the $IO$ relations, the system can indicate to the user which items in the set of rules are transitively identified, avoiding the construction of redundant relations.
+
+Another advantage would be that a ``checker'', in which the user could provide his/her own paths to verigraph and the system would reply if this path is a valid execution or why it is not.
 
 \textbf{Automated source code generation:}
   Finally, the generation of test cases is done in a textual manner, thus leaving to the test engineer \tinytodo{analyst?} the responsibility of translating it into real source code. A very interesting research would be how to translate it directly to source code of specific programming languages and/or test frameworks.
