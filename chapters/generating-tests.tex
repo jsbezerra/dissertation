@@ -90,22 +90,16 @@ Given a graph grammar \graphGrammar{} that models a system, we want to generate 
     \caption{Rule \emph{display chosen item}}
   \end{subfigure}
 \end{figure}
-
+\end{example}
 \subsection{Preparing the input}
 
-Together with the grammar $GG$ and its subsets of functionalities $F_i$, we will also need an \emph{input-output relation} $IO_i$ for each $F_i$, specifying the connections between the rules in the subsets. This \emph{input-output relation} identifies which elements (nodes and edges) must be the same between each pair of rules, as shown in example~\ref{ex:inout}.
+Along with the grammar $GG$ and its subsets of functionalities $F_i$, we will also need an \emph{input-output relation} $IO_i$ for each $F_i$, specifying the connections between the rules in the subsets. This \emph{input-output relation} identifies which elements (nodes and edges) must be the same between each pair of rules, as shown in example~\ref{ex:inout}.
 
-  For this use case we will demonstrate the  have one main execution path and \tinytodo{number} alternative paths. Thus, we have $n$ features.
-  Thus we have the following subsets:
-  \begin{itemize}
-    \item $F_1 = \{\}$, the main path;
-    \item $F_2 = \{\}$, the.
-  \end{itemize} \tinytodo{complete}
-\end{example}
-
-Once having the sets of rules, we know need to build the input-output relations for each one of them.
+  We choose the main flow of our example grammar to show how to build the $IO$ relation. First of all, the subset of rules for this path is $F_1 = \{$ chooseCategory, displayProducts, chooseProduct, displayItems, chooseItem, displayChosenItem $\}$. Once having the sets of rules, we build the input-output relations for each one of them.
 
 \begin{example}[Input-Output Relations]\label{ex:inout} A \emph{full} input output-relation for all rules of a subset has the appearance of the following diagram, where we have a set of $IO$ objects that are nothing more then a graph with a pair of morphism mapping one left-hand side of a rule with the right-hand side of another rule.
+
+    Figure~\ref{fig:tests:inout} shows how an $IO$ object connects two different rules, which is similar to how the interface graph of a rule identifies the elements that are the same in its left and right sides.
 
 \diagram{
   & & & & IO_6\ar@{-->}[dddrrrr]\ar@{-->}[dddllll] & & & &\\
@@ -114,14 +108,14 @@ Once having the sets of rules, we know need to build the input-output relations 
   L_1 & K_1\ar[l]\ar[r] & R_1 & L_2 & K_2\ar[l]\ar[r] & R_2 & L_3 & K_3\ar[l]\ar[r] & R_3\\
   }\hfill\break
 
-    Figure~\ref{fig:tests:inout} shows how an $IO$ object connects two different rules, which is similar to how the interface graph of a rule identifies the elements that are the same in its left and right sides.
-
-    For most of the cases, a full relation will not be necessary, as the $IO$ relation has some sort of transitivity. Thus, we can focus on build only a subset of it. For example, in \tinytodo{draw and explain}
+  For most of the cases, a full relation will not be necessary, as the $IO$ relation has some sort of transitivity. Thus, we can focus on build only a subset of it. 
+  
+  Take for example the \emph{system} node in the grammar. This node should be the same between all rules, and it appears in left and right sides of all rules. Given two rules $p_1$ and $p_2$, we have the options of building the $IO$ object that identifies the system node as $L_1 \leftarrow IO \rightarrow R_2$ or $L_2 \leftarrow IO \rightarrow R_1$. Both of them having the same effect.
 
 \begin{figure}[!ht]
   \centering
-  \fbox{\includegraphics[scale=0.7]{images/generating-tests/inout}}
-  \caption{Input-Output relation structure.}\label{fig:tests:inout}
+  \fbox{\includegraphics[scale=0.7]{images/generating-tests/grammar/inout}}
+  \caption{Input-Output relation building}\label{fig:tests:inout}
 \end{figure}
 
 \end{example}
