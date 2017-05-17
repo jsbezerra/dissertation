@@ -52,7 +52,7 @@ Some excerpts of this grammar are shown throughout this chapter, while the compl
 
 \section{Generating Tests using Occurrence Graph Grammars}
 
-Given a graph grammar \graphGrammar{} that models a system, we want to generate test cases and oracles for each subset of rules $F_i \subseteq P$ $\forall i \in 1\ldots n$, where $F_i$ represents a complete functionality \tinytodo{feature} of the system.
+Given a graph grammar \graphGrammar{} that models a system, we want to generate test cases and oracles for each subset of rules $F_i \subseteq P$ $\forall i \in 1\ldots n$, where $F_i$ represents a complete functionality of the system.
 
 \begin{example} Figure~\ref{fig:tests:grammar} shows a subset of the rules from the e-store grammar. The chosen rules represent the main path of the use case \emph{browse catalogue}. 
 
@@ -127,7 +127,7 @@ Now that we have a $GG$ modelling a system, its set of rules $P$, together with 
 \begin{enumerate}
 \item an amalgamation (colimit) $OGG_i$ of rules for each $F_i$ with respect to $IO_i$
 \item the initial and final graphs $I_i$ and $J_i$ of $OGG_i$, representing the input and output data of the functionality $F_i$
-\item the conflict and dependency relations between rules \tinytodo{and the elements involved in the conflict / dependency}
+\item the conflict and dependency relations between rules
 \item restrictions over the ordering of elements existence and rules applicability
 \item one or more total orderings that respect all relations and restrictions
 %\item one or more total orderings that do not respect the relations or restrictions
