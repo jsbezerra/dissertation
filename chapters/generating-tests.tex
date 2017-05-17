@@ -46,7 +46,7 @@ Some excerpts of this grammar are shown throughout this chapter, while the compl
 
 \begin{figure}[!ht]
   \centering
-  \fbox{\includegraphics[scale=0.6]{images/generating-tests/methodology}}
+  \includegraphics[scale=0.7]{images/generating-tests/methodology}
   \caption{Overview of the methodology~\cite{Junior2015}.}\label{fig:tests:methodology}
 \end{figure}
 
@@ -54,7 +54,7 @@ Some excerpts of this grammar are shown throughout this chapter, while the compl
 
 Given a graph grammar \graphGrammar{} that models a system, we want to generate test cases and oracles for each subset of rules $F_i \subseteq P$ $\forall i \in 1\ldots n$, where $F_i$ represents a complete functionality \tinytodo{feature} of the system.
 
-\begin{example} Figure~\ref{fig:tests:grammar} we show a subset of the rules from the e-store grammar that represents the use case \emph{browse catalogue}. 
+\begin{example} Figure~\ref{fig:tests:grammar} shows a subset of the rules from the e-store grammar. The chosen rules represent the main path of the use case \emph{browse catalogue}. 
 
 \begin{figure}[!ht]
   \centering
@@ -95,8 +95,7 @@ Given a graph grammar \graphGrammar{} that models a system, we want to generate 
 
 Together with the grammar $GG$ and its subsets of functionalities $F_i$, we will also need an \emph{input-output relation} $IO_i$ for each $F_i$, specifying the connections between the rules in the subsets. This \emph{input-output relation} identifies which elements (nodes and edges) must be the same between each pair of rules, as shown in example~\ref{ex:inout}.
 
-
-  For this use case we have one main execution path and \tinytodo{number} alternative paths. Thus, we have $n$ features.
+  For this use case we will demonstrate the  have one main execution path and \tinytodo{number} alternative paths. Thus, we have $n$ features.
   Thus we have the following subsets:
   \begin{itemize}
     \item $F_1 = \{\}$, the main path;
@@ -126,6 +125,8 @@ Once having the sets of rules, we know need to build the input-output relations 
 \end{figure}
 
 \end{example}
+
+\subsection{Processing the input grammar}
 
 Now that we have a $GG$ modelling a system, its set of rules $P$, together with $F_i$ and $IO_i$, we generate as output:
 
@@ -175,11 +176,11 @@ After identifying that $OGG_i$ is in fact a strongly-safe graph grammar, we can 
 \begin{figure}[!ht]
   \centering
   \begin{subfigure}[t]{.5\textwidth}
-    \centerline{\fbox{\includegraphics[scale=0.55]{images/gts/satisfied_nac}}}
+    \centerline{\fbox{\includegraphics[scale=0.5]{images/generating-tests/grammar/initial}}}
     \caption{Initial graph}
   \end{subfigure}%
   \begin{subfigure}[t]{.5\textwidth}
-    \centerline{\fbox{\includegraphics[scale=0.55]{images/gts/triggered_nac}}}
+    \centerline{\fbox{\includegraphics[scale=0.5]{images/generating-tests/grammar/final}}}
     \caption{Final graph}
   \end{subfigure}
   \caption{Instance graphs}\label{fig:tests:graphs}
@@ -195,8 +196,8 @@ If the set $R$ of \emph{occurrence relation restrictions} is not empty, we also 
 
 As this seems to be a hard problem, in the complexity sense, we left this last implementation as a future work. However, we still use the restrictions to generate a set of tests regarding the consistency of the system states.
 
-In our case estudies, no such situation was found. We believe that it happens because we used grammars extracted from real use cases, where usually there are (possibly many) sequential connections between the actions, which forces the rules to be connected via the \emph{occurence relation} and avoids abstract restrictions.
+In our case studies, no such situation was found. We believe that it happens because we used grammars extracted from real use cases, where usually there are (possibly many) sequential connections between the actions, which forces the rules to be connected via the \emph{occurrence relation} and avoids abstract restrictions.
 
-\section{Building test cases with Verigraph}
+\section{Analysing results}
 
 More specific usability details can be found on the Verigraph tutorial, whose current version is presented on appendix~\ref{app:tutorial}.
