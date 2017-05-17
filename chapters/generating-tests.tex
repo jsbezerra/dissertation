@@ -149,9 +149,9 @@ The colimit of a diagram such as the one presented in Example~\ref{ex:inout} has
 
 If the result of this colimit is a \emph{core graph} according to definition~\ref{def:core-graph}, we can create a doubly-typed graph grammar $OGG_i$ that is also a strongly-safe grammar and therefore a candidate to be an occurrence graph grammar.
 
-Remember that, if there is more than one rule that deletes or creates the same element, it is not possible to apply all rules of this functionality, and $OGG_i$ can not be an occurrence graph grammar.
+Remember that, if there is more than one rule that deletes or creates the same element, it is not possible to apply all rules of this functionality, and $OGG_i$ can not be an occurrence graph grammar. \tinytodo{put retyped rules?}
 
-\begin{example}[Amalgamation example]\label{ex:amalgamation} Figure~\ref{fig:tests:colimit} shows the object resultant from the amalgamation of the rules of our running example, presented in Figure~\ref{fig:tests:grammar}.
+\begin{example}[Amalgamation example]\label{ex:amalgamation} Figure~\ref{fig:tests:colimit} shows the object resultant from the amalgamation of the rules presented in Figure~\ref{fig:tests:grammar}.
 
 \begin{figure}[!ht]
   \centering
@@ -163,9 +163,7 @@ Remember that, if there is more than one rule that deletes or creates the same e
 
 After identifying that $OGG_i$ is in fact a strongly-safe graph grammar, we can extract the initial and final graphs of $OGG_i$ by removing from the core graph the created and deleted elements, respectively. If they are valid graphs, we have the input and output data for the test case. Otherwise, if they have dangling edges, it is not possible to apply all rules of the functionality, since it would begin in or lead to an inconsistent state.
 
-\begin{example}[Initial and Final Graphs Example] Figure~\ref{fig:tests:graphs}.
-
-  Notice that the elements \tinytodo{make list} are created by rules \tinytodo{make list}, and therefore do not appear in the initial graph. Similarly, the elements \tinytodo{make list} are deleted by rules \tinytodo{make list} and do not appear in the final graph.
+\begin{example}[Initial and Final Graphs Example] Figure~\ref{fig:tests:graphs} shows the initial and final states for the main flow of \emph{browse catalogue}.
 
 \begin{figure}[!ht]
   \centering
@@ -181,9 +179,11 @@ After identifying that $OGG_i$ is in fact a strongly-safe graph grammar, we can 
 \end{figure}
 \end{example}
 
+\section{Analysing results}
+
 Once the previous verifications were successful, we can build the occurrence relation (and any other relation discussed on chapter~\ref{ch:process}) to verify if $OGG_i$ can really be an occurrence graph grammar. If no abstract dependencies or conflicts are found, then the concrete relations are sufficient to do this verification, thus we simply need to check if there is a total ordering compatible with the relations.
 
-\begin{example}[Occurence Relation]
+\begin{example}[Occurence Relation] Figure~\ref{fig:tests:relation} shows the relation between the rules of this occurrence graph grammar.
 \end{example}
 
 If the set $R$ of \emph{occurrence relation restrictions} is not empty, we also need to check if there is a total ordering of the occurrence relation that respects these restrictions.
@@ -192,10 +192,7 @@ As this seems to be a hard problem, in the complexity sense, we left this last i
 
 In our case studies, no such situation was found. We believe that it happens because we used grammars extracted from real use cases, where usually there are (possibly many) sequential connections between the actions, which forces the rules to be connected via the \emph{occurrence relation} and avoids abstract restrictions.
 
-\section{Analysing results}
-
-More specific usability details can be found on the Verigraph tutorial, whose current version is presented on appendix~\ref{app:tutorial}.
-
+The output of verigraph for test case generation is shown on Figures~\ref{fig:tests:checklist} and~\ref{fig:tests:relation}. On the first figure, verigraph performs the basic verifications to check whether the generated output is, in fact, an occurrence grammar.
 
 \begin{figure}[!ht]
 \caption{Tool command line output}
@@ -211,6 +208,7 @@ Analysis written in tmp/output_analysis
 Test cases written in tmp/output_test_cases
 Saved in tmp/output.ggx
 \end{minted}
+  \label{fig:tests:checklist}
 \end{figure}
 
 \begin{figure}[!ht]
@@ -244,4 +242,18 @@ Set of Abstract Restrictions: {
 []
 }
 \end{minted}
+  \label{fig:tests:relation}
 \end{figure}
+The analysis file contains the results for calculation of conflicts and dependencies among rules and among elements. The test cases file contains the information relevant to test designer.
+The \code{.ggx} presents the occurrence graph grammar constructed, together with its initial and final graphs.
+
+The test oracles are represented by the concrete rules relation and the set of abstract restrictions: any path that complains to the format imposed by them is considered valid and must always succeed. On the other hand, paths that break at least one of such restrictions are considered invalid, and their tests must always capture them as failures.
+
+The tests are represented by the rules and element ordering and also by the initial and final graphs. The ordering of rules is one of (possibly) many valid orders in which the rules can be applied.
+
+The ordering of elements represent an ordering in which the state of the system may be constructed. While the initial and final graphs translate the valid formats for the input and output of each test.
+
+More specific usability details can be found on the Verigraph tutorial, whose current version is presented on appendix~\ref{app:tutorial}.
+
+
+
