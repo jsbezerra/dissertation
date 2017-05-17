@@ -38,7 +38,7 @@ Figure~\ref{fig:tests:methodology} summarizes the methodology process proposed i
 
 In our running example, we use a grammar that models an e-store system. This grammar was extracted from a set of use cases presented in~\cite{Goins2007}. These use cases model basic e-store functionalities such as \emph{browse catalogue, user registration, login, update user information, maintain shopping cart}, among others. 
 
-Some excerpts of this model are shown throughout this chapter, while the complete extracted grammar can be found on appendix~\ref{app:marvel-grammar} and at the Verites repository for case studies\footnote{https://github.com/Verites/case-studies}.
+Some excerpts of this grammar are shown throughout this chapter, while the complete extracted grammar can be found on appendix~\ref{app:marvel-grammar} and at the Verites repository for case studies\footnote{https://github.com/Verites/case-studies}.
 
 \begin{figure}[!ht]
   \centering
@@ -58,24 +58,33 @@ Together with the grammar $GG$ and its subsets of functionalities $F_i$, we will
   \centering
   \begin{subfigure}[t]{.5\textwidth}
     \centerline{\fbox{\includegraphics[scale=0.55]{images/gts/satisfied_nac}}}
-    \caption{A satisfied NAC}
+    \caption{rule name}
   \end{subfigure}%
   \begin{subfigure}[t]{.5\textwidth}
     \centerline{\fbox{\includegraphics[scale=0.55]{images/gts/triggered_nac}}}
-    \caption{A triggered NAC}
+    \caption{rule name}
   \end{subfigure}
   \begin{subfigure}[t]{.5\textwidth}
     \centerline{\fbox{\includegraphics[scale=0.55]{images/gts/trivially_triggered_nac}}}
-    \caption{A trivially-triggered NAC}
+    \caption{rule name}
+  \end{subfigure}%
+  \begin{subfigure}[t]{.5\textwidth}
+    \centerline{\fbox{\includegraphics[scale=0.55]{images/gts/trivially_triggered_nac}}}
+    \caption{rule name}
   \end{subfigure}
-  \caption{NACs and NAC satisfiability}\label{fig:tests:grammar}
+  \caption{Rules for the use case \emph{browse catalog}}\label{fig:tests:grammar}
+
 \end{figure}
 
   For this use case we have one main execution path and \tinytodo{number} alternative paths. Thus, we have $n$ features.
-  For each one of these features, we have to
-
-  and then crate their input-output relation.\tinytodo{Adjust}
+  Thus we have the following subsets:
+  \begin{itemize}
+    \item $F_1 = \{\}$, the main path;
+    \item $F_2 = \{\}$, the.
+  \end{itemize} \tinytodo{complete}
 \end{example}
+
+Once having the sets of rules, we know need to build the input-output relations for each one of them.
 
 \begin{example}[Input-Output Relations]\label{ex:inout} A \emph{full} input output-relation for all rules of a subset has the appearance of the following diagram, where we have a set of $IO$ objects that are nothing more then a graph with a pair of morphism mapping one left-hand side of a rule with the right-hand side of another rule.
 
@@ -86,9 +95,9 @@ Together with the grammar $GG$ and its subsets of functionalities $F_i$, we will
   L_1 & K_1\ar[l]\ar[r] & R_1 & L_2 & K_2\ar[l]\ar[r] & R_2 & L_3 & K_3\ar[l]\ar[r] & R_3\\
   }\hfill\break
 
-    Figure~\ref{fig:tests:inout} shows how an $IO$ object connects two different rules, which is similar to how the interface of object of a rule identifies the elements that are the same in is left and right sides. 
+    Figure~\ref{fig:tests:inout} shows how an $IO$ object connects two different rules, which is similar to how the interface graph of a rule identifies the elements that are the same in its left and right sides.
 
-    Usually, a full relation will not be necessary, as the $IO$ relation has some sort of transitivity. For example, in \tinytodo{draw and explain}
+    For most of the cases, a full relation will not be necessary, as the $IO$ relation has some sort of transitivity. Thus, we can focus on build only a subset of it. For example, in \tinytodo{draw and explain}
 
 \begin{figure}[!ht]
   \centering
@@ -98,7 +107,7 @@ Together with the grammar $GG$ and its subsets of functionalities $F_i$, we will
 
 \end{example}
 
-Given a grammar $GG$ modelling a system, its set of rules $P$, together with $F_i$ and $IO_i$, we generate as output:
+Now that we have a $GG$ modelling a system, its set of rules $P$, together with $F_i$ and $IO_i$, we generate as output:
 
 \begin{enumerate}
 \item an amalgamation (colimit) $OGG_i$ of rules for each $F_i$ with respect to $IO_i$
@@ -106,12 +115,12 @@ Given a grammar $GG$ modelling a system, its set of rules $P$, together with $F_
 \item the conflict and dependency relations between rules \tinytodo{and the elements involved in the conflict / dependency}
 \item restrictions over the ordering of elements existence and rules applicability
 \item one or more total orderings that respect all relations and restrictions
-\item one or more total orderings that do not respect the relations or restrictions
+%\item one or more total orderings that do not respect the relations or restrictions
 \end{enumerate}
 
 First, the amalgamation of rules in $F_i$ w.r.t. $IO_i$ is responsible to ``glue'' the graphs of all rules in on single graph at the same that it identifies the items that come from different rules but are supposed to be the same element.
 
-The colimit of a diagram such as the one presented in Example~\ref{ex:inout} has the following format, where $Occ$ is the amalgamation object, i.e. it contains all the concrete elements of the rules where it came from:
+The colimit of a diagram such as the one presented in Example~\ref{ex:inout} has the following format, where $Occ$ is the amalgamation object, i.e. $Occ$ contains all the concrete elements of the rules where it came from:
 
 \diagram{
   & & & & IO_6\ar[dddrrrr]\ar[dddllll] & & & &\\
@@ -123,15 +132,15 @@ The colimit of a diagram such as the one presented in Example~\ref{ex:inout} has
    & & & & Occ & & & &
 }\hfill\break
 
-If the result of this colimit is a \emph{core graph} according to definition~\ref{def:core-graph}, we can create a doubly-typed graph grammar $OGG_i$ that is also a strongly-safe grammar and therefore a candidate to be an occurrence graph grammar. Otherwise, there is more than one rule that deletes or creates
-the same element, thus it is not possible to apply all rules of this functionality.
+If the result of this colimit is a \emph{core graph} according to definition~\ref{def:core-graph}, we can create a doubly-typed graph grammar $OGG_i$ that is also a strongly-safe grammar and therefore a candidate to be an occurrence graph grammar.
 
+Remember that, if there is more than one rule that deletes or creates the same element, it is not possible to apply all rules of this functionality, and $OGG_i$ can not be an occurrence graph grammar.
 
-\begin{example}[Amalgamation example]\label{ex:amalgamation} Figure~\ref{fig:tests:colimit} shows the object resultant from the amalgamation of the rules in Figure~\ref{fig:tests:grammar}.
+\begin{example}[Amalgamation example]\label{ex:amalgamation} Figure~\ref{fig:tests:colimit} shows the object resultant from the amalgamation of the rules of our running example, presented in Figure~\ref{fig:tests:grammar}.
 
 \begin{figure}[!ht]
   \centering
-  \fbox{\includegraphics[scale=0.7]{images/generating-tests/colimit}}
+  \fbox{\includegraphics[scale=0.4]{images/generating-tests/colimit}}
   \caption{Amalgamation (colimit) of rules according to the IO relation.}\label{fig:tests:colimit}
 \end{figure}
 
@@ -139,7 +148,7 @@ the same element, thus it is not possible to apply all rules of this functionali
 
 After identifying that $OGG_i$ is in fact a strongly-safe graph grammar, we can extract the initial and final graphs of $OGG_i$ by removing from the core graph the created and deleted elements, respectively. If they are valid graphs, we have the input and output data for the test case. Otherwise, if they have dangling edges, it is not possible to apply all rules of the functionality, since it would begin in or lead to an inconsistent state.
 
-\begin{example}[Initial and Final Graphs Example] Figure~\ref{fig:tests:graphs}. 
+\begin{example}[Initial and Final Graphs Example] Figure~\ref{fig:tests:graphs}.
 
   Notice that the elements \tinytodo{make list} are created by rules \tinytodo{make list}, and therefore do not appear in the initial graph. Similarly, the elements \tinytodo{make list} are deleted by rules \tinytodo{make list} and do not appear in the final graph.
 
