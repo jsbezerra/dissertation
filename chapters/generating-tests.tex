@@ -201,3 +201,53 @@ In our case studies, no such situation was found. We believe that it happens bec
 \section{Analysing results}
 
 More specific usability details can be found on the Verigraph tutorial, whose current version is presented on appendix~\ref{app:tutorial}.
+
+
+\begin{figure}[!ht]
+\caption{Tool command line output}
+\begin{minted}[linenos=true, breaklines,fontsize=\small]{shell}
+Testing Serialization:
+[OK] Unique creations and deletions
+[OK] Inital graph is valid
+[OK] Final graph is valid
+[OK] Concrete occurence relation is a total order
+[OK] Concrete elements relation is a total order
+[OK] There are no abstract restrictions
+Analysis written in tmp/output_analysis
+Test cases written in tmp/output_test_cases
+Saved in tmp/output.ggx
+\end{minted}
+\end{figure}
+
+\begin{figure}[!ht]
+\caption{Output for browse catalogue main flow}
+\begin{minted}[linenos=true, breaklines,fontsize=\small]{ruby}
+Rules involved: {
+["01a1_chooseCategory", "01a2_displayProducts", "01a3_chooseProduct", "01a4_displayItems", "01a5_02b5_chooseItem", "01a6_02b6_displayChosenItem"]
+}
+
+Concrete Rules Relation: {
+[("01a1_chooseCategory" < "01a2_displayProducts"), ("01a1_chooseCategory" < "01a3_chooseProduct"), ("01a1_chooseCategory" < "01a4_displayItems"), ("01a1_chooseCategory" < "01a5_02b5_chooseItem"), ("01a1_chooseCategory" < "01a6_02b6_displayChosenItem"),...]
+}
+
+Elements involved: {
+[Node 768,Node 769,Node 770,Edge 771,Edge 772,Edge 773,Edge 774,Edge 2331,Edge 4751,Edge 4752,Edge 7226,Edge 9787,Edge 9788,Edge 15095,Edge 15096,Edge 15097]
+}
+
+Elements Relation: {
+[(Edge 772 < Edge 4751),(Edge 772 < Edge 4752),(Edge 772 < Edge 7226),(Edge 772 < Edge 9787),(Edge 772 < Edge 9788),(Edge 772 < Edge 15095),(Edge 772 < Edge 15096),(Edge 772 < Edge 15097),(Edge 773 < Edge 4751),(Edge 773 < Edge 4752),(Edge 773 < Edge 7226) ...]
+}
+
+Rules Ordering: {
+["01a1_chooseCategory","01a2_displayProducts","01a3_chooseProduct", "01a4_displayItems","01a5_02b5_chooseItem", "01a6_02b6_displayChosenItem"]
+}
+
+Element Ordering: {
+[Node 768,Node 769,Node 770,Edge 771,Edge 772,Edge 773,Edge 774,Edge 2331,Edge 4751,Edge 4752,Edge 7226,Edge 9787,Edge 9788,Edge 15095,Edge 15096,Edge 15097]
+}
+
+Set of Abstract Restrictions: {
+[]
+}
+\end{minted}
+\end{figure}
