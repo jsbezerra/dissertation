@@ -52,33 +52,49 @@ Some excerpts of this grammar are shown throughout this chapter, while the compl
 
 \section{Generating Tests using Occurrence Graph Grammars}
 
-Given a graph grammar \graphGrammar{} modelling a system $X$ with $n > 0$ functionalities, we want to generate a test case for each subset of rules $F_i \subseteq P$ $\forall i \in 1\ldots n$, where $F_i$ represents a complete functionality \tinytodo{feature} of the system $X$.
+Given a graph grammar \graphGrammar{} that models a system, we want to generate test cases and oracles for each subset of rules $F_i \subseteq P$ $\forall i \in 1\ldots n$, where $F_i$ represents a complete functionality \tinytodo{feature} of the system.
 
-Together with the grammar $GG$ and its subsets of functionalities $F_i$, we will also need an \emph{input-output relation} $IO_i$ for each $F_i$, specifying the connections between the rules in $F_i$. This \emph{input-output relation} specifies which elements (nodes and edges) must be the same among the rules, as shown in example~\ref{ex:inout}.
-
-\begin{example} Figure~\ref{fig:tests:grammar} we show a subset of the rules from the e-store grammar that represents the use case \emph{browse catalog}. 
+\begin{example} Figure~\ref{fig:tests:grammar} we show a subset of the rules from the e-store grammar that represents the use case \emph{browse catalogue}. 
 
 \begin{figure}[!ht]
   \centering
   \begin{subfigure}[t]{.5\textwidth}
-    \centerline{\fbox{\includegraphics[scale=0.55]{images/gts/satisfied_nac}}}
-    \caption{rule name}
-  \end{subfigure}%
-  \begin{subfigure}[t]{.5\textwidth}
-    \centerline{\fbox{\includegraphics[scale=0.55]{images/gts/triggered_nac}}}
-    \caption{rule name}
+    \centerline{\fbox{\includegraphics[scale=0.5]{images/generating-tests/grammar/rule01}}}
+    \caption{Rule \emph{choose category}}
   \end{subfigure}
   \begin{subfigure}[t]{.5\textwidth}
-    \centerline{\fbox{\includegraphics[scale=0.55]{images/gts/trivially_triggered_nac}}}
-    \caption{rule name}
-  \end{subfigure}%
-  \begin{subfigure}[t]{.5\textwidth}
-    \centerline{\fbox{\includegraphics[scale=0.55]{images/gts/trivially_triggered_nac}}}
-    \caption{rule name}
+    \centerline{\fbox{\includegraphics[scale=0.5]{images/generating-tests/grammar/rule02}}}
+    \caption{Rule \emph{display products}}
   \end{subfigure}
-  \caption{Rules for the use case \emph{browse catalog}}\label{fig:tests:grammar}
-
+  \begin{subfigure}[t]{.5\textwidth}
+    \centerline{\fbox{\includegraphics[scale=0.5]{images/generating-tests/grammar/rule03}}}
+    \caption{Rule \emph{choose products}}
+  \end{subfigure}
+  \begin{subfigure}[t]{.5\textwidth}
+    \centerline{\fbox{\includegraphics[scale=0.5]{images/generating-tests/grammar/rule04}}}
+    \caption{Rule \emph{display items}}
+  \end{subfigure}
+  \caption{Rules for the use case \emph{browse catalogue}}\label{fig:tests:grammar}
 \end{figure}
+
+\begin{figure}[!ht]
+\ContinuedFloat
+\centering
+  \begin{subfigure}[t]{.5\textwidth}
+    \centerline{\fbox{\includegraphics[scale=0.5]{images/generating-tests/grammar/rule05}}}
+    \caption{Rule \emph{choose item}}
+  \end{subfigure}
+
+  \begin{subfigure}[t]{.5\textwidth}
+    \centerline{\fbox{\includegraphics[scale=0.5]{images/generating-tests/grammar/rule06}}}
+    \caption{Rule \emph{display chosen item}}
+  \end{subfigure}
+\end{figure}
+
+\subsection{Preparing the input}
+
+Together with the grammar $GG$ and its subsets of functionalities $F_i$, we will also need an \emph{input-output relation} $IO_i$ for each $F_i$, specifying the connections between the rules in the subsets. This \emph{input-output relation} identifies which elements (nodes and edges) must be the same between each pair of rules, as shown in example~\ref{ex:inout}.
+
 
   For this use case we have one main execution path and \tinytodo{number} alternative paths. Thus, we have $n$ features.
   Thus we have the following subsets:
