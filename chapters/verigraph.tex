@@ -1,5 +1,7 @@
 \chapter{Verigraph}\label{ch:verigraph}
 
+\important{Update references to the new version of the code}
+
 Verigraph~\cite{verigraph} is a new tool for simulating and verifying graph grammars, implemented in the purely functional programming language Haskell\footnote{The source code is available at \url{https://github.com/Verites/verigraph}}. The tool is being developed by the Verites group\footnote{\url{http://www.ufrgs.br/verites}} with two particular objectives. 
 
   The first one is to have a software tool that serves as an implementation of standard constructions and analysis for graph grammars, which is also as close to the theory as possible. The second, to provide a framework for exploring new ideas and techniques in graph grammars and other category theory related topics~\cite{BezerraETMF2016,Costa2016,CostaETMF2016, Becker2014}.
@@ -16,7 +18,7 @@ In addition, verigraph benefits from a layered architecture, shown on Figure~\re
 \begin{figure}[!ht]
   \centering
   \begin{subfigure}[t]{.5\textwidth}
-    \centerline{\includegraphics[scale=0.5]{images/verigraph/layers}}
+    \centerline{\includegraphics[scale=0.6]{images/verigraph/layers}}
 %    \caption{Detailed Layers}
   \end{subfigure}
 %  \begin{subfigure}[t]{.5\textwidth}
@@ -207,5 +209,7 @@ isProduceUse p1 (m1',m2) = null h21
 \end{figure}
 
 As an example of its application at other categories we have \cat{TSpan_T}, which also implements the \code{DPO} type class and benefits from the same algorithms for finding conflicts and dependencies. This also can be used for different categories based on graphs, algebras, logics and so on.
+
+\important{Verigraph was also used to implement the construction of Occurrence Graph Grammars and its relations, which is showed in details in chapter \autoref{ch:tests}, as part of the test generation strategy.}
 
 
