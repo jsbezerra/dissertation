@@ -2,11 +2,11 @@
 
 In this chapter, we show how to use occurrence graph grammars to generate test cases and oracles from (simply-typed) graph grammars that model systems. In theory, this approach can be used to generate tests for any graph grammar, since it is based only on the properties of the formalism. However, we focused on graph grammars that were generated from use cases by using the methodology presented in \cite{Junior2015}, \cite{BezerraWEIT2016} and \cite{Cota2017}.
 
-This methodology is a systematic, computer-aided way to extract graph grammars from use cases or other text-based requirement documents. At the same time, it helps finding problems such as ambiguities, inconsistencies and omissions in the documents. Thus, providing a better specification and also an improved model.
+This methodology is a systematic, computer-aided way to extract graph grammars from use cases or other text-based requirement documents. At the same time, it helps finding problems such as ambiguities, inconsistencies and omissions in the documents. Thus, providing a better specification and also an improved model. By generating tests from these grammars we are indirectly generating tests for the underlying use cases. The test generation, to be described in next sections, was implemented in Verigraph as an extension to the calculation of the occurrence graph grammars that was previously discussed.
 
-Following from there, by generating tests from these grammars we are indirectly generating tests from their (verified) use cases. The test generation, to be described in next sections, was implemented in verigraph as an extension to the calculation of the occurrence graph grammars that were previously discussed. 
+\important{explain tests and oracles}
 
-Basically, we are interested in knowing whether each functionality of a system is truly executable, i.e. whether all the rules that represent each functionality flow are applicable.
+Basically, we are interested in knowing whether each functionality of a system is truly executable \important{leila: why?}, i.e. whether all the rules that represent each functionality flow are applicable.
 
 If it happens that a functionality is not executable, we want to know exactly what is the problem that is preventing its execution. On the other hand, if it is executable, we are interested in:
 
@@ -52,7 +52,7 @@ Some excerpts of this grammar are shown throughout this chapter, while the compl
 
 \section{Generating Tests using Occurrence Graph Grammars}
 
-Given a graph grammar \graphGrammar{} that models a system, we want to generate test cases and oracles for each subset of rules $F_i \subseteq P$ $\forall i \in 1\ldots n$, where $F_i$ represents a complete functionality of the system.
+Given a graph grammar \graphGrammar{} that models a system, we want to generate test cases and oracles for each subset of rules $F_i \subseteq P$ $\forall i \in 1\ldots n$, where $F_i$ represents a \uline{complete functionality of the system}. \important{define}
 
 \begin{example} Figure~\ref{fig:tests:grammar} shows a subset of the rules from the e-store grammar. The chosen rules represent the main path of the use case \emph{browse catalogue}. 
 
@@ -93,6 +93,8 @@ Given a graph grammar \graphGrammar{} that models a system, we want to generate 
 \end{example}
 \subsection{Preparing the input}
 
+\important{define input-output relation}
+
 Along with the grammar $GG$ and its subsets of functionalities $F_i$, we will also need an \emph{input-output relation} $IO_i$ for each $F_i$, specifying the connections between the rules in the subsets. This \emph{input-output relation} identifies which elements (nodes and edges) must be the same between each pair of rules, as shown in example~\ref{ex:inout}.
 
   We choose the main flow of our example grammar to show how to build the $IO$ relation. First of all, the subset of rules for this path is $F_1 = \{$ chooseCategory, displayProducts, chooseProduct, displayItems, chooseItem, displayChosenItem $\}$. Once having the sets of rules, we build the input-output relations for each one of them.
@@ -110,7 +112,7 @@ Along with the grammar $GG$ and its subsets of functionalities $F_i$, we will al
 
   For most of the cases, a full relation will not be necessary, as the $IO$ relation has some sort of transitivity. Thus, we can focus on build only a subset of it. 
   
-  Take for example the \emph{system} node in the grammar. This node should be the same between all rules, and it appears in left and right sides of all rules. Given two rules $p_1$ and $p_2$, we have the options of building the $IO$ object that identifies the system node as $L_1 \leftarrow IO \rightarrow R_2$ or $L_2 \leftarrow IO \rightarrow R_1$. Both of them having the same effect.
+  Take for example the \emph{system} node in the grammar. This node should be the same along all rules, and it appears in left and right sides of all rules. Given two rules $p_1$ and $p_2$, we have the options of building the $IO$ object that identifies the system node as $L_1 \leftarrow IO \rightarrow R_2$ or $L_2 \leftarrow IO \rightarrow R_1$. Both of them having the same effect.
 
 \begin{figure}[!ht]
   \centering
@@ -121,6 +123,8 @@ Along with the grammar $GG$ and its subsets of functionalities $F_i$, we will al
 \end{example}
 
 \subsection{Processing the input grammar}
+
+\important{Explain this better, also extract it to a definition}
 
 Now that we have a $GG$ modelling a system, its set of rules $P$, together with $F_i$ and $IO_i$, we generate as output:
 
@@ -149,7 +153,7 @@ The colimit of a diagram such as the one presented in Example~\ref{ex:inout} has
 
 If the result of this colimit is a \emph{core graph} according to definition~\ref{def:core-graph}, we can create a doubly-typed graph grammar $OGG_i$ that is also a strongly-safe grammar and therefore a candidate to be an occurrence graph grammar.
 
-Remember that, if there is more than one rule that deletes or creates the same element, it is not possible to apply all rules of this functionality, and $OGG_i$ can not be an occurrence graph grammar. \tinytodo{put retyped rules?}
+Remember that, if there is more than one rule that deletes or creates the same element, it is not possible to apply all rules of this functionality, and $OGG_i$ can not be a deterministic occurrence graph grammar. \tinytodo{put retyped rules?}
 
 \begin{example}[Amalgamation example]\label{ex:amalgamation} Figure~\ref{fig:tests:colimit} shows the object resultant from the amalgamation of the rules presented in Figure~\ref{fig:tests:grammar}.
 
@@ -255,5 +259,6 @@ The ordering of elements represent an ordering in which the state of the system 
 
 More specific usability details can be found on the Verigraph tutorial, whose current version is presented on appendix~\ref{app:tutorial}.
 
+\important{\section{Tests Validity}}
 
 
