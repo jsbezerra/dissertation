@@ -10,19 +10,17 @@ Software testing is an empirical process that can not prove the correctness of a
 
 The main reason why the testing approach can not prove correctness is that there is a literally infinite amount of possible inputs a system can receive, therefore there is no possible way to systematically check to all of them in a finite amount of time.
 
-In practice, test designers usually try to write meaningful sets of tests that cover the most important cases they can think of, ideally with cases covering previously known bugs, and extend them with random generated data. Also, whenever a new bug is found during development or usage the test cases must be updated accordingly.
+In practice, test designers usually try to write meaningful sets of tests that cover the most important cases, ideally with cases covering previously known bugs, and extend them with random generated data. Also, whenever a new bug is found during development or usage the test cases must be updated accordingly.
 
-In order to automatically and unambiguously decide whether a test failed or succeeded, test designers also need to specify test oracles. Test oracles are specifications that may, for example, describe the relationship between the input given and the output expected, describe valid and invalid data properties, possible execution paths, etc. No matter the oracle format, it must be able to check the validity of tests in a \textit{reasonable} amount of time~\cite{Weyuker1982}.
+In order to automatically and unambiguously decide whether a test failed or succeeded, test designers also need to specify test oracles. Test oracles are specifications that may, for example, describe the relationship between the input given and the expected output, describe valid and invalid data properties, possible execution paths, etc. No matter the oracle format, it must be able to check the validity of tests in a \textit{reasonable} amount of time~\cite{Weyuker1982}.
 
-However, designing significant test cases and oracles is a hard and time consuming task, prone to errors similar to those of the analysis and development activities. One possible way to address this issue is the use of a model-based testing approach, where the test designers or analysts use an abstract model of the system to generate the tests~\cite{Utting2006}. 
+Designing significant test cases and oracles is a hard and time consuming task, prone to errors similar to those of the analysis and development activities. One possible way to address this issue is the use of a model-based testing approach, where the test designers or analysts use an abstract model of the system to generate the tests~\cite{Utting2006}. 
 
-These models can be written prior to the software development and testing or extracted from the source code with the use of proper tools and checked against some form of specification. There are several models in which this approach can be used, such as graph grammars, process calculi and a variety of automata.
+These models can be written prior to the software development and testing or extracted from the source code with the use of proper tools and checked against some form of specification. There are several models in which this approach can be used, such as graph grammars, process calculi and a variety of automata.\important{references and leila's annotation}
 
-Graph grammars are a suitable formalism to model complex systems in an intuitive and precise manner. They have a graphic notation and a solid formal background.  Using them it is possible not only to simulate the execution of the modelled system, but also analyse several properties about its behaviour, such as termination, concurrency, reachable states, among others~\cite{Ehrig2006}.
+Graph grammars are a suitable formalism to model complex systems in an intuitive and precise manner. They have a graphic notation and a solid formal background.  Using them it is possible not only to simulate the execution of the modelled system, but also analyse several properties about its behaviour, such as termination, concurrency, reachable states, among others~\cite{Ehrig2006}. Furthermore, it is possible for non-specialists in the field to generate graph grammars from a set of textual requirement documents such as use cases, functional specifications and other kinds of guidelines by means of a systematic, computer-aided methodology~\cite{Junior2015,BezerraWEIT2016,Cota2017}.
 
-Furthermore, it is possible for non-specialists in the field to generate graph grammars from a set of textual requirement documents such as use cases, functional specifications and other kinds of guidelines by means of a systematic, computer-aided methodology~\cite{Junior2015,BezerraWEIT2016,Cota2017}.
-
-We believe that the use of graph grammars as a model for test cases and oracles generation may improve the reliability of the testing activity by using the solid formal semantics of the formalism, while requiring little theoretical expertise. The main objective of this thesis can be summarized as follows:
+We believe that the use of graph grammars as a model for test case sets and oracles generation may improve the reliability of the testing activity by using the solid formal semantics of the formalism, while requiring little theoretical expertise. The main objective of this thesis can be summarized as follows:
 
 \begin{intuition}
   \center{\textit{Given the graph grammar model of a software system, how can a set of relevant test cases and oracles be generated for the system?}}
@@ -30,7 +28,9 @@ We believe that the use of graph grammars as a model for test cases and oracles 
 
 Where by \emph{relevant} we mean that (1) the set of test oracles must be capable of deciding, for any input, which paths of execution and which states of the system are valid: \textbf{verifiability}; (2) the set of tests must cover all possible flows of execution: \textbf{coverage}; the set of tests must avoid repetition of equivalent paths: \textbf{compactness}.
 
-The concepts and ideas developed during this work will also be implemented in verigraph, a new tool for specification and verification of software that is based on graph grammars and category theory.
+The concepts and ideas developed during this work will also be implemented in Verigraph~\cite{verigraph,Costa2016}, a new system for specification and verification of software that is based on graph grammars and category theory.
+
+\important{The main contributions of this thesis are\ldots}
 
 \hfill \break
 \textbf{Structure of the Thesis:}
@@ -46,19 +46,17 @@ The concepts and ideas developed during this work will also be implemented in ve
 
     We also extend previous works in occurrence graph grammars to include the notion of negative application conditions, which are commonly used in the modelling of systems as graph transformations systems nowadays.
 
-  \item[Chapter~\ref{ch:verigraph}:] This chapter presents an overview of the verigraph tool, which was used to implement implement the techniques presented in this thesis. Both reviewed on previous chapters.
+  \item[Chapter~\ref{ch:verigraph}:] This chapter presents an overview of the Verigraph system, which was used to implement implement the techniques presented in this thesis.
 
   We present its architecture and novelty, as well as its suitability to deal with the problem domain in an elegant fashion.
 
-  \item[Chapter~\ref{ch:tests}:] This chapter briefly introduces a methodology to extract graph grammar models from the use use cases of a system. It also applies the concepts of the previous chapters to generate test cases.
+  \item[Chapter~\ref{ch:tests}:] This chapter briefly reviews a methodology to extract graph grammar models from the use use cases of a system. Furthermore, we provide a strategy to extract test cases from calculated occurrence graph grammars, which is implemented in verigraph, and argue about the relevance of the generated set of tests.
 
-    Specifically, we show how to extract test cases from calculated occurrence graph grammars, which was implemented on verigraph, and the reasons why the generated set of tests are relevant.
-
-  \item[Chapter~\ref{ch:related-work}:] In this chapter, we present and compare our work to similar works found in the literature, focusing both on tools for modelling and analysing graph grammars and on the generation of test cases based on models and formal methods.
+  \item[Chapter~\ref{ch:related-work}:] In this chapter, we compare our approach to similar works found in the literature, focusing both on tools for modelling and analysing graph grammars and on the generation of test cases based on models and formal methods.\important{review}
 
   \item[Chapter~\ref{ch:conclusions}:] This chapter summarizes our results and presents the conclusions. Moreover, it shows remaining open problems and future work.
 
-  \item[Appendix~\ref{app:tutorial}:] This appendix contains the verigraph manual, explaining in the details how the tool can be downloaded, installed and used.
+  \item[Appendix~\ref{app:tutorial}:] This appendix contains the Verigraph manual, explaining in the details how the system can be downloaded, installed and used.
 
   \item[Appendix~\ref{app:marvel-grammar}] This appendix contains the use cases and modelled graph grammar used as case study on section~\ref{ch:tests}.
 \end{description}
