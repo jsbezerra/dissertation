@@ -2,6 +2,8 @@
 
 \section{Category Theory}
 
+\important{maybe extract this as an appendix (remember to update the thesis agenda)}
+
 Category theory is a powerful mathematical framework, defined by~\cite{Eilenberg1945}, that provides an abstract way to reason about mathematical structures and the relationships between them.
 
 Categories are particularly useful in Computer Science, having several applications such as design of programming languages, implementation techniques, semantic models, concurrency models, type theory, among others~\cite{Pierce1991}.
@@ -21,17 +23,8 @@ $h : C \rightarrow D$, with objects $A,B,C,D$ not necessarily distinct, the comp
   \end{enumerate}
 \end{definition}
 
-\begin{example}[Category of Sets] \cat{Set} is the category whose objects are \emph{sets} and the arrows and the arrows are \emph{total functions} between sets. The proof follows form the fact that:
-
-\begin{enumerate}
-  \item given any sets $A,B,C,D$, for all total functions $f : A \rightarrow B$, $g : B \rightarrow C$ and $h : C \rightarrow D$ we have that $h \circ (g \circ f) = (h \circ g) \circ f$;
-
-  \item given any sets $A$ and $B$, there exist \emph{identity} functions $id_A : A \rightarrow A$ such that for any function $f : A \rightarrow B$ such that $id_B \circ f = f$ and $f \circ id_A = f$.
-\end{enumerate}
+\begin{example}[Category of Sets] \cat{Set} is the category whose objects are \emph{sets} and the arrows and the arrows are \emph{total functions} between sets. \important{I did not understand the first piece of the note}
 \end{example}
-
-%\begin{example}[Category of Graphs] \cat{Graph} is the category whose objects are graphs and the arrows are \emph{total graph homomorphisms}, i.e. graphs morphisms that preserve sources and targets of edges (see Definitions~\ref{def:graph} and~\ref{def:graph-morphism}). \tinytodo{Put proof or remove it.}
-%\end{example}
 
 \begin{definition}[Diagram] Given a category \cat{C}, a diagram in \cat{C} is a collection of vertices and directed edges such that, if an edge in the diagram is named with an arrow $f$ and $f$ has domain $A$ and codomain $B$, then the outgoing vertex of the edge must be named $A$ and the incoming vertex $B$.
 
@@ -87,20 +80,15 @@ Here we present basic categorial constructions that are used throughout in this 
 
 \end{definition}
 
-\begin{example}[Coproducts in \cat{Set}] Coproducts can be used to generalize the notion of disjoint union. Figure~\ref{fig:gts:coproduct} shows an example of it in the category \cat{Set}\footnote{The morphisms are represented in an expanded notation to explicitly show how the mappings were done.}.
-
-  Having the sets $A = \{1,2,3\}$ and $B = \{1,2\}$ as objects, we have that the set $A+B$ together with morphisms $i_A$ and $i_B$ is their coproduct: all elements of $A$ and $B$ are mapped to $A+B$, no elements from the source objects are identified in the target, and it is possible to find a unique function from $A+B$ to any other candidate satisfying the commutative restriction.
+\begin{example}[Coproducts in \cat{Set}] Coproducts can be used to generalize the notion of disjoint union. Figure~\ref{fig:gts:coproduct} shows an example of it in the category \cat{Set}\footnote{The morphisms are represented in an expanded notation to explicitly show how the mappings were done.}. Having the sets $A = \{1,2,3\}$ and $B = \{1,2\}$ as objects, we have that the set $A+B$ together with morphisms $i_A$ and $i_B$ is their coproduct: all elements of $A$ and $B$ are mapped to $A+B$, no elements from the source objects are identified in the target, and it is possible to find a unique function from $A+B$ to any other candidate satisfying the commutative restriction.
 
 \begin{figure}[!ht]
   \centering
   \includegraphics[scale=0.4]{images/gts/coproduct-open}
-  \caption{A coproduct in \cat{Set}}\label{fig:gts:coproduct}
+  \caption{A coproduct in \cat{Set} \important{name the morphisms}}\label{fig:gts:coproduct}
 \end{figure}
 
-
-  Take as a candidate a set $C = {(0,A),(1,A),(2,A),(3,A),(1,B},(2,B),(3,B)$. $C$ can not be a coproduct because we can not find a \emph{unique} arrow from $C$ to an arbitrary candidate $X$, as there are multiple choices due to the different possible functions mapping $A$ and $B$ to $C$. Also, an object such as $D = \{(1,A),(2,AB),(3,A),(1,B)\}$ can not be a coproduct because it is not possible to find an arrow from $D$ an $X$ such that the diagram commutes, because all the possible functions from $A$ and $B$ would identify some elements of the sources.
-
-  Notice that $(A+B)' = \{(1,0),(2,0),(3,0),(1,1),(2,1)\}$ or $(A+B)'' = \{a,b,c,d,e\}$ or any other set with five elements would be equally valid as coproducts for this case. This is due to the fact the categories deal with their objects up to isomorphism, i.e. all this objects have the same format regardless of their internal representations.
+Notice that $(A+B)' = \{(1,0),(2,0),(3,0),(1,1),(2,1)\}$ or $(A+B)'' = \{a,b,c,d,e\}$ or any other set with five elements would be equally valid as coproducts for this case. This is due to the fact the categories deal with their objects up to isomorphism, i.e. all this objects have the same format regardless of their internal representations.
 \end{example}
 
 
@@ -112,15 +100,14 @@ Here we present basic categorial constructions that are used throughout in this 
 }
 \end{definition}
 
-\begin{example}[Coequalizers in \cat{Set}] Coequalizers generalize the notion of smallest equivalence relation. Figure~\ref{fig:gts:coequalizer} shows the coequalizer for two functions from $A$ to $B$, let $f$ be the one represented with a solid line and $g$ the one with a dashed line.
+\begin{example}[Coequalizers in \cat{Set}] Coequalizers generalize the notion of smallest equivalence relation. Figure~\ref{fig:gts:coequalizer} shows the coequalizer for two functions from $A$ to $B$, let $f$ be the one represented with a solid line and $g$ the one with a dashed line. It is easy to see that the function $h$ from $B$ to $X$ corresponds to the equivalence relation that glues together the items that are identified by the functions $f$ and $g$. Notice that $X$ does not contain any other element which is not mapped from $B$ and no element in $X$ was glued together without respecting $f$ and $g$.
 
 \begin{figure}[!ht]
   \centering
   \includegraphics[scale=0.4]{images/gts/coequalizer}
-  \caption{A coequalizer in \cat{Set}}\label{fig:gts:coequalizer}
+  \caption{A coequalizer in \cat{Set} \important{name the morphism}}\label{fig:gts:coequalizer}
 \end{figure}
 
-  It is easy to see that the function $h$ from $B$ to $X$ corresponds to the equivalence relation that glues together the items that are identified by the functions $f$ and $g$. Notice that $X$ does not contain any other element which is not mapped from $B$ and no element in $X$ was glued together without respecting $f$ and $g$.
 
 \end{example}
 
@@ -139,7 +126,7 @@ Here we present basic categorial constructions that are used throughout in this 
 \begin{figure}[!ht]
   \centering
   \includegraphics[scale=0.4]{images/gts/pushout}
-  \caption{A pushout in \cat{Set}}\label{fig:gts:pushout}
+  \caption{A pushout in \cat{Set} \important{name the morphisms}}\label{fig:gts:pushout}
 \end{figure}
 
 \end{example}
@@ -162,9 +149,7 @@ Here we present basic categorial constructions that are used throughout in this 
 }
 \end{definition}
 
-\begin{example}[Colimits in \cat{Set}] Colimits generalize several constructions such as disjoint unions, direct sums, coproducts, pushouts and others, where different objects of a diagram are ``glued'' together in one single object respecting commutativity.
-
-  All previous examples of coproduct, coequalizer and pushout are special cases of colimits. Figure~\ref{fig:gts:colimit} shows a colimit for a diagram that can not be calculated in (one step) by any of the previous constructions.
+\begin{example}[Colimits in \cat{Set}] Colimits generalize several constructions such as disjoint unions, direct sums, coproducts, pushouts and others, where different objects of a diagram are ``glued'' together in one single object respecting commutativity. All previous examples of coproduct, coequalizer and pushout are special cases of colimits. Figure~\ref{fig:gts:colimit} shows a colimit for a diagram that can not be calculated in (one step) by any of the previous constructions.
 
 \begin{figure}[!ht]
   \centering
@@ -174,28 +159,13 @@ Here we present basic categorial constructions that are used throughout in this 
 
 \end{example}
 
-
-\iffalse
-\begin{definition}[Pullback] \tinytodo{Maintain only if we are going to use the concurrent rules chapter} Given 
-
-\diagram{
-  X'\ar@{.>}[dr]^{!}\ar@/^1.1pc/[rrd]^{i}\ar@/_1.1pc/[ddr]_{j}  & &\\
-  & X\ar[r]^{g'}\ar[d]_{f'} & B\ar[d]^{f}\\
-  & C\ar[r]_{g}      & A
-}
-\end{definition}
-
-\begin{example}[Pullbacks in \cat{Set}]
-\end{example}
-\fi
-
 \section{Graph Grammars}
 
 The theory of graph grammars and graph transformation systems is based on the application of rules that are able to modify graphs. Using this framework, it is possible to model complex systems as graph transformation systems, where graphs represent the system states and the rules model transitions between states.
 
 Graph grammars have a wide application in computer science, not only because graphs are very natural and intuitive way to model complex situations, but also because it is possible to reason about several properties of the modelled systems using its formalism~\cite{Ehrig2006,Rozenberg1997}.
 
-We now review the basic concepts and analysis techniques for graph transformations that are used in this work.
+We now review the basic concepts and analysis techniques for graph transformations that are used in this work. We use the algebraic approach, which is based on category theory.
 
 \begin{definition}[Graph] A graph is a tuple $G = \left(V,E,s,t\right)$ where: $V$ is a set of nodes, $E$ is a set of Edges and $s,t : E \rightarrow V$ are two total functions that map each edge in $E$ to its source and target in $V$.
 
@@ -214,9 +184,9 @@ We now review the basic concepts and analysis techniques for graph transformatio
 
 \begin{example}[Graph Morphisms]Figure~\ref{fig:gts:compact-graph-morphism} shows three morphisms $f : G_0 \rightarrow G_1$, $g : G_0 \rightarrow G_2$ and $h : G_0 \rightarrow G_3$, which are a monomorphism, an epimorphism and a isomorphism, respectively.
 
-  The morphism $f$ maps node $\Circle_1$ to $\Circle_a$, node $\Circle_2$ to $\Circle_b$ and edge $\curvearrowleft_1$ to $\curvearrowleft_q$; $g$ maps both nodes $\Circle_1$ and $\Circle_2$ to $\Circle_c$ and edge $\curvearrowleft_1$ to $\curvearrowleft_r$; and $h$ maps node $\Circle_1$ to $\Circle_d$, node $\Circle_2$ to $\Circle_e$ and edge $\curvearrowleft_1$ to $\curvearrowleft_s$.
+  Morphism $f$ maps node $\Circle_1$ to $\Circle_a$, node $\Circle_2$ to $\Circle_b$ and edge $\curvearrowleft_1$ to $\curvearrowleft_q$; $g$ maps both nodes $\Circle_1$ and $\Circle_2$ to $\Circle_c$ and edge $\curvearrowleft_1$ to $\curvearrowleft_r$; and $h$ maps node $\Circle_1$ to $\Circle_d$, node $\Circle_2$ to $\Circle_e$ and edge $\curvearrowleft_1$ to $\curvearrowleft_s$.
 
-  Figure~\ref{fig:gts:expanded-graph-morphism} shows the morphism $f$ in an expanded (explicit) notation. Both notations will be used through this work, according to which one will be the better to clarify the meaning at the moment.
+  Figure~\ref{fig:gts:expanded-graph-morphism} shows the morphism $f$ in an expanded (explicit) notation. Both notations will be used through this work.
 \begin{figure}[!ht]
   \centering
   \fbox{\includegraphics[scale=0.8]{images/gts/compact-graph-morphism}}
@@ -312,9 +282,7 @@ A \emph{negative} atomic (typed) graph constraint is of the form $NC\left(a\righ
 
 \begin{example}[Graph Rule Example and Notation] Figure~\ref{fig:gts:rule} shows an example of a graph rule which reads a node of the type $\Circle$, deletes a node of the type $\triangle$ and then creates a node of the type $\Square$ with an edge between the $\Circle$ and the \Square. 
   
-Figure~\ref{fig:gts:rule-standard} presents the rule in the standard DPO notation, while Figure~\ref{fig:gts:rule-compact} depicts the same rule in a compact notation, where the gluing graph is omitted. 
-
-Sometimes we will use the compact notation to make the figures smaller. Notice that the compact notation does not cause any semantic loss as the gluing graph can be obtained as the ``intersection'' between the left and right graphs, and the morphisms $l$ and $r$ as the inclusions of $K$ in $L$ and $R$, respectively.
+Figure~\ref{fig:gts:rule-standard} presents the rule in the standard DPO notation, while Figure~\ref{fig:gts:rule-compact} depicts the same rule in a compact notation, where the gluing graph is omitted. Sometimes we will use the compact notation to make the figures smaller. Notice that the compact notation does not cause any semantic loss as the gluing graph can be obtained as the ``intersection'' between the left and right graphs, and the morphisms $l$ and $r$ as the inclusions of $K$ in $L$ and $R$, respectively.
 
 \begin{figure}[!ht]
   \centering
@@ -339,8 +307,13 @@ Sometimes we will use the compact notation to make the figures smaller. Notice t
 }
 
   For \cat{TGraph_T} there are two conditions, called \emph{gluing conditions}, that must be satisfied so that the pushouts (1) and (2) exist and the rule graph rule can be applied:
-  
-  First, the \emph{dangling condition} requires that no node can be deleted if it has incident edges that are not also deleted (otherwise the result of this deletion would not be a graph).  Second, the \emph{identification condition} requires the match to not identify a deleted element with a preserved or (another) deleted one.
+
+\begin{itemize}
+  \item the \emph{dangling condition} requires that no node can be deleted if it has incident edges that are not also deleted (otherwise the result of this deletion would not be a graph).  
+  \item the \emph{identification condition} requires the match to not identify a deleted element with a preserved or (another) deleted one.
+\end{itemize}
+
+  \important{define what are ``deleted'' and ``preserved'' nodes}
 \end{definition}
 
 \begin{example}[Graph Transformation Examples] Figure~\ref{fig:gts:transformation-success} shows a transformation where the rule depicted in Figure~\ref{fig:gts:rule} is successfully applied over a graph instance $G_0$.
@@ -360,8 +333,10 @@ Sometimes we will use the compact notation to make the figures smaller. Notice t
   \end{subfigure}
   \caption{Graph transformation}\label{fig:gts:transformation}
 \end{figure}
-
 \end{example}
+
+\important{put some text introducing nacs}
+
 \begin{definition}[Negative Application Condition] A \emph{left} negative application condition over a graph rule \graphrule{} is of the form $NAC\left(n\right)$, where \nac{} is an arbitrary (typed) graph morphism. A match \match{} of a rule $p$ satisfies\footnote{When a NAC is satisfied it is also said that the NAC is \emph{not triggered} and vice versa.} $NAC\left(n\right)$ on $L$, written $m \models NAC\left(n\right)$, iff $\nexists$ $q : N \rightarrow G$ with $q$ injective and $q \circ n = m$.
 
 \diagram{
@@ -417,7 +392,7 @@ Sometimes we will use the compact notation to make the figures smaller. Notice t
 
 \end{definition}
 
-\begin{example}[Mail Server Graph Transformation System] Fig~\ref{fig:gts:mail} depicts a graph transformation system that models a client-server scenario for a very simple e-mail application. This system has only four actions: 
+\begin{example}[Mail Server Graph Transformation System] Fig~\ref{fig:gts:mail} depicts a graph transformation system that models a client-server scenario for a very simple e-mail application \important{(explain types)}. This system has only four actions: 
 
 \begin{enumerate}
   \item \emph{sendMessage}: a client sends a message to a server,\tinytodo{fix arrow direction}
@@ -467,9 +442,9 @@ Sometimes we will use the compact notation to make the figures smaller. Notice t
 
 One of the characteristics that make Graph Transformation Systems and Graph Grammars suitable formalisms to model and reason about parallel and/or concurrent systems is the possibility to check whether the transformations given by two graph rules over the same instance graph can be applied (1) at the same time or (2) in any interchangeable order. In the first case we say that the transformations are parallel independent; in the later we say that they are sequential independent.
 
-In this section, we show both what it means for two graph transformations to be independent and how to check it. Notice that when we are reasoning about graph transformations the (in)dependence is concrete, while for the case of graph rules the (in)dependence is potential, as it would depend on a particular pattern being found on an instance graph.
+In this section, we show both what it means for two graph transformations to be independent and how to check it. Notice that when we are reasoning about graph transformations (rules application) the (in)dependence is concrete, while for the case of graph rules the (in)dependence is potential, as it depends on the particular way the rules are applied.
 
-\begin{definition}[Causal Dependency]\label{def:classic-dependency} Given two graph rules $p_1,p_2$ with NACs, they are \emph{causally dependent} for a given graph $E$, in which they overlap, iff one of the following situations occurs in the transformations diagram:
+\begin{definition}[Causal Dependency]\label{def:classic-dependency} Given two graph rules $p_1,p_2$ with NACs, they are \emph{causally dependent} for a given graph $E$, in which they overlap via morphisms \morph{m'_1}{R_1}{E} and \morph{m_2}{L_2}{E}, iff at least one of the following situations occurs in the transformations diagram below:
 
   \begin{enumerate}
     \item $\nexists h_{12} : R_1 -> D_2$ such that $d_2 \circ h_{12} = m_1'$
@@ -507,7 +482,7 @@ Intuitively, each case of dependency can be regarded as follows:
   In the diagram, it is not possible to find a morphism from the left-hand-side of \emph{receiveMessage} to the gluing graph of \emph{getData} such that the transformation is still valid. Thus, for the overlapping in this particular graph, \emph{receiveMessage} is causally dependent on \emph{getData}.
 \end{example}
 
-\begin{definition}[Conflict]\label{def:classic-conflict} Given two graph rules $p_1, p_2$ with NACs they are in conflict for a given graph $E$ in which they overlap iff one of the following situations occur:
+\begin{definition}[Conflict]\label{def:classic-conflict} Given two graph rules $p_1, p_2$ with NACs, they are in conflict for a given graph $E$, in which they overlap via morphisms \morph{m_1}{L_1}{E} and \morph{m_2}{L_2}{E}, iff at least one of the following situations occur:
 
 \begin{enumerate}
     \item $\nexists h_{12} : L_1 -> D_2$ such that $d_2 \circ h_{12} = m_1$
@@ -534,7 +509,8 @@ Intuitively, each conflict case can be regarded as:
 \end{enumerate}
 
 \begin{example}[Conflict situation in the mail server grammar]
-  Figure~\ref{fig:gts:dependency} shows a conflict situation involving the rules \emph{getData} and \emph{receiveMessage}. This is a \emph{delete-use} conflict: \emph{receiveMessage} deletes from the overlapping graph an edge between the \emph{message} and the \emph{server} which is necessary for \emph{getData} to be applied.
+  Figure~\ref{fig:gts:dependency} shows a conflict situation involving the rules \emph{getData} and \emph{receiveMessage}. This is a \emph{delete-use} conflict: \emph{receiveMessage} deletes from the overlapping graph an edge between the \emph{message} and the \emph{server} which is necessary for \emph{getData} to be applied. Both rules are applied over the same graph and, individually, both transformations are valid. However, once \emph{receiveMessage} is applied, it is no longer possible to
+  apply \emph{getData}. This is represented in the diagram by the fact that it is not possible to find a morphism from the left-hand-side of \emph{getData} to the gluing graph of \emph{receiveMessage} such that the transformation from there is still valid.
 
 \begin{figure}[!ht]
   \centering
@@ -542,5 +518,4 @@ Intuitively, each conflict case can be regarded as:
   \caption{A conflict in the server grammar}\label{fig:gts:conflict}
 \end{figure}
 
-  Both rules are applied over the same graph and, individually, both transformations are valid. However, once \emph{receiveMessage} is applied, it is no longer possible to apply \emph{getData}. Represented in the diagram by the fat that it is not possible to find a morphism from the left-hand-side of \emph{getData} to the gluing graph of \emph{receiveMessage} such that the transformation from there is still valid.
 \end{example}
