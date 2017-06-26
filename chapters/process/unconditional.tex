@@ -5,33 +5,6 @@ Regarding both unconditional and conditional dependency relations, their definit
 \begin{intuition} An action $a_1$ is a direct cause of an action $a_2$ if either $a_1$ creates some element that is needed by $a_2$ (unconditional causal dependency) or $a_1$ deletes an element that is both forbidden by a NAC of $a_2$ and existent before the application of $a_2$ (conditional causal dependency). In both cases, we have that $a_2$ can only happen after $a_1$ has been applied.
 \end{intuition}
 
-\begin{figure}[!ht]
-  \centering
-  \begin{subfigure}[t]{.5\textwidth}
-    \centerline{\fbox{\includegraphics[scale=0.5]{images/process/unconditional-relation/core-graph}}}
-    \caption{Core and initial graphs}\label{fig:process:unconditional-relation:core-graph}
-  \end{subfigure}
-
-  \begin{subfigure}[t]{.5\textwidth}
-    \centerline{\fbox{\includegraphics[scale=0.45]{images/process/unconditional-relation/a1}}}
-    \caption{Action $a_1$}\label{fig:process:unconditional-relation:a1}
-  \end{subfigure}%
-  \begin{subfigure}[t]{.5\textwidth}
-    \centerline{\fbox{\includegraphics[scale=0.45]{images/process/unconditional-relation/a2}}}
-    \caption{Action $a_2$}\label{fig:process:unconditional-relation:a2}
-  \end{subfigure}
-
-  \begin{subfigure}[t]{.5\textwidth}
-    \centerline{\fbox{\includegraphics[scale=0.45]{images/process/unconditional-relation/a3}}}
-    \caption{Action $a_3$}\label{fig:process:unconditional-relation:a3}
-  \end{subfigure}%
-  \begin{subfigure}[t]{.5\textwidth}
-    \centerline{\fbox{\includegraphics[scale=0.45]{images/process/unconditional-relation/a4}}}
-    \caption{Action $a_4$}\label{fig:process:unconditional-relation:a4}
-  \end{subfigure}
-  \stepcounter{doubly-typed-grammar-counter}
-  \caption{Strongly safe grammar GG\arabic{doubly-typed-grammar-counter}}\label{fig:process:unconditional-relation}
-\end{figure}
 
 \begin{definition}[Unconditional Causal Dependency Relation\footnote{Also called Produce-Use Relation.}]\label{def:unconditional-causal-dependency} Given \doublyTypedGraphGrammarCore{} a strongly safe graph grammar. Let $a_1, a_2 \in P$, $a_1 \ne a_2$, \mbox{$e_1, e_2 \in $ \coreGraph{}} and $e_1 \ne e_2$. Then: 
 
