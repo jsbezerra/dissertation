@@ -28,15 +28,17 @@ We now review the basic concepts and analysis techniques for graph transformatio
   Figure~\ref{fig:gts:expanded-graph-morphism} shows the morphism $f$ in an expanded (explicit) notation. Both notations will be used through this work.
 \begin{figure}[!ht]
   \centering
-  \fbox{\includegraphics[scale=0.6]{images/gts/compact-graph-morphism}}
-  \caption{Graph morphisms example}\label{fig:gts:compact-graph-morphism}
+  \begin{subfigure}[t]{.5\textwidth}
+    \centerline{\fbox{\includegraphics[scale=0.7]{images/gts/compact-graph-morphism}}}
+  \caption{Compact graph morphisms}\label{fig:gts:compact-graph-morphism}
+\end{subfigure}%
+\begin{subfigure}[t]{.5\textwidth}
+  \centerline{\fbox{\includegraphics[scale=0.6]{images/gts/expanded-graph-morphism}}}
+  \caption{Expanded graph morphism}\label{fig:gts:expanded-graph-morphism}
+  \end{subfigure}
+  \caption{Graph morphism examples}
 \end{figure}
 
-\begin{figure}[!ht]
-  \centering
-  \fbox{\includegraphics[scale=0.6]{images/gts/expanded-graph-morphism}}
-  \caption{Expanded graph morphism example}\label{fig:gts:expanded-graph-morphism}
-\end{figure}
 \end{example}
 
 \begin{definition}[Typed Graph and Typed Graph Morphism] A type graph is a distinguished graph $TG = \left(V_{TG},E_{TG},s_{TG},t_{TG}\right)$ where $V_{TG}$ and $E_{TG}$ are called the node and edge type alphabets, respectively.
