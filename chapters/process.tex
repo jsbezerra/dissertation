@@ -339,15 +339,15 @@ The same definition can be attempted in a strongly safe grammar where actions ar
     \caption{Action $a_1$}\label{fig:process:unconditional-relation:a1}
   \end{subfigure}%
   \begin{subfigure}[t]{.2\textwidth}
-    \centerline{\fbox{\includegraphics[scale=0.45]{images/process/unconditional-relation/a2}}}
+    \centerline{\fbox{\includegraphics[scale=0.5]{images/process/unconditional-relation/a2}}}
     \caption{Action $a_2$}\label{fig:process:unconditional-relation:a2}
   \end{subfigure}%
   \begin{subfigure}[t]{.3\textwidth}
-    \centerline{\fbox{\includegraphics[scale=0.45]{images/process/unconditional-relation/a3}}}
+    \centerline{\fbox{\includegraphics[scale=0.5]{images/process/unconditional-relation/a3}}}
     \caption{Action $a_3$}\label{fig:process:unconditional-relation:a3}
   \end{subfigure}%
   \begin{subfigure}[t]{.2\textwidth}
-    \centerline{\fbox{\includegraphics[scale=0.45]{images/process/unconditional-relation/a4}}}
+    \centerline{\fbox{\includegraphics[scale=0.5]{images/process/unconditional-relation/a4}}}
     \caption{Action $a_4$}\label{fig:process:unconditional-relation:a4}
   \end{subfigure}
   \stepcounter{doubly-typed-grammar-counter}
@@ -382,7 +382,7 @@ Let $a_1, a_2, a_3$ be three actions of the same strongly safe grammar. Suppose 
   definitions~\ref{def:classic-dependency} and~\ref{def:classic-conflict}, $a_2$ would cause a (potential) produce-forbid conflict on $a_1$ $(a_1 <_{pf} a_2)$, while $a_1$ would be (potentially) dependent by delete-forbid on $a_3$ $(a_3 <_{df} a_1)$. By adding these produce-forbid and delete-forbid directly to the existential relation we would have the situation depicted in Figure~\ref{fig:process:order:occurrence-relation-fail}. It is easy to see that the resulting relation is not a partial order, therefore there can be no total ordering for this set of actions.
 \begin{figure}[!ht]
   \centering
-  \fbox{\includegraphics[scale=0.5]{images/process/order/occurrence-relation-fail}}
+  \fbox{\includegraphics[scale=1]{images/process/order/occurrence-relation-fail}}
   \caption{Graph of relations}\label{fig:process:order:occurrence-relation-fail}
 \end{figure}
 
@@ -502,21 +502,20 @@ Now, let $a_3$ be related to $a_2$. In this configuration, we have that $a_2$ wo
   
 \begin{figure}[!ht]
   \centering
-  \begin{subfigure}[t]{.5\textwidth}
-    \centerline{\fbox{\includegraphics[scale=0.45]{images/process/order/a1}}}
+  \begin{subfigure}[t]{.2\textwidth}
+    \centerline{\fbox{\includegraphics[scale=0.6]{images/process/order/a1}}}
     \caption{Action $a_1$}\label{fig:process:order:a1}
   \end{subfigure}%
-  \begin{subfigure}[t]{.5\textwidth}
-    \centerline{\fbox{\includegraphics[scale=0.45]{images/process/order/a2}}}
+  \begin{subfigure}[t]{.2\textwidth}
+    \centerline{\fbox{\includegraphics[scale=0.6]{images/process/order/a2}}}
     \caption{Action $a_2$}\label{fig:process:order:a2}
-  \end{subfigure}
-
-  \begin{subfigure}[t]{.5\textwidth}
-    \centerline{\fbox{\includegraphics[scale=0.45]{images/process/order/a3}}}
+  \end{subfigure}%
+  \begin{subfigure}[t]{.3\textwidth}
+    \centerline{\fbox{\includegraphics[scale=0.6]{images/process/order/a3}}}
     \caption{Action $a_3$}\label{fig:process:order:a3}
   \end{subfigure}%
-  \begin{subfigure}[t]{.5\textwidth}
-    \centerline{\fbox{\includegraphics[scale=0.45]{images/process/order/a4}}}
+  \begin{subfigure}[t]{.2\textwidth}
+    \centerline{\fbox{\includegraphics[scale=0.6]{images/process/order/a4}}}
     \caption{Action $a_4$}\label{fig:process:order:a4}
   \end{subfigure}
   \stepcounter{doubly-typed-grammar-counter}
@@ -539,7 +538,7 @@ Now, let $a_3$ be related to $a_2$. In this configuration, we have that $a_2$ wo
 
 \begin{figure}[!ht]
   \centering
-  \fbox{\includegraphics[scale=0.6]{images/process/order/cycle}}
+  \fbox{\includegraphics[scale=1]{images/process/order/cycle}}
   \caption{Cycle due to conditional conflicts and dependencies}\label{fig:process:order:cycle}
 \end{figure}
 
