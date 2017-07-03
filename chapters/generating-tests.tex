@@ -1,12 +1,13 @@
 \chapter{Generating Test Cases}\label{ch:tests}
 
-In this chapter, we show how to use occurrence graph grammars to generate test cases and oracles from (simply-typed) graph grammars that model systems. In theory, this approach can be used to generate tests for any graph grammar, since it is based only on the properties of the formalism. However, we focused on graph grammars that were generated from use cases by using the methodology presented in \cite{Junior2015}, \cite{BezerraWEIT2016} and \cite{Cota2017}.
+\newadd{A test case is a collection of (1) input values necessary to complete some execution of the system under testing, (2) the results that will be produced when executing the test (assuming the system satisfies the intended behaviour) and (3) any inputs necessary to put the software into the appropriate state to receive the test values~\cite{Ammann2008}.}
+\newadd{Test oracles are specifications describing properties about the validity of tests cases, i.e. if the test must fail or pass. These properties may include relationships between the input given and the expected output, valid and invalid data properties, format of possible execution paths, etc. No matter the oracle format, it must be able to determine the validity of tests in a \textit{reasonable} amount of time~\cite{Weyuker1982}.}
+
+In the following, we show how to use \newadd{deterministic} occurrence graph grammars to generate test cases and oracles from (simply-typed) graph grammars that model systems. In theory, this approach can be used to generate tests for any graph grammar, since it is based only on the properties of the formalism. However, we focused on graph grammars that were generated from use cases by using the methodology presented in \cite{Junior2015}, \cite{BezerraWEIT2016} and \cite{Cota2017}.
 
 This methodology is a systematic, computer-aided way to extract graph grammars from use cases or other text-based requirement documents. At the same time, it helps finding problems such as ambiguities, inconsistencies and omissions in the documents. Thus, providing a better specification and also an improved model. By generating tests from these grammars we are indirectly generating tests for the underlying use cases. The test generation, to be described in next sections, was implemented in Verigraph as an extension to the calculation of the occurrence graph grammars that was previously discussed.
 
-\important{explain tests and oracles}
-
-Basically, we are interested in knowing whether each functionality of a system is truly executable \important{leila: why?}, i.e. whether all the rules that represent each functionality flow are applicable.
+Basically, we are interested in knowing whether each functionality of a system is truly executable \important{(why?)}, i.e. whether all the rules that represent each functionality flow are applicable.
 
 If it happens that a functionality is not executable, we want to know exactly what is the problem that is preventing its execution. On the other hand, if it is executable, we are interested in:
 
@@ -52,9 +53,13 @@ Some excerpts of this grammar are shown throughout this chapter, while the compl
 
 \section{Generating Tests using Occurrence Graph Grammars}
 
-Given a graph grammar \graphGrammar{} that models a system, we want to generate test cases and oracles for each subset of rules $F_i \subseteq P$ $\forall i \in 1\ldots n$, where $F_i$ represents a \uline{complete functionality of the system}. \important{define}
+\newadd{Given a graph grammar that models a system, we want to generate test cases and oracles for a complete execution of the system. By complete execution we informally mean an execution path that could be seen as an atomic operation or functionality by either a user or the system itself. For example, it could be something as simple as a successful or failing user login or something as complex as the entire process of servicing costumers, which requires attendants and waiters to be logged in, tables
+to be occupied, orders to be prepared, among others.}
 
-\begin{example} Figure~\ref{fig:tests:grammar} shows a subset of the rules from the e-store grammar. The chosen rules represent the main path of the use case \emph{browse catalogue}. 
+\newadd{\begin{definition}[Complete Execution Subset] Given a graph grammar \graphGrammar{} for a system with $n > 0$ functionalities, a \emph{complete execution subset} $F_i \subseteq P$, $\forall i \in 0\ldots n$ is a subset of the grammar rules whose application leads to achieving the goals of functionality $i$.
+\end{definition}}
+
+\begin{example} Figure~\ref{fig:tests:grammar} shows a subset of the rules from the e-store grammar. The chosen rules represent the main path of the use case \emph{browse catalogue} \important{change example and explain the goals of the functionality before showing the rules}. 
 
 \begin{figure}[!ht]
   \centering
