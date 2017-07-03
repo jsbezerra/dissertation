@@ -134,18 +134,20 @@ Along with the grammar $GG$ and its subsets of functionalities $F_i$, we will al
 
 \important{Explain this better, also extract it to a definition}
 
-Now that we have a $GG$ modelling a system, its set of rules $P$, together with $F_i$ and $IO_i$, we generate as output:
+\newadd{Having a graph grammar \graphGrammar{} modelling a system with \mbox{$n > 0$} functionalities, the generation of the test cases and oracles for each functionality $i$ is done by the construction of a deterministic occurrence graph grammar $OGG_i$ using $F_i$ and $IO_i$. The construction steps are specified in Definition~\ref{def:ogg-construction}.}.
 
-\begin{definition}[Deterministic Occurrence Graph Grammar Construction]
+\begin{definition}[Deterministic Occurrence Graph Grammar Construction]\label{def:ogg-construction} Let \graphGrammar{} be a graph grammar, $F_i$ and $IO_i$
 
 \begin{enumerate}
-\item an amalgamation (colimit) $OGG_i$ of rules for each $F_i$ with respect to $IO_i$
-\item the initial and final graphs $I_i$ and $J_i$ of $OGG_i$, representing the input and output data of the functionality $F_i$
-\item the conflict and dependency relations between rules
-\item restrictions over the ordering of elements existence and rules applicability
-\item one or more total orderings that respect all relations and restrictions
+\item calculate the amalgamation (colimit) $Occ_i$ of the rules in $F_i$ with respect to $IO_i$ and retype the rules $F_i$, generating a set $F'_i$ of doubly-typed graph rules.
+\item calculate the occurrence relation for the rules in $F'_i$.
+\item generate the initial and final graphs $I_i$ and $J_i$ by deleting from $Occ_i$ the elements that are created (resp.) deleted by the rules in $F'_i$ according to existential relation.
+\item calculate the set $R_i$ of restrictions over the ordering of rules applicability.
+\item find one or more total orderings that respect the occurrence relation and restrictions.
 %\item one or more total orderings that do not respect the relations or restrictions
 \end{enumerate}
+
+  The Occurrence Graph Grammar representing the functionality $i$ is given by $OGG_i = (Occ_i, I_i,F_i)$, iff $OGG_i$ respects the conditions imposed by Definition~\ref{def:ogg}
 \end{definition}
 
 First, the amalgamation of rules in $F_i$ w.r.t. $IO_i$ is responsible to ``glue'' the graphs of all rules in on single graph at the same that it identifies the items that come from different rules but are supposed to be the same element.
