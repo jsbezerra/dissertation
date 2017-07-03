@@ -4,7 +4,7 @@ Occurrence graph grammars were defined for the Single-Pushout (SPO) approach by~
 
 The aim of an occurrence graph grammar is to describe all possible states and changes of states of the graph grammar from which the occurrence graph grammar was constructed. This is possible because occurrence grammars can be viewed as the entire execution history of the underlying grammar. This history is encoded under the forms of (1) a \emph{core graph} containing all elements ever used in the execution of a grammar and (2) a set of \emph{relations} between the rules and elements of this core graph. 
 
-The relations can be used to express dependencies among core graph elements, such as which of them must occur together, i.e. at the same state, which ones must be created/deleted one after the other, which elements must never occur together, and so on. They also encode restrictions over the application of rules, e.g. which rules are sequentially dependent on others, whether it is possible to successfully apply all the rules of a grammar. This property makes occurrence graph grammars excellent
+The relations can be used to express dependencies among the core graph elements, such as which of them must occur together, i.e. at the same state, which ones must be created/deleted one after the other, which elements must never occur together, and so on. They also encode restrictions over the application of rules, e.g. which rules are sequentially dependent on others, whether it is possible to successfully apply all the rules of a grammar. This property makes occurrence graph grammars excellent
 candidates for the generation of test cases, as we are interested in a way of representing several (equivalent) possible derivations using a compact notation.
 
 However, Negative Application Conditions are not addressed by the original definitions of occurrence grammars. Still, NACs are nowadays essential for modelling complex systems as graph grammars, since they provide more possibilities to control the application of rules~\cite{Habel1996, Lambers2008, Corradini2014}.
@@ -105,7 +105,9 @@ We could have defined NACs whose morphisms are doubly-typed graph morphisms (whi
 
 \end{remark}
 
-When dealing with the classical notion of NACs, there may be situations where the NAC of a rule can be triggered by the cumulative effect of applying two (or more) other rules, while the same rules would not trigger this NAC without the other. This may lead to a situation where conflicts and dependencies are not stable under switch, as shown in example~\ref{ex:process:instability}. \important{explain: this was not defined before}
+\newadd{In a grammar whithout NACs, if there is a sequence of graph transformations $t_0\ldots t_n$ where all pairs $(t_i,t_j)$ of transformations are sequentially independent, then it is possible to \emph{switch} the
+order of application for any pair in that sequence and still achieve the same final result (up to isomorphism). However, this is not always true when the grammar has NACs~\cite{Corradini2013}.} When dealing with the classical notion of NACs, there may be situations where the NAC of a rule can be triggered by the cumulative effect of applying two (or more) other rules, while the same rules would not trigger this NAC without the other. This may lead to a situation where conflicts and dependencies
+are not stable under switch. An example is shown in Figure~\ref{ex:process:instability}.
 
 \begin{example}[Instability of Conflicts and Dependencies]\label{ex:process:instability}The rules depicted in Figure~\ref{fig:process:instability} show a situation where the independency between rules is not stable under switch equivalence.
 
