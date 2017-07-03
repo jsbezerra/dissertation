@@ -36,6 +36,8 @@ The idea is to create a doubly-typed NAC for each concrete triggering of the ori
 
 Thus, it remains as future work to formally define this other kind of NAC, to verify whether and when it would really be useful, how to use it to improve the expressiveness for test cases generation and then implement it on verigraph.
 
+\important{Test generation with non-deterministic occurrence graph grammars with nacs}
+
 \textbf{Different graph rewriting approaches:} Occurrence graph grammars were originally defined for DPO and SPO approach without NACs, our extension adds NACs to the DPO approach. It remains open how to extend them for SPO or even other different approaches, such as SqPO and AGREE.
 
 \textbf{Complexity:} To this point, it is not clear to us what is the complexity of an algorithm to find (or to check if it is possible to find) a total ordering of actions of a strongly safe grammar that respects both the concrete occurrence relation and arbitrary abstract restrictions.

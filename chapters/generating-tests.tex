@@ -31,6 +31,12 @@ Usually, use case documents consist of sets of sequential steps describing the i
 
 Figure~\ref{fig:tests:methodology} summarizes the methodology process proposed in \cite{Junior2015}, showing how to extract a graph grammar from a text-based requirements document. This methodology is divided into four main phases:
 
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[scale=0.7]{images/generating-tests/methodology}
+  \caption{Overview of the methodology~\cite{Junior2015}.}\label{fig:tests:methodology}
+\end{figure}
+
 \begin{description}
   \item[Data Extraction:] identification of entities and actions that will be used to construct the model.
 
@@ -44,12 +50,6 @@ Figure~\ref{fig:tests:methodology} summarizes the methodology process proposed i
 We use a grammar that models an e-store system in our example. This grammar was extracted, using the methodology, from a set of use cases presented in~\cite{Goins2007}. These use cases model basic e-store functionalities such as \emph{browse catalogue, user registration, login, update user information, maintain shopping cart}, among others.
 
 Some excerpts of this grammar are shown throughout this chapter, while the complete extracted grammar can be found on appendix~\ref{app:marvel-grammar} and at the Verites repository for case studies\footnote{https://github.com/Verites/case-studies}.
-
-\begin{figure}[!ht]
-  \centering
-  \includegraphics[scale=0.7]{images/generating-tests/methodology}
-  \caption{Overview of the methodology~\cite{Junior2015}.}\label{fig:tests:methodology}
-\end{figure}
 
 \section{Generating Tests using Occurrence Graph Grammars}
 
@@ -98,13 +98,16 @@ to be occupied, orders to be prepared, among others.}
 \end{example}
 \subsection{Preparing the input}
 
-\important{define input-output relation}
-
 Along with the grammar $GG$ and its subsets of functionalities $F_i$, we will also need an \emph{input-output relation} $IO_i$ for each $F_i$, specifying the connections between the rules in the subsets. This \emph{input-output relation} identifies which elements (nodes and edges) must be the same between each pair of rules, as shown in example~\ref{ex:inout}.
 
-  We choose the main flow of our example grammar to show how to build the $IO$ relation. First of all, the subset of rules for this path is $F_1 = \{$ chooseCategory, displayProducts, chooseProduct, displayItems, chooseItem, displayChosenItem $\}$. Once having the sets of rules, we build the input-output relations for each one of them.
+\begin{definition}[Input-Output Relation] \newadd{Given a complete execution subset $F_i$, its underlying \emph{input-output relation} $IO_i$ is a set of typed-graph morphism spans of the form \mbox{$\left(R_x \leftarrow IO \rightarrow L_y\right)$} each of which connects two distinct rules $x,y \in F_i$.}
 
-\begin{example}[Input-Output Relations]\label{ex:inout} A \emph{full} input output-relation for all rules of a subset has the appearance of the following diagram, where we have a set of $IO$ objects that are nothing more then a graph with a pair of morphism mapping one left-hand side of a rule with the right-hand side of another rule.
+  \newadd{  The $IO$ object of each span is similar to the gluing graph of a rule, but instead of identifying the elements that are preserved by one rule, it identifies the elements that are necessarily the same between two different rules.}
+\end{definition}
+
+  We choose the main flow of our example grammar to show how to build the $IO$ relation. First of all, the complete execution subset for this functionality is $F_1 = \{$ chooseCategory, displayProducts, chooseProduct, displayItems, chooseItem, displayChosenItem $\}$. Once having the sets of rules, we build the input-output relations for each one of them.
+
+\begin{example}[Input-Output Relations]\label{ex:inout} \important{review} A \emph{full} input output-relation for all rules of a subset has the appearance of the following diagram, where we have a set of $IO$ objects that are nothing more then a graph with a pair of morphism mapping one left-hand side of a rule with the right-hand side of another rule.
 
     Figure~\ref{fig:tests:inout} shows how an $IO$ object connects two different rules, which is similar to how the interface graph of a rule identifies the elements that are the same in its left and right sides.
 
@@ -158,7 +161,7 @@ The colimit of a diagram such as the one presented in Example~\ref{ex:inout} has
 
 If the result of this colimit is a \emph{core graph} according to definition~\ref{def:core-graph}, we can create a doubly-typed graph grammar $OGG_i$ that is also a strongly-safe grammar and therefore a candidate to be an occurrence graph grammar.
 
-Remember that, if there is more than one rule that deletes or creates the same element, it is not possible to apply all rules of this functionality, and $OGG_i$ can not be a deterministic occurrence graph grammar. \tinytodo{put retyped rules?}
+Remember that, if there is more than one rule that deletes or creates the same element, it is not possible to apply all rules of this functionality, and $OGG_i$ can not be a deterministic occurrence graph grammar.
 
 \begin{example}[Amalgamation example]\label{ex:amalgamation} Figure~\ref{fig:tests:colimit} shows the object resultant from the amalgamation of the rules presented in Figure~\ref{fig:tests:grammar}.
 
