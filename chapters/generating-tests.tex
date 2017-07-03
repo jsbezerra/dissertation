@@ -1,7 +1,7 @@
 \chapter{Generating Test Cases}\label{ch:tests}
 
-\newadd{A test case is a collection of (1) input values necessary to complete some execution of the system under testing, (2) the results that will be produced when executing the test (assuming the system satisfies the intended behaviour) and (3) any inputs necessary to put the software into the appropriate state to receive the test values~\cite{Ammann2008}.}
-\newadd{Test oracles are specifications describing properties about the validity of tests cases, i.e. if the test must fail or pass. These properties may include relationships between the input given and the expected output, valid and invalid data properties, format of possible execution paths, etc. No matter the oracle format, it must be able to determine the validity of tests in a \textit{reasonable} amount of time~\cite{Weyuker1982}.}
+\newadd{A test case is a collection of (1) input values necessary to complete some execution of the system under testing, (2) the results that must be produced after executing the test (assuming the system satisfies the intended behaviour) and (3) any inputs necessary to setup the system into the appropriate state to receive the test values~\cite{Ammann2008}.}
+\newadd{Test oracles are specifications describing properties about the validity of tests cases, i.e. if the test must fail or pass. These properties may include relationships between the input given and the expected output, data validity properties, format of possible execution paths, etc. No matter the oracle format, it must be able to determine the validity of tests in a reasonable amount of time~\cite{Weyuker1982}.}
 
 In the following, we show how to use \newadd{deterministic} occurrence graph grammars to generate test cases and oracles from (simply-typed) graph grammars that model systems. In theory, this approach can be used to generate tests for any graph grammar, since it is based only on the properties of the formalism. However, we focused on graph grammars that were generated from use cases by using the methodology presented in \cite{Junior2015}, \cite{BezerraWEIT2016} and \cite{Cota2017}.
 
@@ -107,7 +107,7 @@ Along with the grammar $GG$ and its subsets of functionalities $F_i$, we will al
 
   We choose the main flow of our example grammar to show how to build the $IO$ relation. First of all, the complete execution subset for this functionality is $F_1 = \{$ chooseCategory, displayProducts, chooseProduct, displayItems, chooseItem, displayChosenItem $\}$. Once having the sets of rules, we build the input-output relations for each one of them.
 
-\begin{example}[Input-Output Relations]\label{ex:inout} \important{review} A \emph{full} input output-relation for all rules of a subset has the appearance of the following diagram, where we have a set of $IO$ objects that are nothing more then a graph with a pair of morphism mapping one left-hand side of a rule with the right-hand side of another rule.
+\begin{example}[Input-Output Relations]\label{ex:inout} \important{review}A \emph{full} input output-relation for all rules of a subset has the appearance of the following diagram, where we have a set of $IO$ objects that are nothing more then a graph with a pair of morphism mapping one left-hand side of a rule with the right-hand side of another rule.
 
     Figure~\ref{fig:tests:inout} shows how an $IO$ object connects two different rules, which is similar to how the interface graph of a rule identifies the elements that are the same in its left and right sides.
 
@@ -136,6 +136,8 @@ Along with the grammar $GG$ and its subsets of functionalities $F_i$, we will al
 
 Now that we have a $GG$ modelling a system, its set of rules $P$, together with $F_i$ and $IO_i$, we generate as output:
 
+\begin{definition}[Deterministic Occurrence Graph Grammar Construction]
+
 \begin{enumerate}
 \item an amalgamation (colimit) $OGG_i$ of rules for each $F_i$ with respect to $IO_i$
 \item the initial and final graphs $I_i$ and $J_i$ of $OGG_i$, representing the input and output data of the functionality $F_i$
@@ -144,6 +146,7 @@ Now that we have a $GG$ modelling a system, its set of rules $P$, together with 
 \item one or more total orderings that respect all relations and restrictions
 %\item one or more total orderings that do not respect the relations or restrictions
 \end{enumerate}
+\end{definition}
 
 First, the amalgamation of rules in $F_i$ w.r.t. $IO_i$ is responsible to ``glue'' the graphs of all rules in on single graph at the same that it identifies the items that come from different rules but are supposed to be the same element.
 
@@ -161,7 +164,7 @@ The colimit of a diagram such as the one presented in Example~\ref{ex:inout} has
 
 If the result of this colimit is a \emph{core graph} according to definition~\ref{def:core-graph}, we can create a doubly-typed graph grammar $OGG_i$ that is also a strongly-safe grammar and therefore a candidate to be an occurrence graph grammar.
 
-Remember that, if there is more than one rule that deletes or creates the same element, it is not possible to apply all rules of this functionality, and $OGG_i$ can not be a deterministic occurrence graph grammar.
+Remember that, if there is more than one rule that deletes or creates the same element, it is not possible to apply all rules of this functionality, and $OGG_i$ can not be a deterministic occurrence graph grammar. \tinytodo{put retyped rules?}
 
 \begin{example}[Amalgamation example]\label{ex:amalgamation} Figure~\ref{fig:tests:colimit} shows the object resultant from the amalgamation of the rules presented in Figure~\ref{fig:tests:grammar}.
 
