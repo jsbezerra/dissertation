@@ -105,9 +105,9 @@ Along with the grammar $GG$ and its subsets of functionalities $F_i$, we will al
   \newadd{  The $IO$ object of each span is similar to the gluing graph of a rule, but instead of identifying the elements that are preserved by one rule, it identifies the elements that are necessarily the same between two different rules.}
 \end{definition}
 
-  We choose the main flow of our example grammar to show how to build the $IO$ relation. First of all, the complete execution subset for this functionality is $F_1 = \{$ chooseCategory, displayProducts, chooseProduct, displayItems, chooseItem, displayChosenItem $\}$. Once having the sets of rules, we build the input-output relations for each one of them.
+\important{review}  We choose the main flow of our example grammar to show how to build the $IO$ relation. First of all, the complete execution subset for this functionality is $F_1 = \{$ chooseCategory, displayProducts, chooseProduct, displayItems, chooseItem, displayChosenItem $\}$. Once having the sets of rules, we build the input-output relations for each one of them.
 
-\begin{example}[Input-Output Relations]\label{ex:inout} \important{review}A \emph{full} input output-relation for all rules of a subset has the appearance of the following diagram, where we have a set of $IO$ objects that are nothing more then a graph with a pair of morphism mapping one left-hand side of a rule with the right-hand side of another rule.
+\begin{example}[Input-Output Relations]\label{ex:inout} \important{review} An input-output relation for a complete execution subset has the appearance of the diagram bellow, where there are several $IO$ objects connecting the right-hand side of a rule with the left-hand side of another.
 
     Figure~\ref{fig:tests:inout} shows how an $IO$ object connects two different rules, which is similar to how the interface graph of a rule identifies the elements that are the same in its left and right sides.
 
@@ -118,9 +118,9 @@ Along with the grammar $GG$ and its subsets of functionalities $F_i$, we will al
   L_1 & K_1\ar[l]\ar[r] & R_1 & L_2 & K_2\ar[l]\ar[r] & R_2 & L_3 & K_3\ar[l]\ar[r] & R_3\\
   }\hfill\break
 
-  For most of the cases, a full relation will not be necessary, as the $IO$ relation has some sort of transitivity. Thus, we can focus on build only a subset of it. 
-  
-  Take for example the \emph{system} node in the grammar. This node should be the same along all rules, and it appears in left and right sides of all rules. Given two rules $p_1$ and $p_2$, we have the options of building the $IO$ object that identifies the system node as $L_1 \leftarrow IO \rightarrow R_2$ or $L_2 \leftarrow IO \rightarrow R_1$. Both of them having the same effect.
+  For most cases, it will not be necessary to create an $IO$ object for each pair of rules, as the $IO$ relation has some sort of transitivity. Thus, we can focus on build only a subset of it.
+
+  Take for example the \emph{system} node in the grammar. This node should be the same along all rules, and it appears in left and right sides of all rules. Given two rules $p_1$ and $p_2$, we have the options of building the $IO$ object that identifies the system node as $L_1 \leftarrow IO \rightarrow R_2$ or $L_2 \leftarrow IO \rightarrow R_1$. Both of them having the same effect. \important{review example}
 
 \begin{figure}[!ht]
   \centering
@@ -134,39 +134,39 @@ Along with the grammar $GG$ and its subsets of functionalities $F_i$, we will al
 
 \important{Explain this better, also extract it to a definition}
 
-\newadd{Having a graph grammar \graphGrammar{} modelling a system with \mbox{$n > 0$} functionalities, the generation of the test cases and oracles for each functionality $i$ is done by the construction of a deterministic occurrence graph grammar $OGG_i$ using $F_i$ and $IO_i$. The construction steps are specified in Definition~\ref{def:ogg-construction}.}.
+\newadd{Having a graph grammar \graphGrammar{} modelling a system with \mbox{$n > 0$} functionalities, the generation of test cases and oracles for each functionality $i$ is accomplished by the construction of a deterministic occurrence graph grammar $OGG_i$ using $F_i$ and $IO_i$. The construction steps are specified in Definition~\ref{def:ogg-construction}.}.
 
 \begin{definition}[Deterministic Occurrence Graph Grammar Construction]\label{def:ogg-construction} Let \graphGrammar{} be a graph grammar, $F_i$ and $IO_i$
 
 \begin{enumerate}
-\item calculate the amalgamation (colimit) $Occ_i$ of the rules in $F_i$ with respect to $IO_i$ and retype the rules $F_i$, generating a set $F'_i$ of doubly-typed graph rules.
-\item calculate the occurrence relation for the rules in $F'_i$.
-\item generate the initial and final graphs $I_i$ and $J_i$ by deleting from $Occ_i$ the elements that are created (resp.) deleted by the rules in $F'_i$ according to existential relation.
+\item calculate the amalgamation (colimit) $Occ_i$ of the rules in $F_i$ with respect to $IO_i$.
+
+\diagram{
+  & & & & IO_6\ar[dddrrrr]\ar[dddllll] & & & & &\ldots\\
+    & IO_3\ar[ddl]\ar[ddrrrr] & & & & & & IO_4\ar[ddr]\ar[ddllll] & & \ldots\\
+    & & IO_1\ar[d]\ar[dr] & & IO_5\ar[drr]\ar[dll] & & IO_2\ar[d]\ar[dl] & & &\ldots\\
+    L_1\ar[dddrrrr] & K_1\ar[l]\ar[r] & R_1\ar[dddrr] & L_2\ar[dddr] & K_2\ar[l]\ar[r] & R_2\ar[dddl] & L_3\ar[dddll] & K_3\ar[l]\ar[r] & R_3\ar[dddllll] & \ldots\ar[dddlllll]\\
+    & & & & & & & & &\\
+    & & & & & & & & &\\
+    & & & & Occ & & & & &
+}\hfill\break
+
+\item retype the rules $F_i$ over $Occ_i$, generating a set $F'_i$ of doubly-typed graph rules.
+
+\item calculate the occurrence relation $\leq_{occ}$ using the doubly-typed graph rules in $F'_i$.
 \item calculate the set $R_i$ of restrictions over the ordering of rules applicability.
+\item generate the initial and final graphs $I_i$ and $J_i$ by deleting from $Occ_i$ the elements that are created (resp. deleted) by the rules in $F'_i$ according to existential relation.
 \item find one or more total orderings that respect the occurrence relation and restrictions.
 %\item one or more total orderings that do not respect the relations or restrictions
 \end{enumerate}
 
-  The Occurrence Graph Grammar representing the functionality $i$ is given by $OGG_i = (Occ_i, I_i,F_i)$, iff $OGG_i$ respects the conditions imposed by Definition~\ref{def:ogg}
+  The Occurrence Graph Grammar representing execution of the functionality $i$ is given by $OGG_i = (Occ_i, I_i,F_i)$, iff $OGG_i$ respects the conditions imposed by Definition~\ref{def:ogg}.
 \end{definition}
 
-First, the amalgamation of rules in $F_i$ w.r.t. $IO_i$ is responsible to ``glue'' the graphs of all rules in on single graph at the same that it identifies the items that come from different rules but are supposed to be the same element.
+In the first step of the construction, the amalgamation of the rules in $F_i$ w.r.t. $IO_i$ is responsible to ``glue'' the graphs of all rules in one single graph $Occ_i$, while identifying the items that are meant to be the same element at the grammar execution. %%The colimit of a diagram such as the one presented in Example~\ref{ex:inout} has the following format, where $Occ$ is the amalgamation object, i.e. $Occ$ contains all the concrete elements of the rules where it came from:
+If $Occ_i$ is a \emph{core graph} according to definition~\ref{def:core-graph}, we can create a doubly-typed graph grammar $OGG_i$ that is also a strongly-safe grammar and therefore a candidate to be an occurrence graph grammar.
 
-The colimit of a diagram such as the one presented in Example~\ref{ex:inout} has the following format, where $Occ$ is the amalgamation object, i.e. $Occ$ contains all the concrete elements of the rules where it came from:
-
-\diagram{
-  & & & & IO_6\ar[dddrrrr]\ar[dddllll] & & & &\\
-  & IO_3\ar[ddl]\ar[ddrrrr] & & & & & & IO_4\ar[ddr]\ar[ddllll] &\\
-  & & IO_1\ar[d]\ar[dr] & & IO_5\ar[drr]\ar[dll] & & IO_2\ar[d]\ar[dl] & &\\
-  L_1\ar[dddrrrr] & K_1\ar[l]\ar[r] & R_1\ar[dddrr] & L_2\ar[dddr] & K_2\ar[l]\ar[r] & R_2\ar[dddl] & L_3\ar[dddll] & K_3\ar[l]\ar[r] & R_3\ar[dddllll]\\
-  & & & & & & & &\\
-  & & & & & & & &\\
-   & & & & Occ & & & &
-}\hfill\break
-
-If the result of this colimit is a \emph{core graph} according to definition~\ref{def:core-graph}, we can create a doubly-typed graph grammar $OGG_i$ that is also a strongly-safe grammar and therefore a candidate to be an occurrence graph grammar.
-
-Remember that, if there is more than one rule that deletes or creates the same element, it is not possible to apply all rules of this functionality, and $OGG_i$ can not be a deterministic occurrence graph grammar. \tinytodo{put retyped rules?}
+Remember that, if there is more than one rule that deletes or creates the same element, it is not possible to apply all rules of this functionality, and $OGG_i$ can not be a deterministic occurrence graph grammar.
 
 \begin{example}[Amalgamation example]\label{ex:amalgamation} Figure~\ref{fig:tests:colimit} shows the object resultant from the amalgamation of the rules presented in Figure~\ref{fig:tests:grammar}.
 
