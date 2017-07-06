@@ -2,13 +2,13 @@
 
   We proposed an extension to the framework of occurrence graph grammars, previously defined by~\cite{Ribeiro1996} and~\cite{Corradini1996},  to deal with negative application conditions.
 
-  The calculation of occurrence graph grammars from graph grammars was implemented on verigraph, which now supports doubly-typed graph grammars in general.
+  The calculation of occurrence graph grammars from graph grammars was implemented on Verigraph, which now supports doubly-typed graph grammars in general.
 
-  As the main objective of this thesis, we used occurrence graph grammars and its relations to generate test cases, also using verigraph. This functionality aims to improve the quality of the software testing activity by providing test cases and oracles that are complete (regarding the point of view of rules application ordering) and compact.
+  As the main objective of this thesis, we used occurrence graph grammars and its relations to generate test cases, also using Verigraph. This functionality aims to improve the quality of the software testing activity by providing test cases and oracles that are complete (regarding the point of view of rules application ordering) and compact.
 
-  In order to implement the techniques presented in this work, it was necessary to extend the previous work already existent in verigraph. In this sense, one of the main contributions was the implementation of a generic architecture for basic categorial operations, which can be used by different category implementations with relatively little effort. Besides, verigraph is, as far as we know, the only tool in this field that supports occurrence graph grammars and doubly-typed graph grammars in general.
+  In order to implement the techniques presented in this work, it was necessary to extend the previous work already existent in Verigraph. In this sense, one of the main contributions was the implementation of a generic architecture for basic categorial operations, which can be used by different category implementations with relatively little effort. Besides, Verigraph is, as far as we know, the only tool in this field that supports occurrence graph grammars and doubly-typed graph grammars in general.
 
-    Furthermore, verigraph is a free and open source software, publicly available at github. Thus, we expect that any users in the community of graph grammars and category theory in general can find and use it, besides making suggestions and even implementing new features according to their specific needs.
+    Furthermore, Verigraph is a free and open source software, publicly available at github. Thus, we expect that any users in the community of graph grammars and category theory in general can find and use it, besides making suggestions and even implementing new features according to their specific needs.
 
 \section{Open Questions and Future Work}
 
@@ -20,11 +20,11 @@ Although our main objectives were accomplished during the work of this thesis, t
 
 %\end{itemize}
 
-\textbf{Basic categorial operations:} One of the features Verigraph provides is to support for different categories and analysis, nonetheless there are basic operations and different types of categories which are not contemplated by verigraph current state.
+\textbf{Basic categorial operations:} One of the features Verigraph provides is to support for different categories and analysis, nonetheless there are basic operations and different types of categories which are not contemplated by Verigraph current state.
 
 One of such basic features would be the dual operations of cocomplete categories, such as equalizers, products, pullbacks and limits, implemented in a \code{Complete} type class so it can be reused in the same manner as the \code{Cocomplete} one.
 
-Also, verigraph does not support categories that have different morphism classes besides mono-, epi- and isomorphisms. In particular, some categories are adhesive with respect to a subclass $N$ of monomorphisms or that restrict which kind of morphisms are allowed in productions.
+Also, Verigraph does not support categories that have different morphism classes besides mono-, epi- and isomorphisms. In particular, some categories are adhesive with respect to a subclass $N$ of monomorphisms or that restrict which kind of morphisms are allowed in productions.
 
 \textbf{Incremental NACs:} The entire process of calculating the occurrence graph grammars and the later generation of test cases depends on all the NACs of the input grammar being incremental. Despite incremental NACs being sufficient for most applications and that our case studies only used grammars which respect this restriction, there may be cases where it is needed to use grammars with general NACs.
 
@@ -34,7 +34,7 @@ Also, verigraph does not support categories that have different morphism classes
 
 The idea is to create a doubly-typed NAC for each concrete triggering of the original NAC over the core graph. Moreover, this translation may yield the creation of (possibly) many doubly-typed NACs for each original single-typed. 
 
-Thus, it remains as future work to formally define this other kind of NAC, to verify whether and when it would really be useful, how to use it to improve the expressiveness for test cases generation and then implement it on verigraph.
+Thus, it remains as future work to formally define this other kind of NAC, to verify whether and when it would really be useful, how to use it to improve the expressiveness for test cases generation and then implement it on Verigraph.
 
 \important{Test generation with non-deterministic occurrence graph grammars with nacs}
 
@@ -47,14 +47,14 @@ Thus, it remains as future work to formally define this other kind of NAC, to ve
   Therefore, more study is necessary in which in regarding this aspect, specifically, we want to be sure whether it is possible to find total orderings for arbitrary strongly safe graph grammars or at least under which conditions (besides an empty set of abstract restrictions) would it still be feasible. After that, we will know if this process is suitable to generate tests for grammars the model arbitrary systems, not only those described by use cases.
 
 
-\textbf{Interface:} Regarding input and output, verigraph does not have an operational graphical user interface yet (GUI), using the AGG tool and its \code{.ggx} file format for providing this operations. However, AGG does not support doubly-typed graph grammars nor NACs under this framework, thus the graphical visualization of the output of the test generation process is not completely possible, which makes the development of a GUI dedicated to verigraph a necessary step to address this issue\footnote{the development
+\textbf{Interface:} Regarding input and output, Verigraph does not have an operational graphical user interface yet (GUI), using the AGG tool and its \code{.ggx} file format for providing this operations. However, AGG does not support doubly-typed graph grammars nor NACs under this framework, thus the graphical visualization of the output of the test generation process is not completely possible, which makes the development of a GUI dedicated to Verigraph a necessary step to address this issue\footnote{the development
   of a responsive, dedicated GUI is currently one of the main focus of the verites group}.
 
 \textbf{Interactive test case generation:} With respect to the test case generation, the GUI will also be helpful to the guided generation of different cases. Currently, the user must create the subsets of functionalities manually, as well as the $IO$ relations needed for them.
 
 With a graphical interface, the user will be able to interactively guide the system in the creation of the sets of rules and $IO$ relations. Specially in the case of the $IO$ relations, the system can indicate to the user which items in the set of rules are transitively identified, avoiding the construction of redundant relations.
 
-Another advantage would be that a ``checker'', in which the user could provide his/her own paths to verigraph and the system would reply if this path is a valid execution or why it is not.
+Another advantage would be that a ``checker'', in which the user could provide his/her own paths to Verigraph and the system would reply if this path is a valid execution or why it is not.
 
 \textbf{Automated source code generation:}
   Finally, the generation of test cases is done in a textual manner, thus leaving to the test designer the responsibility of translating it into real source code. A very interesting research would be how to translate it directly to source code of specific programming languages and/or test frameworks.

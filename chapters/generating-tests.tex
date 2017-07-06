@@ -44,7 +44,7 @@ Figure~\ref{fig:tests:methodology} summarizes the methodology process proposed i
 
   \item[GT Generation:] construction of graph transformation model by modelling conditions and effects as graphs, building a type graph and then modelling each step of the use case as a transition rule from one state graph to another.
 
-  \item[UC Analysis:] automated verifications over the model in order to detect possible flaws in the use case. This is step is done using verigraph and its concurrent rules, conflict and dependency analyses.
+  \item[UC Analysis:] automated verifications over the model in order to detect possible flaws in the use case. This is step is done using Verigraph and its concurrent rules, conflict and dependency analyses.
 \end{description}
 
 We use a grammar that models an e-store system in our example. This grammar was extracted, using the methodology, from a set of use cases presented in~\cite{Goins2007}. These use cases model basic e-store functionalities such as \emph{browse catalogue, user registration, login, update user information, maintain shopping cart}, among others.
@@ -209,7 +209,7 @@ As this seems to be a hard problem, in the complexity sense, we left this last i
 
 In our case studies, no such situation was found. We believe that it happens because we used grammars extracted from real use cases, where usually there are (possibly many) sequential connections between the actions, which forces the rules to be connected via the \emph{occurrence relation} and avoids abstract restrictions.
 
-The output of verigraph for test case generation is shown on Figures~\ref{fig:tests:checklist} and~\ref{fig:tests:relation}. On the first figure, verigraph performs the basic verifications to check whether the generated output is, in fact, an occurrence grammar.
+The output of Verigraph for test case generation is shown on Figures~\ref{fig:tests:checklist} and~\ref{fig:tests:relation}. On the first figure, Verigraph performs the basic verifications to check whether the generated output is, in fact, an occurrence grammar.
 
 \begin{figure}[!ht]
 \caption{Tool command line output}
