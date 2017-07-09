@@ -106,7 +106,7 @@ We could have defined NACs whose morphisms are doubly-typed graph morphisms (whi
 \end{remark}
 
 \newadd{In a grammar whithout NACs, if there is a sequence of graph transformations $t_0\ldots t_n$ where all pairs $(t_i,t_j)$ of transformations are sequentially independent, then it is possible to \emph{switch} the
-order of application for any pair in that sequence and still achieve the same final result (up to isomorphism). However, this is not always true when the grammar has NACs~\cite{Corradini2013}.} When dealing with the classical notion of NACs, there may be situations where the NAC of a rule can be triggered by the cumulative effect of applying two (or more) other rules, while the same rules would not trigger this NAC without the other. This may lead to a situation where conflicts and dependencies
+order of application for any pair in that sequence and still achieve the same final graph as a result (up to isomorphism). However, this is not always true when the grammar has NACs~\cite{Corradini2013}.} This happens because when NACs come into play, there may be situations where a NAC of a rule can be triggered by the cumulative effect of applying two (or more) other rules, while the same rules would not trigger this NAC without the other. This may lead to a situation where conflicts and dependencies
 are not stable under switch. An example is shown in Figure~\ref{ex:process:instability}.
 
 \begin{example}[Instability of Conflicts and Dependencies]\label{ex:process:instability}The rules depicted in Figure~\ref{fig:process:instability} show a situation where the independency between rules is not stable under switch equivalence.
