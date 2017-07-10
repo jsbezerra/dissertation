@@ -20,14 +20,13 @@ In order to use this framework for our purposes, we first need to extend occurre
 \end{remark}
 
 \begin{example}[Doubly-Typed Graph Example] Figure~\ref{fig:process:doubly-typed-graph} shows a doubly-typed graph $G^{TG^T}$.
+\end{example}
 
 \begin{figure}[!ht]
   \centering
-  \fbox{\includegraphics[scale=0.5]{images/process/doubly-typed-graph-example}}
+  \fbox{\includegraphics[scale=0.6]{images/process/doubly-typed-graph-example}}
   \caption{Doubly-typed graph}\label{fig:process:doubly-typed-graph}
 \end{figure}
-
-\end{example}
 
 \begin{definition}[Doubly-Typed Graph Morphism]
   Given two doubly-typed graphs $G^{TG^T}$ and $H^{TG^T}$ and a graph morphism $g^T : G^T \rightarrow H^T$, we say that $g^T$ is a \emph{$TG^T$-doubly-typed graph morphism} if the following diagram commutes:
@@ -42,16 +41,15 @@ In order to use this framework for our purposes, we first need to extend occurre
 Notice that the (single) type morphisms $type_G : G \rightarrow T$ and $type_H : H \rightarrow T$ can be obtained respectively as $type_{TG} \circ t^G$ and $type_{TG} \circ t^H$.
 
 \begin{example}[Doubly-Typed Graph Morphism Example] Figure~\ref{fig:process:doubly-typed-graph-morphism} shows a doubly-typed graph morphism $f : G^{TG^T} \rightarrow H^{TG^T}$.
+\end{example}
 
 \begin{figure}[!ht]
   \centering
-  \fbox{\includegraphics[scale=0.5]{images/process/doubly-typed-graph-morphism-example}}
+  \fbox{\includegraphics[scale=0.6]{images/process/doubly-typed-graph-morphism-example}}
   \caption{Doubly-typed graph morphism}\label{fig:process:doubly-typed-graph-morphism}
 \end{figure}
-\end{example}
 
-\begin{remark} \cite{Ribeiro1996} defined different kinds of doubly-typed graph morphisms based on whether the doubly-type graphs and the type graphs are not the same. In this work we are only interested in the case where all doubly-typed graphs share the same double-type and type graphs. Therefore we will call the \mbox{\emph{$TG^T$-doubly-typed graph morphisms}} simply by \emph{doubly-typed graph morphisms} through the rest of this thesis.
-
+\begin{remark} \cite{Ribeiro1996} defined different kinds of doubly-typed graph morphisms based on whether the doubly-type graphs and the type graphs are or are not the same. In this work we are only interested in the case where all doubly-typed graphs share the same double-type and type graphs. Therefore we will call the \mbox{\emph{$TG^T$-doubly-typed graph morphisms}} simply by \emph{doubly-typed graph morphisms} through the rest of this thesis.
 \end{remark}
 
 
@@ -73,17 +71,16 @@ Notice that the (single) type morphisms $type_G : G \rightarrow T$ and $type_H :
     \item $post_a = t^{R^T} : R^T \rightarrow TG^T$, the \emph{post-condition} of $a$.
     %\item $r_a = r^T$, the \emph{rule pattern} of $a$.\tinytodo{Not sure if we will need the rule pattern.}
   \end{itemize}
-
 \end{definition}
 
 \begin{example}[Doubly-Typed Graph Rule Example]Figure~\ref{fig:process:doubly-typed-graph-rule} shows a doubly-typed graph rule which deletes an edge $\curvearrowleft_1$ and a node $\Circle_1$, preserves a $\Square_2$ and creates a node $\Circle_3$ and an edge $\curvearrowleft_2$.
+\end{example}
 
 \begin{figure}[!ht]
   \centering
   \fbox{\includegraphics[scale=0.5]{images/process/doubly-typed-graph-rule-example}}
   \caption{Doubly-typed graph rule}\label{fig:process:doubly-typed-graph-rule}
 \end{figure}
-\end{example}
 
 \begin{definition}[Negative Application Conditions on Doubly-Typed Graph Rules] A \emph{left} negative application condition over a doubly-typed graph rule $p^{TG^T}$ is of the form $NAC(n^T)$, where $n^T : L^T \rightarrow N^T$ is an arbitrary (single-)typed graph morphism. 
  
@@ -105,22 +102,23 @@ We could have defined NACs whose morphisms are doubly-typed graph morphisms (whi
 
 \end{remark}
 
-\newadd{In a grammar whithout NACs, if there is a sequence of graph transformations $t_0\ldots t_n$ where all pairs $(t_i,t_j)$ of transformations are sequentially independent, then it is possible to \emph{switch} the
-order of application for any pair in that sequence and still achieve the same final graph as a result (up to isomorphism). However, this is not always true when the grammar has NACs~\cite{Corradini2013}.} This happens because when NACs come into play, there may be situations where a NAC of a rule can be triggered by the cumulative effect of applying two (or more) other rules, while the same rules would not trigger this NAC without the other. This may lead to a situation where conflicts and dependencies
-are not stable under switch. An example is shown in Figure~\ref{ex:process:instability}.
+\newadd{In a grammar whithout NACs, if there is a sequence of graph transformations $t_0\ldots t_n$ where each pair $(t_i,t_{i+1})$ of consecutive transformations are sequentially independent, then it is possible to \emph{switch} the
+order of application for any pair in that sequence an arbitrary number of times and still achieve the same final graph as a result (up to isomorphism)an arbitrary number of timesan arbitrary number of times. This property is called \emph{switch equivalence}~\cite{Corradini2013}.} 
+
+However, the switch equivalence does not always hold when the grammar has NACs. This happens because when NACs come into play, there may be situations where a NAC of a rule can be triggered by the cumulative effect of applying two (or more) other rules, while the same rules would not trigger this NAC without the other. This may lead to a situation where conflicts and dependencies
+are not \emph{stable under switch}, \newadd{which means that conflicts or dependencies that do not occur in a given sequence of transformations can appear if one or more pairs of transformations are switched.} An example is shown in Figure~\ref{ex:process:instability}.
 
 \begin{example}[Instability of Conflicts and Dependencies]\label{ex:process:instability}The rules depicted in Figure~\ref{fig:process:instability} show a situation where the independency between rules is not stable under switch equivalence.
 
   In this example, all rules are independent and also do not conflict with each other in the sense of Definitions~\ref{def:classic-dependency} and~\ref{def:classic-conflict}. Thus, in theory, it should be possible to apply this rules in any order or in parallel. Particularly, it is possible to apply all rules in the order they appear in the figure, i.e. $[p_1, p_2, p_3]$. It is also possible to apply them in the orders $[p_1, p_3, p_2]$, $[p_2, p_1, p_3]$ and $[p_3, p_1, p_2]$. However, the
-  sequences $[p_2, p_3, p_1]$ or $[p_3, p_2, p_1]$ are not possible. This problem arises from the fact that $p_2$ and $p_3$ independently create a piece of the pattern forbidden by the NAC of $p_1$ in a way that, although the effects of each rule by itself does not trigger the NAC of $p_1$, their combined effects do.
+  sequences $[p_2, p_3, p_1]$ or $[p_3, p_2, p_1]$ are not possible. This problem arises from the fact that $p_2$ and $p_3$ independently create a piece of the pattern forbidden by the NAC of $p_1$ in a way that, although the effect of each rule by itself does not trigger the NAC of $p_1$, their combined effects do.
+\end{example}
 
 \begin{figure}[!ht]
   \centering
   \fbox{\includegraphics[scale=0.5]{images/process/instability-example}}
   \caption{Instability of conflicts under shift\\}\label{fig:process:instability}
 \end{figure}
-
-\end{example}
 
 As we are interested in constructing a canonical representation of several possible derivations for a set of rules of a grammar, we will make use of a special type of NACs called \emph{incremental NACs}.
 
@@ -146,7 +144,7 @@ As we are interested in constructing a canonical representation of several possi
 \end{figure}
 \end{example}
 
-At first, it may seem that we are loosing expressive power by restricting the NACs we use in our grammars to incremental NACs only, however ~\cite{Corradini2013} has shown two important results regarding that. First, they showed that incremental NACs are sufficient to model most of real applications using $GTS$s. Second, they presented an algorithm to compile rules with general NACs to rules with incremental NACs only, generating a new $GTS$ that is able to simulate the original one.
+At first, it may seem that we are loosing expressive power by restricting the NACs we use in our grammars to incremental NACs only, however ~\cite{Corradini2013} have shown two important results regarding that. First, they showed that incremental NACs are sufficient to model most of real applications using $GTS$s. Second, they presented an algorithm to compile rules with general NACs to rules with incremental NACs only, generating a new $GTS$ that is able to simulate the original one.
 
 \begin{definition}[Triggering element] Given a rule \graphrule{} with an incremental, non trivially triggered NAC \nac{}, and a monomorphic match \match{}, where there is an injective $q : N \rightarrow G$, therefore $m \not\models NAC(n)$. There is exactly one element that will complete the match towards triggering the NAC, this element is present in the difference between the images of $q$ and $m$.
 
@@ -159,8 +157,15 @@ At first, it may seem that we are loosing expressive power by restricting the NA
 \end{definition}
 
 \begin{example}[Triggering Element]
-Since incremental NACs extend the match by forbidding only one element at a time, this element can be easily identified when looking at the instance graph: it corresponds to the element which is not mapped by the morphism $n$ from the NAC to the instance graph.\tinytodo{Prepare example}
+  Since incremental NACs extend the match by forbidding only one element at a time, this element can be easily identified when looking at the instance graph: \newadd{it corresponds to the only element mapped by the morphism \morph{q}{N}{G} which is not also mapped by \morph{m}{L}{G}. Figure~\ref{fig:process:triggering-element} shows an example. The elements in the instance graph mapped by either $q$ or $m$ are represented by dashed lines. Notice that the only element which is not in the image of
+  both morphisms is $\curvearrowleft_2$, therefore $\curvearrowleft_2$ is the triggering element for this match.}
 \end{example}
+
+\begin{figure}[!ht]
+  \centering
+  \fbox{\includegraphics[scale=0.7]{images/process/triggering-element}}
+  \caption{Triggering Element}\label{fig:process:triggering-element}
+\end{figure}
 
 \begin{definition}[Doubly-Typed Graph Grammars] A \emph{doubly-typed graph grammar} is a tuple $GG = \left(TG^T, I^{TG^T},P \right)$ where $TG^T$ is the double-type graph of the grammar, $I^{TG^T}$ is a doubly-typed graph, called the \emph{initial graph} of the grammar and $P$ is a set of doubly-typed graph rules.
 \end{definition}
