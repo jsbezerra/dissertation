@@ -18,9 +18,9 @@ Designing significant test cases and oracles is a hard and time consuming task, 
 
 These models can be written prior to the software development and testing or extracted from the source code with the use of proper tools and checked against some form of specification. \newadd{There are several models in which this approach can be used, such as graph grammars~\cite{Baldan2004}, B~\cite{Abrial1996}, UML Object Constraint Language (OCL)~\cite{Warmer2003}, VDM~\cite{Jones1990}, Labelled Transition Systems~\cite{Tretmans1996}, CSP~\cite{Nogueira2008}, among others.}
 
-Graph grammars are a suitable formalism to model complex systems in an intuitive and precise manner. They have a graphic notation and a solid formal background.  Using them it is possible not only to simulate the execution of the modelled system, but also analyse several properties about its behaviour, such as termination, concurrency, reachable states, among others~\cite{Ehrig2006}. Furthermore, it is possible for non-specialists in the field to generate graph grammars from a set of textual requirement documents such as use cases, functional specifications and other kinds of guidelines by means of a systematic, computer-aided methodology~\cite{Junior2015,BezerraWEIT2016,Cota2017}.
+Graph grammars are a suitable formalism to model complex systems in an intuitive and precise manner. They have a graphic notation and a solid formal background. \newadd{The states of system are modelled as graphs, while the transitions between different states are modelled as graph transformation rules.} Using them it is possible not only to simulate the execution of the modelled system, but also analyse several properties about its behaviour, such as termination, concurrency, reachable states, among others~\cite{Ehrig2006}. Furthermore, it is possible for non-specialists in the field to generate graph grammars from a set of textual requirement documents such as use cases, functional specifications and other kinds of guidelines by means of a systematic, computer-aided methodology~\cite{Junior2015,BezerraWEIT2016,Cota2017}.
 
-We believe that the use of graph grammars as a model for test case sets and oracles generation may improve the reliability of the testing activity by using the solid formal semantics of the formalism, while requiring little theoretical expertise. The main objective of this thesis can be summarized as follows:
+We believe that the use of graph grammars as a model for test cases and oracles generation may improve the reliability of the testing activity by using the solid formal semantics of the formalism, while requiring little theoretical expertise from the user. The main objective of this thesis can be summarized as follows:
 
 \begin{intuition}
   \center{\textit{Given the graph grammar model of a software system, how can a set of relevant test cases and oracles be generated for the system?}}
@@ -32,7 +32,7 @@ The concepts and ideas developed during this work will also be implemented in Ve
 
 \important{Explain better that we are generating tests for graph grammars: more theory, less software engineering.}
 
-\newadd{The main contributions of this thesis are (1) the development of a strategy for the generation of test cases for graph grammars, which required (2) an extension of the theory of Occurrence Graph Grammar framework to allow the tests generation for complex, realistic systems modelled as graph grammars and (3) the implementation of this strategy in the Verigraph System.}
+\newadd{The main contributions of this thesis are (1) the development of a strategy for the generation of test cases for graph grammars, which required (2) an extension of the Occurrence Graph Grammar framework in order to allow the tests generation for complex, realistic systems modelled as graph grammars. Finally, (3) the implementation of this strategy in the Verigraph System.}
 
 \hfill \break
 \textbf{Structure of the Thesis:}
