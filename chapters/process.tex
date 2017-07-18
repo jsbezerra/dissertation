@@ -99,7 +99,6 @@ A (doubly-typed) match morphism $m^{TG^T} : L^{TG^T} \rightarrow G^{TG^T}$ of a 
 
 \begin{remark}
 We could have defined NACs whose morphisms are doubly-typed graph morphisms (which would then act specifically over doubly-typed graphs), but we will not use this kind of NACs later in our work. Therefore, we will use \emph{single-typed} NACs as the only NAC type in all of our \emph{doubly-typed graph grammars}, and $NAC(n)$ as a synonym of $NAC(n^T)$.
-
 \end{remark}
 
 \newadd{In a grammar whithout NACs, if there is a sequence of graph transformations $t_0\ldots t_n$ where each pair $(t_i,t_{i+1})$ of consecutive transformations are sequentially independent, then it is possible to \emph{switch} the
@@ -158,7 +157,7 @@ At first, it may seem that we are loosing expressive power by restricting the NA
 
 \begin{example}[Triggering Element]
   Since incremental NACs extend the match by forbidding only one element at a time, this element can be easily identified when looking at the instance graph: \newadd{it corresponds to the only element mapped by the morphism \morph{q}{N}{G} which is not also mapped by \morph{m}{L}{G}. Figure~\ref{fig:process:triggering-element} shows an example. The elements in the instance graph mapped by either $q$ or $m$ are represented by dashed lines. Notice that the only element which is not in the image of
-  both morphisms is $\curvearrowleft_2$, therefore $\curvearrowleft_2$ is the triggering element for this match.}
+  both morphisms is $\curvearrowleft_2$, therefore $\curvearrowleft_2$ is the triggering element of the NAC for this match.}
 \end{example}
 
 \begin{figure}[!ht]
