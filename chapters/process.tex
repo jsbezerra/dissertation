@@ -385,6 +385,9 @@ The problem here is that we can not just add the conflicts and dependencies caus
     \end{itemize}
 \end{definition}}
 
+\newadd{\begin{remark}[Abstract Conflicts and Dependency Format] Given a strongly safe graph grammar \doublyTypedGraphGrammarCore{} and distinct actions $a_i,a_j,a_k \in P$, an abstract conflict (resp. dependency) has the format $a_i \not\in [a_j \ldots a_k]$, and translates to ``the action $a_i$ can only be applied before $a_j$ or after $a_k$, but never in between their applications''. This situation models the following configuration of actions: $a_j$ creates an element $x$ which triggers a NAC of $a_i$, while $a_k$ deletes this same element. Therefore, $a_i$ can not be applied while $x$ exists.
+\end{remark}}
+
 \begin{example}[Interaction between existential relation and NACs]
 Let $a_1, a_2, a_3$ be three actions of the same strongly safe grammar. Suppose that $a_1$ creates elements used by $a_2$ and $a_2$ creates elements used by $a_3$, therefore by the existential relation we know that $a_1 \leq_e a_2 \leq_e a_3$. Now suppose that when $a_2$ is applied, it creates an element that would be forbidden by a NAC of $a_1$ and also that $a_3$ deletes this element. Following the classical notions of dependency and conflict with NACs, as shown in
   definitions~\ref{def:classic-dependency} and~\ref{def:classic-conflict}, $a_2$ would cause a (potential) produce-forbid conflict on $a_1$ $(a_1 <_{pf} a_2)$, while $a_1$ would be (potentially) dependent by delete-forbid on $a_3$ $(a_3 <_{df} a_1)$. By adding these produce-forbid and delete-forbid directly to the existential relation we would have the situation depicted in Figure~\ref{fig:process:order:occurrence-relation-fail}. It is easy to see that the resulting relation is not a partial order, therefore there can be no total ordering for this set of actions.
@@ -476,10 +479,10 @@ Now, let $a_3$ be related to $a_2$. In this configuration, we have that $a_2$ wo
 
   Similarly to the dependency situation, the produce-forbid conflict can have different meanings according to the existential relation of its grammar. Nonetheless, once we are dealing with strongly safe grammars and this element is created by one of the actions involved in the conflict, we do not have to worry about the initial graph. Thus, we need to demonstrate that:
 
-\begin{thm} The definition~\ref{def:produce-forbid-strong} captures all cases of a \emph{produce-forbid} in strongly safe graph grammars.
-\end{thm}
+\newadd{\begin{thm}  For each potential produce-forbid in a strongly safe graph grammar, definition~\ref{def:produce-forbid-strong} captures all possible types this conflict may assume.
+\end{thm}}
 
-\begin{proof} Given actions $a_1,a_2 \in P$ in \emph{produce-forbid} and the element $x \in C^T$ which is the triggering element of this conflict, we may have that:
+\begin{proof} Given actions $a_1,a_2 \in P$ in a potential \emph{produce-forbid} conflict and an element $x \in C^T$ which is the triggering element of this conflict, we may have that:
 \hfill
 
 \begin{description}[style=nextline,leftmargin=*]
@@ -536,9 +539,9 @@ Now, let $a_3$ be related to $a_2$. In this configuration, we have that $a_2$ wo
 
   Notice that, despite of the fact that $a_2$ deletes $\Circle_1$, which triggers the NAC of $a_3$, $a_2 <_{df} a_3$ is not a delete-forbid dependency because $a_2$ also creates $\Circle_2$, an element that still triggers the same NAC. Therefore the transformations when searching for the dependency between $a_2$ to $a_3$ are not valid.
 
-  None of these conflicts or dependencies is \emph{concrete}, depending on how the orders are applied according to the existential relation and unconditional occurrence relation to exist.
+  None of these conflicts or dependencies are \emph{concrete}, depending on how the orders are applied according to the existential relation and unconditional occurrence relation to exist.
   
-  This situation is summarized in Figure~\ref{fig:process:order:cycle}, where the existential relation, the conflicts and dependencies are represented (without the explicit representation of transitivity and reflexivity). At first, if we are consider all the relations \textbf{as they are calculated}, there is no possible sequentialization for this actions, denoted by the cycle in the ordering graph.
+  This situation is summarized in Figure~\ref{fig:process:order:cycle}, where the existential relation, the conflicts and dependencies are represented (without the explicit representation of transitivity and reflexivity). At first, if we are to consider all the relations \textbf{as they are calculated}, there is no possible sequentialization for this actions, denoted by the cycle in the ordering graph.
 
 \begin{figure}[!ht]
   \centering
@@ -546,20 +549,14 @@ Now, let $a_3$ be related to $a_2$. In this configuration, we have that $a_2$ wo
   \caption{Cycle due to conditional conflicts and dependencies}\label{fig:process:order:cycle}
 \end{figure}
 
-  Regarding the element $\Circle_1$, we have an abstract produce-forbid conflict as $a_3$ can be applied before $a_1$ creates it or after $a_2$ deletes it. Thus it is possible to apply $a_3$ as long as $a_3 \not\in [a_1\ldots a_2]$. %\mbox{$[a_3 <_{pf} a_1$ $|$ $a_2 < a_3]$}.
+  Regarding the element $\Circle_1$, we have an abstract produce-forbid conflict as $a_3$ can be applied before $a_1$ creates it or after $a_2$ deletes it. Thus it is possible to apply $a_3$ as long as $a_3 \not\in [a_1\ldots a_2]$. As for the element $\Circle_2$, we have an abstract produce-forbid conflict \mbox{$[a_3 <_{pf} a_2$ $|$ $a_4 < a_3]$} and an abstract delete-forbid dependency \mbox{$[a_3 < a_2$ $|$ $a_4 <_{df} a_3]$}. Since the produce-forbid and the delete-forbid act on the same element, we can simply say that \mbox{$[a_3 <_{pf} a_2$ $|$ $a_4 <_{df} a_3]$}. In this configuration, $a_3$ can be applied as long as $a_3 \not\in [a_2\ldots a_4]$.
 
-  As for the element $\Circle_2$, we have an abstract produce-forbid conflict \mbox{$[a_3 <_{pf} a_2$ $|$ $a_4 < a_3]$} and an abstract delete-forbid dependency \mbox{$[a_3 < a_2$ $|$ $a_4 <_{df} a_3]$}. Since the produce-forbid and the delete-forbid act on the same element, we can simply say that \mbox{$[a_3 <_{pf} a_2$ $|$ $a_4 <_{df} a_3]$}. In this configuration, $a_3$ can be applied as long as $a_3 \not\in [a_2\ldots a_4]$.
-
-  In fact, we have that this particular grammar can be executed in any total ordering of its existential relation $a_1 \leq_e a_2, a_2 \leq_e a_4, a_1 \leq_e a_4, a_3 \leq_e a_3$ that also respects the \emph{restrictions} $a_3 \not\in [a_1\ldots a_2]$ and $a_3 \not\in [a_2\ldots a_4]$.
-
-  There exist two such sequentializations of this existential relation: $[a_3, a_1, a_2, a_4]$ and $[a_1,a_2,a_4,a_3]$.
+  In fact, we have that this particular grammar can be executed in any total ordering of its existential relation $a_1 \leq_e a_2, a_2 \leq_e a_4, a_1 \leq_e a_4, a_3 \leq_e a_3$ that also respects the \emph{restrictions} $a_3 \not\in [a_1\ldots a_2]$ and $a_3 \not\in [a_2\ldots a_4]$. There exist two such sequentializations of this existential relation: $[a_3, a_1, a_2, a_4]$ and $[a_1,a_2,a_4,a_3]$.
 \end{example}
 
-\begin{remark}[Abstract Dependencies and Conflicts] The existence of an abstract produce-forbid conflict caused by an element $x$ is conditioned to the existence of an action which deletes $x$.
+\begin{remark}[Abstract Dependencies and Conflicts] The existence of an abstract produce-forbid conflict, triggered by an element $x$ is conditioned to the existence of an action which deletes $x$. Given an action $a_1$ which creates $x$, an action $a_2$ whose NAC forbids $x$ and provided a configuration where $a_1$ was applied before $a_2$, we have that $a_2$ can be applied only after an action $a_3$ which deletes $x$ has been applied.
 
-  Given an action $a_1$ which creates $x$, an action $a_2$ whose NAC forbids $x$ and provided a configuration where $a_1$ was applied before $a_2$, we have that $a_2$ can be applied only after an action $a_3$ which deletes $x$ has been applied.
-
-  However, $a_3$ may also cause a new produce-forbid conflict on $a_2$ by creating a new element $y$ which is also forbidden by a NAC of $a_2$, on which case $a_2$ can only be applied of there is another action $a_4$ which ``turns off'' the conflict caused by $a_3$.
+  However, $a_3$ may also cause a new produce-forbid conflict on $a_2$ by creating a new element $y$ which is also forbidden by a NAC of $a_2$, on which case $a_2$ can only be applied if there is another action $a_4$ which ``turns off'' the conflict caused by $a_3$ by deleting $y$.
 
   In general, for each abstract produce-forbid conflict $a_2 <_{pf} a_1$ caused by an element $x$, we have that $a_2$ must be successfully applied before $a_1$ or after an action $a_{j}$ where $a_i$ deletes $x$ and $a_i \leq a_j$.
 
