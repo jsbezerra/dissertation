@@ -51,6 +51,7 @@
 
 \newcommand{\critical}[1]{\todo[color=red]{\textbf{Critical:} #1}}
 \newcommand{\important}[1]{\textcolor{red}{\textbf{\texttt{#1}}}}
+%\newcommand{\newadd}[1]{\uline{#1}}
 \newcommand{\newadd}[1]{\textcolor{blue}{#1}}
 
 \theoremstyle{plain}
@@ -96,16 +97,18 @@
 \newcommand{\doublyTypedRule}{\mbox{$p^{TG^T} = \left(L^{TG^T} \leftarrow K^{TG^T} \rightarrow R^{TG^T}\right)$}}
 \newcommand{\inverseDoublyTypedRule}{\mbox{$\parens{p^{TG^T}}^{-1} = \left(R^{TG^T} \leftarrow K^{TG^T} \rightarrow L^{TG^T}\right)$}}
 \newcommand{\doublyTypedGraphGrammar}{\mbox{$GG = \left(TG^T, I^{TG^T},P \right)$}}
-\newcommand{\doublyTypedGraphGrammarCore}{\mbox{$GG = \left(C^T, I^{C^T},P \right)$}}
-\newcommand{\coreGraph}{$C^T$}
+\newcommand{\doublyTypedGraphGrammarCore}{\mbox{\ensuremath{GG = \left(C^T, I^{C^T},P \right)}}}
+\newcommand{\coreGraph}{\ensuremath{C^T}}
 \newcommand{\action}{\mbox{$a = \left(L_a \xleftarrow{l} K_a \xrightarrow{r} R_a, L_a \xrightarrow{n_i} [N_i]\right)$}}
+\newcommand{\initialGraph}{\mbox{\ensuremath{I^{\coreGraph}}}}
 
 %% Category Constructions
-\newcommand{\cat}[1]{\mbox{$\mathbf{#1}$}}
+\newcommand{\cat}[1]{\mbox{\ensuremath{\mathbf{#1}}}}
 \newcommand{\typedGraphCategory}{\cat{TGraph_T}}
 \newcommand{\doublyTypedGraphCategory}{\cat{DTGraph_{TG^T}}}
 
 \newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\hide}[1]{}
 
 \newcounter{doubly-typed-grammar-counter}
 \addtocounter{doubly-typed-grammar-counter}{0}
