@@ -374,7 +374,19 @@ Moreover, the causal relation must always be respected whenever we try to find a
 
 The problem here is that we can not just add the conflicts and dependencies caused by NACs directly into the causal relation because they are potential. In other words: according to the total order of application chosen among the possibilities, a conflict (dependency) may or may not happen. \newadd{Therefore, we need a way to classify conflicts (resp. dependencies) in order to know when and how they affect the possibilities of the ordering.}
 
-  \begin{definition}[\newadd{Conflict and Dependency Characterization}] \newadd{Given a strongly safe graph grammar \doublyTypedGraphGrammarCore{}, every conflict (resp. dependency) induced by NACs between two distinct actions $a_i, a_j \in P$ is said to be \emph{potential}, as we initially do not know whether this particular situation will occur during an execution of the underlying grammar. Each potential conflict (resp. dependency) can be later characterized according to how it relates to the
+\begin{example}[Interaction between causal relation and NACs]
+Let $a_1, a_2, a_3$ be three actions of the same strongly safe grammar. Suppose that $a_1$ creates elements used by $a_2$ and $a_2$ creates elements used by $a_3$, therefore by the causal relation we know that $a_1 \leq_c a_2 \leq_c a_3$. Now suppose that when $a_2$ is applied, it creates an element that would be forbidden by a NAC of $a_1$ and also that $a_3$ deletes this element. Following the classical notions of dependency and conflict with NACs, as shown in
+  definitions~\ref{def:classic-dependency} and~\ref{def:classic-conflict}, $a_2$ would cause a (potential) produce-forbid conflict on $a_1$, thus $a_1$ should be applied before $a_2$ $(a_1 <_{pf} a_2)$. Likewise, $a_1$ would be (potentially) dependent by delete-forbid on $a_3$, consequently $a_3$ should be applied before $a_1$ $(a_3 <_{df} a_1)$. By adding these produce-forbid and delete-forbid directly into the causal relation we would have the situation depicted in Figure~\ref{fig:process:order:occurrence-relation-fail}. It is easy to see that the resulting relation is not a partial order, therefore there can be no total ordering for this set of actions.
+\begin{figure}[!ht]
+  \centering
+  \fbox{\includegraphics[scale=1]{images/process/order/occurrence-relation-fail}}
+  \caption{Graph of relations}\label{fig:process:order:occurrence-relation-fail}
+\end{figure}
+
+However, looking at the causal relation, we can affirm that this configuration ensures that neither the conflict nor the dependency exist in any concrete execution of this grammar. For the conflict, this happens because $a_2$ can only happen after $a_1$, thus the element forbidden by the NAC of $a_1$ can only exist after $a_1$ itself was already applied. Likewise, the dependency that is identified because $a_3$ deletes the element that would be forbidden by the NAC of $a_1$ does not exist either.
+\end{example}
+
+\begin{definition}[\newadd{Conflict and Dependency Characterization}] \newadd{Given a strongly safe graph grammar \doublyTypedGraphGrammarCore{}, every conflict (resp. dependency) induced by NACs between two distinct actions $a_i, a_j \in P$ is said to be \emph{potential}, as we initially do not know whether this particular situation will occur during an execution of the underlying grammar. Each potential conflict (resp. dependency) can be later characterized according to how it relates to the
     overall grammar execution.}
     
     \newadd{Given a potential conflict (resp. dependency) situation in a strongly safe grammar, we say that it is:
@@ -388,53 +400,42 @@ The problem here is that we can not just add the conflicts and dependencies caus
 \newadd{\begin{notation}[Abstract Conflicts and Dependency Format] Given a strongly safe graph grammar \doublyTypedGraphGrammarCore{} and distinct actions $a_i,a_j,a_k \in P$, an abstract conflict (resp. dependency) has the format $a_i \not\in [a_j \ldots a_k]$, and translates to ``the action $a_i$ can only be applied before $a_j$ or after $a_k$, but never in between their applications''. This situation models the following configuration of actions: $a_j$ creates an element $x$ which triggers a NAC of $a_i$, while $a_k$ deletes this same element. Therefore, $a_i$ can not be applied while $x$ exists.
 \end{notation}}
 
-\begin{example}[Interaction between causal relation and NACs]
-Let $a_1, a_2, a_3$ be three actions of the same strongly safe grammar. Suppose that $a_1$ creates elements used by $a_2$ and $a_2$ creates elements used by $a_3$, therefore by the causal relation we know that $a_1 \leq_c a_2 \leq_c a_3$. Now suppose that when $a_2$ is applied, it creates an element that would be forbidden by a NAC of $a_1$ and also that $a_3$ deletes this element. Following the classical notions of dependency and conflict with NACs, as shown in
-  definitions~\ref{def:classic-dependency} and~\ref{def:classic-conflict}, $a_2$ would cause a (potential) produce-forbid conflict on $a_1$ $(a_1 <_{pf} a_2)$, while $a_1$ would be (potentially) dependent by delete-forbid on $a_3$ $(a_3 <_{df} a_1)$. By adding these produce-forbid and delete-forbid directly to the causal relation we would have the situation depicted in Figure~\ref{fig:process:order:occurrence-relation-fail}. It is easy to see that the resulting relation is not a partial order, therefore there can be no total ordering for this set of actions.
-\begin{figure}[!ht]
-  \centering
-  \fbox{\includegraphics[scale=1]{images/process/order/occurrence-relation-fail}}
-  \caption{Graph of relations}\label{fig:process:order:occurrence-relation-fail}
-\end{figure}
-
-However, looking at the causal relation, we can affirm that this configuration ensures that neither the conflict nor the dependency exist in any concrete execution of this grammar. For the conflict, this happens because $a_2$ can only happen after $a_1$, thus the element forbidden by the NAC of $a_1$ can only exist after $a_1$ itself was already applied. Likewise, the dependency that is identified because $a_3$ deletes the element that would be forbidden by the NAC of $a_1$ does not exist either.
-\end{example}
 
 We already know that at least the causal relation must be a partial order in order to be possible to apply all the actions of a grammar. Nevertheless, the following problem remains to be solved:
 
 \begin{intuition}
-  Given a strongly safe grammar \doublyTypedGraphGrammarCore{} with at least two actions $a_1, a_2 \in P$ in a potential delete-forbid or a potential produce-forbid situation, under which circumstances this dependency or conflict exists and must be considered in the ordering of actions application?
+  Given a strongly safe grammar \doublyTypedGraphGrammarCore{} with at least two actions $a_1, a_2 \in P$ in a potential delete-forbid or a potential produce-forbid situation, under which circumstances this dependency or conflict exists and must be considered in the actions application ordering?
 \end{intuition}
 
-In the following, we categorize this conflicts and dependencies according to their triggering elements and their pertinence into the causal relation in order to solve this problem.
+In the following, we categorize this conflicts and dependencies according to their triggering elements and pertinence of these elements into the causal relation in order to address this problem.
 
 \begin{definition}[Delete-Forbid Relation in Strongly Safe Graph Grammars]\label{def:delete-forbid-strong} Let \doublyTypedGraphGrammarCore{} be a strongly-safe graph grammar, where $P$ is a set of actions with incremental, non-trivially triggered NACs only.
 
 \diagram{
   \mathbf{a_1} & & N^{-1}_1 & & N_2\ar@{.>}@/_1.1pc/[ddllll]_<<<<{q} & & \mathbf{a_2}\\
   L_1\ar[d] & K_1\ar[d]\ar[l]\ar[r] & R_1\ar[u]^{n_1}\ar[dr]_{post_1} & & L_2\ar[u]_{n_2}\ar@{.>}@/_1.1pc/[dlll]_<<<<{h_{21}}\ar[dl]^{pre_2} & K_2\ar[l]\ar[r]\ar[d] & R_2\\
-     C^T_{|L_1D_1} & D_1\ar[rr]_{d_1}\ar[l]^{e_1} & & C^T_{|R_1L_2} & & D_2\ar[ll] &}
+     H_1 & D_1\ar[rr]_{d_1}\ar[l]^{e_1} & & C^T_{|R_1L_2} & & D_2\ar[ll] &}
 \hfill
 
-  Let $a_1, a_2 \in P$ be in a potential delete-forbid dependency according to the diagram above, where $a_1$ deletes from graph $C^T_{|L_1D_1}$ an element $x \in N($\coreGraph$) \cup E($\coreGraph$)$ which is the triggering element of a NAC $N_2$ of $a_2$ for the extended match $e_1 \circ h_{21}$. This delete-forbid dependency is:
+  Let $a_1, a_2 \in P$ be in a potential delete-forbid dependency according to the diagram above, where $a_1$ deletes from graph $H_1$ an element $x \in N($\coreGraph$) \cup E($\coreGraph$)$ which is the triggering element of a NAC $N_2$ of $a_2$ for the extended match $e_1 \circ h_{21}$. This delete-forbid dependency is:
 
 \begin{itemize}
-  \item \emph{concrete}: iff $(x \leq_c a_2) \lor (x \in I^{C^T})$;
-  \item \emph{abstract}: iff $(\exists a_3 \in P \mid x \in R_3 - K_3)$ $\land$ $(x \not\leq_c a_2)$ $\land$ $(a_2 \not\leq_c x)$;%\tinytodo{ $(x,a_2)$ or $(a_3, a_2)$?}
+  \item \emph{concrete}: iff $(x \leq_c a_2) \lor (x \in I^{C^T})$, therefore we have $a_1 <_{df} a_2$
+  \item \emph{abstract}: iff $(\exists a_3 \in P \mid x \in R_3 - K_3)$ $\land$ $(x \not\leq_c a_2)$ $\land$ $(a_2 \not\leq_c x)$, thus $a_2 \not\in [a_3 \ldots a_1]$;
   \item \emph{non existent}: otherwise.
 \end{itemize}
 
-  Two elements $x, y \in N(C^T) \cup E(C^T)$ are in a delete-forbid dependency if there are actions $a_1,a_2$ such that (1) $a_1 <_{df} a_2$ and (2) $a_1$ creates $x$ and $a_2$ creates $y$. In this case use say that $x <_{df} y$.
+\hide{Two elements $x, y \in N(C^T) \cup E(C^T)$ are in a delete-forbid dependency if there are actions $a_1,a_2$ such that (1) $a_1 <_{df} a_2$ and (2) $a_1$ creates $x$ and $a_2$ creates $y$. In this case use say that $x <_{df} y$.
 
-  The delete-forbid between two elements has the same quality (concrete, abstract, non existent) as the one between the actions involved in this dependency.
+  The delete-forbid between two elements has the same quality (concrete, abstract, non existent) as the one between the actions involved in this dependency.}
 \end{definition}
 
-The delete-forbid dependency found in the diagram can have different classifications according to the causal relation of its underlying strongly safe graph grammar and also to the existence (or not) of the triggering element in the initial graph. Thus, we need to demonstrate that
+\newadd{According to our classification, we have that if a delete-forbid dependency is concrete, i.e. $a_i <_{df} a_j$, then we can only consider total orderings of $\leq_c$ where $a_i < a_j$. For the abstract case, i.e. $a_i \not\in [a_j \ldots a_k]$, we can only consider total orderings of $\leq_c$ where $a_i < a_j$ or $a_k < a_j$. If it is non existent there is no need to impose any new restrictions over the ordering of $\leq_c$. Thus, we need to demonstrate that:}
 
-\newadd{\begin{thm} For each potential \emph{delete-forbid} in a strongly safe graph grammar, definition~\ref{def:delete-forbid-strong} captures all possible types this dependency may assume.
+\newadd{\begin{thm} For each potential \emph{delete-forbid} in a strongly safe graph grammar, definition~\ref{def:delete-forbid-strong} correctly classifies this dependency.
 \end{thm}}
 
-\begin{proof} Given actions $a_1,a_2 \in P$ in a potential \emph{delete-forbid} and the element $x \in C^T$ which is the triggering element of this dependency, the following situations are possible:
+\begin{proof} Given actions $a_1,a_2 \in P$ in a potential \emph{delete-forbid} where $a_1$ deletes an element $x \in C^T$ which is also the triggering element of a NAC in $a_2$. The following situations are possible:
 \hfill
 \begin{description}[style=nextline,leftmargin=*]
 
@@ -446,17 +447,15 @@ Let $x$ be not created by any action in $P$, meaning that $x$ is present on the 
     On the other hand, if $x \leq_c a_2$, it means that $x$ must exist at some moment before $a_2$ is applied. In this configuration, we have that $x$ must be deleted in order for $a_2$ to be applied. Since $a_1$ is the only action that deletes $x$ (otherwise the underlying grammar would not be a strongly safe grammar) this delete-forbid is \emph{concrete} and we have that $a_1 <_{df} a_2$.
 
 \item [Triggering element is not related to the action:]
-  Let $x$ be not related to $a_2$, but created by a third action $a_3 \in P$ (notice that in this configuration we have that $a_3 <_{e} a_1$).
+  Let $x$ be not related to $a_2$, but created by a third action $a_3 \in P$ (notice that in this configuration we have that $a_3 <_{c} a_1$).
 
-    Let $a_3$ be not related to $a_2$, in which case we have that $a_1$ and $a_2$ \emph{would be} in a concrete delete-forbid dependency if $a_3$ was applied before $a_2$. On the other hand, the same dependency \emph{would be} non existent if $a_3$ was applied after $a_2$. We name this situation an \emph{abstract} produce-forbid dependency and represent it by $[a_1 <_{df} a_2$ | $a_2 < a_3]$ or $a_2 \not\in [a_3 \ldots a_1]$.
+    If $a_3$ be not related to $a_2$, in which case we have that $a_1$ and $a_2$ \emph{would be} in a concrete delete-forbid dependency if $a_3$ was applied before $a_2$. On the other hand, the same dependency \emph{would be} non existent if $a_3$ was applied after $a_2$. This situation an \emph{abstract} produce-forbid dependency as we have that either $a_1 <_{df} a_2$ or $a_2 < a_3$ are possible. Therefore $a_2 \not\in [a_3 \ldots a_1]$.
 
-%    in which case we have an \emph{abstract} delete-forbid $a_1 <_{df} a_2$ conditioned to $a_3$: in a configuration where $a_3$ is applied before $a_2$ the produce-forbid exists, otherwise it does not. We will represent this \emph{abstract delete-forbid dependency} as .
-
-Now, let $a_3$ be related to $a_2$. In this configuration, we have that $a_2$ would be related to $x$, as $a_3$ creates $x$, which corresponds to our second case.
+  Finally, if $a_3$ is related to $a_2$, then $a_2$ is related to $x$, as $a_3$ creates $x$, which corresponds to our second case.
 \end{description}
 \end{proof}
 
-\begin{definition}[Produce-Forbid in Strongly Safe Graph Grammars]\label{def:produce-forbid-strong} Given \doublyTypedGraphGrammarCore{} a strongly safe graph grammar, where $P$ is a set of actions with incremental, non-trivially triggered NACs only.
+\begin{definition}[Produce-Forbid Relation in Strongly Safe Graph Grammars]\label{def:produce-forbid-strong} Given \doublyTypedGraphGrammarCore{} a strongly safe graph grammar, where $P$ is a set of actions with incremental, non-trivially triggered NACs only.
 
 \diagram{
   \mathbf{a_1^{-1}}& & N_1 & & N_2\ar@{.>}@/_1.1pc/[ddllll]_<<<<{q} & & \mathbf{a_2}\\
@@ -563,7 +562,7 @@ Now, let $a_3$ be related to $a_2$. In this configuration, we have that $a_2$ wo
   Analogously, for each abstract delete-forbid conflict $a_1 <_{df} a_2$ caused by an element $x$, we have that $a_2$ must be successfully applied after $a_1$ or before an action $a_j$ where $a_i$ creates $x$ and $a_j \leq a_i$.
 \end{remark}
 
-\begin{definition}[Occurence Relation] Given a strongly safe grammar \doublyTypedGraphGrammarCore{}, let $[\leq_{df}]$ be the set of all its \emph{concrete} delete-forbids and $[\leq_{pf}]$ be the set of all its \emph{concrete} produce-forbids. Then, its occurrence relation $\leq_o$ of $(P \cup N(C^T) \cup E(C^T))$ is defined as the transitive and reflexive closure of \mbox{$\leq_{e}$ $\cup$ $[\leq_{df}]$ $\cup$ $[\leq_{pf}]$}.
+\begin{definition}[Occurence Relation] Given a strongly safe grammar \doublyTypedGraphGrammarCore{}, let $[\leq_{df}]$ be the set of all its \emph{concrete} delete-forbids and $[\leq_{pf}]$ be the set of all its \emph{concrete} produce-forbids. Then, its occurrence relation $\leq_o$ of $(P \cup N(C^T) \cup E(C^T))$ is defined as the transitive and reflexive closure of \mbox{$\leq_{c}$ $\cup$ $[\leq_{df}]$ $\cup$ $[\leq_{pf}]$}.
 \end{definition}
 
 \begin{definition}[Occurence Relation Restrictions] Given a strongly safe grammar \doublyTypedGraphGrammarCore{}, its \emph{occurrence relation restrictions} is the set $R$ containing all its abstract produce-forbid conflicts and delete-forbid dependencies.
