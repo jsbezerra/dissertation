@@ -101,13 +101,13 @@ A (doubly-typed) match morphism $m^{TG^T} : L^{TG^T} \rightarrow G^{TG^T}$ of a 
 We could have defined NACs whose morphisms are doubly-typed graph morphisms (which would then act specifically over doubly-typed graphs), but we will not use this kind of NACs later in our work. Therefore, we will use \emph{single-typed} NACs as the only NAC type in all of our \emph{doubly-typed graph grammars}, and $NAC(n)$ as a synonym of $NAC(n^T)$.
 \end{remark}
 
-\newadd{In a grammar whithout NACs, if there is a sequence of graph transformations $t_0\ldots t_n$ where each pair $(t_i,t_{i+1})$ of consecutive transformations are sequentially independent, then it is possible to \emph{switch} the
-order of application for any pair in that sequence an arbitrary number of times and still achieve the same final graph as a result (up to isomorphism)an arbitrary number of timesan arbitrary number of times. This property is called \emph{switch equivalence}~\cite{Corradini2013}.} 
+\newadd{In a grammar whithout NACs, if there is a sequence of graph transformations $t_0\ldots t_n$ where each pair $(t_i,t_{i+1})$ of consecutive transformations is sequentially independent, then it is possible to \emph{switch} the
+order of application for any pair in that sequence an arbitrary number of times and still achieve the same final graph as a result (up to isomorphism). This property is called \emph{switch equivalence}~\cite{Corradini2013}.}
 
 However, the switch equivalence does not always hold when the grammar has NACs. This happens because when NACs come into play, there may be situations where a NAC of a rule can be triggered by the cumulative effect of applying two (or more) other rules, while the same rules would not trigger this NAC without the other. This may lead to a situation where conflicts and dependencies
 are not \emph{stable under switch}, \newadd{which means that conflicts or dependencies that do not occur in a given sequence of transformations can appear if one or more pairs of transformations are switched.} An example is shown in Figure~\ref{ex:process:instability}.
 
-\begin{example}[Instability of Conflicts and Dependencies]\label{ex:process:instability}The rules depicted in Figure~\ref{fig:process:instability} show a situation where the independency between rules is not stable under switch equivalence.
+\begin{example}[Switch Equivalence]\label{ex:process:instability}The rules depicted in Figure~\ref{fig:process:instability} show a situation where the independency between rules is not stable under switch equivalence.
 
   In this example, all rules are independent and also do not conflict with each other in the sense of Definitions~\ref{def:classic-dependency} and~\ref{def:classic-conflict}. Thus, in theory, it should be possible to apply this rules in any order or in parallel. Particularly, it is possible to apply all rules in the order they appear in the figure, i.e. $[p_1, p_2, p_3]$. It is also possible to apply them in the orders $[p_1, p_3, p_2]$, $[p_2, p_1, p_3]$ and $[p_3, p_1, p_2]$. However, the
   sequences $[p_2, p_3, p_1]$ or $[p_3, p_2, p_1]$ are not possible. This problem arises from the fact that $p_2$ and $p_3$ independently create a piece of the pattern forbidden by the NAC of $p_1$ in a way that, although the effect of each rule by itself does not trigger the NAC of $p_1$, their combined effects do.
@@ -156,7 +156,7 @@ At first, it may seem that we are loosing expressive power by restricting the NA
 \end{definition}
 
 \begin{example}[Triggering Element]
-  Since incremental NACs extend the match by forbidding only one element at a time, this element can be easily identified when looking at the instance graph: \newadd{it corresponds to the only element mapped by the morphism \morph{q}{N}{G} which is not also mapped by \morph{m}{L}{G}. Figure~\ref{fig:process:triggering-element} shows an example. The elements in the instance graph mapped by either $q$ or $m$ are represented by dashed lines. Notice that the only element which is not in the image of
+  Since incremental NACs extend the match by forbidding only one element at a time, this element can be easily identified when looking at the instance graph: \newadd{it corresponds to the solely element mapped by the morphism \morph{q}{N}{G} which is not also mapped by \morph{m}{L}{G}. Figure~\ref{fig:process:triggering-element} shows an example. The elements in the instance graph mapped by either $q$ or $m$ are represented by dashed lines. Notice that the only element which is not in the image of
   both morphisms is $\curvearrowleft_2$, therefore $\curvearrowleft_2$ is the triggering element of the NAC for this match.}
 \end{example}
 
@@ -192,7 +192,7 @@ At first, it may seem that we are loosing expressive power by restricting the NA
 \end{definition}
 
 The idea is that each element within a \emph{core graph} has a unique origin. At the same time, the \emph{core graph} contains all elements necessary (created, deleted and preserved) by all rules in its underlying grammar. \newadd{In~\cite{Ribeiro1996} the second condition is not used, which has the effect of including non-deterministic executions of a grammar into the framework of the occurrence graph grammars. In our work, this will not be used, therefore we will work with deterministic
-occurrence graph grammars.} \important{improve}
+occurrence graph grammars.} \important{improve, maybe some explanation about deterministic and non-deterministic grammars should appear at the beggining of the chapter}
 
 \begin{example}[Doubly-Typed Graph Grammar and Core Graph Example] \mbox{Figure~\ref{fig:process:core-graph:counter-example}} shows a doubly-typed graph grammar, whose double-type is not a core graph. That happens because $\Square_2$ is created by both rules $p_1$ and $p_2$, as well as $\Circle_1$ is deleted by both $p_2$ and $p_3$.
 
@@ -228,22 +228,22 @@ occurrence graph grammars.} \important{improve}
 When dealing with actions, we will use a slightly different interpretation for the graph transformations: 
   
 \begin{itemize} 
-  \item Actions are always applied over the core graph: the match of an action is equal to its pre-condition $pre_a : L \rightarrow C^T$, as well as the comatch is equal to its post-condition $post_a : R \rightarrow C^T$.
+  \item Isolated actions are always applied over the core graph: the match of an action is equal to its pre-condition $pre_a : L \rightarrow C^T_{L_a}$, as well as the comatch is equal to its post-condition $post_a : R \rightarrow C^T_{R_a}$.
 
-  \item Given an action \action{} with NACs and its application over the core graph, we restrict the search for the injective morphism $q : N \rightarrow C^T$ to the image of the match $q : N \rightarrow C^T_{|L_a}$ (comatch $q : N \rightarrow C^T_{|R_a}$) rather than the entire core graph. Similarly, when searching for conflicts or dependencies within two actions $a_1, a_2$ with NACs, the test of NAC satisfiability performed on the overlapping between the actions is restricted to the joint image of the respective morphisms in the core graph.
+  \item \newadd{When searching for conflicts (resp. dependencies) between two actions, the overlapping between them is the restricted image of their matches $E = C^T_{|L_1L_2}$ (resp. comatch and match $E = C^T_{|R_1L_2}$). The derived graphs are calculated accordingly when the DPO transformations exist, i.e. \mbox{$E \xRightarrow{a_1} H_1$} (resp. \mbox{$E \xRightarrow{a^{-1}_1} H_1$}), \mbox{$E \xRightarrow{a_2} H_2$}. Notice that, as the transformations are always concrete regarding the core
+    graph, we have $H_1 \xhookrightarrow{} C^T, H_2 \xhookrightarrow{} C^T$.}
+
+  \item \newadd{When searching for conflicts (resp. dependencies) between two actions $a_1,a_2$ with NACs, we check the NAC satisfiability only in the overlapping and the derived graphs rather than the entire core graph.}
 \end{itemize}
-
-  \important{review these two following paragraph, leila did not understand:}
-
-  \important{also, review the nac application, it may only make sense for conflicts / dependencies, not for an isolated action}
-  
-  \uline{The ``restricted to the image'' search is meant to avoid the triggering of NACs by elements that are present in the core graph, therefore present in the match/comatch, but that do not exist when looking only at the actions interacting at the moment. It also avoids the dangling condition in the core graph out of the scope of the actions.}
-  
-  \uline{This restriction together with the use of incremental NACs allow us to locally compute the conflicts and dependencies for each pair of actions, without having to be concerned about global effects of other actions coming into play.}
-
-
-
 \end{definition}
+
+  \newadd{The restriction of the actions overlappings to the images of their matches (resp. comatch and match) considers only the local effects of these actions. Thus resulting in two properties of our interest: (1) We avoid dangling conditions with core graph edges that do not directly participate in the interaction of these actions. Similarly, (2) the NACs of these actions are not triggered with elements that, in despite of being present in the core graph, do not directly participate in
+  the interaction of these two actions.}
+  
+  \newadd{These restrictions, together with the use of incremental NACs, will allow us to locally compute the conflicts and dependencies for each pair of actions, avoiding to deal with global effects that other actions might have over them.}
+
+  \important{example? maybe use the the transformations of the leila's relations that were removed.}
+
 
 \begin{remark}[Strongly Safe Grammars] Throughout this work, we will use only strongly safe grammars whose set $P$ of actions is finite and each action in $P$ is distinct from the others.
 
