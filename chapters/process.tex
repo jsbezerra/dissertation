@@ -191,7 +191,8 @@ At first, it may seem that we are loosing expressive power by restricting the NA
   The first condition assures that every element in the \emph{core graph} was either already present in the initial graph or was created by one and only one rule. The second condition assures that for every element that is deleted, it is deleted only once by only one rule.
 \end{definition}
 
-The idea is that each element within a \emph{core graph} has a unique origin. At the same time, the \emph{core graph} contains all elements necessary (created, deleted and preserved) by all rules in its underlying grammar. \newadd{In~\cite{Ribeiro1996} the second condition is not used, which has the effect of including non-deterministic executions of a grammar into the framework of the occurrence graph grammars. }\important{improve}
+The idea is that each element within a \emph{core graph} has a unique origin. At the same time, the \emph{core graph} contains all elements necessary (created, deleted and preserved) by all rules in its underlying grammar. \newadd{In~\cite{Ribeiro1996} the second condition is not used, which has the effect of including non-deterministic executions of a grammar into the framework of the occurrence graph grammars. In our work, this will not be used, therefore we will work with deterministic
+occurrence graph grammars.} \important{improve}
 
 \begin{example}[Doubly-Typed Graph Grammar and Core Graph Example] \mbox{Figure~\ref{fig:process:core-graph:counter-example}} shows a doubly-typed graph grammar, whose double-type is not a core graph. That happens because $\Square_2$ is created by both rules $p_1$ and $p_2$, as well as $\Circle_1$ is deleted by both $p_2$ and $p_3$.
 
@@ -217,7 +218,7 @@ The idea is that each element within a \emph{core graph} has a unique origin. At
 
 \begin{notation}[Restriction to Image] Given an arbitrary morphism $f : A \rightarrow X$, we will denote as $f' : A \rightarrow X_{|A}$ the morphism derived from $f$ where $X_{|A}$ is the image of $f$.
 
-  For two arbitrary morphisms $f : A \rightarrow X$ and $g : B \rightarrow X$, we will denote as $f' : A \rightarrow X_{|AB}$ and $g' : B \rightarrow X_{|AB}$ the morphisms derived from $f$ and $g$ where $X_{|AB}$ is the joint image of both $f$ and $g$. \important{As a result, $X_{|AB}$ contains all and only the elements of $X$ that are mapped from $A$ or $B$ to $X$, preserving the original mappings?}
+  For two arbitrary morphisms $f : A \rightarrow X$ and $g : B \rightarrow X$, we will denote as $f' : A \rightarrow X_{|AB}$ and $g' : B \rightarrow X_{|AB}$ the morphisms derived from $f$ and $g$ where $X_{|AB}$ is the joint image of both $f$ and $g$.
 \end{notation}
 
 \begin{definition}[Strongly Safe (Doubly-Typed) Graph Grammars] Given \doublyTypedGraphGrammarCore{} a doubly-typed graph grammar, $GG$ is said to be \emph{strongly safe} if its double-type graph is also a core graph.
