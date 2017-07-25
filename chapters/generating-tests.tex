@@ -49,21 +49,20 @@ Figure~\ref{fig:tests:methodology} summarizes the methodology process proposed i
   \caption{Overview of the methodology~\cite{Junior2015}.}\label{fig:tests:methodology}
 \end{figure}
 
-We use a grammar that models an e-store system in our example. This grammar was extracted, using the methodology, from a set of use cases presented in~\cite{Goins2007}. These use cases model basic e-store functionalities such as \emph{browse catalogue, user registration, login, update user information, maintain shopping cart}, among others.
+We use a grammar that models an e-store system in our example. This grammar was extracted, using the methodology, from a set of use cases presented in Appendix~\ref{app:use-cases}. These use cases model basic e-store functionalities such as \emph{browse catalogue, user registration, login, update user information, maintain shopping cart}, among others.
 
 Some excerpts of this grammar are shown throughout this chapter, while the complete extracted grammar can be found on appendix~\ref{app:use-cases} and at the Verites repository for case studies\footnote{https://github.com/Verites/case-studies}.
 
 \section{Generating Tests using Occurrence Graph Grammars}
 
-\newadd{Given a graph grammar that models a system, we want to generate test cases and oracles for a complete execution of the system. By complete execution we informally mean an execution path that could be seen as an atomic operation or functionality by either a user or the system itself. For example, it could be something as simple as a successful or failing user login or something as complex as the entire process of servicing costumers, which requires attendants and waiters to be logged in, tables
-to be occupied, orders to be prepared, among others.}
+\newadd{Given a graph grammar that models a system, we want to generate test cases and oracles for each complete execution of the functionalities of the system. By complete execution we informally mean an execution path that could be seen as an ``atomic'' operation or functionality by either a user or the system itself. For example, it could be something as simple as a successful or failing login or something as complex as the entire process of servicing costumers, which requires attendants and waiters to be logged in, tables to be occupied, orders to be prepared, among others.}
 
-\newadd{\begin{definition}[Complete Execution Subset] Given a graph grammar \graphGrammar{} for a system with $n > 0$ functionalities, a \emph{complete execution subset} $F_i \subseteq P$, $\forall i \in 0\ldots n$ is a subset of the grammar rules whose application leads to achieving the goals of functionality $i$.
+\newadd{\begin{definition}[Functionality Collection] Given a graph grammar \graphGrammar{} for a system with $n > 0$ functionalities, a \emph{functionality collection} $F_i \subseteq P$, $\forall i \in 0\ldots n$ is a collection of the grammar rules whose application leads to achieving functionality $i$ goals.
 \end{definition}}
 
-\begin{example} Figure~\ref{fig:tests:grammar} shows a subset of the rules from the e-store grammar. The chosen rules represent the main path of the use case \emph{browse catalogue} \important{change example and explain the goals of the functionality before showing the rules}. 
+\begin{example} Figure~\ref{fig:tests:grammar} shows such a functionality collection from the restaurant grammar. The chosen rules represent (one way in which) the entire process of serving a client can be accomplished, which involves the execution of several different use cases. \important{change example and explain the goals of the functionality before showing the rules}. 
 
-\begin{figure}[!ht]
+\begin{figure}[!]
   \centering
   \begin{subfigure}[t]{.5\textwidth}
     \centerline{\fbox{\includegraphics[scale=0.5]{images/generating-tests/grammar/rule01}}}
@@ -84,7 +83,7 @@ to be occupied, orders to be prepared, among others.}
   \caption{Rules for the use case \emph{browse catalogue}}\label{fig:tests:grammar}
 \end{figure}
 
-\begin{figure}[!ht]
+\begin{figure}[!]
 \ContinuedFloat
 \centering
   \begin{subfigure}[t]{.5\textwidth}
@@ -98,20 +97,22 @@ to be occupied, orders to be prepared, among others.}
   \end{subfigure}
 \end{figure}
 \end{example}
+
+
 \subsection{Preparing the input}
 
-Along with the grammar $GG$ and its subsets of functionalities $F_i$, we will also need an \emph{input-output relation} $IO_i$ for each $F_i$, specifying the connections between the rules in the subsets. This \emph{input-output relation} identifies which elements (nodes and edges) must be the same between each pair of rules, as shown in example~\ref{ex:inout}.
+Along with the grammar $GG$ and its functionality collections $F_i$, we will also need an \emph{input-output relation} $IO_i$ for each $F_i$, specifying the connections between the rules. This \emph{input-output relation} identifies which elements (nodes and edges) must be the same between each pair of rules, as shown in example~\ref{ex:inout}.
 
 \begin{definition}[Input-Output Relation] \newadd{Given a complete execution subset $F_i$, its underlying \emph{input-output relation} $IO_i$ is a set of typed-graph morphism spans of the form \mbox{$\left(R_x \leftarrow IO \rightarrow L_y\right)$} each of which connects two distinct rules $x,y \in F_i$.}
 
-  \newadd{  The $IO$ object of each span is similar to the gluing graph of a rule, but instead of identifying the elements that are preserved by one rule, it identifies the elements that are necessarily the same between two different rules.}
+  \newadd{  The $IO$ object of each span is similar to the gluing graph of a rule, but instead of identifying the elements that are the same in both left and right sides of a rule, it identifies the elements that are necessarily the same between two different rules.}
 \end{definition}
 
 \important{review}  We choose the main flow of our example grammar to show how to build the $IO$ relation. First of all, the complete execution subset for this functionality is $F_1 = \{$ chooseCategory, displayProducts, chooseProduct, displayItems, chooseItem, displayChosenItem $\}$. Once having the sets of rules, we build the input-output relations for each one of them.
 
-\begin{example}[Input-Output Relations]\label{ex:inout} \important{review} An input-output relation for a complete execution subset has the appearance of the diagram bellow, where there are several $IO$ objects connecting the right-hand side of a rule with the left-hand side of another.
+\begin{example}[Input-Output Relations]\label{ex:inout} \important{review} An input-output relation for a functionality collection will have an appearance similar to the diagram bellow, where there are several $IO$ objects connecting the right-hand side of a rule with the left-hand side of another.
 
-    Figure~\ref{fig:tests:inout} shows how an $IO$ object connects two different rules, which is similar to how the interface graph of a rule identifies the elements that are the same in its left and right sides.
+\important{Figure~\ref{fig:tests:inout} shows how an $IO$ object connects two different rules, which is similar to how the interface graph of a rule identifies the elements that are the same in its left and right sides.}
 
 \diagram{
   & & & & IO_6\ar@{-->}[dddrrrr]\ar@{-->}[dddllll] & & & &\\
@@ -120,9 +121,9 @@ Along with the grammar $GG$ and its subsets of functionalities $F_i$, we will al
   L_1 & K_1\ar[l]\ar[r] & R_1 & L_2 & K_2\ar[l]\ar[r] & R_2 & L_3 & K_3\ar[l]\ar[r] & R_3\\
   }\hfill\break
 
-  For most cases, it will not be necessary to create an $IO$ object for each pair of rules, as the $IO$ relation has some sort of transitivity. Thus, we can focus on build only a subset of it.
+  It is important to notice that it will not be always necessary to create an $IO$ object for each possible combination of rules, as the $IO$ relation has some sort of transitivity. Thus, we can focus on build only a subset of it.
 
-  Take for example the \emph{system} node in the grammar. This node should be the same along all rules, and it appears in left and right sides of all rules. Given two rules $p_1$ and $p_2$, we have the options of building the $IO$ object that identifies the system node as $L_1 \leftarrow IO \rightarrow R_2$ or $L_2 \leftarrow IO \rightarrow R_1$. Both of them having the same effect. \important{review example}
+  Take for example the \emph{system} node in the grammar. This node should be the same along all rules, and it appears in left and right sides of all rules. Given two rules $p_1$ and $p_2$, we have the options of building the $IO$ object that identifies the system node as $L_1 \leftarrow IO \rightarrow R_2$ or $L_2 \leftarrow IO \rightarrow R_1$, or even the two together. All of them having the same effect.
 
 \begin{figure}[!ht]
   \centering
@@ -165,10 +166,10 @@ Along with the grammar $GG$ and its subsets of functionalities $F_i$, we will al
   The Occurrence Graph Grammar representing execution of the functionality $i$ is given by $OGG_i = (Occ_i, I_i,F_i)$, iff $OGG_i$ respects the conditions imposed by Definition~\ref{def:ogg}.
 \end{definition}
 
-In the first step of the construction, the amalgamation of the rules in $F_i$ w.r.t. $IO_i$ is responsible to ``glue'' the graphs of all rules in one single graph $Occ_i$, while identifying the items that are meant to be the same element at the grammar execution. %%The colimit of a diagram such as the one presented in Example~\ref{ex:inout} has the following format, where $Occ$ is the amalgamation object, i.e. $Occ$ contains all the concrete elements of the rules where it came from:
-If $Occ_i$ is a \emph{core graph} according to definition~\ref{def:core-graph}, we can create a doubly-typed graph grammar $OGG_i$ that is also a strongly-safe grammar and therefore a candidate to be an occurrence graph grammar.
+In the first step of the construction, the amalgamation of the rules in $F_i$ w.r.t. $IO_i$ is responsible to glue the graphs of all rules in one single graph $Occ_i$, while identifying the items that are meant to be the same element at the grammar execution.
+If $Occ_i$ is a \emph{core graph} according to definition~\ref{def:core-graph}, we can create a doubly-typed graph grammar $OGG_i$ that is also a strongly-safe grammar and therefore a candidate to be an occurrence graph grammar. Otherwise, it means that there is more than one rule that deletes or creates the same element, therefore it is not possible to apply all rules of this collection and we can build an $OGG_i$ that is a  deterministic occurrence graph grammar.
 
-Remember that, if there is more than one rule that deletes or creates the same element, it is not possible to apply all rules of this functionality, and $OGG_i$ can not be a deterministic occurrence graph grammar.
+\important{explain retyping}
 
 \begin{example}[Amalgamation example]\label{ex:amalgamation} Figure~\ref{fig:tests:colimit} shows the object resultant from the amalgamation of the rules presented in Figure~\ref{fig:tests:grammar}.
 
