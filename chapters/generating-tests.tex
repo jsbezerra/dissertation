@@ -7,21 +7,22 @@ In the following, we show how to use \newadd{deterministic} occurrence graph gra
 
 This methodology is a systematic, computer-aided way to extract graph grammars from use cases or other text-based requirement documents. At the same time, it helps finding problems such as ambiguities, inconsistencies and omissions in the documents. Thus, providing a better specification and also an improved model. By generating tests from these grammars we are indirectly generating tests for the underlying use cases. The test generation, to be described in next sections, was implemented in Verigraph as an extension to the calculation of the occurrence graph grammars that was previously discussed.
 
-Basically, we are interested in knowing whether each functionality of a system is truly executable \important{(why?)}, i.e. whether all the rules that represent each functionality flow are applicable.
+\newadd{Once having a graph grammar that models a system, the functionalities can be informally seen as collections of graph rules that are present in the grammar rules set, where these rules must all be applied to achieve a specific goal. Our approach to test generation requires that every functionality is well-formed, in the sense that it must be possible to execute it (apply all the rules of its collection) in the model. However, if it is not executable, e.g. there is some error of modelling that prevents this execution, our approach will also provide information about what the problem really is.}
 
-If it happens that a functionality is not executable, we want to know exactly what is the problem that is preventing its execution. On the other hand, if it is executable, we are interested in:
+Assuming that the functionalities are well-formed, we are interested in:
 
 \begin{enumerate}
-\item the input data necessary for this functionality to execute, as well as the output data of a successful execution;
+\item the minimal input data necessary for this functionality to execute, as well as the output data of a successful execution;
 
 \item at least one path (for each flow) in which the rules can be applied to accomplish the functionality goals;
 
-\item a set of constraints which can tell the test analyst how two characterize the tests into those which should pass and those which should fail;
+\item a set of constraints two characterize any test into those which should pass and those which should fail;
 
-\item a set of constraints which can tell which intermediate states of the system are valid and those that are not.
+\hide{
+\item a set of constraints which can tell which intermediate states of the system are valid and those that are not.}
 \end{enumerate}
 
-Notice that the two first items correspond to test cases while the other two correspond to test oracles.
+Notice that the two first items correspond to test cases while the last one correspond to test oracles.
 
 %First, we present a brief overview of the methodology for extracting graph grammars from use cases, after what we present the process of generating the tests cases from the extracted grammars.
 
@@ -31,11 +32,6 @@ Usually, use case documents consist of sets of sequential steps describing the i
 
 Figure~\ref{fig:tests:methodology} summarizes the methodology process proposed in \cite{Junior2015}, showing how to extract a graph grammar from a text-based requirements document. This methodology is divided into four main phases:
 
-\begin{figure}[!ht]
-  \centering
-  \includegraphics[scale=0.7]{images/generating-tests/methodology}
-  \caption{Overview of the methodology~\cite{Junior2015}.}\label{fig:tests:methodology}
-\end{figure}
 
 \begin{description}
   \item[Data Extraction:] identification of entities and actions that will be used to construct the model.
@@ -46,6 +42,12 @@ Figure~\ref{fig:tests:methodology} summarizes the methodology process proposed i
 
   \item[UC Analysis:] automated verifications over the model in order to detect possible flaws in the use case. This is step is done using Verigraph and its concurrent rules, conflict and dependency analyses.
 \end{description}
+
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[scale=0.7]{images/generating-tests/methodology}
+  \caption{Overview of the methodology~\cite{Junior2015}.}\label{fig:tests:methodology}
+\end{figure}
 
 We use a grammar that models an e-store system in our example. This grammar was extracted, using the methodology, from a set of use cases presented in~\cite{Goins2007}. These use cases model basic e-store functionalities such as \emph{browse catalogue, user registration, login, update user information, maintain shopping cart}, among others.
 
