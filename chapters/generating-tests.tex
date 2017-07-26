@@ -181,6 +181,11 @@ with the concrete conflicts and dependencies. In step~\ref{enum:construction-res
 
 \hide{If $Occ_i$ is a \emph{core graph} according to definition~\ref{def:core-graph}, we can create a doubly-typed graph grammar $OGG_i$ that is also a strongly-safe grammar and therefore a candidate to be an occurrence graph grammar. Otherwise, it means that there is more than one rule that deletes or creates the same element, therefore it is not possible to apply all rules of this collection and we can build an $OGG_i$ that is a  deterministic occurrence graph grammar.}
 
+\begin{example}[Occurrence Graph Grammar Construction Example]
+\end{example}
+
+\important{maybe one more example were the construction fails?}
+
 \begin{example}[Amalgamation example]\label{ex:amalgamation} Figure~\ref{fig:tests:colimit} shows the object resultant from the amalgamation of the rules presented in Figure~\ref{fig:tests:grammar}.
 
 \begin{figure}[!ht]
@@ -205,6 +210,39 @@ with the concrete conflicts and dependencies. In step~\ref{enum:construction-res
   \caption{Instance graphs}\label{fig:tests:graphs}
 \end{figure}
 \end{example}
+
+\subsection{Implementation} \newadd{The construction of the occurrence graph grammars to generate test cases was implemented in the Verigraph System.}
+
+\begin{figure}[!ht]
+\caption{Colimit Implementation}
+\begin{minted}[linenos=true, breaklines,fontsize=\small]{haskell}
+
+calculateRulesColimit :: RuleSequence morph -> [NamedRuleWithMatches morph]
+calculateRulesColimit (_,rs,os) =
+  let
+    fs = ksCoproduct rs
+    gs = allCoproduct rs 
+    -- separates morphism families
+    (g1s, g2s, g3s) = groupMorphisms (split gs)
+    h1 = induceSpanMorphism fs (zipWith <&> g1s (getLefts rs))
+    h2 = induceSpanMorphism fs g2s
+    h3 = induceSpanMorphism fs (zipWith <&> g3s (getRights rs))
+    coEq = calculateNCoequalizer [h1,h2,h3]
+    hm = map (coEq <&> ) gs
+    
+    -- colimit (based on coequalizers) with object flows
+    leftIOs  = map getLeftMorphism os
+    rightIOs = map getRightMorphism os
+    objCop = objectFlowCoproduct os
+    leftFamily = induceSpanMorphism objCop leftIOs
+    rightFamily = induceSpanMorphism objCop rightIOs
+    coreGraphMorphism = calculateCoequalizer leftFamily rightFamily
+    hs2 = split $ map (coreGraphMorphism <&>) hm
+  in if null os then zip rs hs1 else zip rs hs2
+
+\end{minted}
+\label{fig:tests-colimit}
+\end{figure}
 
 \subsection{Analysing results}
 
