@@ -166,10 +166,12 @@ Along with the grammar $GG$ and its functionality collections $F_i$, we will als
   The Occurrence Graph Grammar representing execution of the functionality $i$ is given by $OGG_i = (Occ_i, I_i,F_i)$, iff $OGG_i$ respects the conditions imposed by Definition~\ref{def:ogg}.
 \end{definition}
 
-In the first step of the construction, the amalgamation of the rules in $F_i$ w.r.t. $IO_i$ is responsible to glue the graphs of all rules in one single graph $Occ_i$, while identifying the items that are meant to be the same element at the grammar execution.
-If $Occ_i$ is a \emph{core graph} according to definition~\ref{def:core-graph}, we can create a doubly-typed graph grammar $OGG_i$ that is also a strongly-safe grammar and therefore a candidate to be an occurrence graph grammar. Otherwise, it means that there is more than one rule that deletes or creates the same element, therefore it is not possible to apply all rules of this collection and we can build an $OGG_i$ that is a  deterministic occurrence graph grammar.
+In the first step of the construction, the amalgamation of the rules in $F_i$ w.r.t. $IO_i$ is responsible to glue the graphs of all rules in one typed graph $Occ_i$, while identifying the items that are meant to be the same element at the grammar execution.
 
-\important{explain retyping}
+\newadd{The retyping step is responsible to generate a doubly-typed graph grammar from the colimit calulated in the previous step. For each graph rule in $ \mbox{$p^{T} = \left(L^{T} \leftarrow K^{T} \rightarrow R^{T}\right)$} \in F_i$, we generate a new rule \mbox{$p'^{Occ_i} = \left(L^{Occ_i} \leftarrow K^{Occ_i} \rightarrow R^{Occ_i}\right)$}, where the typing morphisms are those found on the colimit. Since $Occ_i$ is now the type graph of this rules and also a typed graph over $T$, the
+rules are doubly-typed over $Occ_i^T$.}
+
+If $Occ_i$ is a \emph{core graph} according to definition~\ref{def:core-graph}, we can create a doubly-typed graph grammar $OGG_i$ that is also a strongly-safe grammar and therefore a candidate to be an occurrence graph grammar. Otherwise, it means that there is more than one rule that deletes or creates the same element, therefore it is not possible to apply all rules of this collection and we can build an $OGG_i$ that is a  deterministic occurrence graph grammar.
 
 \begin{example}[Amalgamation example]\label{ex:amalgamation} Figure~\ref{fig:tests:colimit} shows the object resultant from the amalgamation of the rules presented in Figure~\ref{fig:tests:grammar}.
 
