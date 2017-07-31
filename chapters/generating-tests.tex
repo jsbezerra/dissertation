@@ -104,7 +104,7 @@ Some excerpts of this grammar are shown throughout this chapter, while the compl
 
 Along with the grammar $GG$ and its functionality collections $F_i$, we will also need an \emph{input-output relation} $IO_i$ for each $F_i$, specifying the connections between the rules. This \emph{input-output relation} identifies which elements (nodes and edges) must be the same between each pair of rules, as shown in example~\ref{ex:inout}.
 
-\begin{definition}[Input-Output Relation] \newadd{Given a complete execution subset $F_i$, its underlying \emph{input-output relation} $IO_i$ is a set of typed-graph morphism spans of the form \mbox{$\left(R_x \leftarrow IO \rightarrow L_y\right)$} each of which connects two distinct rules $x,y \in F_i$.}
+\begin{definition}[Input-Output Relation] \newadd{Given a functionality collection $F_i$, its underlying \emph{input-output relation} $IO_i$ is a set of typed-graph morphism spans of the form \mbox{$\left(R_x \leftarrow IO \rightarrow L_y\right)$} each of which connects two distinct rules $x,y \in F_i$.}
 
   \newadd{  The $IO$ object of each span is similar to the gluing graph of a rule, but instead of identifying the elements that are the same in both left and right sides of a rule, it identifies the elements that are necessarily the same between two different rules.}
 \end{definition}
@@ -124,7 +124,7 @@ Along with the grammar $GG$ and its functionality collections $F_i$, we will als
 
   It is important to notice that it will not be always necessary to create an $IO$ object for each possible combination of rules, as the $IO$ relation has some sort of transitivity. Thus, we can focus on build only a subset of it.
 
-  Take for example the \emph{system} node in the grammar. This node should be the same along all rules, and it appears in left and right sides of all rules. Given two rules $p_1$ and $p_2$, we have the options of building the $IO$ object that identifies the system node as $L_1 \leftarrow IO \rightarrow R_2$ or $L_2 \leftarrow IO \rightarrow R_1$, or even the two together. All of them having the same effect.
+  Take for example the \emph{system} node in the grammar. This node should be the same along all rules, and it appears in left and right sides of all rules. Given two rules $p_1$ and $p_2$, we have the options of building the $IO$ object that identifies the system node as $R_1 \leftarrow IO \rightarrow L_2$ or $R_2 \leftarrow IO \rightarrow L_1$, or even the two of them. All of which have the same final effect: the \emph{system} node is always the same.
 
 \begin{figure}[!ht]
   \centering
@@ -136,7 +136,7 @@ Along with the grammar $GG$ and its functionality collections $F_i$, we will als
 
 \subsection{Processing the input grammar}
 
-\newadd{Having a graph grammar \graphGrammar{} modelling a system with \mbox{$n > 0$} functionalities, the generation of test cases and oracles for each functionality $i$ is accomplished by the construction of a deterministic occurrence graph grammar $OGG_i$ using $F_i$ and $IO_i$. The construction steps are specified in Definition~\ref{def:ogg-construction}.}.
+\newadd{Having a graph grammar \graphGrammar{} modelling a system with \mbox{$n > 0$} functionalities, the generation of test cases and oracles for each functionality $i$ is accomplished by the construction of a deterministic occurrence graph grammar $OGG_i$ using $F_i$ and $IO_i$. The construction steps are specified in Definition~\ref{def:ogg-construction}.}
 
 \begin{definition}[Deterministic Occurrence Graph Grammar Construction]\label{def:ogg-construction} Let \graphGrammar{} be a graph grammar, $F_i$ and $IO_i$
 
@@ -169,16 +169,16 @@ In the first step of the construction, the amalgamation of the rules in $F_i$ w.
 
 \newadd{The retyping step is responsible to generate a collection $F'_i$ of doubly-typed graph rules from the colimit calculated in the previous step. For each graph rule in $ \mbox{$p^{T} = \left(L^{T} \leftarrow K^{T} \rightarrow R^{T}\right)$} \in F_i$, we generate a new rule \mbox{$p'^{Occ_i} = \left(L^{Occ_i} \leftarrow K^{Occ_i} \rightarrow R^{Occ_i}\right)$}, where the typing morphisms are those found on the colimit. Since the type graph $Occ_i$ of this rules is also a typed graph over $T$, the rules are doubly-typed over $Occ_i^T$.}
 
-\newadd{Once having the doubly-typed graph rules, we proceed to the creation of the causal relation, which is the first indicative of whether it is possible to construct an occurrence graph grammar for this collection of rules. Remember that this relation must be a total order, otherwise it it indicates a problem in the modelling or in the system.}
+\newadd{Once having the doubly-typed graph rules, we proceed to the creation of the causal relation, which is the first indicative of whether it is possible to construct an occurrence graph grammar for this collection of rules. Remember that this relation must be a total order, otherwise it indicates a problem in the modelling or in the system.}
 
-\newadd{Possessing the causal relation, we can generate the initial and final graphs of this execution. To do so, we delete from $Occ_i$ the elements that are created (resp. deleted) by the rules in $F'_i$ according to the causal relation. If they are valid graphs, we have the input and output data for the test case. Otherwise, if they have dangling edges, it is not possible to apply all rules of the functionality, since it would begin in or lead to an inconsistent state.}
+\newadd{Possessing the causal relation, we can generate the initial and final graphs of this execution. To do so, we delete from $Occ_i$ the elements that are created (resp. deleted) by the rules in $F'_i$ according to the causal relation. If they are valid graphs, we have the input and output data for the test case. Otherwise, if they have dangling edges, it is not possible to apply all rules of the functionality, since it would begin in (or lead to) an inconsistent state.}
 
-\newadd{If the steps~\ref{enum:construction-colimit} to~\ref{enum:construction-graphs} were able to be successfully performed, than we have a grammar \mbox{$OGG_i = \left(Occ_i, I_i, F'_i\right)$} that is not only doubly-typed, but also strongly safe. Therefore it is a candidate to be an occurrence grammar.}
+\newadd{If the steps~\ref{enum:construction-colimit} to~\ref{enum:construction-graphs} were able to be successfully performed, we have a grammar \mbox{$OGG_i = \left(Occ_i, I_i, F'_i\right)$} that is not only doubly-typed, but also strongly safe. Therefore it is a candidate to be an occurrence grammar.}
 
 \newadd{In step~\ref{enum:construction-occurrence}, we proceed to the creation of the occurrence relation. First, we calculate all produce-forbid conflicts and delete-forbid dependencies for $OGG_i$, after what we use the information acquired in previous steps to classify them as concrete, abstract or non-existent as specified in Definitions~\ref{def:delete-forbid-strong} and~\ref{def:produce-forbid-strong}. The occurrence relation $\leq_o$ is then calculated from the causal relation together
 with the concrete conflicts and dependencies. In step~\ref{enum:construction-restriction} we create the set $R_i$ of restrictions as the union of all abstract conflicts and dependencies calculated before.}
 
-\newadd{Finally, we have the strongly safe grammar $OGG_i$ together with its corresponding occurrence relation $\leq_o$ and a set of restrictions $R_i$. Therefore, if $\leq_o$ is a partial order and it is possible to find an ordering of it that respects all restrictions in $R_i$, it follows that $OGG_i$ is an occurrence graph grammar according to Definition~\ref{def:ogg}.}
+\newadd{Finally, we have the strongly safe grammar $OGG_i$ together with its corresponding occurrence relation $\leq_o$ and a set of restrictions $R_i$. Therefore, if $\leq_o$ is a partial order and it is possible to find a total ordering of it that respects all restrictions in $R_i$, it follows that $OGG_i$ is an occurrence graph grammar according to Definition~\ref{def:ogg}.}
 
 \hide{If $Occ_i$ is a \emph{core graph} according to definition~\ref{def:core-graph}, we can create a doubly-typed graph grammar $OGG_i$ that is also a strongly-safe grammar and therefore a candidate to be an occurrence graph grammar. Otherwise, it means that there is more than one rule that deletes or creates the same element, therefore it is not possible to apply all rules of this collection and we can build an $OGG_i$ that is a  deterministic occurrence graph grammar.}
 
