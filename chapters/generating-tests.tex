@@ -1,15 +1,16 @@
 \chapter{Generating Test Cases}\label{ch:tests}
 
-\newadd{A test case is a collection of (1) input values necessary to complete some execution of the system under testing, (2) the results that must be produced after executing the test (assuming the system satisfies the intended behaviour) and (3) any inputs necessary to setup the system into the appropriate state to receive the test values~\cite{Ammann2008}.}
+\important{to say that this is a computer-aided or guided approach that is not fully automated}
+
+\newadd{A test case is a collection of (1) input values necessary to complete some execution of the system under testing, (2) the results that must be produced after executing the test (assuming the system satisfies the intended behaviour) and (3) any inputs necessary to setup the system into the appropriate state to receive the test values~\cite{Ammann2008}.} 
 \newadd{Test oracles are specifications describing properties about the validity of tests cases, i.e. if the test must fail or pass. These properties may include relationships between the input given and the expected output, data validity properties, format of possible execution paths, etc. No matter the oracle format, it must be able to determine the validity of tests in a finite and reasonable amount of time~\cite{Weyuker1982}.}
 
 In the following, we show how to use \newadd{deterministic} occurrence graph grammars to generate test cases and oracles from (simply-typed) graph grammars that model systems. In theory, this approach can be used to generate tests for any graph grammar, since it is based only on the properties of the formalism. However, we focused on graph grammars that were generated from use cases by using the methodology presented in \cite{Junior2015}, \cite{BezerraWEIT2016} and \cite{Cota2017}.
 
 This methodology is a systematic, computer-aided way to extract graph grammars from use cases or other text-based requirement documents. At the same time, it helps finding problems such as ambiguities, inconsistencies and omissions in the documents. Thus, providing a better specification and also an improved model. By generating tests from these grammars we are indirectly generating tests for the underlying use cases. The test generation, to be described in next sections, was implemented in Verigraph as an extension to the calculation of the occurrence graph grammars that was previously discussed.
 
-\newadd{Once having a graph grammar that models a system, the functionalities can be informally seen as collections of graph rules that are present in the grammar rules set, where these rules must all be applied to achieve a specific goal. Our approach to test generation requires that every functionality is well-formed, in the sense that it must be possible to execute it (apply all the rules of its collection) in the model. However, if it is not executable, e.g. there is some error of modelling that prevents this execution, our approach will also provide information about what the problem really is.}
-
-Assuming that the functionalities are well-formed, we are interested in:
+\newadd{Once having a graph grammar that models a system, the functionalities can be informally seen as collections of graph rules that are present in the grammar rules set, where these rules must all be applied to achieve a specific goal. Our approach to test generation requires that every functionality is well-formed, in the sense that it must be possible to execute it (apply all the rules of its collection) in the model. However, if it is not executable, e.g. there is some error of modelling
+that prevents this execution, our approach will also provide information about what problem is preventing the execution. Assuming that the functionalities are well-formed, we are interested in:}
 
 \begin{enumerate}
 \item the minimal input data necessary for this functionality to execute, as well as the output data of a successful execution;
@@ -49,15 +50,15 @@ Figure~\ref{fig:tests:methodology} summarizes the methodology process proposed i
   \caption{Overview of the methodology~\cite{Junior2015}.}\label{fig:tests:methodology}
 \end{figure}
 
-We use a grammar that models an e-store system in our example. This grammar was extracted, using the methodology, from a set of use cases presented in Appendix~\ref{app:use-cases}. These use cases model basic e-store functionalities such as \emph{browse catalogue, user registration, login, update user information, maintain shopping cart}, among others.
+In our running example, we model a system which aims to automate the process of a restaurant. The graph grammar for this system was extracted from a set of use cases presented in Appendix~\ref{app:use-cases} by using the methodology explained earlier. The use cases model basic functionalities of the system such as login of employees, reservation of tables (as well as cancellation), accommodation of clients, serving tables, among others.
 
 Some excerpts of this grammar are shown throughout this chapter, while the complete extracted grammar can be found on appendix~\ref{app:use-cases} and at the Verites repository for case studies\footnote{https://github.com/Verites/case-studies}.
 
 \section{Generating Tests using Occurrence Graph Grammars}
 
-\newadd{Given a graph grammar that models a system, we want to generate test cases and oracles for each complete execution of the functionalities of the system. By complete execution we informally mean an execution path that could be seen as an ``atomic'' operation or functionality by either a user or the system itself. For example, it could be something as simple as a successful or failing login or something as complex as the entire process of servicing costumers, which requires attendants and waiters to be logged in, tables to be occupied, orders to be prepared, among others.}
+\newadd{Given a graph grammar that models a system, we want to generate test cases and test oracles for each possible execution of the functionalities of the system. By execution we informally mean a path (of rules) that could be seen as an ``atomic'' operation or functionality execution by either a user or the system itself. For example, it could be something as simple as a successful or failing login or something as complex as the entire process of serving clients, which requires attendants and waiters to be logged in, tables to be occupied, orders to be prepared, among others.}
 
-\newadd{\begin{definition}[Functionality Collection] Given a graph grammar \graphGrammar{} for a system with $n > 0$ functionalities, a \emph{functionality collection} $F_i \subseteq P$, $\forall i \in 0\ldots n$ is a collection of the grammar rules whose application leads to achieving functionality $i$ goals.
+\newadd{\begin{definition}[Functionality Collection] Given a graph grammar \graphGrammar{} modelling a system with $n > 0$ functionalities, a \emph{functionality collection} $F_i \subseteq P$, \mbox{$\forall i \in 0\ldots n$} is a collection of the grammar rules whose application leads to achieving functionality $i$ goals.
 \end{definition}}
 
 \begin{example} Figure~\ref{fig:tests:grammar} shows such a functionality collection from the restaurant grammar. The chosen rules represent (one way in which) the entire process of serving a client can be accomplished, which involves the execution of several different use cases. \important{change example and explain the goals of the functionality before showing the rules}. 
