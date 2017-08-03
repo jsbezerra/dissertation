@@ -56,14 +56,14 @@ Some excerpts of this grammar are shown throughout this chapter, while the compl
 
 \section{Generating Tests using Occurrence Graph Grammars}
 
-\newadd{Given a graph grammar that models a system, we want to generate test cases and test oracles for each possible execution of the functionalities of the system. By execution we informally mean a path (of rules) that could be seen as an ``atomic'' operation or functionality execution by either a user or the system itself. For example, it could be something as simple as a successful or failing login or something as complex as the entire process of serving clients, which requires attendants and waiters to be logged in, tables to be occupied, orders to be prepared, among others.}
+\newadd{Given the graph grammar model of a system, we want to generate test cases and test oracles for a collection of (integrated) functionalities. For example, it could be something as ``atomic'' as a successful or failing login or something as complex as the entire process of serving clients, which requires attendants and waiters to be logged in, tables to be occupied, orders to be prepared, among others.}
 
 \newadd{\begin{definition}[Functionality Collection] Given a graph grammar \graphGrammar{} modelling a system with $n > 0$ functionalities, a \emph{functionality collection} $F_i \subseteq P$, \mbox{$\forall i \in 0\ldots n$} is a collection of the grammar rules whose application leads to achieving functionality $i$ goals.
 \end{definition}}
 
-\begin{example} Figure~\ref{fig:tests:grammar} shows such a functionality collection from the restaurant grammar. The chosen rules represent (one way in which) the entire process of serving a client can be accomplished, which involves the execution of several different use cases. \important{change example and explain the goals of the functionality before showing the rules}. 
+\begin{example} Figure~\ref{fig:tests:grammar} shows such a functionality collection from the restaurant grammar. The chosen rules represent (one way in which) the entire process of serving a client can be accomplished. In this particular case, we chose the rules that represent the use cases \emph{reserve table}, \emph{accommodate client}, \emph{serve table}, \emph{close table}. \important{explain the goals of each functionality before showing the rules}. \important{show one more example where it fails?}
 
-\begin{figure}[!]
+\begin{figure}[!ht]
   \centering
   \begin{subfigure}[t]{.5\textwidth}
     \centerline{\fbox{\includegraphics[scale=0.5]{images/generating-tests/grammar/rule01}}}
@@ -107,13 +107,8 @@ Along with the grammar $GG$ and its functionality collections $F_i$, we will als
 \begin{definition}[Input-Output Relation] \newadd{Given a functionality collection $F_i$, its underlying \emph{input-output relation} $IO_i$ is a set of typed-graph morphism spans of the form \mbox{$\left(R_x \leftarrow IO \rightarrow L_y\right)$} each of which connects two distinct rules $x,y \in F_i$.}
 
   \newadd{  The $IO$ object of each span is similar to the gluing graph of a rule, but instead of identifying the elements that are the same in both left and right sides of a rule, it identifies the elements that are necessarily the same between two different rules.}
-\end{definition}
 
-\important{review}  We choose the main flow of our example grammar to show how to build the $IO$ relation. First of all, the complete execution subset for this functionality is $F_1 = \{$ chooseCategory, displayProducts, chooseProduct, displayItems, chooseItem, displayChosenItem $\}$. Once having the sets of rules, we build the input-output relations for each one of them.
-
-\begin{example}[Input-Output Relations]\label{ex:inout} \important{review} An input-output relation for a functionality collection will have an appearance similar to the diagram bellow, where there are several $IO$ objects connecting the right-hand side of a rule with the left-hand side of another.
-
-\important{Figure~\ref{fig:tests:inout} shows how an $IO$ object connects two different rules, which is similar to how the interface graph of a rule identifies the elements that are the same in its left and right sides.}
+  \newadd{An input-output relation for a functionality collection will have an appearance similar to the diagram bellow, where there are several $IO$ objects connecting the right-hand side of a rule with the left-hand side of another.}
 
 \diagram{
   & & & & IO_6\ar@{-->}[dddrrrr]\ar@{-->}[dddllll] & & & &\\
@@ -121,6 +116,10 @@ Along with the grammar $GG$ and its functionality collections $F_i$, we will als
   & & IO_1\ar@{-->}[d]\ar@{-->}[dr] & & IO_5\ar@{-->}[drr]\ar@{-->}[dll] & & IO_2\ar@{-->}[d]\ar@{-->}[dl] & &\\
   L_1 & K_1\ar[l]\ar[r] & R_1 & L_2 & K_2\ar[l]\ar[r] & R_2 & L_3 & K_3\ar[l]\ar[r] & R_3\\
   }\hfill\break
+
+\end{definition}
+
+\begin{example}[Input-Output Relations]\label{ex:inout} \important{review} \important{Figure~\ref{fig:tests:inout} shows how an $IO$ object connects two different rules, which is similar to how the interface graph of a rule identifies the elements that are the same in its left and right sides.}\important{put all IO objects for the example}
 
   It is important to notice that it will not be always necessary to create an $IO$ object for each possible combination of rules, as the $IO$ relation has some sort of transitivity. Thus, we can focus on build only a subset of it.
 
@@ -136,13 +135,24 @@ Along with the grammar $GG$ and its functionality collections $F_i$, we will als
 
 \subsection{Processing the input grammar}
 
-\newadd{Having a graph grammar \graphGrammar{} modelling a system with \mbox{$n > 0$} functionalities, the generation of test cases and oracles for each functionality $i$ is accomplished by the construction of a deterministic occurrence graph grammar $OGG_i$ using $F_i$ and $IO_i$. The construction steps are specified in Definition~\ref{def:ogg-construction}.}
+\newadd{Having the graph grammar \graphGrammar{} model of a system with \mbox{$n > 0$} functionalities, the generation of test cases and oracles for each functionality $i$ is accomplished by the construction of a deterministic occurrence graph grammar $OGG_i$ using $F_i$ and $IO_i$. The construction steps are specified in Definition~\ref{def:ogg-construction}.}
 
-\begin{definition}[Deterministic Occurrence Graph Grammar Construction]\label{def:ogg-construction} Let \graphGrammar{} be a graph grammar, $F_i$ and $IO_i$
+\begin{definition}[Deterministic Occurrence Graph Grammar Construction]\label{def:ogg-construction} Let \graphGrammar{} be a graph grammar, $F_i$ be a functionality collection and $IO_i$ its corresponding input-output relation.
 
 \begin{enumerate}
   \item\label{enum:construction-colimit} calculate the amalgamation (colimit) $Occ_i$ of the rules in $F_i$ with respect to $IO_i$.
 
+\diagram{
+  & & & & IO_6\ar[dddrrrr]\ar[dddllll] & & & & \\
+    & IO_3\ar[ddl]\ar[ddrrrr] & & & & & & IO_4\ar[ddr]\ar[ddllll] &\\
+    & & IO_1\ar[d]\ar[dr] & & IO_5\ar[drr]\ar[dll] & & IO_2\ar[d]\ar[dl] & &\\
+    L_1\ar[dddrrrr] & K_1\ar[l]\ar[r] & R_1\ar[dddrr] & L_2\ar[dddr] & K_2\ar[l]\ar[r] & R_2\ar[dddl] & L_3\ar[dddll] & K_3\ar[l]\ar[r] & R_3\ar[dddllll]\\
+    & & & & & & & &\\
+    & & & & & & & &\\
+    & & & & Occ_i & & & &
+}\hfill\break
+
+\hide{
 \diagram{
   & & & & IO_6\ar[dddrrrr]\ar[dddllll] & & & & &\ldots\\
     & IO_3\ar[ddl]\ar[ddrrrr] & & & & & & IO_4\ar[ddr]\ar[ddllll] & & \ldots\\
@@ -151,9 +161,9 @@ Along with the grammar $GG$ and its functionality collections $F_i$, we will als
     & & & & & & & & &\\
     & & & & & & & & &\\
     & & & & Occ & & & & &
-}\hfill\break
+}\hfill\break}
 
-\item retype the rules $F_i$ over $Occ_i$, generating a set $F'_i$ of doubly-typed graph rules.
+\item retype the rules in $F_i$ over $Occ_i$, generating a set $F'_i$ of doubly-typed graph rules.
 
 \item calculate the causal relation $\leq_{c}$ using the doubly-typed graph rules in $F'_i$.
 \item\label{enum:construction-graphs} generate the initial and final graphs $I_i$ and $J_i$.
@@ -162,14 +172,15 @@ Along with the grammar $GG$ and its functionality collections $F_i$, we will als
 \item find one or more total orderings that respect the occurrence relation and restrictions.
 \end{enumerate}
 
-  The Occurrence Graph Grammar representing execution of the functionality $i$ is given by $OGG_i = (Occ_i, I_i,F_i)$, iff $OGG_i$ respects the conditions imposed by Definition~\ref{def:ogg} 
+  The (Deterministic) Occurrence Graph Grammar representing execution of the functionality $i$ is given by $OGG_i = (Occ_i, I_i,F_i)$, iff $OGG_i$ respects the conditions imposed by Definition~\ref{def:ogg} 
 \end{definition}
 
-In the first step of the construction, the amalgamation of the rules in $F_i$ w.r.t. $IO_i$, is responsible to glue the graphs of all rules in one typed graph $Occ_i$, while identifying the items that are meant to be the same element at the grammar execution.
+The first step of the construction, the amalgamation of the rules in $F_i$ w.r.t. $IO_i$, is responsible to glue the graphs of all rules in one typed graph $Occ_i$, while identifying the items that are meant to be the same element at the grammar execution. Therefore, $Occ_i$ contains all elements ever to be created/preserved/deleted by any rule in $F_i$.
 
-\newadd{The retyping step is responsible to generate a collection $F'_i$ of doubly-typed graph rules from the colimit calculated in the previous step. For each graph rule in $ \mbox{$p^{T} = \left(L^{T} \leftarrow K^{T} \rightarrow R^{T}\right)$} \in F_i$, we generate a new rule \mbox{$p'^{Occ_i} = \left(L^{Occ_i} \leftarrow K^{Occ_i} \rightarrow R^{Occ_i}\right)$}, where the typing morphisms are those found on the colimit. Since the type graph $Occ_i$ of this rules is also a typed graph over $T$, the rules are doubly-typed over $Occ_i^T$.}
+\newadd{The retyping step is responsible to generate a collection $F'_i$ of doubly-typed graph rules from the colimit calculated in the previous step. For each graph rule in $ \mbox{$p^{T} = \left(L^{T} \leftarrow K^{T} \rightarrow R^{T}\right)$} \in F_i$, we generate a new rule \mbox{$p'^{Occ_i} = \left(L^{Occ_i} \leftarrow K^{Occ_i} \rightarrow R^{Occ_i}\right)$}, where the typing morphisms are those from the rules graphs to the colimit graph. Since $Occ_i$ is also both the typed graph of the
+new rules and a typed graph over $T$, the rules are doubly-typed over $Occ_i^T$.}
 
-\newadd{Once having the doubly-typed graph rules, we proceed to the creation of the causal relation, which is the first indicative of whether it is possible to construct an occurrence graph grammar for this collection of rules. Remember that this relation must be a total order, otherwise it indicates a problem in the modelling or in the system.}
+\newadd{Once having the doubly-typed graph rules, we proceed to the creation of the causal relation, as described in Definition~\ref{def:causal-relation}, which is the first indicative of whether it is possible to construct an occurrence graph grammar for this collection of rules. Remember that this relation must be a total order, otherwise it indicates a problem in the modelling or in the system.}
 
 \newadd{Possessing the causal relation, we can generate the initial and final graphs of this execution. To do so, we delete from $Occ_i$ the elements that are created (resp. deleted) by the rules in $F'_i$ according to the causal relation. If they are valid graphs, we have the input and output data for the test case. Otherwise, if they have dangling edges, it is not possible to apply all rules of the functionality, since it would begin in (or lead to) an inconsistent state.}
 
