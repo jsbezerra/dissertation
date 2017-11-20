@@ -6,9 +6,15 @@ The advantages of graph transformation systems over other models are...
 
 \section{Visual Contracts}
 
-An approach proposed by.
+An approach proposed by~\cite{Heckel2011},~\cite{Khan2012},~\cite{Khan2012a},~\cite{Runge2013} focusing mainly on generating test cases for service-oriented or component-based systems. Given that systems of this kind often hide their implementation, the authors use interface descriptions known as visual contracts\footnote{ Formally regarded as graph transformation rules with operation signatures}, in order to model the observable behaviour of the system.
 
+Coverage criteria is defined by means of static analysis, where potential conflicts and dependencies amongst visual contracts are calculated and used to build a dependency graph. In this situation, despite of being called ``a dependency graph'', this structure is rather similar to our occurrence relation, summarizing the results of both conflict and dependency analysis while representing the possible orderings in which the visual contracts may be executed.
 
+In the processes of generating test cases, it is necessary to provide also an initial graph, which is used to find out which visual contracts are applicable to it. One of such visual contracts is chosen as the first step and all the paths through the dependency graph in which each rule is applied at most once are computed and stored as a set of rule sequences. Thereafter, the sequences are enriched to encompass rules with multiple dependencies and lately redundant rules contained in larger ones are
+removed. Afterwards, each sequence is executed (if possible), and any new edges in the dependency graph reached by them are added to coverage. The entire process is then repeated as long as the coverage shows improvements. 
+
+In comparison to our work, this approach has both advantages and limitations. As an example of the first, there are: the possibility to work with attributed typed graph transformation systems and multi-rules. As for the second: it requires more user involvement during the process of test case generation, it does not enclose negative application conditions, it was planned to work in a configuration where each rule is applied at most once and although being an extension of
+AGG~\cite{Taentzer2000}, the tool is not available to download.
 
 \section{Other Tools}
 
@@ -30,6 +36,8 @@ Overview and Comparison with other tools
   \item Pre/Post Models
 \end{itemize}
 
+\section{Unfolding}
+
 In \cite{Baldan2004}, the unfolding of graph transformation systems is used to generate test cases for code generators. 
 
 The main idea
@@ -40,4 +48,3 @@ The results
 
 The limitations
 
-\cite{Runge2013}
