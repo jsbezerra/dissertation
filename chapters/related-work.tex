@@ -4,6 +4,20 @@ There exists a wide range of model-based techniques to test generation~\cite{Utt
 
 The advantages of graph transformation systems over other models are...
 
+\section{Unfolding}
+
+In \cite{Baldan2004}, the unfolding of graph transformation systems is used to generate test cases for code generators.
+
+The main idea based on two graph grammars, a \textit{generating grammar} and an \textit{optimising grammar}. The first generates inputs, the second formalises specific transformation steps.
+
+The purpose
+
+The results
+
+The limitations: nacs extend the match with only one edge and are weaker than general nacs, isolated nodes are irrelevant, 
+
+acyclic graphs and maximal depth of the unfolding
+
 \section{Visual Contracts}
 
 An approach proposed by~\cite{Heckel2011},~\cite{Khan2012},~\cite{Khan2012a},~\cite{Runge2013} focusing mainly on generating test cases for service-oriented or component-based systems. Given that systems of this kind often hide their implementation, the authors use interface descriptions known as visual contracts\footnote{ Formally regarded as graph transformation rules with operation signatures}, in order to model the observable behaviour of the system.
@@ -35,16 +49,4 @@ Overview and Comparison with other tools
   \item UML
   \item Pre/Post Models
 \end{itemize}
-
-\section{Unfolding}
-
-In \cite{Baldan2004}, the unfolding of graph transformation systems is used to generate test cases for code generators. 
-
-The main idea
-
-The purpose
-
-The results
-
-The limitations
 
