@@ -6,9 +6,11 @@ The advantages of graph transformation systems over other models are...
 
 \section{Unfolding}
 
-In \cite{Baldan2004}, the unfolding of graph transformation systems is used to generate test cases for code generators.
+Code generators are a set of tools used to translate graphical specifications of systems directly into executable code. According to \cite{Baldan2004}, they are widely used in the development of embedded software, e.g. in the automotive sector, however they lack the maturity and testing when compared to compilers of standard programming languages.
 
-The main idea based on two graph grammars, a \textit{generating grammar} and an \textit{optimising grammar}. The first generates inputs, the second formalises specific transformation steps.
+According to them, one of the biggest problems is testing code generators is the difficulty to describe the transformation rules from the graphical model to the target language as well as the interactions amongst them in a precise and formal way. Therefore, the authors propose a graph transformation based approach for systematically deriving test cases in this particular scenario.
+
+Their approach is based on the use of two graph grammars, a \textit{generating grammar}, responsible for generating all possible input models, and an \textit{optimising grammar}, which formalises specific transformation steps towards code optimization.
 
 The purpose
 
