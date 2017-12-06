@@ -6,19 +6,20 @@ The advantages of graph transformation systems over other models are...
 
 \section{Unfolding}
 
-Code generators are a set of tools used to translate graphical specifications of systems directly into executable code. According to \cite{Baldan2004}, they are widely used in the development of embedded software, e.g. in the automotive sector, however they lack the maturity and testing when compared to compilers of standard programming languages.
+Code generators are tools used to translate graphical specifications of systems directly into executable code. According to \cite{Baldan2004}, they are widely used in the development of embedded software, e.g. in the automotive sector, however they lack the maturity and testing when compared to compilers of standard programming languages.
 
-According to them, one of the biggest problems is testing code generators is the difficulty to describe the transformation rules from the graphical model to the target language as well as the interactions amongst them in a precise and formal way. Therefore, the authors propose a graph transformation based approach for systematically deriving test cases in this particular scenario.
+According to them, one of the biggest problems in testing code generators is the difficulty to describe the transformation rules from the graphical model to the target language as well as the interactions amongst them in a precise and formal way. Therefore, the authors propose a graph transformation based approach for systematically deriving test cases in this particular scenario.
 
 Their approach is based on the use of unfolding of graph transformation systems~\cite{Ribeiro1996} over two graph grammars, a \textit{generating grammar}, responsible for generating all possible input models, and an \textit{optimising grammar}, which formalises specific transformation steps towards code optimization.
 
-The purpose
+The main purpose is to test the optimization phase, in an attempt to ensure no mistakes will be introduced by improving the code while preserving its behaviour. In this context, a test case for a subset of optimizing rules $R$ is an input model $G$ such that all the rules in $R$ can be computed over $G$. This is similar to our approach where, for a sequence to be executed, all the rules in that sequence must be applicable, however we also use the non-applicable ones in order to generate test
+cases where the application should fail.
 
-The results
+Their approach has also some limitations, it is focused on testing optimization of code generation, not the code generation in itself; the NACs used extend the match with only one edge and are weaker than general nacs, although they consider isolated nodes as irrelevant and being ``garbage collected''.
 
-The limitations: nacs extend the match with only one edge and are weaker than general nacs, isolated nodes are irrelevant, 
 
-acyclic graphs and maximal depth of the unfolding
+%Advantages: test of non-deterministic systems. While our approach can probably be extended to test non-deterministic systems, no attempts 
+%acyclic graphs and maximal depth of the unfolding
 
 \section{Visual Contracts}
 
