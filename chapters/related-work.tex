@@ -1,8 +1,12 @@
 \chapter{Related Work}\label{ch:related-work}
 
-There exists a wide range of model-based techniques to test generation~\cite{Utting2006}, however due to the scope of our work we will focus on those based on graph transformation systems.
+Graph Transformation Systems have a wide range of applications in Computer Science, particularly in the field of model driven engineering~\cite{modelDriven}. They can be used not only to model and simulate the execution of systems~\cite{Ehrig2009}, but also to analyse and prove properties about their behaviour~\cite{Lambers},~\cite{dissertacaoDoCarinha}, ~\cite{Penneman}, as a formal basis for translating a problem between different domain or layers ~\cite{tripleGraphGrammars} and even describe their own evolution~\cite{Machado2012}.
 
-The advantages of graph transformation systems over other models are...
+Not only they have the benefit of a solid formalism, they also enjoy several tools and practical approaches which have been developed over the last years in order that they can be applied over real, complex software systems, such as~\cite{AGG}, ~\cite{Groove},~\cite{Henshin},~\cite{GrGen.Net}.
+
+Our work aims to develop a particular field in which graph transformations systems can be applied in this context: model-based testing. Therefore, we present in the following some related work in the area and how they relate or differ from our own.
+
+We found in the literature two main techniques by which tests can be generated from graph grammars: the first one is based on the unfolding of graph transformations~\cite{Baldan2004} while the second uses visual contracts as graph rules and static analysis over them.
 
 \section{Unfolding}
 
