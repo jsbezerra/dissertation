@@ -8,18 +8,23 @@ Our work aims to develop a particular field in which graph transformations syste
 
 We found in the literature two main techniques by which tests can be generated from graph grammars: the first one is based on the unfolding of graph transformations~\cite{Baldan2004} while the second uses visual contracts as graph rules and static analysis over them.
 
-\section{Unfolding}
+\section{Generating tests by the unfolding of graph transformations}
 
-Code generators are tools used to translate graphical specifications of systems directly into executable code. According to \cite{Baldan2004}, they are widely used in the development of embedded software, e.g. in the automotive sector, however they lack the maturity and testing when compared to compilers of standard programming languages.
+This approach was first proposed to generate tests for code generators, which are tools used to translate graphical specifications of systems directly into executable code. According to \cite{Baldan2004}, these code generators are widely used in the development of embedded software, e.g. in the automotive sector, however they lack the maturity and testing when compared to compilers of standard programming languages.
 
-According to them, one of the biggest problems in testing code generators is the difficulty to describe the transformation rules from the graphical model to the target language as well as the interactions amongst them in a precise and formal way. Therefore, the authors propose a graph transformation based approach for systematically deriving test cases in this particular scenario.
+According to the authors, one of the biggest problems in testing code generators is the difficulty to describe the transformation rules from a graphical model to a target language (as well as the interactions amongst the rules) in a precise and formal way. Therefore, they propose a graph transformation based approach for systematically deriving test cases in this particular scenario.
 
-Their approach is based on the use of unfolding of graph transformation systems~\cite{Ribeiro1996} over two graph grammars, a \textit{generating grammar}, responsible for generating all possible input models, and an \textit{optimising grammar}, which formalises specific transformation steps towards code optimization.
+Their approach is based on the use of unfolding of graph transformation systems~\cite{Ribeiro1996} over two graph grammars, a \textit{generating grammar}, responsible for generating all possible input models, and an \textit{optimising grammar}, which formalises specific transformation steps towards code optimisation.
+The main purpose is to test the optimisation phase, in an attempt to ensure no mistakes will be introduced by improving the code while preserving its behaviour.
 
-The main purpose is to test the optimization phase, in an attempt to ensure no mistakes will be introduced by improving the code while preserving its behaviour. In this context, a test case for a subset of optimizing rules $R$ is an input model $G$ such that all the rules in $R$ can be computed over $G$. This is similar to our approach where, for a sequence to be executed, all the rules in that sequence must be applicable, however we also use the non-applicable ones in order to generate test
-cases where the application should fail.
+The unfolding of graph transformations consists of\ldots
 
-Their approach has also some limitations, it is focused on testing optimization of code generation, not the code generation in itself; the NACs used extend the match with only one edge and are weaker than general nacs, although they consider isolated nodes as irrelevant and being ``garbage collected''.
+In this environment, a test case for a subset of optimising rules $R$ is an input model $G$ such that all the rules in $R$ can be computed over $G$. This is similar to our approach where, for a sequence to be executable, all rules in that sequence must be applicable over the occurrence graph. However, we also use the non-executable ones in order to generate test cases where the system is indeed expected to fail.
+
+In spite of using the double-pushout approach the same way we do, they use the category of (typed-)hypergraphs with some restrictions, such as: isolated nodes\footnote{ Nodes that are neither the source nor the target of any edge.} can never exist in the $LHS$ or in any $NAC$ of a rule, every node that by any means becomes disconnected is considered ``garbage collected'', and NACs can extend the match only with one edge (which, according to the authors, makes them weaker than general NACs).
+Thus, despite of several similarities, our results are not fully comparable.
+
+Their approach is focused on testing the optimization steps of code generation, but little is presented about the code generation itself. Also, although their approach was proposed for a very practical application, no supporting tool was presented.
 
 
 %Advantages: test of non-deterministic systems. While our approach can probably be extended to test non-deterministic systems, no attempts 
