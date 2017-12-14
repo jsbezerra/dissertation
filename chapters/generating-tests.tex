@@ -175,9 +175,9 @@ As a side note, the reader may notice that it is not mandatory to create a span 
 \item\label{enum:construction-graphs} generate the initial and final graphs $I_\alpha$ and $J_\alpha$ by respectively deleting from $Occ_\alpha$ all elements ever created and deleted by the rules in $F'_\alpha$.
 
 \item\label{enum:construction-occurrence} calculate the produce-forbid and delete-forbid relations.
-  
+
 \begin{enumerate}
-\item use the concrete conflicts and dependencies to extend the causal relation in order to obtain the occurrence relation $\leq_o$.
+\item\label{enum:constructin-analysis} use the concrete conflicts and dependencies to extend the causal relation in order to obtain the occurrence relation $\leq_o$.
 
 \item\label{enum:construction-restriction} use the abstract conflicts and dependencies to generate the set $R_\alpha$ of restrictions over the ordering of rules applicability.
 \end{enumerate}
@@ -210,9 +210,12 @@ the other hand, her \textit{salad} will only be created after a series of events
 \newadd{After simply deleting those elements from $Occ_\alpha$, the result may be that either $I_\alpha$ or $J_\alpha$ are not valid graphs, in the case that any source or target node of an edge is deleted, but not the edge itself. This means that, for the execution of $F_\alpha$ to be performed, it would need to begin on or lead to an inconsistent state, therefore no sequencing of action in $F_\alpha$ can be performed in a real execution. However, if they are indeed valid graphs, we just have
 found the input and output data for our test case.}
 
-\newadd{If the steps~\ref{enum:construction-colimit} to~\ref{enum:construction-graphs} were able to be successfully performed, we have a grammar \mbox{$OGG_i = \left(Occ_i, I_i, F'_i\right)$} that is not only doubly-typed, but also strongly safe. Therefore it is a candidate to be an occurrence grammar.}
+\newadd{Notice that, if the steps listed so far (\ref{enum:construction-colimit} to~\ref{enum:construction-graphs}) were able to be successfully performed, we have a grammar \mbox{$OGG_\alpha = \left(Occ_\alpha, I_\alpha, F'_\alpha\right)$} that is not only doubly-typed, but also strongly safe. Therefore it is a candidate to be an occurrence grammar.}
 
-\newadd{In step~\ref{enum:construction-occurrence}, we proceed to the creation of the occurrence relation. First, we calculate all produce-forbid conflicts and delete-forbid dependencies for $OGG_i$, after what we use the information acquired in previous steps to classify them as concrete, abstract or non-existent as specified in Definitions~\ref{def:delete-forbid-strong} and~\ref{def:produce-forbid-strong}. The occurrence relation $\leq_o$ is then calculated from the causal relation together
+\newadd{In step~\ref{enum:construction-occurrence}, we proceed to the creation of the occurrence relation. Now, we calculate all produce-forbid conflicts and delete-forbid dependencies for the rules in $F'_\alpha$ by using the categorial algorithms presented in~\ref{def:classic-dependency} and~\ref{def:classic-conflict}. After that, we use the information acquired in the previous steps to classify them as concrete, abstract or non-existent as specified in
+Definitions~\ref{def:delete-forbid-strong} and~\ref{def:produce-forbid-strong}.}
+
+\newadd{The occurrence relation $\leq_o$ is then calculated from the causal relation together
 with the concrete conflicts and dependencies. In step~\ref{enum:construction-restriction} we create the set $R_i$ of restrictions as the union of all abstract conflicts and dependencies calculated before.}
 
 \newadd{Finally, we have the strongly safe grammar $OGG_i$ together with its corresponding occurrence relation $\leq_o$ and a set of restrictions $R_i$. Therefore, if $\leq_o$ is a partial order and it is possible to find a total ordering of it that respects all restrictions in $R_i$, it follows that $OGG_i$ is an occurrence graph grammar according to Definition~\ref{def:ogg}.}
