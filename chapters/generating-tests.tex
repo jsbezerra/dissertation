@@ -140,7 +140,7 @@ As a side note, the reader may notice that it is not mandatory to create a span 
 
 \subsection{Processing the input grammar}
 
-\newadd{In possession of the graph grammar model $GG$, the generation of test cases and oracles for a collection of functionalities $F_{\alpha}$ is accomplished by the construction of a deterministic occurrence graph grammar $OGG_{\alpha}$ by means of an amalgamation of $F_{\alpha}$ over its input-output relation $IO_{\alpha}$. The construction steps are specified in Definition~\ref{def:ogg-construction}.}
+\newadd{In possession of the graph grammar model $GG$, the generation of test cases and oracles for a collection of functionalities $F_{\alpha}$ is accomplished by means of an amalgamation of $F_{\alpha}$ over its input-output relation $IO_{\alpha}$, later used in the construction of doubly-typed graph grammar $OGG_\alpha$ from which we extract the tests. The construction steps are specified in Definition~\ref{def:ogg-construction}.}
 
 \begin{definition}[Deterministic Occurrence Graph Grammar Construction]\label{def:ogg-construction} Let \graphGrammar{} be a graph grammar, $F_{\alpha}$ a functionality collection and $IO_{\alpha}$ its corresponding input-output relation:
 
@@ -168,24 +168,38 @@ As a side note, the reader may notice that it is not mandatory to create a span 
     & & & & Occ & & & & &
 }\hfill\break}
 
-\item retype the rules in $F_\alpha$ over $Occ_\alpha$. In other words, use each morphism found from each $L_i, K_i, R_i$ to $Occ_\alpha$ as their respective new typing morphisms. This generates a set $F'_\alpha$ of $Occ_\alpha$ doubly-typed graph rules, since $Occ_\alpha$ is itself a $TG$ typed graph.
+\item retype the rules in $F_\alpha$ over $Occ_\alpha$. In other words, use each morphism found from each $L_i, K_i, R_i$ to $Occ_\alpha$ as their respective new typing morphism. This step generates a set $F'_\alpha$ of doubly-typed graph rules, since $Occ_\alpha$ is itself a $TG$ typed graph.
 
-\item calculate the causal relation $\leq_{c}$ using the doubly-typed graph rules in $F'_\alpha$.
-\item\label{enum:construction-graphs} generate the initial and final graphs $I_\alpha$ and $J_\alpha$.
-\item\label{enum:construction-occurrence} calculate the produce-forbid and delete-forbid relations, then extend the causal relation with the concrete conflicts and dependencies to generate the occurrence relation $\leq_o$.
-\item\label{enum:construction-restriction} create the set $R_\alpha$ of restrictions over the ordering of rules applicability with the abstract conflicts and dependencies.
-\item find (if possible) one or more total orderings respecting both the occurrence relation and the occurrence restrictions.
+\item calculate the causal relation $\leq_{c}$ of the doubly-typed graph rules in $F'_\alpha$.
+
+\item\label{enum:construction-graphs} generate the initial and final graphs $I_\alpha$ and $J_\alpha$ by respectively deleting from $Occ_\alpha$ all elements ever created and deleted by the rules in $F'_\alpha$.
+
+\item\label{enum:construction-occurrence} calculate the produce-forbid and delete-forbid relations.
+  
+\begin{enumerate}
+\item use the concrete conflicts and dependencies to extend the causal relation in order to obtain the occurrence relation $\leq_o$.
+
+\item\label{enum:construction-restriction} use the abstract conflicts and dependencies to generate the set $R_\alpha$ of restrictions over the ordering of rules applicability.
 \end{enumerate}
 
-  The (Deterministic) Occurrence Graph Grammar representing execution of the functionality $i$ is given by $OGG_i = (Occ_i, I_i,F_i)$, iff $OGG_i$ respects the conditions imposed by Definition~\ref{def:ogg} 
+\item\label{enum:construction-ordering} find one or more total orderings of rules in $F'_\alpha$ which respects both the occurrence relation and the occurrence restrictions.
+\end{enumerate}
+
+%  The (Deterministic) Occurrence Graph Grammar representing execution of the functionality $i$ is given by $OGG_i = (Occ_i, I_i,F_i)$, iff $OGG_i$ respects the conditions imposed by Definition~\ref{def:ogg} 
 \end{definition}
 
-The first step of the construction, the amalgamation of the rules in $F_i$ w.r.t. $IO_i$, is responsible to glue the graphs of all rules in one typed graph $Occ_i$, while identifying the items that are meant to be the same element at the grammar execution. Therefore, $Occ_i$ contains all elements ever to be created/preserved/deleted by any rule in $F_i$.
+If all the steps in such a construction can be successfully executed, specially steps~\ref{enum:construction-graphs} and~\ref{enum:construction-ordering}, we have that $OGG_\alpha = (Occ_\alpha, I_\alpha, F'_\alpha)$ is not only a doubly-typed graph grammar, but also a deterministic occurrence graph grammar. This means it is possible to successfully perform all functionalities in the original collection $F_\alpha$. Our approach creates test cases and oracles from $OGG_\alpha$ whether it is in
+fact an occurrence graph grammar or not. In the first case, we have tests for success and failure execution paths, whereas in the second we have tests only for the failure ones. Notwithstanding, we regard the failure tests as important because they pinpoint uses of the underlying system where the system itself is supposed to fail, therefore they can not or should not be performed. In the following, we dive into details of each construction step.
 
-\newadd{The retyping step is responsible to generate a collection $F'_i$ of doubly-typed graph rules from the colimit calculated in the previous step. For each graph rule in $ \mbox{$p^{T} = \left(L^{T} \leftarrow K^{T} \rightarrow R^{T}\right)$} \in F_i$, we generate a new rule \mbox{$p'^{Occ_i} = \left(L^{Occ_i} \leftarrow K^{Occ_i} \rightarrow R^{Occ_i}\right)$}, where the typing morphisms are those from the rules graphs to the colimit graph. Since $Occ_i$ is also both the typed graph of the
-new rules and a typed graph over $T$, the rules are doubly-typed over $Occ_i^T$.}
+The first step of the construction, the amalgamation of the rules in $F_\alpha$ w.r.t. $IO_\alpha$, is responsible to ``glue'' the graphs of all rules in one typed graph $Occ_\alpha$, while identifying the items that are meant to be the same throughout the grammar execution. Therefore, at the end $Occ_\alpha$ contains all elements ever to be created, preserved or deleted by any of the rules in the functionality collection $F_\alpha$.
 
-\newadd{Once having the doubly-typed graph rules, we proceed to the creation of the causal relation, as described in Definition~\ref{def:causal-relation}, which is the first indicative of whether it is possible to construct an occurrence graph grammar for this collection of rules. Remember that this relation must be a total order, otherwise it indicates a problem in the modelling or in the system.}
+\newadd{The retyping step is responsible for generating ``new'' graph rules which, rather than being generic descriptions of functionalities, represent concrete executions of those functionalities over a given context. The waiter in a rule is not just a waiter anymore, he is ``John''; the client is also not a generic client, she is ``Ann''; orders become salads, pasta, pies and so on.}
+%The set $F'_\alpha$ of doubly-typed graph rules from the colimit calculated in the previous step.
+
+\newadd{For each original graph rule $\mbox{$p^{T} = \left(L^{T} \leftarrow K^{T} \rightarrow R^{T}\right)$} \in F_\alpha$, we generate a new rule \mbox{$p'^{Occ_\alpha} = \left(L^{Occ_\alpha} \leftarrow K^{Occ_\alpha} \rightarrow R^{Occ_\alpha}\right)$}, where the typing morphisms are those from the rules graphs to the colimit graph. Since $Occ_\alpha$ is the type graph of the
+new rules and, at the same time, a typed graph over $T$, the new rules are doubly-typed over $Occ_\alpha^T$.}
+
+\newadd{Once the set $F'_\alpha$ with the new rules was created, we proceed to the calculating the causal relation, as described in Definition~\ref{def:causal-relation}. This relation is the very first indicative of whether it is possible to construct an occurrence graph grammar for this collection of rules. Remember that this relation must be a total order, otherwise it indicates a problem in the modelling or in the system.}
 
 \newadd{Possessing the causal relation, we can generate the initial and final graphs of this execution. To do so, we delete from $Occ_i$ the elements that are created (resp. deleted) by the rules in $F'_i$ according to the causal relation. If they are valid graphs, we have the input and output data for the test case. Otherwise, if they have dangling edges, it is not possible to apply all rules of the functionality, since it would begin in (or lead to) an inconsistent state.}
 
