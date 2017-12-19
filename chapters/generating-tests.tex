@@ -177,7 +177,7 @@ As a side note, the reader may notice that it is not mandatory to create a span 
 \item\label{enum:construction-occurrence} calculate the produce-forbid and delete-forbid relations.
 
 \begin{enumerate}
-\item\label{enum:constructin-analysis} use the concrete conflicts and dependencies to extend the causal relation in order to obtain the occurrence relation $\leq_o$.
+\item\label{enum:construction-analysis} use the concrete conflicts and dependencies to extend the causal relation in order to obtain the occurrence relation $\leq_o$.
 
 \item\label{enum:construction-restriction} use the abstract conflicts and dependencies to generate the set $R_\alpha$ of restrictions over the ordering of rules applicability.
 \end{enumerate}
@@ -212,7 +212,8 @@ found the input and output data for our test case.}
 
 \newadd{Notice that, if the steps listed so far (\ref{enum:construction-colimit} to~\ref{enum:construction-graphs}) were able to be successfully performed, we have a grammar \mbox{$OGG_\alpha = \left(Occ_\alpha, I_\alpha, F'_\alpha\right)$} that is not only doubly-typed, but also strongly safe. Therefore it is a candidate to be an occurrence grammar.}
 
-\newadd{In step~\ref{enum:construction-occurrence}, we proceed to the creation of the occurrence relation. Now, we calculate all produce-forbid conflicts and delete-forbid dependencies for the rules in $F'_\alpha$ by using the categorial algorithms presented in~\ref{def:classic-dependency} and~\ref{def:classic-conflict}. After that, we use the information acquired in the previous steps to classify them as concrete, abstract or non-existent as specified in
+\newadd{In step~\ref{enum:construction-occurrence}, we proceed towards creating the occurrence relation and occurrence relation restrictions. In~\ref{enum:construction-analysis}, we calculate all produce-forbid conflicts and delete-forbid dependencies between the rules in $F'_\alpha$ by using the categorial algorithms presented in~\ref{def:classic-dependency} and~\ref{def:classic-conflict}. So far, we do not know whether these conflicts and dependencies will be exercised during the execution of our underlying grammar. For example:
+a client can not be accommodated at a table reserved for another client. \textit{John} can however accommodate \textit{Ann} at a table specifically reserved for her or at any table not reserved at all. Given the information collected so far we can deduce if this condition exists in this given execution and/or under which conditions it exists. Hence, we use the information acquired in previous steps to classify those conflicts and dependencies as concrete, abstract or non-existent as specified in
 Definitions~\ref{def:delete-forbid-strong} and~\ref{def:produce-forbid-strong}.}
 
 \newadd{The occurrence relation $\leq_o$ is then calculated from the causal relation together
