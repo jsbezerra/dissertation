@@ -52,7 +52,7 @@ Figure~\ref{fig:tests:methodology} summarizes the methodology process proposed i
 
 \section{Running Example: A Restaurant System}
 
-We will present a running example built using this methodology, which models a system to automate the processes of a restaurant. The graph grammar for this system was extracted from the set of use cases presented in Appendix~\ref{app:use-cases}. The use cases model basic functionalities of the system such as login of employees, reservation and cancellation of tables, accommodation of clients, serving tables, among others.
+We present a running example modelling a system to automate the processes of a restaurant, which was built using the methodology described before. The graph grammar for this system was extracted from the set of use cases presented in Appendix~\ref{app:use-cases}. These use cases model basic restaurant functionalities such as login of employees, reservation and cancellation of tables, accommodation of clients, serving tables, among others.
 
 Some excerpts of this grammar are shown throughout this chapter, while the complete extracted grammar can be found on appendix~\ref{app:use-cases} and at the Verites repository for case studies\footnote{https://github.com/Verites/case-studies}.
 
@@ -64,10 +64,10 @@ Some excerpts of this grammar are shown throughout this chapter, while the compl
 
 \newadd{The reason why we focused on collections of functionalities is to test the emergent behaviour of a system, which usually is not observable if we consider each functionality in isolation. By grouping together several (usually, but not necessarily different) functionalities, we may realize how they can or can not interact with each other and which are the overall effects of this integration.}
 
-\newadd{\begin{definition}[Functionality Collection] Given a graph grammar \graphGrammar{} modelling a system, a \emph{functionality collection} $F$ is a collection of its grammar rules. The term collection here is used to imply that the same rule $r \in P$ can appear more than one time in $F$, which in this context means the functionality modelled by $r$ is intended to be executed more than once.
+\newadd{\begin{definition}[Functionality Collection] Given a graph grammar \graphGrammar{} modelling a system, a \emph{functionality collection} $F$ is a collection of its grammar rules. The term collection here is used to imply that the same rule $r \in P$ can appear more than one time in $F$. In this context, it means the functionality modelled by $r$ is intended to be executed more than once.
 \end{definition}}
 
-\begin{example} Figure~\ref{fig:tests:grammar} shows an example of such a collection from our running example. The chosen rules represent one way in which the entire process of serving a client can be accomplished. In this particular case, we chose the rules that represent the use cases \emph{reserve table}, \emph{accommodate client}, \emph{serve table} and \emph{close table}. \important{explain the goals of each functionality before showing the rules}. \important{show one more example where it fails?}
+\begin{example} Figure~\ref{fig:tests:grammar} shows an example of such a collection from our running example. The chosen rules represent one way in which the entire process of serving a client can be accomplished. In this particular case, we chose the rules representing the use cases \emph{reserve table}, \emph{accommodate client}, \emph{serve table} and \emph{close table}. \important{explain the goals of each functionality before showing the rules}.
 
 \begin{figure}[!ht]
   \centering
@@ -108,7 +108,7 @@ Some excerpts of this grammar are shown throughout this chapter, while the compl
 
 \subsection{Preparing the input}
 
-Along with the grammar $GG$ and a functionality collection $F$, we will also need an \emph{input-output relation} $IO$, specifying connections between the rules in $F$. This \emph{input-output relation} identifies which elements (nodes and edges) must be the between different pairs of rules, as shown in example~\ref{ex:inout}.
+Along with the grammar $GG$ and a functionality collection $F$, we will also need a way of specifying how the functionalities will interact among themselves. For this purpose, we create an \emph{input-output relation}, depicting connections between the rules in $F$. The objects in this relation identify which elements (nodes and edges) must be the same inside each pair of rules, as shown in example~\ref{ex:inout}.
 
 \begin{definition}[Input-Output Relation] \newadd{Given a functionality collection $F$, its underlying \emph{input-output relation} $IO$ is a set of typed-graph morphism spans of the form \mbox{$R_x \leftarrow IO_i \rightarrow L_y$}\footnote{ Or \mbox{$L_x \leftarrow IO_i \rightarrow R_y$}, the order in this matter is not important} each of which connects two distinct rules $x,y \in F$.}
 
@@ -125,10 +125,15 @@ Along with the grammar $GG$ and a functionality collection $F$, we will also nee
 
 \end{definition}
 
+\begin{remark}\newadd{We could have have included in the $IO$ relation spans that connect only the left (resp. right) sides of rules, however we would accomplish very little with this kind of span. Since an element can not be deleted or created by two different rules at once, this particular kind of span would serve only to identify the elements that are preserved by both rules.}
+\end{remark}
+
 \begin{example}[Input-Output Relations]\label{ex:inout} \important{review} \important{Figure~\ref{fig:tests:inout} shows an $IO$ object connecting\ldots explain this in terms of he running example}
 
 As a side note, the reader may notice that it is not mandatory to create a span \mbox{$\left(R_x \leftarrow IO_i \rightarrow L_y\right)$} for each pair of rules. Take for example the \emph{system} node of the grammar in a scenario where we want this node to represent the same exact system among all rules. Given two rules $p_1$ and $p_2$, we have the options of building the span that identifies the system node as
   $R_1 \leftarrow IO \rightarrow L_2$ or $R_2 \leftarrow IO \rightarrow L_1$, or even the two of them. All of which have the same final effect.
+
+This is one of the manual steps of our strategy, therefore it is left to the analyst to decide how to better implement his/her own $IO$ relation.
 
 \begin{figure}[!ht]
   \centering
@@ -191,21 +196,21 @@ As a side note, the reader may notice that it is not mandatory to create a span 
 If all the steps in such a construction can be successfully executed, specially steps~\ref{enum:construction-graphs} and~\ref{enum:construction-ordering}, we have that $OGG_\alpha = (Occ_\alpha, I_\alpha, F'_\alpha)$ is not only a doubly-typed graph grammar, but also a deterministic occurrence graph grammar. This means it is possible to successfully perform all functionalities in the original collection $F_\alpha$. Our approach creates test cases and oracles from $OGG_\alpha$ whether it is in
 fact an occurrence graph grammar or not. In the first case, we have tests for success and failure execution paths, whereas in the second we have tests only for the failure ones. Notwithstanding, we regard the failure tests as important because they pinpoint uses of the underlying system where the system itself is supposed to fail, therefore they can not or should not be performed. In the following, we dive into details of each construction step.
 
-The first step of the construction, the amalgamation of the rules in $F_\alpha$ w.r.t. $IO_\alpha$, is responsible to ``glue'' the graphs of all rules in one typed graph $Occ_\alpha$, while identifying the items that are meant to be the same throughout the grammar execution. Therefore, at the end $Occ_\alpha$ contains all elements ever to be created, preserved or deleted by any of the rules in the functionality collection $F_\alpha$.
+\newadd{The first step of the construction, the amalgamation of the rules in $F_\alpha$ w.r.t. $IO_\alpha$, is responsible to ``glue'' the graphs of all rules in one typed graph $Occ_\alpha$, while identifying the items that are meant to be the same throughout the grammar execution. This can be regarded as a mapping which turns generic elements such as \textit{a waiter} and a \textit{a client} into concrete elements such as the waiter named \textit{John} and the client named \textit{Ann}.
+Therefore, at the end of this step, $Occ_\alpha$ contains all concrete elements ever to be created, preserved or deleted by any of the rules in the functionality collection $F_\alpha$.}
 
-\newadd{The retyping step is responsible for generating ``new'' graph rules which, rather than being generic descriptions of functionalities, represent concrete executions of those functionalities over a given context. The waiter in a rule is not just a waiter anymore, he is \textit{John}; the client is also not a generic client, she is \textit{Ann}; orders become \textit{salads, pasta, pies}, and so on.}
+\newadd{The retyping step is responsible for generating ``new'' graph rules which, rather than being generic descriptions of functionalities, represent executions of those functionalities over a given context. Therefore, a rule which describes the process where a waiter services a client becomes a concrete action where the waiter \textit{John} services the client \textit{Ann}.}
 %The set $F'_\alpha$ of doubly-typed graph rules from the colimit calculated in the previous step.
+\newadd{For each original graph rule $\mbox{$p^{T} = \left(L^{T} \leftarrow K^{T} \rightarrow R^{T}\right)$} \in F_\alpha$, we generate a new action \mbox{$q^{Occ_\alpha} = \left(L^{Occ_\alpha} \leftarrow K^{Occ_\alpha} \rightarrow R^{Occ_\alpha}\right)$}, where the typing morphisms are those from the original rules to the colimit graph. Since $Occ_\alpha$ is the type graph of the
+new rules and, at the same time, a typed graph over $T$, the actions are new doubly-typed rules over $Occ_\alpha^T$.}
 
-\newadd{For each original graph rule $\mbox{$p^{T} = \left(L^{T} \leftarrow K^{T} \rightarrow R^{T}\right)$} \in F_\alpha$, we generate a new rule \mbox{$q^{Occ_\alpha} = \left(L^{Occ_\alpha} \leftarrow K^{Occ_\alpha} \rightarrow R^{Occ_\alpha}\right)$}, where the typing morphisms are those from the original rules to the colimit graph. Since $Occ_\alpha$ is the type graph of the
-new rules and, at the same time, a typed graph over $T$, the new rules are doubly-typed over $Occ_\alpha^T$.}
-
-\newadd{Once the set $F'_\alpha$ with the new rules was created, we proceed to the calculating the causal relation, as described in Definition~\ref{def:causal-relation}. This relation is the very first indicative of whether it is possible to construct an occurrence graph grammar for this collection of rules. Remember that this relation must be a total order, otherwise it indicates a problem in the modelling or in the system. This relation will tell us the order in which the actions must be
-performed in a given working day at the restaurant, for example: \textit{Ann} must be on a
+\newadd{Once the set $F'_\alpha$ of actions was created, we proceed to the calculating the causal relation, as described in Definition~\ref{def:causal-relation}. This relation is the very first indicative of whether it is possible to construct an occurrence graph grammar for the given collection of rules. Remember that this relation must be a total order, otherwise the functionality is not executable. Specifically, the causal relation gives us hints over the order in which the actions must be
+performed to accomplish the functionality aims, for example: \textit{Ann} must be on a
 table before she orders a \textit{salad}, \textit{John} can not create a new reservation for, let us say \textit{Alex}, if he has not logged in the system, etc.}
 
-\newadd{The next step consists of using the causal relation and the graph $Occ_\alpha$ in order to generate the initial and final graphs of our target grammar, which correspond to the given input and expected output of performing $F_\alpha$. To do so, we delete from $Occ_\alpha$ the elements that are created (resp. deleted) by the rules in $F'_\alpha$ according to the causal relation. For example, \textit{Ann} is a person who can never be created by any functionality of our system, no matter how
-advanced. As a consequence she must be present into any initial states of the actions performed with her. On
-the other hand, her \textit{salad} will only be created after a series of events triggered after \textit{Ann} has entered the restaurant, therefore her \textit{salad} will not exist at an initial state.}
+\newadd{The next step consists of using the causal relation and the graph $Occ_\alpha$ in order to generate the initial and final graphs of our target grammar. These graphs correspond to the necessary input and expected output of performing $F_\alpha$. In order to create the graphs, we delete from $Occ_\alpha$ the elements that are created (resp. deleted) by the rules in $F'_\alpha$ according to the causal relation. For example: \textit{Ann} is a person who can never be created by any functionality of our system, no matter how
+advanced, as a consequence she must be present in any initial states of the actions performed with her. On
+the other hand, her \textit{salad} will only be created after a series of other events were triggered, for instance \textit{Ann} must have entered the restaurant. Thus, her \textit{salad} can not exist at an initial state.}
 
 \newadd{After simply deleting those elements from $Occ_\alpha$, the result may be that either $I_\alpha$ or $J_\alpha$ are not valid graphs, in the case that any source or target node of an edge is deleted, but not the edge itself. This means that, for the execution of $F_\alpha$ to be performed, it would need to begin on or lead to an inconsistent state, therefore no sequencing of action in $F_\alpha$ can be performed in a real execution. However, if they are indeed valid graphs, we just have
 found the input and output data for our test case.}
