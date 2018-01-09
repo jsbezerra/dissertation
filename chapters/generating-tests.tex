@@ -58,16 +58,23 @@ Some excerpts of this grammar are shown throughout this chapter, while the compl
 
 \section{Generating Tests using Occurrence Graph Grammars}
 
-\newadd{Given the graph grammar model of a system, we want to generate test cases and test oracles for collections of its underlying functionalities. These collections could represent something as ``atomic'' as a successful or failing login attempt or something as complex as the entire workflow of attending clients, which could require attendants and waiters to log in into the system, tables to be occupied, orders to be prepared, among possibly several other steps.}
+\newadd{Given the graph grammar model of a system, we want to generate test cases and oracles for collections of its underlying functionalities. These collections could represent something as ``atomic'' as a successful or failing login attempt or something as complex as the entire workflow of attending clients, which would require attendants and waiters to log in into the system, tables to be occupied, orders to be prepared, among possibly several other steps.}
 
 \important{maybe the difference between unit and integration tests}
 
-\newadd{The reason why we focused on collections of functionalities is to test the emergent behaviour of a system, which usually is not observable if we consider each functionality in isolation. By grouping together several (usually, but not necessarily different) functionalities, we may realize how they can or can not interact with each other and which are the overall effects of this integration.}
+\newadd{The reason why we focused on collections of functionalities is to test the emergent behaviour of a system, which usually is not observable if we consider each functionality in isolation. By grouping together several (usually, but not necessarily different) functionalities, we may realize how they interact with each other and which are the overall effects of this integration.}
 
-\newadd{\begin{definition}[Functionality Collection] Given a graph grammar \graphGrammar{} modelling a system, a \emph{functionality collection} $F$ is a collection of its grammar rules. The term collection here is used to imply that the same rule $r \in P$ can appear more than one time in $F$. In this context, it means the functionality modelled by $r$ is intended to be executed more than once.
+\newadd{\begin{definition}[Functionality Collection] Given a graph grammar \graphGrammar{} that models a system, a \emph{functionality collection} $F$ is a collection of its grammar rules. The term collection here is used instead of set to imply that the same rule $r \in P$ can appear more than once in $F$. In this context, it means the functionality modelled by $r$ is intended to be executed more than once.
 \end{definition}}
 
-\begin{example} Figure~\ref{fig:tests:grammar} shows an example of such a collection from our running example. The chosen rules represent one way in which the entire process of serving a client can be accomplished. In this particular case, we chose the rules representing the use cases \emph{reserve table}, \emph{accommodate client}, \emph{serve table} and \emph{close table}. \important{explain the goals of each functionality before showing the rules}.
+\begin{example} Figure~\ref{fig:tests:grammar} shows an example of such a collection from our running example. The chosen rules represent one way in which the entire process of serving a client can be accomplished. In this particular case, we chose the rules representing the successful paths of the use cases \emph{reserve table}, \emph{accommodate client}, \emph{serve table} and \emph{close table}.
+
+\begin{description}
+  \item[Reserve table:] The receptionist of tags a table as reserved for a specific client at a given date and time, such that the reserved table can not be allocated for another client, either by accommodation or reservation, at the same time.
+  \item[Accomodate client:] The receptionist lead the client to his/her previously reserved table, then notifies a waiter that this table is waiting for service.
+  \item[Serve table:] The waiter goes to a table with clients to take the order, which consists of adding or removing items to the order, then closing it and sending it to the kitchen to be prepared.
+  \item[Close table:] The waiter goes to a table that has been serviced, closes the bill and collects the payment from the client.
+\end{description}
 
 \begin{figure}[!ht]
   \centering
@@ -108,11 +115,11 @@ Some excerpts of this grammar are shown throughout this chapter, while the compl
 
 \subsection{Preparing the input}
 
-Along with the grammar $GG$ and a functionality collection $F$, we will also need a way of specifying how the functionalities will interact among themselves. For this purpose, we create an \emph{input-output relation}, depicting connections between the rules in $F$. The objects in this relation identify which elements (nodes and edges) must be the same inside each pair of rules, as shown in example~\ref{ex:inout}.
+Along with the grammar $GG$ and a functionality collection $F$, we will also need a way of specifying how the functionalities will interact among themselves. Specifically, which pieces of data will be exchanged among these functionalities. For this purpose, we create an \emph{input-output relation}, depicting connections between the rules in $F$. The objects in this relation identify which elements (nodes and edges) must be the same inside each pair of rules, as shown in example~\ref{ex:inout}.
 
-\begin{definition}[Input-Output Relation] \newadd{Given a functionality collection $F$, its underlying \emph{input-output relation} $IO$ is a set of typed-graph morphism spans of the form \mbox{$R_x \leftarrow IO_i \rightarrow L_y$}\footnote{ Or \mbox{$L_x \leftarrow IO_i \rightarrow R_y$}, the order in this matter is not important} each of which connects two distinct rules $x,y \in F$.}
+\begin{definition}[Input-Output Relation] \newadd{Given a functionality collection $F$, its underlying \emph{input-output relation} $IO$ is a set of typed-graph morphism spans of the form \mbox{$R_x \leftarrow IO_i \rightarrow L_y$}\footnote{ Or \mbox{$L_x \leftarrow IO_i \rightarrow R_y$}, the order in this matter is not important.} each of which connects two distinct rules $x,y \in F$.}
 
-  \newadd{  The $IO_i$ object of each span works similarly to the gluing graph of a rule, but instead of identifying elements that are the same in both left and right sides of a single rule, it identifies the elements that are necessarily the same between two different rules.}
+  \newadd{The $IO_i$ object of each span works similarly to the gluing graph of a rule, but instead of identifying elements that are the same in both left and right sides of a single rule, it identifies the elements that are necessarily the same between two different rules.}
 
   \newadd{An input-output relation for a functionality collection will have an appearance similar to the diagram bellow, where there are several $IO$ objects connecting the right-hand side of a rule with the left-hand side of another one.}
 
@@ -125,15 +132,13 @@ Along with the grammar $GG$ and a functionality collection $F$, we will also nee
 
 \end{definition}
 
-\begin{remark}\newadd{We could have have included in the $IO$ relation spans that connect only the left (resp. right) sides of rules, however we would accomplish very little with this kind of span. Since an element can not be deleted or created by two different rules at once, this particular kind of span would serve only to identify the elements that are preserved by both rules.}
+\begin{remark}\newadd{We could have have included in the $IO$ relation spans that connect only the left (resp. right) sides of rules, however we would accomplish very little with this kind of span. Since an element can not be deleted or created by two different rules at once, this particular kind of span would serve only to identify the elements that are preserved by both rules, otherwise they would introduce inconsistencies.}
 \end{remark}
 
 \begin{example}[Input-Output Relations]\label{ex:inout} \important{review} \important{Figure~\ref{fig:tests:inout} shows an $IO$ object connecting\ldots explain this in terms of he running example}
 
-As a side note, the reader may notice that it is not mandatory to create a span \mbox{$\left(R_x \leftarrow IO_i \rightarrow L_y\right)$} for each pair of rules. Take for example the \emph{system} node of the grammar in a scenario where we want this node to represent the same exact system among all rules. Given two rules $p_1$ and $p_2$, we have the options of building the span that identifies the system node as
-  $R_1 \leftarrow IO \rightarrow L_2$ or $R_2 \leftarrow IO \rightarrow L_1$, or even the two of them. All of which have the same final effect.
-
-This is one of the manual steps of our strategy, therefore it is left to the analyst to decide how to better implement his/her own $IO$ relation.
+As a side note, the reader may notice that it is not mandatory to create a span \mbox{$\left(R_x \leftarrow IO_i \rightarrow L_y\right)$} for every pair of rules. For example, the \emph{system} node of the grammar in a scenario where we want this node to represent the same exact system among all rules. Given two rules $p_1$ and $p_2$, we have the options of building the span that identifies the system node as
+  $R_1 \leftarrow IO \rightarrow L_2$ or $R_2 \leftarrow IO \rightarrow L_1$, or even the two of them. All of which have the same final effect. The construction of the \textit{input-output relation} is one of the manual steps of our strategy, therefore it is left to the analyst to decide how to better implement his/her own $IO$ relation.
 
 \begin{figure}[!ht]
   \centering
