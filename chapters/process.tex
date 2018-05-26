@@ -1,22 +1,21 @@
 \chapter{Occurrence Graph Grammars}\label{ch:process}
 
-Occurrence graph grammars were defined for the Single-Pushout (SPO) approach by~\cite{Ribeiro1996}, and for the Double-Pushout (DPO) approach by~\cite{Corradini1996}. In both cases they consist of a way of representing the concurrent semantics of a graph grammar as a graph grammar. 
+Occurrence graph grammars were defined for the Single-Pushout (SPO) approach by~\cite{Ribeiro1996}, and for the Double-Pushout (DPO) approach by~\cite{Corradini1996}. In both cases they consist of a way of representing the concurrent semantics of a graph grammar as a graph grammar.
 
-The aim of an occurrence graph grammar is to describe all possible states and changes of states of the graph grammar from which the occurrence graph grammar was constructed. This is possible because occurrence grammars can be viewed as the entire execution history of the underlying grammar. This history is encoded under the forms of (1) a \emph{core graph} containing all elements ever used in the execution of a grammar and (2) a set of \emph{relations} between the rules and elements of this core graph. 
+The aim of an occurrence graph grammar is to describe all possible states and changes of states of the graph grammar from which it was constructed. This is possible because occurrence grammars can be viewed as the entire execution history of the underlying grammar. This history is encoded under the forms of (1) a \emph{core graph} containing all elements ever used in the execution of a grammar and (2) a set of \emph{relations} between the rules and elements of this core graph. 
 
-The relations can be used to express dependencies among the core graph elements, such as which of them must occur together, i.e. at the same state, which ones must be created/deleted one after the other, which elements must never occur together, and so on. They also encode restrictions over the application of rules, e.g. which rules are sequentially dependent on others, whether it is possible to successfully apply all the rules of a grammar. This property makes occurrence graph grammars excellent
-candidates for the generation of test cases, as we are interested in a way of representing several (equivalent) possible derivations using a compact notation.
+The relations can be used to express dependencies among the core graph elements, such as which of them must occur together, at the same state, which ones must be created/deleted one after the other, which elements must never occur together, and so on. They also encode restrictions over the application of rules, such as which rules are sequentially dependent on others or whether it is possible to successfully apply all the rules of a grammar. %This property makes occurrence graph grammars excellent candidates for the generation of test cases, as we are interested in a way of representing several (equivalent) possible derivations using a compact notation.
 
 However, Negative Application Conditions are not addressed by the original definitions of occurrence grammars. Still, NACs are nowadays essential for modelling complex systems as graph grammars, since they provide more possibilities to control the application of rules~\cite{Habel1996, Lambers2008, Corradini2014}.
 
-In order to use this framework for our purposes, we first need to extend occurrence grammars in order to contemplate negative application conditions. Thus, in the next sections we review the works done by~\cite{Ribeiro1996} and~\cite{Corradini1996} in occurrence graph grammars, after which we propose an extension to deal with NACs.
+In this work, we propose an extension of the occurrence grammars framework in order to contemplate negative application conditions. \important{Improve this paragraph.} Thus, in the next sections we review the works done by~\cite{Ribeiro1996} and~\cite{Corradini1996} in occurrence graph grammars, after which we propose an extension to deal with NACs.
 
 \section{Occurrence Graph Grammars}
 
 \begin{definition}[Doubly-Typed Graph] Given a type graph $T$, a \emph{doubly-typed graph} \doublyTypedGraph{} over $T$ is a tuple \doublyTypedGraph $= \left(G^T,TG^T, t^{G^T} : G^T \rightarrow TG^T\right)$ where $G^T$ and $TG^T$ are typed graphs over $T$ and \mbox{$t^{G^T} : G^T \rightarrow TG^T$} is a typed graph morphism in \typedGraphCategory{}. We call $TG^T$ the \emph{double-type graph} and $t^{G^T}$ the double-typing morphism.
 \end{definition}
 
-\begin{remark}[Typing Morphism] In this work, we will consider only doubly-typed graphs whose typing morphism $type_{TG} : TG \rightarrow T$ is an epimorphism. This has the effect that every element present in $T$ is the image of at least one element from $TG$.
+\begin{remark}[Typing Morphism] \newadd{As we are interested in occurrence graph grammars,} we will consider only doubly-typed graphs whose typing morphism $type_{TG} : TG \rightarrow T$ is an epimorphism. This has the effect that every element present in $T$ is the image of at least one element from $TG$.
 \end{remark}
 
 \begin{example}[Doubly-Typed Graph Example] Figure~\ref{fig:process:doubly-typed-graph} shows a doubly-typed graph $G^{TG^T}$.
@@ -49,7 +48,7 @@ Notice that the (single) type morphisms $type_G : G \rightarrow T$ and $type_H :
   \caption{Doubly-typed graph morphism}\label{fig:process:doubly-typed-graph-morphism}
 \end{figure}
 
-\begin{remark} \cite{Ribeiro1996} defined different kinds of doubly-typed graph morphisms based on whether the doubly-type graphs and the type graphs are or are not the same. In this work we are only interested in the case where all doubly-typed graphs share the same double-type and type graphs. Therefore we will call the \mbox{\emph{$TG^T$-doubly-typed graph morphisms}} simply by \emph{doubly-typed graph morphisms} through the rest of this thesis.
+\begin{remark} \cite{Ribeiro1996} defined different kinds of doubly-typed graph morphisms based on whether the doubly-type graphs and the type graphs are or are not the same. In this work we are only interested in the case where all doubly-typed graphs share the exact same double-type and type graphs. Therefore, through the rest of this thesis, we will refer to \mbox{\emph{$TG^T$-doubly-typed graph morphisms}} simply by \emph{doubly-typed graph morphisms}.
 \end{remark}
 
 
@@ -98,19 +97,21 @@ A (doubly-typed) match morphism $m^{TG^T} : L^{TG^T} \rightarrow G^{TG^T}$ of a 
 \end{definition}
 
 \begin{remark}
-We could have defined NACs whose morphisms are doubly-typed graph morphisms (which would then act specifically over doubly-typed graphs), but we will not use this kind of NACs later in our work. Therefore, we will use \emph{single-typed} NACs as the only NAC type in all of our \emph{doubly-typed graph grammars}, and $NAC(n)$ as a synonym of $NAC(n^T)$.
+  We could have defined NACs whose morphisms are doubly-typed graph morphisms, which would then act specifically over doubly-typed graphs. However, \tinytodo{the use of this kind of NAC would generate a doubly-typed grammar with a set of NACs much bigger than the original one} we will not use this kind of NACs later in our work\newadd{, as we are interested in a compact and more abstract characterization for the semantics of graph grammars}. Therefore, we will use \emph{single-typed} NACs as the only NAC type in all of our \emph{doubly-typed graph grammars}, and $NAC(n)$ as a synonym of $NAC(n^T)$.
 \end{remark}
 
-\newadd{In a grammar whithout NACs, if there is a sequence of graph transformations $t_0\ldots t_n$ where each pair $(t_i,t_{i+1})$ of consecutive transformations is sequentially independent, then it is possible to \emph{switch} the
+\important{definition of switch equivalence}
+
+\newadd{In a grammar without NACs, if there is a sequence of graph transformations $t_0\ldots t_n$ where each pair $(t_i,t_{i+1})$ of consecutive transformations is sequentially independent, then it is possible to \emph{switch} the
 order of application for any pair in that sequence an arbitrary number of times and still achieve the same final graph as a result (up to isomorphism). This property is called \emph{switch equivalence}~\cite{Corradini2013}.}
 
-However, the switch equivalence does not always hold when the grammar has NACs. This happens because when NACs come into play, there may be situations where a NAC of a rule can be triggered by the cumulative effect of applying two (or more) other rules, while the same rules would not trigger this NAC without the other. This may lead to a situation where conflicts and dependencies
+However, the switch equivalence does not always hold when the grammar has NACs. This happens because there may be situations where the NAC of a rule can be triggered by the cumulative effect of applying two (or more) other rules, while the same rules would not trigger this NAC in isolation. This may lead to a situation where conflicts and dependencies
 are not \emph{stable under switch}, \newadd{which means that conflicts or dependencies that do not occur in a given sequence of transformations can appear if one or more pairs of transformations are switched.} An example is shown in Figure~\ref{ex:process:instability}.
 
 \begin{example}[Switch Equivalence]\label{ex:process:instability}The rules depicted in Figure~\ref{fig:process:instability} show a situation where the independency between rules is not stable under switch equivalence.
 
-  In this example, all rules are independent and also do not conflict with each other in the sense of Definitions~\ref{def:classic-dependency} and~\ref{def:classic-conflict}. Thus, in theory, it should be possible to apply this rules in any order or in parallel. Particularly, it is possible to apply all rules in the order they appear in the figure, i.e. $[p_1, p_2, p_3]$. It is also possible to apply them in the orders $[p_1, p_3, p_2]$, $[p_2, p_1, p_3]$ and $[p_3, p_1, p_2]$. However, the
-  sequences $[p_2, p_3, p_1]$ or $[p_3, p_2, p_1]$ are not possible. This problem arises from the fact that $p_2$ and $p_3$ independently create a piece of the pattern forbidden by the NAC of $p_1$ in a way that, although the effect of each rule by itself does not trigger the NAC of $p_1$, their combined effects do.
+  In this example, all rules are independent and also do not conflict with each other in the sense of Definitions~\ref{def:classic-dependency} and~\ref{def:classic-conflict}. Thus, in theory, it should be possible to apply this rules in any order or in parallel. Particularly, it is possible to apply all rules in the order they appear in the figure: $[p_1, p_2, p_3]$. It is also possible to apply them in the orders $[p_1, p_3, p_2]$, $[p_2, p_1, p_3]$ and $[p_3, p_1, p_2]$. However, it is not
+  possible to perform a derivation using the rules in the orders $[p_2, p_3, p_1]$ or $[p_3, p_2, p_1]$. This problem arises from the fact that $p_2$ and $p_3$ independently create a piece of the pattern forbidden by the NAC of $p_1$ in a way that, although the effect of each rule by itself does not trigger the NAC of $p_1$, their combined effects do.
 \end{example}
 
 \begin{figure}[!ht]
@@ -134,7 +135,7 @@ As we are interested in constructing a canonical representation of several possi
 
 \end{definition}
 
-\begin{example}[Incremental NACs]Figure~\ref{fig:process:incremental-nacs} shows all possible formats that any valid incremental NAC can assume.
+\begin{example}[Incremental NACs]Figure~\ref{fig:process:incremental-nacs} shows all possible formats that any valid incremental NAC may assume.
 
 \begin{figure}[!ht]
   \centering
@@ -143,20 +144,20 @@ As we are interested in constructing a canonical representation of several possi
 \end{figure}
 \end{example}
 
-At first, it may seem that we are loosing expressive power by restricting the NACs we use in our grammars to incremental NACs only, however ~\cite{Corradini2013} have shown two important results regarding that. First, they showed that incremental NACs are sufficient to model most of real applications using $GTS$s. Second, they presented an algorithm to compile rules with general NACs to rules with incremental NACs only, generating a new $GTS$ that is able to simulate the original one.
+At first, it may seem that we are loosing expressive power by restricting the NACs used in our grammars to incremental NACs only, however ~\cite{Corradini2013} have shown two important results regarding them. First, they showed that incremental NACs are sufficient to model most of real applications using $GTS$s. Second, they presented an algorithm to compile rules with general NACs to rules with incremental NACs only, generating a new $GTS$ that is able to simulate the original one.
 
 \begin{definition}[Triggering element] Given a rule \graphrule{} with an incremental, non trivially triggered NAC \nac{}, and a monomorphic match \match{}, where there is an injective $q : N \rightarrow G$, therefore $m \not\models NAC(n)$. There is exactly one element that will complete the match towards triggering the NAC, this element is present in the difference between the images of $q$ and $m$.
 
-  Let $G_{|N}$ be the image of $q$ and $G_{|L}$ the image of $m$, and \mbox{$T = G_{|N} - G_{|L}$}.\footnote{In this case, $T$ may not be a graph, we are here abusing the notation and treating $T$ as a set $V$ of vertices and a set $E$ of edges.} The triggering element of this NAC is:
+  Let $G_{|N}$ be the image of $q$, $G_{|L}$ the image of $m$, and \mbox{$D = G_{|N} - G_{|L}$}.\footnote{In this case, $D$ may not be a graph, we are here abusing the notation and treating $D$ as a set $V$ of vertices and a set $E$ of edges.} The triggering element of this NAC is:
 
   \begin{itemize}
-    \item $x \in E(T)$, if $E(T) \neq \varnothing$;
-    \item $x \in V(T)$ otherwise.
+    \item $x \in E(D)$, if $E(D) \neq \varnothing$;
+    \item $x \in V(D)$ otherwise.
   \end{itemize} 
 \end{definition}
 
 \begin{example}[Triggering Element]
-  Since incremental NACs extend the match by forbidding only one element at a time, this element can be easily identified when looking at the instance graph: \newadd{it corresponds to the solely element mapped by the morphism \morph{q}{N}{G} which is not also mapped by \morph{m}{L}{G}. Figure~\ref{fig:process:triggering-element} shows an example. The elements in the instance graph mapped by either $q$ or $m$ are represented by dashed lines. Notice that the only element which is not in the image of
+  Given that incremental NACs extend the match by forbidding only one element at a time, this element can be easily identified at the instance graph: \newadd{it corresponds to the solely element mapped by the morphism \morph{q}{N}{G} which is not also mapped by \morph{m}{L}{G}. Figure~\ref{fig:process:triggering-element} shows an example. The elements in the instance graph mapped by either $q$ or $m$ are represented by dashed lines. Notice that the only element which is not in the image of
   both morphisms is $\curvearrowleft_2$, therefore $\curvearrowleft_2$ is the triggering element of the NAC for this match.}
 \end{example}
 
@@ -166,14 +167,15 @@ At first, it may seem that we are loosing expressive power by restricting the NA
   \caption{Triggering Element}\label{fig:process:triggering-element}
 \end{figure}
 
-\begin{definition}[Doubly-Typed Graph Grammars] A \emph{doubly-typed graph grammar} is a tuple $GG = \left(TG^T, I^{TG^T},P \right)$ where $TG^T$ is the double-type graph of the grammar, $I^{TG^T}$ is a doubly-typed graph, called the \emph{initial graph} of the grammar and $P$ is a set of doubly-typed graph rules.
+\begin{definition}[Doubly-Typed Graph Grammars] A \emph{doubly-typed graph grammar} is a tuple $GG = \left(TG^T, I^{TG^T},P \right)$ where $TG^T$ is the double-type graph of the grammar, $I^{TG^T}$ is a doubly-typed graph called the \emph{initial graph} and $P$ is a set of doubly-typed graph rules.
+
 \end{definition}
 
 \begin{definition}[Core Graph]\label{def:core-graph} Given a doubly-typed graph grammar \doublyTypedGraphGrammarCore{}, we have that \coreGraph{} is a \emph{core graph} iff the following two conditions hold:
 
-\begin{enumerate}
+\begin{description}
 
-\item \mbox{$\forall x \in$ \coreGraph $: \exists! y \in (I^T \uplus (\uplus_{i \in P} (R_i - K_i))$}:
+  \item[(uniqueness of origin)] \mbox{$\forall x \in$ \coreGraph $: \exists! y \in (I^T \uplus (\uplus_{i \in P} (R_i - K_i))$}:
 \[ x =
     \begin{cases}
       in_{GG}\parens{y},$ if $y \in I^T\\
@@ -181,25 +183,25 @@ At first, it may seem that we are loosing expressive power by restricting the NA
     \end{cases}
    \]
 
-\item \mbox{$\forall x \in$ \coreGraph $: \exists^{\leq1} y \in \uplus_{i \in P} (L_i - K_i)$}:
+ \item[(uniqueness of deletion)] \mbox{$\forall x \in$ \coreGraph $: \exists^{\leq1} y \in \uplus_{i \in P} (L_i - K_i)$}:
 \[ x =
     \begin{cases}
       pre_i(y),$ if $y \in L_i - K_i\\
     \end{cases}
-   \]\end{enumerate}
+   \]\end{description}
 
-  The first condition assures that every element in the \emph{core graph} was either already present in the initial graph or was created by one and only one rule. The second condition assures that for every element that is deleted, it is deleted only once by only one rule.
 \end{definition}
+  The first condition assures that every element in the \emph{core graph} was either already present in the initial graph or was created by one and only one rule. The second condition assures that for every element that is deleted, it is deleted only once by only one rule.
 
 The idea is that each element within a \emph{core graph} has a unique origin. At the same time, the \emph{core graph} contains all elements necessary (created, deleted and preserved) by all rules in its underlying grammar. \newadd{In~\cite{Ribeiro1996} the second condition is not used, which has the effect of including non-deterministic executions of a grammar into the framework of the occurrence graph grammars. In our work, this will not be used, therefore we will work with deterministic
 occurrence graph grammars.} \important{improve, maybe some explanation about deterministic and non-deterministic grammars should appear at the beggining of the chapter}
 
 \begin{example}[Doubly-Typed Graph Grammar and Core Graph Example] \mbox{Figure~\ref{fig:process:core-graph:counter-example}} shows a doubly-typed graph grammar, whose double-type is not a core graph. That happens because $\Square_2$ is created by both rules $p_1$ and $p_2$, as well as $\Circle_1$ is deleted by both $p_2$ and $p_3$.
 
-  On the other hand, Figure~\ref{fig:process:core-graph:example} shows a doubly-typed graph grammar whose double-type is also a core graph: all elements are either created only once or, if not created by any rule, are present in the initial graph: $\Square_2$ and $\curvearrowleft_1$ are created by $p_1$, $\curvearrowleft_3$ by $p_2$, $\Circle_3$ and $\curvearrowleft_2$ by $p_3$ and $\Circle_1$ is present on the initial graph. Also, the deleted elements are deleted only once: $\Circle_1$ and
+  On the other hand, Figure~\ref{fig:process:core-graph:example} shows a doubly-typed graph grammar whose double-type is also a core graph: $\Square_2$ and $\curvearrowleft_1$ are created by $p_1$, $\curvearrowleft_3$ by $p_2$, $\Circle_3$ and $\curvearrowleft_2$ by $p_3$ and $\Circle_1$ is present on the initial graph. Also, the deleted elements are deleted only once: $\Circle_1$ and
   $\curvearrowleft_1$ by $p_3$.
 
-  It is important to notice that, even though the $TG$ graphs in both grammars are isomorphic, only the one in Figure~\ref{fig:process:core-graph:example} is a core graph. This can be explained by looking to their underlying grammars (initial graphs and rules), where one of them satisfies the conditions presented in Definition~\ref{def:core-graph} and the other not.
+  It is important to notice that, even though the $TG$ graphs in both grammars are isomorphic, only the one in Figure~\ref{fig:process:core-graph:example} is a core graph. This can be explained by looking to their underlying grammars (initial graphs and rules), where one of them satisfies the conditions presented in Definition~\ref{def:core-graph} while the other does not.
 \begin{figure}[!ht]
   \centering
   \begin{subfigure}[t]{.5\textwidth}
@@ -223,30 +225,29 @@ occurrence graph grammars.} \important{improve, maybe some explanation about det
 
 \begin{definition}[Strongly Safe (Doubly-Typed) Graph Grammars] Given \doublyTypedGraphGrammarCore{} a doubly-typed graph grammar, $GG$ is said to be \emph{strongly safe} if its double-type graph is also a core graph.
 
-  Each rule in a strongly safe graph grammar is also called an \emph{action}. We say that an action $a$ creates an element $e$ iff $e \in R(a) - K(a)$. Similarly, $a$ deletes $e$ iff \mbox{$e \in L(a) - K(a)$}. Finally, if $e$ is present in $K(a)$, we say that $a$ preserves $e$. 
+  Each rule in a strongly safe graph grammar is also called an \emph{action}. We say that an action $a$ creates an element $e$ iff $e \in R(a) - K(a)$. Similarly, $a$ deletes $e$ iff \mbox{$e \in L(a) - K(a)$}. Finally, if $e$ is present in $K(a)$, we say that $a$ preserves $e$.
+\end{definition}
 
-When dealing with actions, we will use a slightly different interpretation for the graph transformations: 
+In the context of strongly safe graph grammars, we use a slightly different interpretation of a graph transformation:
   
 \begin{itemize} 
-  \item Isolated actions are always applied over the core graph: the match of an action is equal to its pre-condition $pre_a : L \rightarrow C^T_{L_a}$, as well as the comatch is equal to its post-condition $post_a : R \rightarrow C^T_{R_a}$.
+  \item Isolated actions are always applied over a subgraph of the core graph: the match of an action is equal to its pre-condition $pre_a : L \rightarrow C^T_{L_a}$, as well as the comatch is equal to its post-condition $post_a : R \rightarrow C^T_{R_a}$.
 
   \item \newadd{When searching for conflicts (resp. dependencies) between two actions, the overlapping between them is the restricted image of their matches $E = C^T_{|L_1L_2}$ (resp. comatch and match $E = C^T_{|R_1L_2}$). The derived graphs are calculated accordingly when the DPO transformations exist, i.e. \mbox{$E \xRightarrow{a_1} H_1$} (resp. \mbox{$E \xRightarrow{a^{-1}_1} H_1$}), \mbox{$E \xRightarrow{a_2} H_2$}. Notice that, as the transformations are always concrete regarding the core
     graph, we have $H_1 \xhookrightarrow{} C^T, H_2 \xhookrightarrow{} C^T$.}
 
   \item \newadd{When searching for conflicts (resp. dependencies) between two actions $a_1,a_2$ with NACs, we check the NAC satisfiability only in the overlapping and the derived graphs rather than the entire core graph.}
 \end{itemize}
-\end{definition}
 
-  \newadd{The restriction of the actions overlappings to the images of their matches (resp. comatch and match) considers only the local effects of these actions. Thus resulting in two properties of our interest: (1) We avoid dangling conditions with core graph edges that do not directly participate in the interaction of these actions. Similarly, (2) the NACs of these actions are not triggered with elements that, in despite of being present in the core graph, do not directly participate in
+  \newadd{The restriction of the actions overlappings to the images of their matches (resp. comatch and match) considers only the local effects of these actions. Thus resulting in two properties of our interest: (1) We avoid dangling conditions with edges in the core graph that do not directly participate in the interaction of these actions. Similarly, (2) the NACs of these actions are not triggered with elements that, in despite of being present in the core graph, do not directly participate in
   the interaction of these two actions.}
-  
-  \newadd{These restrictions, together with the use of incremental NACs, will allow us to locally compute the conflicts and dependencies for each pair of actions, avoiding to deal with global effects that other actions might have over them.}
 
-  \important{example? maybe use the the transformations of the leila's relations that were removed.}
+  \newadd{These restrictions, together with the use of incremental NACs, allow us to locally compute the conflicts and dependencies for each pair of actions, without the necessity of dealing with global effects other actions might have.}
+
+  \important{example? maybe use the transformations of the leila's relations that were removed.}
 
 
 \begin{remark}[Strongly Safe Grammars] Throughout this work, we will use only strongly safe grammars whose set $P$ of actions is finite and each action in $P$ is distinct from the others.
-
 \end{remark}
 
 \begin{example}[Strongly Safe Graph Grammar] Figure~\ref{fig:process:core-graph:example} also depicts a strongly safe graph grammar as the double-type graph of the grammar is, in fact, a core graph.
@@ -258,26 +259,24 @@ Given a strongly safe graph grammar, its core graph contains all elements used (
 
 We are here interested in some of the properties that can be found by looking at this history. Particularly, which kind of relations exist among actions and elements, whether it is possible to find sequences in which all actions are applied and which graphs can be considered valid (reachable) by this grammar.
 
-In~\cite{Ribeiro1996}, causal, conflict and occurrence relations for strongly safe graph grammars were defined. There, the graph transformation approach used was the \emph{Single Pushout} (SPO) without NACs.
+In~\cite{Ribeiro1996}, causal, conflict and occurrence relations for strongly safe graph grammars were defined. There, the graph transformation approach used was the \emph{Single Pushout} (SPO) without NACs. \cite{Corradini1996} also defined a different notion of causal relation, equivalent to the occurrence relation in the previous mentioned work, with respect to the DPO approach without NACs.
 
-\cite{Corradini1996} also defined a different notion of causal relation, equivalent to the occurrence relation in the previous mentioned work, with respect to the DPO approach without NACs.
+Both authors use these relations to find out whether all the actions of a strongly safe graph grammar are applicable and prove the above mentioned properties \tinytodo{which properties?} about them. However, these relations alone are not sufficient to prove such properties when the actions have NACs.
 
-Both authors use these relations to find out whether all the actions of a strongly safe graph grammar are applicable and prove the above mentioned properties about them. However, these relations alone are not sufficient for our purpose when the actions may have NACs.
+\newadd{Here we recall the work of ~\cite{Corradini1996}, since it already uses the DPO approach, then extend it to create an equivalent notion of \emph{occurrence relation} that works for grammars in the DPO approach with NACs.}
 
-\newadd{Here we recall the work of ~\cite{Corradini1996} and extend it to create an equivalent notion of \emph{occurrence relation} that works for grammars in the DPO approach with NACs.}
-
-\begin{definition}[Causal Relation]\label{def:causal-relation} This is the \emph{causal relation} defined in \cite{Corradini1996} for the DPO approach without NACs. Given  \doublyTypedGraphGrammarCore{} a strongly safe graph grammar, actions \mbox{$a_1, a_2 \in P, a_1 \ne a_2$} and an element \mbox{$e_1 \in N(C^T) \cup E(C^T)$}, then:
+\begin{definition}[Causal Relation]\label{def:causal-relation} This is the \emph{causal relation} defined in \cite{Corradini1996} for the DPO approach without NACs. Given  \doublyTypedGraphGrammarCore{} a strongly safe graph grammar, actions \mbox{$a_1, a_2 \in P, a_1 \ne a_2$} and an element \mbox{$e \in N(C^T) \cup E(C^T)$}, then:
 
   \begin{enumerate}
-    \item If $a_1$ deletes $e_1$, then $e_1 <_c a_1$.
-    \item If $a_1$ creates $e_1$, then $a_1 <_c e_1$.
-    \item If $a_1$ creates $e_1$ and $a_2$ preserves $e_1$, then $a_1 <_c a_2$.
-    \item If $a_1$ preserves $e_1$ and $a_2$ deletes $e_1$, then $a_1 <_c a_2$. 
+    \item If $a_1$ deletes $e$, then $e <_c a_1$.
+    \item If $a_1$ creates $e$, then $a_1 <_c e$.
+    \item If $a_1$ creates $e$ and $a_2$ preserves $e$, then $a_1 <_c a_2$.
+    \item If $a_1$ preserves $e$ and $a_2$ deletes $e$, then $a_1 <_c a_2$. 
     \item The \emph{causal relation} $\leq_c$ of $P \cup N(C^T) \cup E(C^T)$ is the reflexive and transitive closure of $<_c$.
   \end{enumerate}
 \end{definition}
 
-This relation represents restrictions over creation, use (preservation) and deletion of elements by actions that are used to characterize executions of the underlying rules. We have that an action $a$ must occur after all the actions that create the elements it preserves or deletes. Analogously, $a$ must occur before all actions that delete the elements created or preserved by $a$.
+This relation represents relations over creation, use (preservation) and deletion of elements by actions that are used to characterize executions of the underlying rules. We have that an action $a$ must occur after all the actions that create the elements it preserves or deletes. Analogously, $a$ must occur before all actions that delete the elements created or preserved by $a$.
 
 In \cite{Corradini1996} it is shown that if this relation is a \emph{partial order}, then any total order with respect to it is a sequentialization in which all productions of the underlying grammar are applicable.
 
