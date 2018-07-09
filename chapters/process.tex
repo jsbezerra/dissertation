@@ -436,7 +436,7 @@ In the following, we categorize this conflicts and dependencies according to the
 \begin{description}[style=nextline,leftmargin=*]
 
   \item [Triggering element is present on the initial graph:]
-Let $x$ be not created by any action in $P$, meaning that $x$ is present on the initial graph: $x \in I^{C^T}$. In such configuration, the delete-forbid is \emph{concrete}, given that $x$ exists before the application of $a_2$ (or any other action), preventing the application of the action until it gets deleted. Therefore, we have $a_1 <_{df} a_2$.
+Let $x$ be an element which is not created by any action in $P$, meaning that $x$ is present on the initial graph: $x \in I^{C^T}$. In such configuration, the delete-forbid is \emph{concrete}, given that $x$ exists before the application of $a_2$ (or any other action), preventing the application of the action until it gets deleted. Therefore, we have $a_1 <_{df} a_2$.
 
   \item [Triggering element is related to the action:] If $a_2 \leq_c x$, it means that $x$ was either created by $a_2$ or by another action that must to occur after $a_2$. In this configuration the delete-forbid dependency is \emph{non existent} as the element $x$ can not exist to trigger $N_2$ before $a_2$ was already applied.
 
@@ -445,7 +445,7 @@ Let $x$ be not created by any action in $P$, meaning that $x$ is present on the 
 \item [Triggering element is not related to the action:]
   Let $x$ be not related to $a_2$, but created by a third action $a_3 \in P$ (notice that in this configuration we have that $a_3 <_{c} a_1$).
 
-    If $a_3$ be not related to $a_2$, in which case we have that $a_1$ and $a_2$ \emph{would be} in a concrete delete-forbid dependency if $a_3$ was applied before $a_2$. On the other hand, the same dependency \emph{would be} non existent if $a_3$ was applied after $a_2$. This situation depicts an \emph{abstract} produce-forbid dependency as we have that either $a_1 <_{df} a_2$ or $a_2 < a_3$ are possible. Therefore $a_2 \not\in [a_3 \ldots a_1]$.
+    If $a_3$ is not related to $a_2$, in which case we have that $a_1$ and $a_2$ \emph{would be} in a concrete delete-forbid dependency if $a_3$ was applied before $a_2$. On the other hand, the same dependency \emph{would be} non existent if $a_3$ was applied after $a_2$. This situation depicts an \emph{abstract} produce-forbid dependency as we have that either $a_1 <_{df} a_2$ or $a_2 < a_3$ are possible. Therefore $a_2 \not\in [a_3 \ldots a_1]$.
 
   Finally, if $a_3$ is related to $a_2$, then $a_2$ is related to $x$, as $a_3$ creates $x$, which corresponds to our second case.
 \end{description}
