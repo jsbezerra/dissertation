@@ -1,21 +1,22 @@
 \chapter{Occurrence Graph Grammars}\label{ch:process}
 
-Occurrence graph grammars were defined for the Single-Pushout (SPO) approach by~\cite{Ribeiro1996}, and for the Double-Pushout (DPO) approach by~\cite{Corradini1996}. In both cases they consist of a way of representing the concurrent semantics of a graph grammar as a graph grammar.
+Occurrence graph grammars (OGGs) were defined for the Single-Pushout (SPO) approach by~\cite{Ribeiro1996}, and for the Double-Pushout (DPO) approach by~\cite{Corradini1996}. In both cases they consist of a way of representing the concurrent semantics of a graph grammar as a graph grammar itself.
 
-The aim of an occurrence graph grammar is to describe all possible states and changes of states of the graph grammar from which it was constructed. This is possible because occurrence grammars can be viewed as the entire execution history of the underlying grammar. This history is encoded under the forms of (1) a \emph{core graph} containing all elements ever used in the execution of a grammar and (2) a set of \emph{relations} between the rules and elements of this core graph. 
+The aim of an OGG is to describe all possible states and changes of states of the graph grammar from which it was constructed. This is possible because occurrence grammars can be regarded as an execution history of the underlying grammar. This history is encoded under the forms of (1) a \emph{core graph} containing all elements ever used in the execution of a grammar and (2) a set of \emph{relations} between the rules and elements of this core graph. 
 
-The relations can be used to express dependencies among the core graph elements, such as which of them must occur together, at the same state, which ones must be created/deleted one after the other, which elements must never occur together, and so on. They also encode restrictions over the application of rules, such as which rules are sequentially dependent on others or whether it is possible to successfully apply all the rules of a grammar. %This property makes occurrence graph grammars excellent candidates for the generation of test cases, as we are interested in a way of representing several (equivalent) possible derivations using a compact notation.
+The relations express dependencies among core graph elements, such as which of them must occur together, at the same state, which ones must be created/deleted one after the other, which elements must never occur together, and so on. They also encode restrictions over the application of rules, such as which rules are sequentially dependent on others or whether it is possible to successfully apply all the rules of a grammar. %This property makes occurrence graph grammars excellent candidates for the generation of test cases, as we are interested in a way of representing several (equivalent) possible derivations using a compact notation.
 
-However, Negative Application Conditions are not addressed by the original definitions of occurrence grammars. Still, NACs are nowadays essential for modelling complex systems as graph grammars, since they provide more possibilities to control the application of rules~\cite{Habel1996, Lambers2008, Corradini2014}.
+\important{Maybe describe some of the already known applications of occurrence graph grammars.}
 
-In this work, we propose an extension of the occurrence grammars framework in order to contemplate negative application conditions. \important{Improve this paragraph.} Thus, in the next sections we review the works done by~\cite{Ribeiro1996} and~\cite{Corradini1996} in occurrence graph grammars, after which we propose an extension to deal with NACs.
+However, Negative Application Conditions are not addressed by the original definitions of occurrence grammars. Still, NACs are nowadays essential for modelling complex systems as graph grammars, given they provide more compact mechanisms to control the application of rules~\cite{Habel1996, Lambers2008, Corradini2014}. In this chapter, we develop an extension of the occurrence grammars framework towards contemplating negative application conditions. We begin by
+reviewing the works of~\cite{Ribeiro1996} and~\cite{Corradini1996} in OGGs, after which we propose an extension to incorporate NACs within the framework.
 
 \section{Occurrence Graph Grammars}
 
 \begin{definition}[Doubly-Typed Graph] Given a type graph $T$, a \emph{doubly-typed graph} \doublyTypedGraph{} over $T$ is a tuple \doublyTypedGraph $= \left(G^T,TG^T, t^{G^T} : G^T \rightarrow TG^T\right)$ where $G^T$ and $TG^T$ are typed graphs over $T$ and \mbox{$t^{G^T} : G^T \rightarrow TG^T$} is a typed graph morphism in \typedGraphCategory{}. We call $TG^T$ the \emph{double-type graph} and $t^{G^T}$ the double-typing morphism.
 \end{definition}
 
-\begin{remark}[Typing Morphism] \newadd{As we are interested in occurrence graph grammars,} we will consider only doubly-typed graphs whose typing morphism $type_{TG} : TG \rightarrow T$ is an epimorphism. This has the effect that every element present in $T$ is the image of at least one element from $TG$.
+\begin{remark}[Typing Morphism] \newadd{As we are interested in occurrence graph grammars,} we will consider only doubly-typed graphs whose typing morphism $type_{TG} : TG \rightarrow T$ is an epimorphism. This has the effect that every element present in $T$ is the image of at least one element from $TG$ \tinytodo{Do I need this?}.
 \end{remark}
 
 \begin{example}[Doubly-Typed Graph Example] Figure~\ref{fig:process:doubly-typed-graph} shows a doubly-typed graph $G^{TG^T}$.
@@ -97,11 +98,10 @@ A (doubly-typed) match morphism $m^{TG^T} : L^{TG^T} \rightarrow G^{TG^T}$ of a 
 \end{definition}
 
 \begin{remark}
-  We could have defined NACs whose morphisms are doubly-typed graph morphisms, which would then act specifically over doubly-typed graphs. However, \tinytodo{the use of this kind of NAC would generate a doubly-typed grammar with a set of NACs much bigger than the original one} we will not use this kind of NACs later in our work\newadd{, as we are interested in a compact and more abstract characterization for the semantics of graph grammars}. Therefore, we will use \emph{single-typed} NACs as the only NAC type in all of our \emph{doubly-typed graph grammars}, and $NAC(n)$ as a synonym of $NAC(n^T)$.
+  We could have defined NACs whose morphisms are doubly-typed graph morphisms, which would then act specifically over doubly-typed graphs. However, the use of this kind of NAC could lead to a doubly-typed grammar with a set of NACs much bigger than the original one, thus we will not use this kind of NACs given that we are interested in a compact and more abstract characterization for the semantics of graph grammars. Therefore, we will use \emph{single-typed} NACs as the only NAC type in all of our \emph{doubly-typed graph grammars}, and $NAC(n)$ as a synonym of $NAC(n^T)$.
 \end{remark}
 
 \important{definition of switch equivalence}
-
 \newadd{In a grammar without NACs, if there is a sequence of graph transformations $t_0\ldots t_n$ where each pair $(t_i,t_{i+1})$ of consecutive transformations is sequentially independent, then it is possible to \emph{switch} the
 order of application for any pair in that sequence an arbitrary number of times and still achieve the same final graph as a result (up to isomorphism). This property is called \emph{switch equivalence}~\cite{Corradini2013}.}
 
