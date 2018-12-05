@@ -2,7 +2,7 @@
 
 Occurrence graph grammars (OGGs) were defined for the Single-Pushout (SPO) approach by~\cite{Ribeiro1996}, and for the Double-Pushout (DPO) approach by~\cite{Corradini1996}. In both cases they consist of a way of representing the concurrent semantics of a graph grammar as a graph grammar itself.
 
-The aim of an OGG is to describe all possible states and changes of states of the graph grammar from which it was constructed. This is possible because occurrence grammars can be regarded as an execution history of the underlying grammar. This history is encoded under the forms of (1) a \emph{core graph} containing all elements ever used in the execution of a grammar and (2) a set of \emph{relations} between the rules and elements of this core graph. 
+The aim of an OGG is to describe all possible states and changes of states of the graph grammar from which it was constructed. This is possible because occurrence grammars can be regarded as an execution history of the underlying grammar. This history is encoded under the forms of (1) a \emph{core graph} containing all elements ever used in the execution of the grammar and (2) a set of \emph{relations} between the rules and elements of this core graph. 
 
 The relations express dependencies among core graph elements, such as which of them must occur together, at the same state, which ones must be created/deleted one after the other, which elements must never occur together, and so on. They also encode restrictions over the application of rules, such as which rules are sequentially dependent on others or whether it is possible to successfully apply all the rules of a grammar. %This property makes occurrence graph grammars excellent candidates for the generation of test cases, as we are interested in a way of representing several (equivalent) possible derivations using a compact notation.
 
@@ -16,7 +16,7 @@ reviewing the works of~\cite{Ribeiro1996} and~\cite{Corradini1996} in OGGs, afte
 \begin{definition}[Doubly-Typed Graph] Given a type graph $T$, a \emph{doubly-typed graph} \doublyTypedGraph{} over $T$ is a tuple \doublyTypedGraph $= \left(G^T,TG^T, t^{G^T} : G^T \rightarrow TG^T\right)$ where $G^T$ and $TG^T$ are typed graphs over $T$ and \mbox{$t^{G^T} : G^T \rightarrow TG^T$} is a typed graph morphism in \typedGraphCategory{}. We call $TG^T$ the \emph{double-type graph} and $t^{G^T}$ the double-typing morphism.
 \end{definition}
 
-\begin{remark}[Typing Morphism] \newadd{As we are interested in occurrence graph grammars,} we will consider only doubly-typed graphs whose typing morphism $type_{TG} : TG \rightarrow T$ is an epimorphism. This has the effect that every element present in $T$ is the image of at least one element from $TG$ \tinytodo{Do I need this?}.
+\begin{remark}[Typing Morphism] \newadd{As we are interested in occurrence graph grammars,} we will consider only doubly-typed graphs whose typing morphism $type_{TG} : TG \rightarrow T$ is an epimorphism. This has the effect that every element present in $T$ is the image of at least one element from $TG$.
 \end{remark}
 
 \begin{example}[Doubly-Typed Graph Example] Figure~\ref{fig:process:doubly-typed-graph} shows a doubly-typed graph $G^{TG^T}$.
@@ -98,14 +98,14 @@ A (doubly-typed) match morphism $m^{TG^T} : L^{TG^T} \rightarrow G^{TG^T}$ of a 
 \end{definition}
 
 \begin{remark}
-  We could have defined NACs whose morphisms are doubly-typed graph morphisms, which would then act specifically over doubly-typed graphs. However, the use of this kind of NAC could lead to a doubly-typed grammar with a set of NACs much bigger than the original one, thus we will not use this kind of NACs given that we are interested in a compact and more abstract characterization for the semantics of graph grammars. Therefore, we will use \emph{single-typed} NACs as the only NAC type in all of our \emph{doubly-typed graph grammars}, and $NAC(n)$ as a synonym of $NAC(n^T)$.
+  We could have defined NACs whose morphisms are doubly-typed graph morphisms, which would then act specifically over doubly-typed graphs. However, the use of this kind of NAC could lead to a doubly-typed grammar with a set of NACs much bigger than the original one, thus we will not use this kind of NACs given our interest in a compact and more abstract characterization for the semantics of graph grammars. Therefore, we will use \emph{single-typed} NACs as the only NAC type in all of our \emph{doubly-typed graph grammars}, and $NAC(n)$ as a synonym of $NAC(n^T)$.
 \end{remark}
 
 \newadd{In a grammar without NACs, if there is a sequence of graph transformations $t_0\ldots t_n$ where each pair $(t_i,t_{i+1})$ of consecutive transformations is sequentially independent, then it is possible to \emph{switch} the
 order of application for any pair in that sequence an arbitrary number of times and still achieve the same final graph as a result (up to isomorphism). This property is called \emph{switch equivalence}~\cite{Corradini2013}.}
 
 However, the switch equivalence does not always hold when the grammar has NACs. This happens because there may be situations where the NAC of a rule can be triggered by the cumulative effect of applying two (or more) other rules, while the same rules would not trigger that NAC in isolation. This may lead to a situation where conflicts and dependencies
-are not \emph{stable under switch}, \newadd{which means that conflicts or dependencies that do not occur in a given sequence of transformations can appear if one or more pairs of transformations are switched.} An example is shown in Figure~\ref{ex:process:instability}.
+are not \emph{stable under switch}, \newadd{which means that conflicts or dependencies that do not occur in a given sequence of transformations may arise if one or more pairs of transformations are switched.} An example is shown in Figure~\ref{ex:process:instability}.
 
 \begin{example}[Switch Equivalence]\label{ex:process:instability}The rules depicted in Figure~\ref{fig:process:instability} show a situation where the independency between rules is not stable under switch equivalence.
 
@@ -119,9 +119,7 @@ are not \emph{stable under switch}, \newadd{which means that conflicts or depend
   \caption{Instability of conflicts under shift\\}\label{fig:process:instability}
 \end{figure}
 
-In order to avoid this problem while we construct a canonical representation of several possible derivations for a set of rules of a grammar, we will make use of a special type of NACs called \emph{incremental NACs}.
-
-\emph{Incremental NACs}, originally defined in~\cite{Corradini2013} and~\cite{Corradini2014}, have the property of extending the forbidden context of a match by a single edge or a single node. Thus, each NAC forbids only one element at a time and therefore there is no possible way to trigger a NAC by the cumulative effect of more than one rule.
+In order to avoid this problem while we construct a canonical representation of several possible derivations for a set of rules, we will make use of a special type of NACs called \emph{incremental NACs}. \emph{Incremental NACs} were originally defined in~\cite{Corradini2013} and~\cite{Corradini2014}. They have the property of extending the forbidden context of a match by a single edge or a single node. Thus, each NAC forbids only one element at a time and therefore there is no possible way to trigger a NAC by the cumulative effects of more than one rule.
 
 \begin{definition}[Incremental NACs] Given a monomorphism \mbox{$n : L \rightarrow N$}, $NAC(n)$ is said to be incremental if for any possible pair of decompositions \mbox{$g_1 : L \rightarrow O_g;g_2 : O_g \rightarrow N$} and \mbox{$f_1 : L \rightarrow O_f;f_2 : O_f \rightarrow N$} as in the diagram below, where all morphisms are monos and \mbox{$f_1;f_2 = n = g_1;g_2$}, there exists a mediating morphism $o_1 : O_g \rightarrow O_f$ or $o_2 : O_f \rightarrow O_g$, such that the resulting triangles
   commutes.
@@ -134,7 +132,7 @@ In order to avoid this problem while we construct a canonical representation of 
 
 \end{definition}
 
-\begin{example}[Incremental NACs]Figure~\ref{fig:process:incremental-nacs} shows all possible formats that any valid incremental NAC may assume.
+\begin{example}[Incremental NACs]Figure~\ref{fig:process:incremental-nacs} shows all possible (canonical) formats that any valid incremental NAC may assume.
 
 \begin{figure}[!ht]
   \centering
@@ -227,7 +225,7 @@ occurrence graph grammars.} \important{improve, maybe some explanation about det
   Each rule in a strongly safe graph grammar is also called an \emph{action}. We say that an action $a$ creates an element $e$ iff $e \in R(a) - K(a)$. Similarly, $a$ deletes $e$ iff \mbox{$e \in L(a) - K(a)$}. Finally, if $e$ is present in $K(a)$, we say that $a$ preserves $e$.
 \end{definition}
 
-In the context of strongly safe graph grammars, we use a slightly different interpretation of a graph transformation:
+In the context of strongly safe graph grammars, we will use a slightly different interpretation of a graph transformation:
   
 \begin{itemize} 
   \item Isolated actions are always applied over a subgraph of the core graph: the match of an action is equal to its pre-condition $pre_a : L \rightarrow C^T_{L_a}$, as well as the comatch is equal to its post-condition $post_a : R \rightarrow C^T_{R_a}$.
