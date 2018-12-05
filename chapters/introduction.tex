@@ -1,35 +1,18 @@
 \chapter{Introduction}
 
+Graph grammars are a suitable formalism to model complex systems in an intuitive and precise manner, providing both a graphic notation and a solid formal background. System states are modelled as graphs, while transitions between different states are modelled as graph transformation rules. By using them it is possible to simulate the execution of a modelled system and also analyse several properties about its behaviour, such as termination, concurrency, reachable states, among others~\cite{Ehrig2006}.
+
+Given such properties, graph grammars have found a wide range of applications within Computer Science, specially in the field of model-driven software development, where the transformation of visual models is a vital part of the process and additionally a natural application of graph grammars~\cite{Rozenberg1997}. As proof of such applications, several non-trivial systems have been modelled and studied under the optics of graph grammars, such as telephone communications~\cite{Ribeiro1996}, elevator and railroad control~\cite{Lambers2010, Pennemann2009} and integration of service-oriented systems~\cite{Giese}, to cite just a few.
+
+Another advantage of graph grammars as a framework for modelling systems is that it makes possible for non-specialists in the field to generate graph grammar models of a system and still benefit from the rigorous analysis it provides. For example, ~\cite{Junior2015,BezerraWEIT2016,Cota2017} explain how to generate graph grammars from a set of textual requirement documents such as use cases, functional specifications and other kinds of guidelines by means of a systematic, computer-aided methodology.
+
 \important{Graph grammars and their semantics}
 
 \important{What is the semantics of a graph grammar?}
 
 \important{Why is it important?}
 
-\important{How can it be obtained using Ocurrence Graph Grammars}
-
-The constant presence of software systems in our every day lives has become one incontestable truth, they are everywhere from our personal devices such as computers and smartphones to systems controlling transactions of banks and e-commerce. Software even powers airplanes and air traffic, traffic lights, medical instruments, highways and building design, among several other applications that may endanger lives if something goes wrong.
-
-Regarding this ubiquitous presence of software, one of the biggest concerns in the industry is how to assure the quality of the products that are delivered, guaranteeing they will behave as intended to and will not crash under unexpected circumstances~\cite{Ammann2008}.
-
-There are several approaches that aim to address this issue, for example: software testing, static analysis, model checking, mathematical proofs, etc. Amongst them, the current dominant approach in industry is software testing, which is not as powerful as the others, but it is significantly cheaper to use and requires a lot less specific knowledge and tools~\cite{Meyer2008, Utting2006}.
-
-Software testing is an empirical process that aims to find and avoid bugs as early as possible in the development process. From a practical point of view, testing is a controlled execution of a specific piece of a system: it receives an input, executes a selected subset of features and then decides whether the behaviour of the system was consistent or not. However, software testing can not prove correctness of a system nor the absence of bugs. The main reason why is that there is an infinite
-amount of possible inputs a system can receive, therefore there is no possible way to systematically check all underlying executions in a finite amount of time.
-
-Since it is not possible to thoroughly test a complex, real system, test designers usually try to write meaningful sets of tests covering the most important cases they can think of. Besides those cases designed prior to the execution, tests cases must also (ideally) cover all previously known bugs, maybe extending them with random generated data. Furthermore, whenever a new bug is found during development or usage, the test cases must be updated accordingly.
-
-In order to automatically and unambiguously decide whether a test failed or succeeded, test designers also need to specify test oracles. Test oracles are specifications that may, for example, describe the relationship between the input given and the expected output, describe valid and invalid data properties, possible execution paths, etc. No matter the oracle format, it must be able to check the validity of tests in a \textit{reasonable} amount of time~\cite{Weyuker1982}.
-
-Designing significant test cases and oracles is a hard and time consuming task, prone to errors similar to those of the analysis and development activities. One possible way to mitigate this issue is by using a model-based testing approach, where test designers or analysts use an abstract model of the system to generate tests~\cite{Utting2006}. These models can be written prior to software development and testing or extracted from the source code by proper tools and checked against some form of specification.
-
-\newadd{There are several computational models that can be used for model-based testing, such as graph grammars~\cite{Baldan2004}, B~\cite{Abrial1996}, UML Object Constraint Language (OCL)~\cite{Warmer2003}, VDM~\cite{Jones1990}, Labelled Transition Systems~\cite{Tretmans1996}, CSP~\cite{Nogueira2008}, among others. In this work, we will make use of the Graph Grammars framework.}
-
-Graph grammars are a suitable formalism to model complex systems in an intuitive and precise manner, possessing both a graphic notation and a solid formal background. \newadd{System states are modelled as graphs, while transitions between different states are modelled as graph transformation rules.} Using them it is not only possible to simulate the execution of the modelled system, but also analyse several properties about its behaviour, such as termination, concurrency, reachable states, among others~\cite{Ehrig2006}.
-
-\newadd{Several non-trivial systems have been modelled and studied under the optics of graph grammars, such as telephone communications~\cite{Ribeiro1996}, elevator and railroad control~\cite{Lambers2010, Pennemann2009}, to cite just a few.}
-
-Furthermore, it is possible for non-specialists in the field to generate graph grammars from a set of textual requirement documents such as use cases, functional specifications and other kinds of guidelines by means of a systematic, computer-aided methodology~\cite{Junior2015,BezerraWEIT2016,Cota2017}.
+\important{How can it be obtained using Occurrence Graph Grammars}
 
 We believe that the use of graph grammars as a model for the generation of test cases and oracles may improve the reliability of the testing activity by using the solid formal semantics of the formalism, while requiring little theoretical expertise from the user. The main objective of this thesis can be summarized as follows:
 
