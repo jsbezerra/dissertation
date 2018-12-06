@@ -2,9 +2,15 @@
 
 Graph grammars are a suitable formalism to model complex systems in an intuitive and precise manner, providing both a graphic notation and a solid formal background. System states are modelled as graphs, while transitions between different states are modelled as graph transformation rules. By using them it is possible to simulate the execution of a modelled system and also analyse several properties about its behaviour, such as termination, concurrency, reachable states, among others~\cite{Ehrig2006}.
 
+\important{[Small, trivial examples to easy the explanation]}
+
 Given such properties, graph grammars have found a wide range of applications within Computer Science, specially in the field of model-driven software development, where the transformation of visual models is a vital part of the process and additionally a natural application of graph grammars~\cite{Rozenberg1997}. As proof of such applications, several non-trivial systems have been modelled and studied under the optics of graph grammars, such as telephone communications~\cite{Ribeiro1996}, elevator and railroad control~\cite{Lambers2010, Pennemann2009} and integration of service-oriented systems~\cite{Giese}, to cite just a few.
 
-Another advantage of graph grammars as a framework for modelling systems is that it makes possible for non-specialists in the field to generate graph grammar models of a system and still benefit from the rigorous analysis it provides. For example, ~\cite{Junior2015,BezerraWEIT2016,Cota2017} explain how to generate graph grammars from a set of textual requirement documents such as use cases, functional specifications and other kinds of guidelines by means of a systematic, computer-aided methodology.
+Another advantage of graph grammars as a framework for modelling systems is that it makes possible for non-specialists in the field to generate graph grammar models of a system and still benefit from the rigorous analysis it provides. For example, ~\cite{Junior2015,BezerraWEIT2016,Cota2017} explain how to generate graph grammars from a set of textual requirement documents such as use cases, functional specifications and other kinds of guidelines by means of a systematic methodology, along with guidance towards using different graph grammars analysis techniques in order to improve and verify these documents and, therefore, the systems they describe.
+
+Among the analysis techniques provided by graph grammars, we have \emph{Critical Pair Analysis},  which allows us to verify which rules conflict (i.e. prohibit) the application of another and why; \emph{Critical Sequence Analysis}, which rules depend on the execution of others to be applied and why; \emph{Calculation of Concurrent Rules}, which summarizes the results of applying several different rules in only one rule; \emph{State Space Exploration and Model Checking}\ldots
+
+In this work, we are concerned about the semantics of graph grammars\ldots
 
 \important{Graph grammars and their semantics}
 
