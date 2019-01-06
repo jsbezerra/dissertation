@@ -27,29 +27,6 @@ Notice that the two first items correspond to test cases while the last one corr
 
 %First, we present a brief overview of the methodology for extracting graph grammars from use cases, after what we present the process of generating the tests cases from the extracted grammars.
 
-\section{Overview of the extracting methodology}
-
-Usually, use case documents consist of sets of sequential steps describing the interaction between an actor and a system in order to accomplish a specific goal. In general, one of these sets represents a successful (normal or main) execution of the system, whereas other sets represent sequences of alternative or exception flows. Moreover, use cases may also contain pre- and post-conditions used to indicate the configurations that must hold before and after their execution.
-
-Figure~\ref{fig:tests:methodology} summarizes the methodology process proposed in \cite{Junior2015}, showing how to extract a graph grammar from text-based requirements documents. This methodology is divided into four main phases:
-
-
-\begin{description}
-  \item[Data Extraction:] identification of entities and actions that will be used to construct the model.
-
-  \item[Primary Verifications:] checking for problems that might affect or prevent the creation of the model, as well as the removal of this problems from the use case. Some examples are:entities or conditions are listed but are never used or effects of actions that are not clearly defined.
-
-  \item[GT Generation:] construction of graph transformation model by modelling conditions and effects as graphs, building a type graph and then modelling each step of the use case as a transition rule from one state graph to another.
-
-  \item[UC Analysis:] automated verifications over the model in order to detect possible flaws in the use case. This is step is done using Verigraph and its concurrent rules, conflict and dependency analyses.
-\end{description}
-
-\begin{figure}[!ht]
-  \centering
-  \includegraphics[scale=0.7]{images/generating-tests/methodology}
-  \caption{Overview of the methodology~\cite{Junior2015}.}\label{fig:tests:methodology}
-\end{figure}
-
 \section{Running Example: A Restaurant System}
 
 We present a running example modelling a system to automate the processes of a restaurant, which was built using the methodology described before. The graph grammar for this system was extracted from the set of use cases presented in Appendix~\ref{app:use-cases}. These use cases model basic restaurant functionalities such as login of employees, reservation and cancellation of tables, accommodation of clients, serving tables, among others.
