@@ -1,10 +1,10 @@
 \chapter{Graph Grammars}\label{ch:gts}
 
-The theory of graph grammars and graph transformation systems is based on the application of rules that are able to modify graphs. Using this framework, it is possible to model complex systems as graph transformation systems, where graphs represent system states and rules model transitions between states.
+The theory of graph grammars and graph transformation systems is based on the application of rules that are able to modify graphs. Using this framework, it is possible to model complex systems as graph transformation systems, where graphs represent system states while rules model transitions between states.
 
 Graph grammars have a wide application in computer science, not only because graphs are very natural and intuitive way to model complex situations, but also because it is possible to reason about several properties of the modelled systems using its formalism~\cite{Ehrig2006,Rozenberg1997}.
 
-We now review the basic concepts and analysis techniques for graph transformations that are used in this work. We use the algebraic approach, which is based on category theory. The reader is assumed to be familiar with categorial concepts, but a brief review of the main concepts used in this thesis is presented in appendix~\ref{app:category-theory}.
+We now review the basic concepts and some analysis techniques for graph transformations that are used in this work. We use the algebraic approach, which is based on category theory. The reader is assumed to be familiar with categorial concepts, but a brief review of the main concepts used in this thesis is presented in appendix~\ref{app:category-theory}.
 
 \begin{definition}[Graph] A graph is a tuple $G = \left(V,E,s,t\right)$ where: $V$ is a set of nodes, $E$ is a set of Edges and $s,t : E \rightarrow V$ are two total functions that map each edge in $E$ to its source and target in $V$.
 
@@ -116,8 +116,8 @@ A \emph{negative} atomic (typed) graph constraint is of the form $NC\left(a\righ
 \end{example}
 \fi
 
-\begin{definition}[Graph Rule]\label{def:graph-rule} A (typed) graph rule\footnote{Also called graph transformation rule or graph production.} \graphrule{} is a span of (typed) graph monomorphisms \lefthand{} and \righthand{}  where the (typed) graphs $L$, $K$ and $R$ are called the left-hand side, gluing graph and right-hand side, respectively. \newadd{The elements (nodes and edges) that appear in $K$ are said to be \emph{preserved} by the rule, while the elements in $L$, but not in $K$ are
-  \emph{deleted} by it. Similarly, elements in $R$ that do not appear in $K$ are \emph{created} by the rule.}
+\begin{definition}[Graph Rule]\label{def:graph-rule} A (typed) graph rule\footnote{Also called graph transformation rule or graph production.} \graphrule{} is a span of (typed) graph monomorphisms \lefthand{} and \righthand{}  where the (typed) graphs $L$, $K$ and $R$ are called the left-hand side, gluing graph and right-hand side, respectively. The elements (nodes and edges) that appear in $K$ are said to be \emph{preserved} by the rule, while the elements in $L$, but not in $K$ are
+  \emph{deleted} by it. Similarly, elements in $R$ that do not appear in $K$ are \emph{created} by the rule.
 
   Given a (typed) graph rule $p$, its inverse rule is defined by \inversegraphrule.
 \end{definition}
@@ -176,10 +176,10 @@ Figure~\ref{fig:gts:rule-standard} presents the rule in the standard DPO notatio
 \end{figure}
 \end{example}
 
-\newadd{The gluing conditions express in a positive manner whether it is possible to perform a transformation. Given a rule and a match to an instance graph, the pattern found by the match must satisfy the dangling and the identification conditions in order to be considered valid. However, sometimes it is also convenient to specify forbidden contexts, in which the transformation can not be applied even if it satisfies the gluing conditions. An elegant form of
-achieving this is by means of Negative Application Conditions (NACs), defined in ~\cite{Habel1996}.}
+The gluing conditions express in a positive manner whether it is possible to perform a transformation. Given a rule and a match to an instance graph, the pattern found by the match must satisfy the dangling and the identification conditions in order to be considered valid. However, sometimes it is also convenient to specify forbidden contexts, in which the transformation can not be applied even if it satisfies the gluing conditions. An elegant form of
+achieving this is by means of Negative Application Conditions (NACs), defined in ~\cite{Habel1996}.
 
-\newadd{A NAC extends one side of a rule describing a pattern that can not be found around the match or comatch, otherwise the application is forbidden. Although they do not provide more expressive power, they make the modelling and understanding of graph grammars a lot easier. Besides, they are nowadays essential to the modelling of complex systems~\cite{Corradini2014}.}
+A NAC extends one side of a rule by describing a pattern that can not be found around the match or comatch, otherwise the application is forbidden. Although they do not provide more expressive power, they make the modelling and understanding of graph grammars a lot easier. Besides, they are nowadays essential to the modelling of complex systems~\cite{Corradini2014}.
 
 \begin{definition}[Negative Application Condition] A \emph{left} negative application condition over a graph rule \graphrule{} is of the form $NAC\left(n\right)$, where \nac{} is an arbitrary (typed) graph morphism. A match \match{} of a rule $p$ satisfies\footnote{When a NAC is satisfied it is also said that the NAC is \emph{not triggered} and vice versa.} $NAC\left(n\right)$ on $L$, written $m \models NAC\left(n\right)$, iff $\nexists$ $q : N \rightarrow G$ with $q$ injective and $q \circ n = m$.
 
@@ -236,7 +236,7 @@ achieving this is by means of Negative Application Conditions (NACs), defined in
 
 \end{definition}
 
-\begin{example}[Mail Server Graph Transformation System] Fig~\ref{fig:gts:mail} depicts a graph transformation system that models a client-server scenario for a very simple e-mail application. \newadd{The type graph (a) defines four kinds of nodes: \faUser{} for users, \faEnvelope{} for messages, \faFileTextO{} for data and \faServer{} for mail servers, while the edges specify where each kind of node can be located at a given time. Finally, this system has four actions modelled as graph rules, which can be summarized as: }
+\begin{example}[Mail Server Graph Transformation System] Fig~\ref{fig:gts:mail} depicts a graph transformation system that models a client-server scenario for a very simple e-mail application. The type graph (a) defines four kinds of nodes: \faUser{} for users, \faEnvelope{} for messages, \faFileTextO{} for data and \faServer{} for mail servers, while the edges specify where each kind of node can be located at a given time. Finally, this system has four actions modelled as graph rules, which can be summarized as: 
 
   \begin{enumerate}[label=(\alph*),start=2]
     \item \emph{Send message:} a client sends a message to a server.
