@@ -145,13 +145,13 @@ As a side note, the reader may notice that it is not mandatory to create a span 
     & & & & Occ & & & & &
 }\hfill\break}
 
-\item retype the rules in $F_\alpha$ over $Occ_\alpha$. In other words, use each morphism found from each $L_i, K_i, R_i$ to $Occ_\alpha$ as their respective new typing morphism. This step generates a set $F'_\alpha$ of doubly-typed graph rules, since $Occ_\alpha$ is itself a $TG$ typed graph.
+\item retype the rules in $F$ over $Occ$. In other words, use each morphism found from each $L_i, K_i, R_i$ to $Occ$ as their respective new typing morphism. This step generates a set $F'$ of doubly-typed graph rules, given that $Occ$ is a $TG$ typed graph itself.
 
-\item calculate the causal relation $\leq_{c}$ of the doubly-typed graph rules in $F'_\alpha$.
+\item calculate the causal relation $\leq_{c}$ of the doubly-typed graph rules in $F'$.
 
-\item\label{enum:construction-graphs} generate the initial and final graphs $I_\alpha$ and $J_\alpha$ by respectively deleting from $Occ_\alpha$ all elements ever created and deleted by the rules in $F'_\alpha$.
+\item\label{enum:construction-graphs} generate the initial and final graphs $I$ and $J$ by respectively deleting from $Occ$ all elements ever created and deleted by the rules in $F'$.
 
-\item\label{enum:construction-occurrence} calculate the produce-forbid and delete-forbid relations.
+\item\label{enum:construction-occurrence} calculate the produce-forbid and delete-forbid relations according to definitions~\ref{def:delete-forbid-strong} and~\ref{def:produce-forbid-strong}.
 
 \begin{enumerate}
 \item\label{enum:construction-analysis} use the concrete conflicts and dependencies to extend the causal relation in order to obtain the occurrence relation $\leq_o$.
@@ -159,7 +159,7 @@ As a side note, the reader may notice that it is not mandatory to create a span 
 \item\label{enum:construction-restriction} use the abstract conflicts and dependencies to generate the set $R_\alpha$ of restrictions over the ordering of rules applicability.
 \end{enumerate}
 
-\item\label{enum:construction-ordering} find one or more total orderings of rules in $F'_\alpha$ which respects both the occurrence relation and the occurrence restrictions.
+\item\label{enum:construction-ordering} find one or more total orderings of rules in $F'$ which respects both the occurrence relation and the occurrence restrictions.
 \end{enumerate}
 
 %  The (Deterministic) Occurrence Graph Grammar representing execution of the functionality $i$ is given by $OGG_i = (Occ_i, I_i,F_i)$, iff $OGG_i$ respects the conditions imposed by Definition~\ref{def:ogg} 
