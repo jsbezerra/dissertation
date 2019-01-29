@@ -4,7 +4,7 @@ Verigraph~\cite{verigraph} is a new tool for simulating and verifying graph gram
 
 Regarding category theory, Verigraph implements important basic constructions such as coequalizers, coproducts, colimits, pushout complements, initial pushouts, pullbacks, negative application conditions, constraints, among others. The implementation of this constructions follows a very similar approach to the one used in~\cite{Rydeheard1988}, where categorial concepts are implemented as types in ML and constructive proofs of theorems in category theory are built as ML programs.
 
-The implemented categorial constructions are used as basis to implement several graph grammar analyses, such as critical pair analysis~\cite{Lambers2006}, state space generation and model checking~\cite{Becker2014}, concurrent rules generation~\cite{BezerraETMF2016} and higher-order graph transformations~\cite{Machado2015}. They were also used to implement the calculation of occurrence graph grammars, which were explained in depth on chapter~\ref{ch:process}.
+The implemented categorial constructions are used as a basis to implement several graph grammar analyses, such as critical pair analysis~\cite{Lambers2006}, state space generation and model checking~\cite{Becker2014}, concurrent rules generation~\cite{BezerraETMF2016} and higher-order graph transformations~\cite{Machado2015}. They were also used to implement the calculation of occurrence graph grammars, which were explained in depth on chapter~\ref{ch:process}.
 
 The analysis algorithms are implemented in a generic functional style, having the advantage of being very close to the formal definitions, thus making it easier to reason about them and to inspect for correctness. In addition, Verigraph benefits from a layered architecture, shown on Figure~\ref{fig:verigraph:layers}, where it is easy to reuse the same analysis algorithms (top layer) for other categories different than \cat{TGraph_T} (bottom layer), as long as they implement the contracts given by the type classes (middle layer) defined on the system. Some examples of such type classes are shown on Figures~\ref{fig:verigraph:morphism-type-class} and \ref{fig:verigraph:cocomplete-type-class}.
 
@@ -20,9 +20,9 @@ The analysis algorithms are implemented in a generic functional style, having th
 %  \end{subfigure}%
   \caption{Verigraph architecture}\label{fig:verigraph:layers}
 \end{figure}
-There exist tools for analysing graph grammars which are similar to Verigraph in some aspects, such as AGG~\cite{Taentzer2000} and GROOVE~\cite{Rensink2004}. Recently, \cite{Deckwerth2016} came up with a java framework for static verification of graph transformations also based in category theory.  However, to our knowledge, Verigraph is the only tool that integrates static and dynamic analyses, second-order specifications and provides support for new categorial constructions and algorithms, besides being the only tool in this field implemented in a pure functional language~\cite{Costa2016}. Moreover, Verigraph is a free and open source software, available online for the community in one of the biggest platforms for software repositories currently available. In addition to it, not only its source code, but also its roadmap are public and open to suggestions and collaborations from outside the Verites group.
+There exist tools for analysing graph grammars which are similar to Verigraph in some aspects, such as AGG~\cite{Taentzer2000} and GROOVE~\cite{Rensink2004}. Recently, \cite{Deckwerth2016} introduced a java framework for static verification of graph transformations also based in category theory.  However, to our knowledge, Verigraph is the only tool that integrates static and dynamic analyses, second-order specifications and provides support for new categorial constructions and algorithms, besides being the only tool in this field implemented in a pure functional language~\cite{Costa2016}. Moreover, Verigraph is a free and open source software, available online for the community in one of the biggest platforms for software repositories currently available. In addition to it, not only its source code, but also its roadmap are public and open to suggestions and collaborations from outside the Verites group.
 
-In the next sections of this chapter, we will demonstrate basic aspects of Verigraph implementation, first we present the general categorial constructions which are the basic foundations of the tool; then we provide details about the implementation of concrete objects and categories, specifically focusing on \typedGraphCategory{}; last, we present the implementation of some analysis algorithms and show how they can be reused by other categories. This chapter also serves as an introduction to chapter~\ref{ch:tests}, where we explain in depth how the calculation of Occurrence Graph Grammars was implemented.
+In the next sections of this chapter, we will demonstrate basic aspects of Verigraph implementation. First we present general categorial constructions which are the basic foundations of the tool; then we provide details about the implementation of concrete objects and categories, specifically focusing on \typedGraphCategory{}; after, we present the implementation of some analysis algorithms and show how they can be reused by other categories. Finally, we explain in depth how the calculation of Occurrence Graph Grammars was implemented, which is also part of our thesis contribution.
 
 \section{Implementation of Categorial Constructions}
 
@@ -46,35 +46,31 @@ class (Eq m) => Morphism m where
 
 All the other type classes in the tool that are related to category theory are somehow defined in terms of \code{Morphism}. For example, the \code{Cocomplete} type class shown in Figure~\ref{fig:verigraph:cocomplete-type-class} defines some of the most basic categorial constructions used in Verigraph, such as coequalizers, coproducts and pushouts.
 
-Notice that, in the \code{Cocomplete} definition, any category that implements the functions \code{calculateCoequalizer} and \code{calculateCoproduct} automatically will have a standard implementation of the \code{calculatePushout} function based only on this two constructions. This is due to the fact that, whenever a category has coequalizers and coproducts, it is possible to calculate any (finite) colimit based only on this two constructions, as demonstrated in~\cite{Pierce1991}.
+Notice that in the \code{Cocomplete} definition any category that implements the functions \code{calculateCoequalizer} and \code{calculateCoproduct} automatically will have a standard implementation of the \code{calculatePushout} function based only on this two constructions. This is due to the fact that, whenever a category has coequalizers and coproducts, it is possible to calculate any (finite) colimit based only on this two constructions, as demonstrated in~\cite{Pierce1991}.
 
-We took advantage of this result to implement not only the \code{calculatePushout}, but also the calculation of the \code{colimit} of a diagram. The later being used in the generation of occurrence graph grammars as demonstrated in chapters~\ref{ch:process} and~\ref{ch:tests}.
+We took advantage of this result to implement not only the \code{calculatePushout}, but also the calculation of the \code{colimit} of a diagram. The later being used in the generation of occurrence graph grammars as demonstrated in chapters~\ref{ch:process} and~\ref{ch:tests}\tinytodo{laster in this chapter}.
 
-Another interesting characteristic of the \code{Morphism} type class is that, even though \code{pushouts} and \code{colimits} are implemented in terms of \code{coproducts} and \code{coequalizers}, the programmer can override the default implementation and provide her/his own (categorial specific) implementation. For example, this could be useful when for a given category \cat{C}, a particular algorithm to calculate the pushout is known to more optimized than using the composition of the basic operations.
+Another interesting characteristic of the \code{Morphism} type class is that, even though \code{pushouts} and \code{colimits} are implemented in terms of \code{coproducts} and \code{coequalizers}, the programmer can override the default implementation and provide their own (categorial specific) implementation. For example, this could be useful when for a given category \cat{C}, a particular algorithm to calculate the pushout is known to be more optimized than using the composition of basic operations.
 
 \begin{figure}[!ht]
   \begin{minted}[linenos=true, breaklines, fontsize=\small]{haskell}
 class (Morphism m) => Cocomplete m where
+  calculateCoequalizer :: m -> m -> m
+  calculateNCoequalizer :: NonEmpty m -> m
+  calculateCoproduct :: Obj m -> Obj m -> (m,m)
+  calculateNCoproduct :: NonEmpty (Obj m) -> [m]
 
-calculateCoequalizer :: m -> m -> m
-
-calculateNCoequalizer :: NonEmpty m -> m
-
-calculateCoproduct :: Obj m -> Obj m -> (m,m)
-
-calculateNCoproduct :: NonEmpty (Obj m) -> [m]
-
-calculatePushout :: m -> m -> (m, m)
-calculatePushout f g = (f', g')
-  where
-    b = codomain f
-    c = codomain g
-    (b',c') = calculateCoproduct b c
-    gc' = compose g c'
-    fb' = compose f b'
-    h = calculateCoequalizer fb' gc'
-    g' = compose b' h
-    f' = compose c' h
+  calculatePushout :: m -> m -> (m, m)
+  calculatePushout f g = (f', g')
+    where
+      b = codomain f
+      c = codomain g
+      (b',c') = calculateCoproduct b c
+      gc' = compose g c'
+      fb' = compose f b'
+      h = calculateCoequalizer fb' gc'
+      g' = compose b' h
+      f' = compose c' h
 \end{minted}
 \caption{Cocomplete Type Class}\label{fig:verigraph:cocomplete-type-class}
 \end{figure}
@@ -86,19 +82,13 @@ In addition to \code{Morphism}, Verigraph has several other important type class
   \item \code{DPO} for operations related to DPO graph rewriting approach, such as inversion of rules.
 \end{itemize}
 
-Currently, there are three categories implemented on Verigraph: 
-
-\begin{itemize}
-  \item \cat{Graph}: graphs as objects and graph morphisms as arrows; 
-  \item \cat{TGraph_T}: $T-$typed graphs as objects and $T-$typed graph morphisms as arrows; 
-  \item \cat{TSpan_T}: $T-$typed graph morphism spans as objects and span morphisms as arrows (DPO graph rules and morphisms between rules, respectively).
-\end{itemize}
+As for the concrete categories used, currently there are three specific implementations on Verigraph. Besides \cat{Graph} and \cat{TGraph_T}, which were reviewed on chapter~\ref{ch:gts}, there is also an implementation of \cat{TSpan_T}, where we have $T-$typed graph morphism spans are objects and span morphisms are arrows or, from a more concrete perspective, DPO graph rules as objects and morphisms between rules as arrows.
 
 \section{Implementation of Graph Grammars}
 
 The main concrete structures in Verigraph are (typed) graph grammars, which is currently the focus of the Verites group. The basic implementation begins with the \code{Graph} type, which consists of a list of nodes and a list of edges together with an API for graph manipulation with basic functions.
 
-The \code{Graph} definition on Haskell is show on Figure~\ref{fig:verigraph:graph}. The API is not shown, but it includes basic graph operations such as \code{insertNode}, \code{insertEdge}, \code{removeNode}, \code{removeEdge}, \code{incomingEdges}, \code{outgoinEdges}, \code{sourceOf}, \code{targetOf}, among others. 
+The \code{Graph} definition on Haskell is show on Figure~\ref{fig:verigraph:graph}. The \code{Graph} API is not shown, but it includes basic graph operations such as \code{insertNode}, \code{insertEdge}, \code{removeNode}, \code{removeEdge}, \code{incomingEdges}, \code{outgoinEdges}, \code{sourceOf}, \code{targetOf}, among others. 
 
 \begin{figure}[!ht]
 
@@ -106,18 +96,18 @@ The \code{Graph} definition on Haskell is show on Figure~\ref{fig:verigraph:grap
 \begin{minted}[linenos=true, breaklines,fontsize=\small]{haskell}
 data Node a = Node 
 { getNodePayload :: Maybe a
-} deriving (Show, Read)
+}
 
 data Edge a = Edge 
 { getSource      :: NodeId
 , getTarget      :: NodeId
 , getEdgePayload :: Maybe a
-} deriving (Show, Read)
+}
 
 data Graph a b = Graph 
 { nodeMap :: [(NodeId, Node a)]
 , edgeMap :: [(EdgeId, Edge b)]
-} deriving (Show, Read)
+}
 \end{minted}
 \label{fig:verigraph:graph}
 \end{figure}
@@ -136,7 +126,7 @@ data GraphMorphism a b = GraphMorphism
 , getCodomain  :: Graph a b
 , nodeRelation :: R.Relation G.NodeId
 , edgeRelation :: R.Relation G.EdgeId
-} deriving (Eq, Show)
+}
 
 type TypedGraph a b = GraphMorphism a b
 
@@ -144,7 +134,7 @@ data TypedGraphMorphism a b = TypedGraphMorphism
 { getDomain   :: TypedGraph a b
 , getCodomain :: TypedGraph a b
 , mapping     :: GraphMorphism a b
-} deriving (Eq, Show)
+}
 
 data RuleMorphism a b = RuleMorphism 
 { rmDomain         :: Production (TypedGraphMorphism a b)
@@ -152,7 +142,7 @@ data RuleMorphism a b = RuleMorphism
 , mappingLeft      :: TypedGraphMorphism a b
 , mappingInterface :: TypedGraphMorphism a b
 , mappingRight     :: TypedGraphMorphism a b
-} deriving (Eq, Show)
+}
 \end{minted}
 \label{fig:verigraph:concrete-morphisms}
 \end{figure}
@@ -175,9 +165,9 @@ instance Morphism (TypedGraphMorphism a b) where
 
 \section{Implementation of the Analysis Algorithms}
 
-The analysis algorithms are also implemented at a high level of abstraction, based on categorial definitions and their implementation as type classes. For example, the code for calculating the conflict or dependency between two rules was first implemented for \cat{TGraph_T}, but since it is based on the \code{DPO} type class the code can be reused for any category that implements this contract.
+The analysis algorithms are also implemented at a high level of abstraction, based on categorial definitions and their implementation as type classes. For example, the code for calculating conflicts or dependencies between two rules was first implemented for \cat{TGraph_T}, but since it is based on the abstraction of \code{DPO} type class this piece of code can be reused by any other category implementing the \code{DPO} contract.
 
-Furthermore, Figure~\ref{fig:verigraph:delete-use-produce-use} shows a piece of code with functions to test whether an overlapping pair of two rules rises a conflict or a dependency for one of those rules. Notice how this code resembles the definitions of delete-use conflict (Definition~\ref{def:classic-conflict}) and produce-use dependency (Definition~\ref{def:classic-dependency}).
+Furthermore, Figure~\ref{fig:verigraph:delete-use-produce-use} shows a piece of code with functions responsible to test whether an overlapping pair of two rules rises a conflict or a dependency for one of those rules. Notice how this code resembles the definitions of delete-use conflict (Definition~\ref{def:classic-conflict}) and produce-use dependency (Definition~\ref{def:classic-dependency}).
 
 
 \begin{figure}[!ht]
@@ -203,6 +193,6 @@ isProduceUse p1 (m1',m2) = null h21
 
 As an example of its application at other categories we have \cat{TSpan_T}, which also implements the \code{DPO} type class and benefits from the same algorithms for finding conflicts and dependencies. This also can be used for different categories based on graphs, algebras, logics and so on.
 
-Besides basic categorial constructions and several analysis techniques for graph grammars, Verigraph was also used to implement the construction of Occurrence Graph Grammars and the relations presented in chapter~\ref{ch:process}. These constructions are presented in more detail in the next chapter.
+Besides basic categorial constructions and several analysis techniques for graph grammars, Verigraph was also used to implement the construction of Occurrence Graph Grammars and the relations presented in chapter~\ref{ch:process}. These constructions are presented in more detail in the following sections.
 
 

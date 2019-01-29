@@ -9,10 +9,9 @@
 
 %We focused our approach on testing the integration of different functionalities (or requirements) of a system. By \emph{functionality}, we informally mean an aim the system is supposed to accomplish, which has value to a user or any other stakeholder. By \emph{integration} we mean the emergent behaviour of executing several functionalities, possibly multiple times.
 
-In the graph grammar model of a system, a functionality can be represented either as a single rule or as a collection of rules. In either case, those rules must be executed to achieve the functionality goals. Therefore, the main idea of our approach is that, given a collection of functionalities, we find out whether it is possible to find a sequence in which all these functionalities can be performed, then we characterize the assumptions that must be satisfied for them to be performed
-and/or the restrictions that may prevent their execution. Given a collection of functionalities modelled as graph rules, we are interested in generating:
+% In the graph grammar model of a system, a functionality can be represented either as a single rule or as a collection of rules. In either case, those rules must be executed to achieve the functionality goals. Therefore, the main idea of our approach is that, given a collection of functionalities, we find out whether it is possible to find a sequence in which all these functionalities can be performed, then we characterize the assumptions that must be satisfied for them to be performed and/or the restrictions that may prevent their execution. Given a collection of functionalities modelled as graph rules, we are interested in generating:
 
-
+\iffalse
 \begin{enumerate}
 \item the minimal input data necessary for these functionalities to execute, as well as the output data of a successful execution;
 \item at least one path in which all functionalities can be applied (if possible);
@@ -23,12 +22,12 @@ and/or the restrictions that may prevent their execution. Given a collection of 
 \end{enumerate}
 
 Notice that the two first items correspond to test cases while the last one correspond to test oracles.
-
+\fi
 %First, we present a brief overview of the methodology for extracting graph grammars from use cases, after what we present the process of generating the tests cases from the extracted grammars.
 
 \section{Running Example: A Restaurant System}
 
-We present a running example modelling a system to automate the processes of a restaurant, which was built using the methodology described before. The graph grammar for this system was extracted from the set of use cases presented in Appendix~\ref{app:use-cases}. These use cases model basic restaurant functionalities such as login of employees, reservation and cancellation of tables, accommodation of clients, serving tables, among others.
+We begin by presenting a running example: a graph grammar that models a a restaurant system. This grammar for this system was extracted from the set of use cases presented in Appendix~\ref{app:use-cases}. These use cases model basic restaurant functionalities such as login of employees, reservation and cancellation of tables, accommodation of clients, serving tables, among others.
 
 Some excerpts of this grammar are shown throughout this chapter, while the complete extracted grammar can be found on appendix~\ref{app:use-cases} and at the Verites repository for case studies\footnote{https://github.com/Verites/case-studies}.
 
