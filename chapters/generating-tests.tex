@@ -27,22 +27,16 @@ Notice that the two first items correspond to test cases while the last one corr
 
 \section{Running Example: A Restaurant System}
 
-We begin by presenting a running example: a graph grammar that models a a restaurant system. This grammar for this system was extracted from the set of use cases presented in Appendix~\ref{app:use-cases}. These use cases model basic restaurant functionalities such as login of employees, reservation and cancellation of tables, accommodation of clients, serving tables, among others.
+We begin by presenting a running example: a graph grammar that models a a restaurant system. This grammar was built from the set of use cases presented in Appendix~\ref{app:use-cases} by applying the systematic methodology proposed by~\cite{Junior2015}. These use cases model basic functionalities of a restaurant system such as login of employees, reservation and cancellation of tables, accommodation of clients, serving tables, among others. While only some excerpts of this grammar are shown in this work, the complete extracted grammar can be found on appendix~\ref{app:use-cases} and at the Verites repository for case studies\footnote{https://github.com/Verites/case-studies}.
 
-Some excerpts of this grammar are shown throughout this chapter, while the complete extracted grammar can be found on appendix~\ref{app:use-cases} and at the Verites repository for case studies\footnote{https://github.com/Verites/case-studies}.
+%Given the graph grammar model of a system, we want to generate test cases and oracles for collections of its underlying functionalities. These collections could represent something as ``atomic'' as a successful or failing login attempt or something as complex as the entire workflow of attending clients, which would require attendants and waiters to log in into the system, tables to be occupied, orders to be prepared, among possibly several other steps.
 
-\section{Generating Tests using Occurrence Graph Grammars}
+%The reason why we focused on collections of functionalities is to test the emergent behaviour of a system, which usually is not observable if we consider each functionality in isolation. By grouping together several (usually, but not necessarily different) functionalities, we may realize how they interact with each other and which are the overall effects of this integration.
 
-\newadd{Given the graph grammar model of a system, we want to generate test cases and oracles for collections of its underlying functionalities. These collections could represent something as ``atomic'' as a successful or failing login attempt or something as complex as the entire workflow of attending clients, which would require attendants and waiters to log in into the system, tables to be occupied, orders to be prepared, among possibly several other steps.}
+%\begin{definition}[Functionality Collection] Given a graph grammar \graphGrammar{} that models a system, a \emph{functionality collection} $F$ is a collection of its grammar rules. The term collection here is used instead of set to imply that the same rule $r \in P$ can appear more than once in $F$. In this context, it means the functionality modelled by $r$ is intended to be executed more than once.
+%\end{definition}
 
-\important{maybe the difference between unit and integration tests}
-
-\newadd{The reason why we focused on collections of functionalities is to test the emergent behaviour of a system, which usually is not observable if we consider each functionality in isolation. By grouping together several (usually, but not necessarily different) functionalities, we may realize how they interact with each other and which are the overall effects of this integration.}
-
-\newadd{\begin{definition}[Functionality Collection] Given a graph grammar \graphGrammar{} that models a system, a \emph{functionality collection} $F$ is a collection of its grammar rules. The term collection here is used instead of set to imply that the same rule $r \in P$ can appear more than once in $F$. In this context, it means the functionality modelled by $r$ is intended to be executed more than once.
-\end{definition}}
-
-\begin{example} Figure~\ref{fig:tests:grammar} shows an example of such a collection from our running example. The chosen rules represent one way in which the entire process of serving a client can be accomplished. In this particular case, we chose the rules representing the successful paths of the use cases \emph{reserve table}, \emph{accommodate client}, \emph{serve table} and \emph{close table}.
+\begin{example} Figure~\ref{fig:tests:grammar} shows some of the rules which compose our grammar. The chosen rules represent one way in which the entire process of serving a client can be accomplished. In this particular case, we chose the rules representing the successful paths of the use cases \emph{reserve table}, \emph{accommodate client}, \emph{serve table} and \emph{close table}.
 
 \begin{description}
   \item[Reserve table:] The receptionist of tags a table as reserved for a specific client at a given date and time, such that the reserved table can not be allocated for another client, either by accommodation or reservation, at the same time.
@@ -88,15 +82,13 @@ Some excerpts of this grammar are shown throughout this chapter, while the compl
 \end{example}
 
 
-\subsection{Preparing the input}
+\section{Preparing the input}
 
-Along with the grammar $GG$ and a functionality collection $F$, we will also need a way of specifying how the functionalities will interact among themselves. Specifically, which pieces of data will be exchanged among these functionalities. For this purpose, we create an \emph{input-output relation}, depicting connections between the rules in $F$. The objects in this relation identify which elements (nodes and edges) must be the same inside each pair of rules, as shown in example~\ref{ex:inout}.
+Along with the grammar $GG$ and a collection of rules $F$ based on $P$, we will also need a way of specifying how the rules will interact among themselves\footnote{ We use the term collection instead of set because, in this case, a rule can appear more than once and we need them to be accounted as such.}. Specifically, which elements (nodes and edges) are common throughout them. For this purpose, we create an \emph{input-output relation}, depicting connections between the rules in $F$. The objects in this relation identify which elements must be the same inside each pair of rules, as shown in example~\ref{ex:inout}.
 
-\begin{definition}[Input-Output Relation] \newadd{Given a functionality collection $F$, its underlying \emph{input-output relation} $IO$ is a set of typed-graph morphism spans of the form \mbox{$R_x \leftarrow IO_i \rightarrow L_y$}\footnote{ Or \mbox{$L_x \leftarrow IO_i \rightarrow R_y$}, the order in this matter is not important.} each of which connects two distinct rules $x,y \in F$.}
+\begin{definition}[Input-Output Relation] Given a collection $F$ of rules, its underlying \emph{input-output relation} $IO$ is a set of typed-graph morphism spans of the form \mbox{$R_x \leftarrow IO_i \rightarrow L_y$}\footnote{ Or \mbox{$L_x \leftarrow IO_i \rightarrow R_y$}, the order in this matter is not important.} each of which connects two distinct rules $x,y \in F$. Where the $IO_i$ object of each span works similarly to the gluing graph $K$ of a rule, but instead of identifying elements that are the same in both left and right sides of a single rule, it identifies the elements that are necessarily the same between two different rules.
 
-  \newadd{The $IO_i$ object of each span works similarly to the gluing graph of a rule, but instead of identifying elements that are the same in both left and right sides of a single rule, it identifies the elements that are necessarily the same between two different rules.}
-
-  \newadd{An input-output relation for a functionality collection will have an appearance similar to the diagram bellow, where there are several $IO$ objects connecting the right-hand side of a rule with the left-hand side of another one.}
+  An input-output relation for a collection of rules will have an appearance similar to the diagram bellow, where there are several $IO$ objects connecting the right-hand side of a rule with the left-hand side of another one.
 
 \diagram{
   & & & & IO_6\ar@{-->}[dddrrrr]\ar@{-->}[dddllll] & & & &\\
@@ -107,12 +99,12 @@ Along with the grammar $GG$ and a functionality collection $F$, we will also nee
 
 \end{definition}
 
-\begin{remark}\newadd{We could have have included in the $IO$ relation spans that connect only the left (resp. right) sides of rules, however we would accomplish very little with this kind of span. Since an element can not be deleted or created by two different rules at once, this particular kind of span would serve only to identify the elements that are preserved by both rules, otherwise they would introduce inconsistencies.}
+\begin{remark}We could have have also included in the $IO$ relation a type of span that connect only the left (resp. right) sides of rules together, however we would accomplish very little with this kind of span. Since an element can not be deleted or created by two different rules at once in an occurrence graph grammar, this particular kind of span would serve only to identify elements that are deleted (resp. preserved) by both rules, otherwise they would introduce inconsistencies.
 \end{remark}
 
 \begin{example}[Input-Output Relations]\label{ex:inout} \important{review} \important{Figure~\ref{fig:tests:inout} shows an $IO$ object connecting\ldots explain this in terms of he running example}
 
-As a side note, the reader may notice that it is not mandatory to create a span \mbox{$\left(R_x \leftarrow IO_i \rightarrow L_y\right)$} for every pair of rules. For example, the \emph{system} node of the grammar in a scenario where we want this node to represent the same exact system among all rules. Given two rules $p_1$ and $p_2$, we have the options of building the span that identifies the system node as
+As a side note, the reader may notice that it is not mandatory to create a span \mbox{$\left(R_x \leftarrow IO_i \rightarrow L_y\right)$} for every pair of rules. For example, the \important{system} node of the grammar in a scenario where we want this node to represent the same exact system among all rules. Given two rules $p_1$ and $p_2$, we have the options of building the span that identifies the system node as
   $R_1 \leftarrow IO \rightarrow L_2$ or $R_2 \leftarrow IO \rightarrow L_1$, or even the two of them. All of which have the same final effect. The construction of the \textit{input-output relation} is one of the manual steps of our strategy, therefore it is left to the analyst to decide how to better implement his/her own $IO$ relation.
 
 \begin{figure}[!ht]
@@ -123,23 +115,23 @@ As a side note, the reader may notice that it is not mandatory to create a span 
 
 \end{example}
 
-\subsection{Processing the input grammar}
+\section{Processing the input grammar}
 
-\newadd{In possession of the graph grammar model $GG$, the generation of test cases and oracles for a collection of functionalities $F_{\alpha}$ is accomplished by means of an amalgamation of $F_{\alpha}$ over its input-output relation $IO_{\alpha}$, later used in the construction of doubly-typed graph grammar $OGG_\alpha$ from which we extract the tests. The construction steps are specified in Definition~\ref{def:ogg-construction}.}
+  Having $GG$ the graph grammar model of the system, $F$ a collection of rules and $IO$ an \emph{input-output relation}, we proceed to the construction of an occurrence graph grammar for $GG$ accomplished by means of an amalgamation of $F$ over its input-output relation $IO$. This amalgamation is later used in the construction of a doubly-typed graph grammar, which we then check to verify if it satisfies the conditions to be an occurrence grammar. The construction steps are specified in Definition~\ref{def:ogg-construction}.
 
-\begin{definition}[Deterministic Occurrence Graph Grammar Construction]\label{def:ogg-construction} Let \graphGrammar{} be a graph grammar, $F_{\alpha}$ a functionality collection and $IO_{\alpha}$ its corresponding input-output relation:
+\begin{definition}[Deterministic Occurrence Graph Grammar Construction]\label{def:ogg-construction} Let \graphGrammar{} be a graph grammar, $F$ a functionality collection and $IO$ its corresponding input-output relation:
 
 \begin{enumerate}
-  \item\label{enum:construction-colimit} calculate the amalgamation (colimit) $Occ_{\alpha}$ of the rules in $F_{\alpha}$ with respect to $IO_{\alpha}$ as presented in the diagram below, where all squares commute.
+  \item\label{enum:construction-colimit} calculate the amalgamation (colimit) $Occ$ of the rules in $F$ with respect to $IO$ as presented in the diagram below, where all squares commute.
 
 \diagram{
   & & & & IO_6\ar[dddrrrr]\ar[dddllll] & & & & \\
     & IO_3\ar[ddl]\ar[ddrrrr] & & & & & & IO_4\ar[ddr]\ar[ddllll] &\\
-    & & IO_1\ar[d]\ar[dr] & & IO_5\ar[drr]\ar[dll] & & IO_2\ar[d]\ar[dl] & &\\
+    & & IO_1\ar[d]\ar[dr] & & IO_5\ar[drr]\ar[dll] & & I O_2\ar[d]\ar[dl] & &\\
     L_1\ar[dddrrrr] & K_1\ar[l]\ar[r] & R_1\ar[dddrr] & L_2\ar[dddr] & K_2\ar[l]\ar[r] & R_2\ar[dddl] & L_3\ar[dddll] & K_3\ar[l]\ar[r] & R_3\ar[dddllll]\\
     & & & & & & & &\\
     & & & & & & & &\\
-    & & & & Occ_\alpha & & & &
+    & & & & Occ & & & &
 }\hfill\break
 
 \hide{
@@ -345,5 +337,5 @@ The tests are represented by the rules and element ordering and also by the init
 
 The ordering of elements represent an ordering in which the state of the system may be constructed. While the initial and final graphs translate the valid formats for the input and output of each test.
 
-More specific usability details can be found on the Verigraph tutorial, whose current version is presented on appendix~\ref{app:tutorial}.
+More specific usability details can be found on the Verigraph tutorial, which can be found at \url{https://github.com/Verites/verigraph-tutorial/releases}.
 
