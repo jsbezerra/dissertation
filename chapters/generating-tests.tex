@@ -321,7 +321,7 @@ Set of Abstract Restrictions: {
   \label{fig:tests:relation}
 \end{figure}
 The analysis file contains the results for calculation of conflicts and dependencies among rules and among elements. The test cases file contains the information relevant to test designer.
-The \code{.ggx} presents the occurrence graph grammar constructed, together with its initial and final graphs.
+The \code{.ggx} presents the occurrence graph grammar constructed (as a simply-typed graph grammar), together with its initial and final graphs.
 
 The test oracles are represented by the concrete rules relation and the set of abstract restrictions: any path that complains to the format imposed by them is considered valid and must always succeed. On the other hand, paths that break at least one of such restrictions are considered invalid, and their tests must always capture them as failures.
 
