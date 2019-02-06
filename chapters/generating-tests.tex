@@ -25,9 +25,8 @@ Notice that the two first items correspond to test cases while the last one corr
 \fi
 %First, we present a brief overview of the methodology for extracting graph grammars from use cases, after what we present the process of generating the tests cases from the extracted grammars.
 
-\section{Running Example: A Restaurant System}
 
-We begin by presenting a running example: a graph grammar that models a a restaurant system. This grammar was built from the set of use cases presented in Appendix~\ref{app:use-cases} by applying the systematic methodology proposed by~\cite{Junior2015}. These use cases model basic functionalities of a restaurant system such as login of employees, reservation and cancellation of tables, accommodation of clients, serving tables, among others. While only some excerpts of this grammar are shown in this work, the complete extracted grammar can be found on appendix~\ref{app:use-cases} and at the Verites repository for case studies\footnote{https://github.com/Verites/case-studies}.
+In this chapter, we present the step-by-step creation of Occurrence Graph Grammars and how it was implemented in Verigraph. We begin by presenting a running example of a graph grammar modelling the system of a restaurant. This grammar was built from the set of use cases presented in Appendix~\ref{app:use-cases} by applying the systematic methodology proposed by~\cite{Junior2015}. These use cases model basic functionalities of the proposed restaurant system such as login of employees, reservation and cancellation of tables, accommodation of clients, serving tables, among others. While only some excerpts of this grammar are shown in this work, the complete extracted grammar can be found on appendix~\ref{app:use-cases} and at the Verites repository for case studies\footnote{https://github.com/Verites/case-studies}.
 
 %Given the graph grammar model of a system, we want to generate test cases and oracles for collections of its underlying functionalities. These collections could represent something as ``atomic'' as a successful or failing login attempt or something as complex as the entire workflow of attending clients, which would require attendants and waiters to log in into the system, tables to be occupied, orders to be prepared, among possibly several other steps.
 
@@ -35,6 +34,8 @@ We begin by presenting a running example: a graph grammar that models a a restau
 
 %\begin{definition}[Functionality Collection] Given a graph grammar \graphGrammar{} that models a system, a \emph{functionality collection} $F$ is a collection of its grammar rules. The term collection here is used instead of set to imply that the same rule $r \in P$ can appear more than once in $F$. In this context, it means the functionality modelled by $r$ is intended to be executed more than once.
 %\end{definition}
+
+\section{The Restaurant System Example}
 
 \begin{example} Figure~\ref{fig:tests:grammar} shows some of the rules which compose our grammar. The chosen rules represent one way in which the entire process of serving a client can be accomplished. In this particular case, we chose the rules representing the successful paths of the use cases \emph{reserve table}, \emph{accommodate client}, \emph{serve table} and \emph{close table}.
 
