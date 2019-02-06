@@ -25,9 +25,9 @@ Notice that the two first items correspond to test cases while the last one corr
 \fi
 %First, we present a brief overview of the methodology for extracting graph grammars from use cases, after what we present the process of generating the tests cases from the extracted grammars.
 
+In this chapter, we present the step-by-step creation of Occurrence Graph Grammars (OGGs) and how it was implemented in Verigraph. We begin by presenting a running example of a graph grammar that models the system of a restaurant. This grammar was built from the set of use cases presented in Appendix~\ref{app:use-cases} by applying the systematic methodology proposed by~\cite{Junior2015}. These use cases model basic functionalities of the proposed restaurant system such as login of employees, reservation and cancellation of tables, accommodation of clients, serving tables, among others. While only some excerpts of this grammar are shown in this work, the complete extracted grammar can be found on appendix~\ref{app:use-cases} and at the Verites repository for case studies\footnote{https://github.com/Verites/case-studies}.
 
-In this chapter, we present the step-by-step creation of Occurrence Graph Grammars and how it was implemented in Verigraph. We begin by presenting a running example of a graph grammar modelling the system of a restaurant. This grammar was built from the set of use cases presented in Appendix~\ref{app:use-cases} by applying the systematic methodology proposed by~\cite{Junior2015}. These use cases model basic functionalities of the proposed restaurant system such as login of employees, reservation and cancellation of tables, accommodation of clients, serving tables, among others. While only some excerpts of this grammar are shown in this work, the complete extracted grammar can be found on appendix~\ref{app:use-cases} and at the Verites repository for case studies\footnote{https://github.com/Verites/case-studies}.
-
+After introducing the running example, we proceed to the explanation of the necessary steps to build an Occurrence Graph Grammar according to the definitions presented on chapter~\ref{ch:process}. Explaining also how each of these steps was implemented on Verigraph. In the end of chapter, we provide some insight about how OGGs can be used to generate test cases for the system they model.
 %Given the graph grammar model of a system, we want to generate test cases and oracles for collections of its underlying functionalities. These collections could represent something as ``atomic'' as a successful or failing login attempt or something as complex as the entire workflow of attending clients, which would require attendants and waiters to log in into the system, tables to be occupied, orders to be prepared, among possibly several other steps.
 
 %The reason why we focused on collections of functionalities is to test the emergent behaviour of a system, which usually is not observable if we consider each functionality in isolation. By grouping together several (usually, but not necessarily different) functionalities, we may realize how they interact with each other and which are the overall effects of this integration.
@@ -35,15 +35,15 @@ In this chapter, we present the step-by-step creation of Occurrence Graph Gramma
 %\begin{definition}[Functionality Collection] Given a graph grammar \graphGrammar{} that models a system, a \emph{functionality collection} $F$ is a collection of its grammar rules. The term collection here is used instead of set to imply that the same rule $r \in P$ can appear more than once in $F$. In this context, it means the functionality modelled by $r$ is intended to be executed more than once.
 %\end{definition}
 
-\section{The Restaurant System Example}
+\section{A Restaurant System}
 
-\begin{example} Figure~\ref{fig:tests:grammar} shows some of the rules which compose our grammar. The chosen rules represent one way in which the entire process of serving a client can be accomplished. In this particular case, we chose the rules representing the successful paths of the use cases \emph{reserve table}, \emph{accommodate client}, \emph{serve table} and \emph{close table}.
+\begin{example} \important{Provide a generic introduction.} Figure~\ref{fig:tests:grammar} shows some of the rules in our grammar. The chosen rules represent one way in which the entire process of serving a client can be accomplished. In this particular case, we chose the rules representing the successful paths of the use cases \emph{reserve table}, \emph{accommodate client}, \emph{serve table} and \emph{close table}.
 
 \begin{description}
-  \item[Reserve table:] The receptionist of tags a table as reserved for a specific client at a given date and time, such that the reserved table can not be allocated for another client, either by accommodation or reservation, at the same time.
-  \item[Accomodate client:] The receptionist lead the client to his/her previously reserved table, then notifies a waiter that this table is waiting for service.
-  \item[Serve table:] The waiter goes to a table with clients to take the order, which consists of adding or removing items to the order, then closing it and sending it to the kitchen to be prepared.
-  \item[Close table:] The waiter goes to a table that has been serviced, closes the bill and collects the payment from the client.
+  \item[Reserve table:] A receptionist of the restaurant tags a table as reserved for a specific client at a given date and time. Therefore, this table must not be allocated for another client, either by accommodation or reservation, at the same time.
+  \item[Accomodate client:] A receptionist leads a client to his/her previously reserved table, then notifies the system that this table is waiting for service.
+  \item[Serve table:] A waiter goes to a table with clients to take an order, which consists of adding or removing items to the order, then closing it and sending it to the kitchen to be prepared.
+  \item[Close table:] A waiter goes to a table that has been serviced, closes the corresponding bill and collects the payment from its client.
 \end{description}
 
 \begin{figure}[!ht]
