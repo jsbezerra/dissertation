@@ -22,7 +22,7 @@ The analysis algorithms are implemented in a generic functional style, having th
 \end{figure}
 There exist tools for analysing graph grammars which are similar to Verigraph in some aspects, such as AGG~\cite{Taentzer2000} and GROOVE~\cite{Rensink2004}. Recently, \cite{Deckwerth2016} introduced a java framework for static verification of graph transformations also based in category theory.  However, to our knowledge, Verigraph is the only tool that integrates static and dynamic analyses, second-order specifications and provides support for new categorial constructions and algorithms, besides being the only tool in this field implemented in a pure functional language~\cite{Costa2016}. Moreover, Verigraph is a free and open source software, available online for the community in one of the biggest platforms for software repositories currently available. In addition to it, not only its source code, but also its roadmap are public and open to suggestions and collaborations from outside the Verites group.
 
-In the next sections of this chapter, we will demonstrate basic aspects of Verigraph implementation. First we present general categorial constructions which are the basic foundations of the tool; then we provide details about the implementation of concrete objects and categories, specifically focusing on \typedGraphCategory{}; after, we present the implementation of some analysis algorithms and show how they can be reused by other categories. Finally, we explain in depth how the calculation of Occurrence Graph Grammars was implemented, which is part of our thesis contribution.
+In the next sections of this chapter, we will demonstrate basic aspects of Verigraph implementation. First we present general categorial constructions which are the basic foundations of the tool; then we provide details about the implementation of concrete objects and categories, specifically focusing on \typedGraphCategory{}; after, we present the implementation of some analysis algorithms and show how they can be reused by other categories. %Finally, we explain in depth how the calculation of Occurrence Graph Grammars was implemented, which is part of our thesis contribution.
 
 \section{Implementation of Categorial Constructions}
 
@@ -48,7 +48,7 @@ All the other type classes in the tool that are related to category theory are s
 
 Notice that in the \code{Cocomplete} definition any category that implements the functions \code{calculateCoequalizer} and \code{calculateCoproduct} automatically will have a standard implementation of the \code{calculatePushout} function based only on this two constructions. This is due to the fact that, whenever a category has coequalizers and coproducts, it is possible to calculate any (finite) colimit based only on this two constructions, as demonstrated in~\cite{Pierce1991}.
 
-We took advantage of this result to implement not only the \code{calculatePushout}, but also the calculation of the \code{colimit} of a diagram. The later being used in the generation of occurrence graph grammars as demonstrated in chapters~\ref{ch:process} and~\ref{ch:tests}\tinytodo{laster in this chapter}.
+We took advantage of this result to implement not only the \code{calculatePushout}, but also the calculation of the \code{colimit} of a diagram. The later being used in the generation of occurrence graph grammars as defined in chapter~\ref{ch:process} and demonstrated in chapter~\ref{ch:tests}.
 
 Another interesting characteristic of the \code{Morphism} type class is that, even though \code{pushouts} and \code{colimits} are implemented in terms of \code{coproducts} and \code{coequalizers}, the programmer can override the default implementation and provide their own (categorial specific) implementation. For example, this could be useful when for a given category \cat{C}, a particular algorithm to calculate the pushout is known to be more optimized than using the composition of basic operations.
 
@@ -193,6 +193,6 @@ isProduceUse p1 (m1',m2) = null h21
 
 As an example of its application at other categories we have \cat{TSpan_T}, which also implements the \code{DPO} type class and benefits from the same algorithms for finding conflicts and dependencies. This also can be used for different categories based on graphs, algebras, logics and so on.
 
-Besides basic categorial constructions and several analysis techniques for graph grammars, Verigraph was also used to implement the construction of Occurrence Graph Grammars and the relations presented in chapter~\ref{ch:process}. These constructions are presented in more detail in the following sections.
+Besides basic categorial constructions and several analysis techniques for graph grammars, Verigraph was also used to implement the construction of Occurrence Graph Grammars and the relations presented in chapter~\ref{ch:process}. This constructions is presented in more detail in the following chapter.
 
 
