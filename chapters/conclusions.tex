@@ -1,12 +1,18 @@
 \chapter{Conclusions}\label{ch:conclusions}
 
-  We proposed an extension to the framework of occurrence graph grammars, previously defined by~\cite{Ribeiro1996} and~\cite{Corradini1996},  to deal with negative application conditions. The calculation of occurrence graph grammars from graph grammars was implemented on Verigraph, which now supports doubly-typed graph grammars in general.
+An Occurrence Graph Grammar is a way of representing the semantics of a graph grammar as a graph grammar itself. OGGs were previously defined by~\cite{Ribeiro1996} and~\cite{Corradini1996}. However, its original definitions do not consider Negative Application Conditions, which are nowadays essential do the modelling of complex, real-like systems.
+
+  In our work, we proposed an extension to the framework of occurrence graph grammars in order to include Negative Application Conditions (NACs), which has not been done so far. Additionally, the process of constructing occurrence graph grammars from graph grammars was implemented on Verigraph, a software specification and verification system based on graph rewriting.%, which now supports doubly-typed graph grammars in general.
 
   %As the main objective of this thesis, we used occurrence graph grammars and its relations to generate test cases, also using Verigraph. This functionality aims to improve the quality of the software testing activity by providing test cases and oracles that are complete (regarding the point of view of rules application ordering) and compact.
 
-  In order to implement the techniques presented in this work, it was necessary to extend the previous work already existent in Verigraph. In this sense, one of the main contributions was the implementation of a generic architecture for basic categorial operations, which can be used by different category implementations with relatively little effort. Besides, Verigraph is, as far as we know, the only tool in this field that supports occurrence graph grammars and doubly-typed graph grammars in general.
+In order to implement the techniques presented in this work, we took advantage of the previous work already existent in Verigraph, mainly based on categorial notions. In this sense, one of our collateral contributions was the implementation of more basic categorial operations than originally present, such as coequalizers, coproducts and colimits. This operations may now be used by different category implementations with relatively little effort. 
 
-    Furthermore, Verigraph is a free and open source software, publicly available at github. Thus, we expect that any users in the community of graph grammars and category theory in general can find and use it, besides making suggestions and even implementing new features according to their specific needs.
+Besides that, Verigraph is now (as far as we know) the only tool in this field that supports the construction and analysis of doubly-typed graph grammars and occurrence graph grammars, both with and without NACs.
+
+    Furthermore, Verigraph is a free and open source software, publicly available at github. Thus, we expect that any users in the community of graph grammars and category theory in general can find it and use it, besides making suggestions and even implementing new features according to their specific needs.
+
+We also provided some insight about how the semantic of graph grammars, in the form of occurrence graph grammars, can be used in order to generate sets of test cases to the system under modelling, a strategy we intend to refine in our future work.
 
 \section{Open Questions and Future Work}
 
