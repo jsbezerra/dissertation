@@ -216,7 +216,7 @@ At first, it may seem that we are loosing expressive power by restricting the NA
   For two arbitrary morphisms $f : A \rightarrow X$ and $g : B \rightarrow X$, we will denote as $f' : A \rightarrow X_{|AB}$ and $g' : B \rightarrow X_{|AB}$ the morphisms derived from $f$ and $g$ where $X_{|AB}$ is the joint image of both $f$ and $g$.
 \end{notation}
 
-\begin{definition}[Strongly Safe (Doubly-Typed) Graph Grammars] Given \doublyTypedGraphGrammarCore{} a doubly-typed graph grammar, $GG$ is said to be \emph{strongly safe} if its double-type graph is also a core graph.
+\begin{definition}[Strongly Safe (Doubly-Typed) Graph Grammars]\label{def:strongly-safe-grammar} Given \doublyTypedGraphGrammarCore{} a doubly-typed graph grammar, $GG$ is said to be \emph{strongly safe} if its double-type graph is also a core graph.
 
   Each rule in a strongly safe graph grammar is also called an \emph{action}. We say that an action $a$ creates an element $e$ iff $e \in R(a) - K(a)$. Similarly, $a$ deletes $e$ iff \mbox{$e \in L(a) - K(a)$}. Finally, if $e$ is present in $K(a)$, we say that $a$ preserves $e$.
 \end{definition}
