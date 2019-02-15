@@ -199,14 +199,9 @@ For each graph rule $\mbox{$p_i^{TG} = \left(L_i^{TG} \leftarrow K_i^{TG} \right
   \caption{The set of actions generated w.r.t. our basic $IO$ relation}\label{fig:tests:actions}
 \end{figure}
 
-Once the set $F'$ of actions was created, we proceed to calculating the causal relation, as described in Definition~\ref{def:causal-relation}. This relation is the very first indicative of whether it is possible to construct an occurrence graph grammar for the given collection of rules. Remember that this relation must be a total order, otherwise the totality of rules in $F$ are not executable. Specifically, the causal relation gives us hints over the order in which the actions must be performed to accomplish the functionality aims, for example: \textit{Bob} must sent \textit{the message} to \textit{the server} before it reaches \textit{Alice}. The occurrence relation of our example is:
+Once the set $F'$ of actions was created, we proceed to calculating the causal relation, as described in Definition~\ref{def:causal-relation}. This relation is the very first indicative of whether it is possible to construct an occurrence graph grammar for the given collection of rules. Remember that this relation must be a partial order, otherwise the totality of rules in $F$ are not executable. Specifically, the causal relation gives us hints over the order in which the actions must be performed to accomplish the functionality aims, for example: \textit{Bob} must sent \textit{the message} to \textit{the server} before it reaches \textit{Alice}. The occurrence relation of our example is [getData < deleteMsg, getData < receiveMsg, receiveMsg < deleteMsg, sendMsg < deleteMsg, sendMsg < getData, sendMsg < receiveMsg]. It is also easy to see that this relation is a partial order. In fact, there is only one possible total order derived from it: $[sendMsg < getData < receiveMsg < deleteMsg]$.
 
-\begin{intuition}
-  [getData < deleteMsg, getData < receiveMsg, receiveMsg < deleteMsg, sendMsg < deleteMsg, sendMsg < getData, sendMsg < receiveMsg]
-\end{intuition}
-
-The next step consists of using the causal relation and the graph $Occ$ in order to generate the initial and final graphs of our target grammar. These graphs correspond to the necessary input and expected output of performing $F$ in a minimal context. In order to create the graphs, we delete from $Occ$ the elements that are created (resp. deleted) by the rules in $F'$ according to the causal relation. For example: \textit{Alice} is a person who can never be created by any action of our system, no matter how
-advanced, as a consequence she must be present in any initial states of the actions performed with her.
+The next step consists of using the causal relation and the graph $Occ$ in order to generate the initial and final graphs of our target grammar. These graphs correspond to the necessary input and expected output of performing $F$ in a minimal context. In order to create the graphs, we delete from $Occ$ the elements that are created (resp. deleted) by the rules in $F'$ according to the causal relation. For example: \textit{Alice} is a person who can never be created by any action of our system, no matter how advanced, as a consequence she must be present in any initial states of the actions performed with her. \textit{The message} sent by \textit{Bob} was never created by any action either, so it must be present in the initial graph. However, it is deleted by the action \emph{deleteMsg}, so it must not appear in the final graph.
 
 \begin{figure}[!ht]
   \centering
@@ -221,44 +216,23 @@ advanced, as a consequence she must be present in any initial states of the acti
   \caption{Instance graphs}\label{fig:tests:graphs}
 \end{figure}
 
-After simply deleting those elements from $Occ$, the result may be that either $I$ or $J$ are not valid graphs, in the case that any source or target node of an edge is deleted, but not the edge itself. This means that for the execution of $F$ to be performed, it would need to begin on or lead to an inconsistent state, therefore no sequencing of actions in $F$ could be performed in a real execution. However, if they are indeed valid graphs, as they are in our example, we have just found the initial and final (minimal) states of the system regarding the execution of all rules in $F$.
+In general, after simply deleting those elements from $Occ$, the result may be that either $Initial$ or $Final$ graphs are not valid, in the case that any source or target node of an edge is deleted, but not the edge itself. This means that for the execution of $F$ to be performed, it would need to begin on or lead to an inconsistent state, therefore no sequencing of actions in $F$ could be performed in a real execution. However, if they are indeed valid graphs, as they are in our example, we have just found the initial and final (minimal) states of the system regarding the execution of all rules in $F$.
 
-Notice that, if the steps listed so far (\ref{enum:construction-colimit} to~\ref{enum:construction-graphs}) were able to be successfully performed, we have a grammar \mbox{$OGG = \left(Occ, I, F'\right)$} that is not only doubly-typed, but also strongly safe in the sense of Definition~\ref{def:strongly-safe-grammar}. Therefore it is a candidate to be also an occurrence graph grammar.
+Notice that, if the steps listed so far (\ref{enum:construction-colimit} to~\ref{enum:construction-graphs}) were able to be successfully performed, we have a grammar \mbox{$OGG = \left(Occ, I, F'\right)$} that is not only doubly-typed, but also strongly safe in the sense of Definition~\ref{def:strongly-safe-grammar}. Therefore it is a candidate to be an occurrence graph grammar.
 
-In step~\ref{enum:construction-occurrence}, we proceed towards creating the occurrence relation and occurrence relation restrictions. In~\ref{enum:construction-analysis}, we calculate all produce-forbid conflicts and delete-forbid dependencies between the rules in $F'$ by using the categorial algorithms presented in Definitions~\ref{def:delete-forbid-strong} and~\ref{def:produce-forbid-strong}. Initially, we do not know whether these conflicts and dependencies will be exercised during the execution of our underlying grammar. For example: a client can not be accommodated at a reserved table. \textit{John} can, however, accommodate \textit{Ann} at a table specifically reserved for her or at any table not reserved at all. Given the information collected so far we can deduce if and how any of these conditions exist in the local context. Hence, we use the information acquired in previous steps to classify those conflicts and dependencies as concrete, abstract or non-existent as specified in
-Definitions~\ref{def:delete-forbid-strong} and~\ref{def:produce-forbid-strong}. The occurrence relation $\leq_o$ is then calculated from the causal relation together with the concrete conflicts and dependencies. In step~\ref{enum:construction-restriction} we create the set $R_i$ of restrictions as the union of all abstract conflicts and dependencies calculated before.
+In step~\ref{enum:construction-occurrence}, we proceed towards creating the occurrence relation and occurrence relation restrictions. In~\ref{enum:construction-analysis}, we calculate all produce-forbid conflicts and delete-forbid dependencies between the rules in $F'$ by using the categorial algorithms presented in Definitions~\ref{def:delete-forbid-strong} and~\ref{def:produce-forbid-strong}. Initially, we do not know whether these conflicts and dependencies will be exercised during the execution of our underlying grammar. 
 
-Finally, we have the strongly safe grammar $OGG$ together with its corresponding occurrence relation $\leq_o$ and a set of restrictions $R$. Therefore, if $\leq_o$ is a partial order and it is possible to find a total ordering of it that respects all restrictions in $R$, it follows that $OGG$ is an occurrence graph grammar according to Definition~\ref{def:ogg}.
+In our example, we find one conflict and one dependency induced by NACs. The first is a produce-forbid between \emph{getData} and \emph{sendMsg} regarding the creation of an attachment between a piece of data and a message in \emph{getData}, which is forbidden by the NAC of \emph{sendMsg}. The second, a delete-forbid between \emph{deleteMsg} and \emph{sendMsg}, regarding the deletion of the same kind of attachment. Given the information collected so far we can deduce if and how any of these conditions exist in the local context. Hence, we use the information acquired in previous steps to classify those conflicts and dependencies as concrete, abstract or non-existent as specified in
+Definitions~\ref{def:delete-forbid-strong} and~\ref{def:produce-forbid-strong}. 
+
+In this particular case we already know, by looking at the causal relation, that \emph{sendMsg} must be executed before \emph{getData}, therefore the later action can never trigger the NAC of an action that occurs before it, and this conflict is non-existent. Similarly, for the delete-forbid, as we know that the condition that triggers the NAC of \emph{sendMsg} does not exist prior to any possible of its executions, it is not necessary for \emph{deleteMsg} to remove the element triggering the NAC, therefore this dependency is also non-existent.
+
+The occurrence relation $\leq_o$ is then calculated from the causal relation together with the concrete conflicts and dependencies. In step~\ref{enum:construction-restriction} we create the set $R_i$ of restrictions as the union of all abstract conflicts and dependencies calculated before. In our example, since no concrete conflicts or dependencies were found, the occurrence relation remains equal to the causal relation. As for the set of restrictions, since no abstract conflicts or dependencies
+were found, it remains empty.
+
+Finally, we have the strongly safe grammar $OGG$ together with its corresponding occurrence relation $\leq_o$ and a set of restrictions $R$. As it was shown, if $\leq_o$ is a partial order and it is possible to find a total ordering of it that respects all restrictions in $R$, it follows that $OGG$ is an occurrence graph grammar according to Definition~\ref{def:ogg}.
 
 \hide{If $Occ_i$ is a \emph{core graph} according to definition~\ref{def:core-graph}, we can create a doubly-typed graph grammar $OGG_i$ that is also a strongly-safe grammar and therefore a candidate to be an occurrence graph grammar. Otherwise, it means that there is more than one rule that deletes or creates the same element, therefore it is not possible to apply all rules of this collection and we can build an $OGG_i$ that is a  deterministic occurrence graph grammar.}
-
-\begin{example}[Occurrence Graph Grammar Construction Example]
-\end{example}
-
-\begin{example}[Amalgamation example]\label{ex:amalgamation} Figure~\ref{fig:tests:colimit} shows the object resultant from the amalgamation of the rules presented in Figure~\ref{fig:tests:grammar}.
-
-\begin{figure}[!ht]
-  \centering
-  \fbox{\includegraphics[scale=0.3]{grammar/restaurant/amalgamation}}
-  \caption{Amalgamation (colimit) of rules according to the IO relation.}\label{fig:tests:colimit}
-\end{figure}
-\end{example}
-
-\begin{example}[Initial and Final Graphs Example] Figure~\ref{fig:tests:graphs} shows the initial and final states for the main flow of \emph{browse catalogue}.
-
-\begin{figure}[!ht]
-  \centering
-  \begin{subfigure}[t]{.5\textwidth}
-    \centerline{\fbox{\includegraphics[scale=0.5]{grammar/server/sendMsg}}}
-    \caption{Initial graph}
-  \end{subfigure}%
-  \begin{subfigure}[t]{.5\textwidth}
-    \centerline{\fbox{\includegraphics[scale=0.5]{images/generating-tests/grammar/final}}}
-    \caption{Final graph}
-  \end{subfigure}
-  \caption{Instance graphs}\label{fig:tests:graphs}
-\end{figure}
-\end{example}
 
 \section{Implementation} \newadd{The construction of the occurrence graph grammars to generate test cases was implemented in the Verigraph System.}
 
