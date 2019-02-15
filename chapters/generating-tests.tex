@@ -25,9 +25,10 @@ Notice that the two first items correspond to test cases while the last one corr
 \fi
 %First, we present a brief overview of the methodology for extracting graph grammars from use cases, after what we present the process of generating the tests cases from the extracted grammars.
 
-In this chapter, we present the process of constructing Occurrence Graph Grammars (OGGs) in a systematic manner and how this process was implemented in Verigraph. We begin by presenting a running example consisting of a slice of a graph grammar that models the system of a restaurant. This grammar was built from the set of use cases presented in Appendix~\ref{app:use-cases} by applying the systematic methodology proposed by~\cite{Junior2015}. These use cases model basic functionalities of the proposed restaurant system such as login of employees, reservation and cancellation of tables, accommodation of clients, serving tables, among others. While only some excerpts of this grammar are shown in this chapter, the complete extracted grammar can be found at the Verites repository for case studies\footnote{https://github.com/Verites/case-studies}.
+In this chapter, we present the process of constructing Occurrence Graph Grammars (OGGs) in a systematic manner and how this process was implemented in Verigraph. We use the same grammar presented on Example~\ref{ex:mail-grammar} as a running example in order to easy explanation. We also applied this process in a more complex, real-like graph grammar that models the system of a restaurant, built from the set of use cases presented in Appendix~\ref{app:use-cases} by applying the systematic methodology proposed
+by~\cite{Junior2015}. These use cases model basic functionalities of the proposed restaurant system such as login of employees, reservation and cancellation of tables, accommodation of clients, serving tables, among others. The complete extracted grammar, together with its generated OGGs can be found at the Verites repository for case studies\footnote{https://github.com/Verites/case-studies}.
 
-After introducing the running example, we proceed to the explanation of the necessary steps to build an Occurrence Graph Grammar according to the definitions presented on chapter~\ref{ch:process}. The implementation of this process in Verigraph is also part of this thesis contribution, as Verigraph is the first tool in the field to implement the construction of Occurrence Graph Grammars, even if we consider OGGs without NACs. As a possible practical application of this, at the end of the chapter, we provide some insight about how OGGs can be used to generate test cases for the system they model\tinytodo{maintain tests?}.
+First, we reintroduce the \emph{Mail Server Graph Grammar}, then we proceed to the explanation of the necessary steps to build an Occurrence Graph Grammar according to the definitions presented on chapter~\ref{ch:process}. The implementation of this process in Verigraph is also part of this thesis contribution, as Verigraph is the first tool in the field to implement the construction of Occurrence Graph Grammars, even if we consider OGGs without NACs. As a possible practical application of this, at the end of the chapter, we provide some insight about how OGGs can be used to generate test cases for the system they model\tinytodo{maintain tests?}.
 %Given the graph grammar model of a system, we want to generate test cases and oracles for collections of its underlying functionalities. These collections could represent something as ``atomic'' as a successful or failing login attempt or something as complex as the entire workflow of attending clients, which would require attendants and waiters to log in into the system, tables to be occupied, orders to be prepared, among possibly several other steps.
 
 %The reason why we focused on collections of functionalities is to test the emergent behaviour of a system, which usually is not observable if we consider each functionality in isolation. By grouping together several (usually, but not necessarily different) functionalities, we may realize how they interact with each other and which are the overall effects of this integration.
@@ -35,61 +36,53 @@ After introducing the running example, we proceed to the explanation of the nece
 %\begin{definition}[Functionality Collection] Given a graph grammar \graphGrammar{} that models a system, a \emph{functionality collection} $F$ is a collection of its grammar rules. The term collection here is used instead of set to imply that the same rule $r \in P$ can appear more than once in $F$. In this context, it means the functionality modelled by $r$ is intended to be executed more than once.
 %\end{definition}
 
-\section{The Restaurant System}
+%\section{Running Example}
 
-\begin{example} The rules we chose for this example represent one way in which the entire process of serving a client can be accomplished. In this particular case, we chose the rules representing the successful paths of the use cases \emph{reserve table}, \emph{accommodate client}, \emph{serve table} and \emph{close table}, which are depicted on figure~\ref{fig:tests:grammar}. 
+\begin{example} %The rules we chose for this example represent one way in which the entire process of serving a client can be accomplished. In this particular case, we chose the rules representing the successful paths of the use cases \emph{reserve table}, \emph{accommodate client}, \emph{serve table} and \emph{close table}, which are depicted on figure~\ref{fig:tests:grammar}.
+The grammar used here illustrates a mail server scenario for a simple e-mail application composed by four rules, which are described in the following and presented on Figure~\ref{fig:tests:grammar}. In order to better present the ideas of this chapter in terms of its implementation, we use the rules in the format provided by AGG~\cite{Taentzer2000}, which is also the format used as input and output by Verigraph. This format depicts the LHS and RHS graphs of rules, but does not explicitly show
+  the interface graph other then by a number identification correlating items in the other two graphs.
 
-\begin{description}
-  \item[Reserve table:] A receptionist of the restaurant tags a table as reserved for a specific client at a given date and time. Therefore, this table must not be allocated for another client, either by accommodation or reservation, at the same time.
-  \item[Accomodate client without reservation:] A receptionist leads a client to a free table, then notifies the system that this table is waiting for service.
-  \item[Serve table:] A waiter goes to an occupied table to take an order, adding or removing items to/from the order, then closing it and sending it to the kitchen to be prepared.
-  \item[Close table:] A waiter goes to a table that has been serviced, closes the corresponding bill and collects the payment from its client.
-\end{description}
+\begin{enumerate}[label=(\alph*),start=1]
+  \item \emph{Send message:} a client sends a message to a server.
+  \item \emph{Get data:} a piece of data is obtained from a server.
+  \item \emph{Receive message:} a server sends a message to a client.
+  \item \emph{Delete message:} a client obtains a piece of data from a received message and the message is destroyed.
+\end{enumerate}
 \end{example}
+%
+%\begin{description}
+%  \item[Reserve table:] A receptionist of the restaurant tags a table as reserved for a specific client at a given date and time. Therefore, this table must not be allocated for another client, either by accommodation or reservation, at the same time.
+%  \item[Accomodate client without reservation:] A receptionist leads a client to a free table, then notifies the system that this table is waiting for service.
+%  \item[Serve table:] A waiter goes to an occupied table to take an order, adding or removing items to/from the order, then closing it and sending it to the kitchen to be prepared.
+%  \item[Close table:] A waiter goes to a table that has been serviced, closes the corresponding bill and collects the payment from its client.
+%\end{description}
 
 \begin{figure}[!ht]
   \centering
   \begin{subfigure}[t]{.5\textwidth}
-    \centerline{\fbox{\includegraphics[scale=0.3]{grammar/restaurant/reserveTable}}}
-    \caption{Rule \emph{choose category}}
+    \centerline{\fbox{\includegraphics[scale=0.5]{grammar/server/sendMsg}}}
+    \caption{Rule \emph{send message}}
   \end{subfigure}
   \begin{subfigure}[t]{.5\textwidth}
-    \centerline{\fbox{\includegraphics[scale=0.3]{grammar/restaurant/accommodateClientWithoutReservation}}}
-    \caption{Rule \emph{display products}}
+    \centerline{\fbox{\includegraphics[scale=0.5]{grammar/server/getData}}}
+    \caption{Rule \emph{get data}}
   \end{subfigure}
   \begin{subfigure}[t]{.5\textwidth}
-    \centerline{\fbox{\includegraphics[scale=0.3]{grammar/restaurant/serveTable}}}
-    \caption{Rule \emph{choose products}}
+    \centerline{\fbox{\includegraphics[scale=0.5]{grammar/server/receiveMsg}}}
+    \caption{Rule \emph{receive message}}
   \end{subfigure}
   \begin{subfigure}[t]{.5\textwidth}
-    \centerline{\fbox{\includegraphics[scale=0.3]{grammar/restaurant/closeTable}}}
-    \caption{Rule \emph{display items}}
+    \centerline{\fbox{\includegraphics[scale=0.5]{grammar/server/deleteMsg}}}
+    \caption{Rule \emph{delete message}}
   \end{subfigure}
-  \caption{Rules for the use case \emph{browse catalogue}}\label{fig:tests:grammar}
+  \caption{Rules for a mail server application}\label{fig:tests:grammar}
 \end{figure}
-
-\iffalse
-\begin{figure}[!]
-\ContinuedFloat
-\centering
-  \begin{subfigure}[t]{.5\textwidth}
-    \centerline{\fbox{\includegraphics[scale=0.5]{images/generating-tests/grammar/rule05}}}
-    \caption{Rule \emph{choose item}}
-  \end{subfigure}
-
-  \begin{subfigure}[t]{.5\textwidth}
-    \centerline{\fbox{\includegraphics[scale=0.5]{images/generating-tests/grammar/rule06}}}
-    \caption{Rule \emph{display chosen item}}
-  \end{subfigure}
-\end{figure}
-\fi
-
 
 \section{Preparing the input}
 
 In order to construct an Occurrence Graph Grammar $OGG$ for a regular graph grammar $GG$, we need (1) a collection\footnote{ We use the term collection instead of set because, in this case, a rule can appear more than once and we need them to be accounted as such.} of rules $F$ based on $P$ and (2) a way of specifying how the rules in $F$ interact among themselves. The second point specifically means which elements are common throughout the rules. For this purpose, we use an \emph{input-output relation}, depicting connections between the rules in $F$. The objects in this relation identify which elements must be the same between pairs of rules, as shown in example~\ref{ex:inout}.
 
-\begin{definition}[Input-Output Relation] Given a collection $F$ of rules, an \emph{input-output relation} $IO$ over $F$ is a set of typed-graph morphism spans of the form \mbox{$R_x \leftarrow IO_i \rightarrow L_y$} each of which connects two distinct rules $x,y \in F$. Where the $IO_i$ object of each span works similarly to the gluing graph $K$ of a rule, but instead of identifying elements that are the same in both left and right sides of a single rule, it identifies elements that are necessarily the same between two different rules. An input-output relation for a collection of rules will have an appearance similar to the following diagram, where there are several $IO$ objects connecting the right-hand side of a rule with the left-hand side of another one.
+\begin{definition}[Input-Output Relation] Given a collection $F$ of rules, an \emph{input-output relation} $IO$ over $F$ is a set of typed-graph morphism spans of the form \mbox{$R_x \leftarrow IO_i \rightarrow L_y$} each of which connects two distinct rules $x,y \in F$. Where the $IO_i$ object of each span works similarly to the gluing graph $K$ of a rule, but instead of identifying elements that are the same in both left and right sides of a single rule, it identifies elements that are necessarily the same between the right and left sides of two different rules. An input-output relation for a collection of rules will have an appearance similar to the following diagram, where there are several $IO$ objects connecting the right-hand side of a rule with the left-hand side of another one.
 
 \diagram{
   & & & & IO_6\ar@{-->}[dddrrrr]\ar@{-->}[dddllll] & & & &\\
@@ -98,25 +91,26 @@ In order to construct an Occurrence Graph Grammar $OGG$ for a regular graph gram
   L_1 & K_1\ar[l]\ar[r] & R_1 & L_2 & K_2\ar[l]\ar[r] & R_2 & L_3 & K_3\ar[l]\ar[r] & R_3\\
   }
 
-\hfill\break
 \end{definition}
 
-\begin{remark}We could have have also included in the $IO$ relation a type of span that connects only the left (resp. right) sides of rules together, however we would accomplish very little with this kind of span. Given that we are looking for Occurrence Graph Grammars, where the exact same element can not be deleted or created by two different rules, this particular kind of span would serve only to identify elements that are preserved by both rules, otherwise they would introduce inconsistencies, therefore preventing the creation of OGGs.
+\begin{remark}We could have have also included in the $IO$ relation a type of span that also connects only the left (resp. right) sides of rules together, however we would accomplish very little with this kind of span. Given that we are looking for Occurrence Graph Grammars, where the exact same element can not be deleted or created by two different rules, this particular kind of span would serve only to identify elements that are preserved by both rules, otherwise they would introduce inconsistencies, therefore preventing the creation of OGGs.
 \end{remark}
 
-\begin{example}[Input-Output Relations]\label{ex:inout} Figure~\ref{fig:tests:inout} shows an $IO$ object connecting the rules for use cases \emph{accommodate client} and \emph{serve table}. The graphical notation was dropped to focus on the identification of items between the right-hand side of one rule and the left-hand side of the other. Notice that the elements who should be the same in both graphs begin have the same number in their identification. For example, the table involved in both action is the same table, as a client there is accommodated must also be served. The employees, on the other hand, are not, as the employee who receives the client in the restaurant (the receptionist) is not the same who serves the client (the waiter).
+\begin{example}[Input-Output Relations]\label{ex:inout} Figure~\ref{fig:tests:inout} shows one possible $IO$ relation for our running example. Notice that the elements who should be the same in both rules have the same prefix number in their identification. The first $IO$ object connects the rules \emph{send message} and \emph{get data}.  In this case, we want the server, the message and the connection between them to be the same in both rules. %For example, the table involved in both action is the same table, as a client there is accommodated must also be served. The employees, on the other hand, are not, as the employee who receives the client in the restaurant (the receptionist) is not the same who serves the client (the waiter).
 
-	As a side note, the reader may notice that it is not mandatory to create an $IO$ span \mbox{$\left(R_x \leftarrow IO_i \rightarrow L_y\right)$} for \textbf{every} pair of rules. For example, the we want the \emph{system} node to represent the same exact system among all rules. Given two rules $p_1$ and $p_2$, we have the options of building the span that identifies the system node as
-  $R_1 \leftarrow IO_n \rightarrow L_2$ or $R_2 \leftarrow IO_m \rightarrow L_1$, or even the two of them. Any combination would result in the same final effect. 
-\begin{figure}[!ht]
+As a side note, the reader may notice that it is not mandatory to create an $IO$ span \mbox{$\left(R_x \leftarrow IO_i \rightarrow L_y\right)$} for \textbf{every} pair of rules. For example, we want to analyse a scenario where the \emph{server} node represents the same exact server among all rules. Given rules \emph{get data} and \emph{receive message}, we have the options of building the span that identifies the server node as
+  $R_{sendMsg} \leftarrow IO_n \rightarrow L_{receiveMsg}$ or $R_{receiveMsg} \leftarrow IO_m \rightarrow L_{sendMsg}$, or even the two of them. Any combination would result in the same final effect: both rules use the same \emph{server}.
+  \begin{figure}[!ht]
   \centering
-  \fbox{\includegraphics[scale=0.4]{grammar/restaurant/IO-example}}
-  \caption{Input-Output relation building}\label{fig:tests:inout}
+  \fbox{\includegraphics[scale=0.5]{grammar/server/IO-object}}
+  \fbox{\includegraphics[scale=0.5]{grammar/server/IO-object2}}
+  \fbox{\includegraphics[scale=0.5]{grammar/server/IO-object3}}
+  \caption{A basic Input-Output relation building}\label{fig:tests:inout}
 \end{figure}
 
 \end{example}
 
-Currently, the construction of the \textit{input-output relation} is a manual step in our strategy, therefore the analyst needs to decide how to better implement his/her own $IO$ relation. This did not shown to be a problem, as in our analysis we usually wanted to restrict the number of possible combinations to more realistic cases. However, its fully automation was scheduled as future work.
+Currently, the generation of the \textit{input-output relation} is a manual step in our strategy, therefore the analyst needs to decide how to better implement his/her own $IO$ relation. This did not shown to be a problem, as in our analysis we usually wanted to restrict the number of possible combinations to more realistic cases. However, its fully automation was scheduled as future work.
 
 
 \section{Processing the input grammar}
@@ -171,19 +165,63 @@ Currently, the construction of the \textit{input-output relation} is a manual st
 
 If all the steps in such a construction can be successfully executed, specially steps~\ref{enum:construction-graphs} and~\ref{enum:construction-ordering}, we have that $OGG = (Occ, I, F')$ is not only a doubly-typed graph grammar, but also a deterministic occurrence graph grammar. %This means it is possible to successfully apply all the rules in the original collection $F$. %Our approach creates test cases and oracles from $OGG$ whether it is in fact an occurrence graph grammar or not. In the first case, we have tests for success and failure execution paths, whereas in the second we have tests only for the failure ones. Notwithstanding, we regard the failure tests as important because they pinpoint uses of the underlying system where the system itself is supposed to fail, therefore they can not or should not be performed. In the following, we dive into details of each construction step.
 
-The first step of the construction, the amalgamation of rules in $F$ w.r.t. $IO$, is responsible to ``glue'' the graphs of all rules in one typed graph $Occ$, while identifying the items that are meant to be the same throughout the grammar execution. This can be regarded as a mapping which turns generic elements such as \textit{a waiter} and a \textit{a client} into concrete elements such as the waiter named \textit{John} and the client named \textit{Ann}. It also discriminates these elements, for example: the client \textit{Ann} is different from the client \textit{Jane}. Therefore, at the end of this step, $Occ$ contains all concrete elements ever to be created, preserved or deleted by any of the rules in collection $F$.
+The first step of the construction, the amalgamation of rules in $F$ w.r.t. $IO$, is responsible to ``glue'' the graphs of all rules in one typed graph $Occ$, while identifying the items that are meant to be the same throughout the grammar execution. This can be regarded as a mapping which turns generic elements such as \textit{a user} into concrete elements such as the user named \textit{Bob}. It also discriminates these elements, for instance: the user \textit{Bob} is different from the user
+\textit{Alice}. Therefore, at the end of this step, $Occ$ contains all concrete elements ever to be created, preserved or deleted by any of the rules in collection $F$. Figure~\ref{fig:tests:amalgamation} shows the amalgamation of an $F$ containing one copy of each rule in our example grammar w.r.t. the IO relation depicted on Figure~\ref{fig:tests:inout}.
 
-The retyping step is responsible for generating actions: ``new'' graph rules which, rather than being generic descriptions of system transformations, represent concrete executions of the original rules over a given context. Therefore, a rule which describes the process where a waiter services a client becomes a concrete action where, for example, the waiter \textit{John} services the client \textit{Ann}.
+\begin{figure}[!ht]
+  \centering
+  \fbox{\includegraphics[scale=0.5]{grammar/server/amalgamation}}
+  \caption{Amalgamation (colimit) of rules according to the basic IO relation.}\label{fig:tests:amalgamation}
+\end{figure}
+
+The retyping step is responsible for generating actions: ``new'' graph rules which, rather than being generic descriptions of system transformations, represent concrete executions of the original rules over a given context. Therefore, a rule which describes the process where a user receives from the server a message sent also by a user becomes a concrete action where \textit{Alice} receives \textit{the message} sent by \textit{Bob}.
 %The set $F'$ of doubly-typed graph rules from the colimit calculated in the previous step.
-For each original graph rule $\mbox{$p_i^{TG} = \left(L_i^{TG} \leftarrow K_i^{TG} \rightarrow R_i^{TG}\right)$} \in F$, we generate a new action \mbox{$q_i^{Occ} = \left(L_i^{Occ} \leftarrow K_i^{Occ} \rightarrow R_i^{Occ}\right) \in F'$}, where the typing morphisms are those from the original rules in $F$ to the colimit graph $Occ$. Since $Occ$ is the type graph of the new rules and, at the same time, a typed graph over $TG$, the actions are now doubly-typed rules over $Occ^{TG^T}$.
+For each graph rule $\mbox{$p_i^{TG} = \left(L_i^{TG} \leftarrow K_i^{TG} \rightarrow R_i^{TG}\right)$} \in F$, we generate a new action \mbox{$q_i^{Occ} = \left(L_i^{Occ} \leftarrow K_i^{Occ} \rightarrow R_i^{Occ}\right) \in F'$}, where the typing morphisms are those from the original rules in $F$ to the colimit graph $Occ$. Since $Occ$ is the type graph of the new rules and, at the same time, a typed graph over $TG$, the actions are now doubly-typed rules over $Occ^{TG^T}$.
 
+\begin{figure}[!ht]
+  \centering
+  \begin{subfigure}[t]{.5\textwidth}
+    \centerline{\fbox{\includegraphics[scale=0.5]{grammar/server/amalgamation/sendMsg}}}
+    \caption{Rule \emph{send message}}
+  \end{subfigure}
+  \begin{subfigure}[t]{.5\textwidth}
+    \centerline{\fbox{\includegraphics[scale=0.5]{grammar/server/amalgamation/getData}}}
+    \caption{Rule \emph{get data}}
+  \end{subfigure}
+  \begin{subfigure}[t]{.5\textwidth}
+    \centerline{\fbox{\includegraphics[scale=0.5]{grammar/server/amalgamation/receiveMsg}}}
+    \caption{Rule \emph{receive message}}
+  \end{subfigure}
+  \begin{subfigure}[t]{.5\textwidth}
+    \centerline{\fbox{\includegraphics[scale=0.5]{grammar/server/amalgamation/deleteMsg}}}
+    \caption{Rule \emph{delete message}}
+  \end{subfigure}
+  \caption{The set of actions generated w.r.t. our basic $IO$ relation}\label{fig:tests:actions}
+\end{figure}
 
-Once the set $F'$ of actions was created, we proceed to calculating the causal relation, as described in Definition~\ref{def:causal-relation}. This relation is the very first indicative of whether it is possible to construct an occurrence graph grammar for the given collection of rules. Remember that this relation must be a total order, otherwise the totality of rules in $F$ are not executable. Specifically, the causal relation gives us hints over the order in which the actions must be performed to accomplish the functionality aims, for example: \textit{Ann} must be on a table before she orders a \textit{salad}, \textit{John} can not create a new reservation for, let us say \textit{Alex}, if \textit{John} has not logged in the system, etc.
+Once the set $F'$ of actions was created, we proceed to calculating the causal relation, as described in Definition~\ref{def:causal-relation}. This relation is the very first indicative of whether it is possible to construct an occurrence graph grammar for the given collection of rules. Remember that this relation must be a total order, otherwise the totality of rules in $F$ are not executable. Specifically, the causal relation gives us hints over the order in which the actions must be performed to accomplish the functionality aims, for example: \textit{Bob} must sent \textit{the message} to \textit{the server} before it reaches \textit{Alice}. The occurrence relation of our example is:
 
-The next step consists of using the causal relation and the graph $Occ$ in order to generate the initial and final graphs of our target grammar. These graphs correspond to the necessary input and expected output of performing $F$ in a minimal context. In order to create the graphs, we delete from $Occ$ the elements that are created (resp. deleted) by the rules in $F'$ according to the causal relation. For example: \textit{Ann} is a person who can never be created by any action of our system, no matter how
-advanced, as a consequence she must be present in any initial states of the actions performed with her. On the other hand, her \textit{salad} will only be created after a series of other events were triggered, for instance \textit{Ann} must have entered the restaurant. Thus, her \textit{salad} can not exist at an initial state.
+\begin{intuition}
+  [getData < deleteMsg, getData < receiveMsg, receiveMsg < deleteMsg, sendMsg < deleteMsg, sendMsg < getData, sendMsg < receiveMsg]
+\end{intuition}
 
-After simply deleting those elements from $Occ$, the result may be that either $I$ or $J$ are not valid graphs, in the case that any source or target node of an edge is deleted, but not the edge itself. This means that for the execution of $F$ to be performed, it would need to begin on or lead to an inconsistent state, therefore no sequencing of actions in $F$ can be performed in a real execution. However, if they are indeed valid graphs, we have just found the (minimal) initial and final states of the system regarding the execution of all rules in $F$.
+The next step consists of using the causal relation and the graph $Occ$ in order to generate the initial and final graphs of our target grammar. These graphs correspond to the necessary input and expected output of performing $F$ in a minimal context. In order to create the graphs, we delete from $Occ$ the elements that are created (resp. deleted) by the rules in $F'$ according to the causal relation. For example: \textit{Alice} is a person who can never be created by any action of our system, no matter how
+advanced, as a consequence she must be present in any initial states of the actions performed with her.
+
+\begin{figure}[!ht]
+  \centering
+  \begin{subfigure}[t]{.5\textwidth}
+    \centerline{\fbox{\includegraphics[scale=0.6]{grammar/server/initial}}}
+    \caption{Initial graph}
+  \end{subfigure}%
+  \begin{subfigure}[t]{.5\textwidth}
+    \centerline{\fbox{\includegraphics[scale=0.6]{grammar/server/final}}}
+    \caption{Final graph}
+  \end{subfigure}
+  \caption{Instance graphs}\label{fig:tests:graphs}
+\end{figure}
+
+After simply deleting those elements from $Occ$, the result may be that either $I$ or $J$ are not valid graphs, in the case that any source or target node of an edge is deleted, but not the edge itself. This means that for the execution of $F$ to be performed, it would need to begin on or lead to an inconsistent state, therefore no sequencing of actions in $F$ could be performed in a real execution. However, if they are indeed valid graphs, as they are in our example, we have just found the initial and final (minimal) states of the system regarding the execution of all rules in $F$.
 
 Notice that, if the steps listed so far (\ref{enum:construction-colimit} to~\ref{enum:construction-graphs}) were able to be successfully performed, we have a grammar \mbox{$OGG = \left(Occ, I, F'\right)$} that is not only doubly-typed, but also strongly safe in the sense of Definition~\ref{def:strongly-safe-grammar}. Therefore it is a candidate to be also an occurrence graph grammar.
 
