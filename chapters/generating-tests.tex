@@ -234,53 +234,50 @@ Finally, we have the strongly safe grammar $OGG$ together with its corresponding
 
 \hide{If $Occ_i$ is a \emph{core graph} according to definition~\ref{def:core-graph}, we can create a doubly-typed graph grammar $OGG_i$ that is also a strongly-safe grammar and therefore a candidate to be an occurrence graph grammar. Otherwise, it means that there is more than one rule that deletes or creates the same element, therefore it is not possible to apply all rules of this collection and we can build an $OGG_i$ that is a  deterministic occurrence graph grammar.}
 
-\section{Implementation} \newadd{The construction of the occurrence graph grammars to generate test cases was implemented in the Verigraph System.}
+%\iffalse
+%\section{Implementation} \newadd{The construction of the occurrence graph grammars to generate test cases was implemented in the Verigraph System.}
 
-\begin{figure}[!ht]
-\caption{Colimit Implementation}
-\begin{minted}[linenos=true, breaklines,fontsize=\small]{haskell}
-
-calculateRulesColimit :: RuleSequence morph -> [NamedRuleWithMatches morph]
-calculateRulesColimit (_,rs,os) =
-  let
-    fs = ksCoproduct rs
-    gs = allCoproduct rs 
-    -- separates morphism families
-    (g1s, g2s, g3s) = groupMorphisms (split gs)
-    h1 = induceSpanMorphism fs (zipWith <&> g1s (getLefts rs))
-    h2 = induceSpanMorphism fs g2s
-    h3 = induceSpanMorphism fs (zipWith <&> g3s (getRights rs))
-    coEq = calculateNCoequalizer [h1,h2,h3]
-    hm = map (coEq <&> ) gs
-    
-    -- colimit (based on coequalizers) with object flows
-    leftIOs  = map getLeftMorphism os
-    rightIOs = map getRightMorphism os
-    objCop = objectFlowCoproduct os
-    leftFamily = induceSpanMorphism objCop leftIOs
-    rightFamily = induceSpanMorphism objCop rightIOs
-    coreGraphMorphism = calculateCoequalizer leftFamily rightFamily
-    hs2 = split $ map (coreGraphMorphism <&>) hm
-  in if null os then zip rs hs1 else zip rs hs2
-
-\end{minted}
-\label{fig:tests-colimit}
-\end{figure}
+%\begin{figure}[!ht]
+%\caption{Colimit Implementation}
+%\begin{minted}[linenos=true, breaklines,fontsize=\small]{haskell}
+%
+%calculateRulesColimit :: RuleSequence morph -> [NamedRuleWithMatches morph]
+%calculateRulesColimit (_,rs,os) =
+%  let
+%    fs = ksCoproduct rs
+%    gs = allCoproduct rs 
+%    -- separates morphism families
+%    (g1s, g2s, g3s) = groupMorphisms (split gs)
+%    h1 = induceSpanMorphism fs (zipWith <&> g1s (getLefts rs))
+%    h2 = induceSpanMorphism fs g2s
+%    h3 = induceSpanMorphism fs (zipWith <&> g3s (getRights rs))
+%    coEq = calculateNCoequalizer [h1,h2,h3]
+%    hm = map (coEq <&> ) gs
+%    
+%    -- colimit (based on coequalizers) with object flows
+%    leftIOs  = map getLeftMorphism os
+%    rightIOs = map getRightMorphism os
+%    objCop = objectFlowCoproduct os
+   % leftFamily = induceSpanMorphism objCop leftIOs
+%    rightFamily = induceSpanMorphism objCop rightIOs
+%    coreGraphMorphism = calculateCoequalizer leftFamily rightFamily
+%    hs2 = split $ map (coreGraphMorphism <&>) hm
+%  in if null os then zip rs hs1 else zip rs hs2
+%
+%\end{minted}
+%\label{fig:tests-colimit}
+%\end{figure}
+%\fi
 
 \section{Generating Tests}
 
-Once the previous verifications were successful, we can build the occurrence relation to verify if $OGG_i$ can really be an occurrence graph grammar. If no abstract dependencies or conflicts are found, then the concrete relations are sufficient to do this verification, thus we simply need to check if there is a total ordering compatible with the occurrence relation.
+Once the previous verifications were executed, we can build the occurrence relation to verify whether $OGG_i$ can be really an occurrence graph grammar. If no abstract dependencies or conflicts are found, then the concrete relations are sufficient to perform this verification, and it suffices to check if there is a total ordering compatible with the occurrence relation. If the set $R$ of \emph{occurrence relation restrictions} is not empty, we also need to check if there is a total ordering of the occurrence relation that respects these restrictions.
 
-\begin{example}[Occurence Relation] Figure~\ref{fig:tests:relation} shows the relation between the rules of this occurrence graph grammar.
-\end{example}
+As to check wether a partial order satisfies the generated set of restrictions seems to be a hard problem, in the complexity sense, we left this last implementation as a future work. However, we still use the restrictions to generate a set of tests regarding the consistency of the system states. In our case studies, no situation with abstract conflicts or dependencies was found. We believe that it happens because we used grammars extracted from real use cases, where usually there are (possibly many) sequential connections between the actions, which forces the rules to be connected via the \emph{occurrence relation} and avoids abstract restrictions. 
 
-If the set $R$ of \emph{occurrence relation restrictions} is not empty, we also need to check if there is a total ordering of the occurrence relation that respects these restrictions.
+However, the process of constructing an occurrence graph grammar may provide insights for tests even when it fails. In the case where OGGs are found, we have test cases for successful executions of the system and conditions over how the system should execute. In the case where OGGs are not found, we have test cases for executions where the system must always fail.
 
-As this seems to be a hard problem, in the complexity sense, we left this last implementation as a future work. However, we still use the restrictions to generate a set of tests regarding the consistency of the system states.
-
-In our case studies, no such situation was found. We believe that it happens because we used grammars extracted from real use cases, where usually there are (possibly many) sequential connections between the actions, which forces the rules to be connected via the \emph{occurrence relation} and avoids abstract restrictions.
-
-The output of Verigraph for test case generation is shown on Figures~\ref{fig:tests:checklist} and~\ref{fig:tests:relation}. On the first figure, Verigraph performs the basic verifications to check whether the generated output is, in fact, an occurrence grammar.
+The output of Verigraph for an OGG creation and its test case generation is shown on Figure~\ref{fig:tests:checklist}. On the first figure, Verigraph performs the basic verifications to check whether the generated output is, in fact, an occurrence grammar.
 
 \begin{figure}[!ht]
 \caption{Tool command line output}
@@ -294,52 +291,15 @@ Testing Serialization:
 [OK] There are no abstract restrictions
 Analysis written in tmp/output_analysis
 Test cases written in tmp/output_test_cases
-Saved in tmp/output.ggx
+Doubly-typed grammar saved in tmp/output.ggx
 \end{minted}
   \label{fig:tests:checklist}
 \end{figure}
 
-\begin{figure}[!ht]
-\caption{Output for browse catalogue main flow}
-\begin{minted}[linenos=true, breaklines,fontsize=\small]{ruby}
-Rules involved: {
-["01a1_chooseCategory", "01a2_displayProducts", "01a3_chooseProduct", "01a4_displayItems", "01a5_02b5_chooseItem", "01a6_02b6_displayChosenItem"]
-}
-
-Concrete Rules Relation: {
-[("01a1_chooseCategory" < "01a2_displayProducts"), ("01a1_chooseCategory" < "01a3_chooseProduct"), ("01a1_chooseCategory" < "01a4_displayItems"), ("01a1_chooseCategory" < "01a5_02b5_chooseItem"), ("01a1_chooseCategory" < "01a6_02b6_displayChosenItem"),...]
-}
-
-Elements involved: {
-[Node 768,Node 769,Node 770,Edge 771,Edge 772,Edge 773,Edge 774,Edge 2331,Edge 4751,Edge 4752,Edge 7226,Edge 9787,Edge 9788,Edge 15095,Edge 15096,Edge 15097]
-}
-
-Elements Relation: {
-[(Edge 772 < Edge 4751),(Edge 772 < Edge 4752),(Edge 772 < Edge 7226),(Edge 772 < Edge 9787),(Edge 772 < Edge 9788),(Edge 772 < Edge 15095),(Edge 772 < Edge 15096),(Edge 772 < Edge 15097),(Edge 773 < Edge 4751),(Edge 773 < Edge 4752),(Edge 773 < Edge 7226) ...]
-}
-
-Rules Ordering: {
-["01a1_chooseCategory","01a2_displayProducts","01a3_chooseProduct", "01a4_displayItems","01a5_02b5_chooseItem", "01a6_02b6_displayChosenItem"]
-}
-
-Element Ordering: {
-[Node 768,Node 769,Node 770,Edge 771,Edge 772,Edge 773,Edge 774,Edge 2331,Edge 4751,Edge 4752,Edge 7226,Edge 9787,Edge 9788,Edge 15095,Edge 15096,Edge 15097]
-}
-
-Set of Abstract Restrictions: {
-[]
-}
-\end{minted}
-  \label{fig:tests:relation}
-\end{figure}
 The analysis file contains the results for calculation of conflicts and dependencies among rules and among elements. The test cases file contains the information relevant to test designer.
-The \code{.ggx} presents the occurrence graph grammar constructed (as a simply-typed graph grammar), together with its initial and final graphs.
+The \code{.ggx} presents the occurrence graph grammar constructed\footnote{ AGG supports its visualization only as a simply-typed graph grammar.}, together with its initial and final graphs.
 
-The test oracles are represented by the concrete rules relation and the set of abstract restrictions: any path that complains to the format imposed by them is considered valid and must always succeed. On the other hand, paths that break at least one of such restrictions are considered invalid, and their tests must always capture them as failures.
+We use the occurrence relation and the set of abstract restrictions as test oracle, to define the acceptance of the tests: any path that complies to the format imposed by them is considered valid and must always succeed. On the other hand, paths that break at least one of such restrictions are considered invalid, and their tests must always capture them as failures.
 
-The tests are represented by the rules and element ordering and also by the initial and final graphs. The ordering of rules is one of (possibly) many valid orders in which the rules can be applied.
-
-The ordering of elements represent an ordering in which the state of the system may be constructed. While the initial and final graphs translate the valid formats for the input and output of each test.
-
-More specific usability details can be found on the Verigraph tutorial, which can be found at \url{https://github.com/Verites/verigraph-tutorial/releases}.
+The tests are represented by the concrete orderings of the rules execution, orderings of elements creation/deletion, and by the initial and final graphs. The ordering of rules is one of (possibly) many valid orders in which the rules can be applied according to the occurrence relation. The ordering of elements represent an ordering in which the state of the system may be constructed. While the initial and final graphs translate the valid formats for the input and output of each test. More specific usability details can be found on the Verigraph tutorial, which can be found at \url{https://github.com/Verites/verigraph-tutorial/releases}.
 
