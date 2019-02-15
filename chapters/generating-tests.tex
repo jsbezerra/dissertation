@@ -25,10 +25,14 @@ Notice that the two first items correspond to test cases while the last one corr
 \fi
 %First, we present a brief overview of the methodology for extracting graph grammars from use cases, after what we present the process of generating the tests cases from the extracted grammars.
 
-In this chapter, we present the process of constructing Occurrence Graph Grammars (OGGs) in a systematic manner and how this process was implemented in Verigraph. We use the same grammar presented on Example~\ref{ex:mail-grammar} as a running example in order to easy explanation. We also applied this process in a more complex, real-like graph grammar that models the system of a restaurant, built from the set of use cases presented in Appendix~\ref{app:use-cases} by applying the systematic methodology proposed
-by~\cite{Junior2015}. These use cases model basic functionalities of the proposed restaurant system such as login of employees, reservation and cancellation of tables, accommodation of clients, serving tables, among others. The complete extracted grammar, together with its generated OGGs can be found at the Verites repository for case studies\footnote{https://github.com/Verites/case-studies}.
+In this chapter, we present the process of constructing Occurrence Graph Grammars (OGGs) in a systematic manner and how this process was implemented in Verigraph. We use the same grammar presented on Example~\ref{ex:mail-grammar} in order to easy explanation. We also applied this process in more complex, real-like graph grammars. One of the grammars models the system of a restaurant, with functionalities such as login of employees, reservation and cancellation of tables,
+accommodation of clients, serving tables, among others. Another models the system of an e-Store, with functionalities such as browse and search catalogue, registration of clients, login, maintain shopping cart, effectuate purchase, etc. The grammars, their textual specifications (use cases), together with their generated OGGs can be found at the Verites repository for case studies\footnote{https://github.com/Verites/case-studies}.
 
-First, we reintroduce the \emph{Mail Server Graph Grammar}, then we proceed to the explanation of the necessary steps to build an Occurrence Graph Grammar according to the definitions presented on chapter~\ref{ch:process}. The implementation of this process in Verigraph is also part of this thesis contribution, as Verigraph is the first tool in the field to implement the construction of Occurrence Graph Grammars, even if we consider OGGs without NACs. As a possible practical application of this, at the end of the chapter, we provide some insight about how OGGs can be used to generate test cases for the system they model\tinytodo{maintain tests?}.
+
+
+%that modelling the system of a restaurant and , built from the set of use cases presented in Appendix~\ref{app:use-cases} by applying the systematic methodology proposed by~\cite{Junior2015}. These use cases model basic functionalities of the proposed restaurant system such as login of employees, reservation and cancellation of tables, accommodation of clients, serving tables, among others. The complete extracted grammar, together with its generated OGGs can be found at the Verites repository for case studies\footnote{https://github.com/Verites/case-studies}.
+
+First, we reintroduce the \emph{Mail Server Graph Grammar}, then we proceed to the explanation of the necessary steps to build an Occurrence Graph Grammar according to the definitions presented on chapter~\ref{ch:process}. The implementation of this process in Verigraph is also part of this thesis contribution, as Verigraph is the first tool in the field to implement the construction of Occurrence Graph Grammars, even when considering OGGs without NACs. As a possible practical application of this, at the end of the chapter, we provide some insight about how OGGs can be used to generate test cases for the system they model\tinytodo{maintain tests?}.
 %Given the graph grammar model of a system, we want to generate test cases and oracles for collections of its underlying functionalities. These collections could represent something as ``atomic'' as a successful or failing login attempt or something as complex as the entire workflow of attending clients, which would require attendants and waiters to log in into the system, tables to be occupied, orders to be prepared, among possibly several other steps.
 
 %The reason why we focused on collections of functionalities is to test the emergent behaviour of a system, which usually is not observable if we consider each functionality in isolation. By grouping together several (usually, but not necessarily different) functionalities, we may realize how they interact with each other and which are the overall effects of this integration.
@@ -102,9 +106,9 @@ As a side note, the reader may notice that it is not mandatory to create an $IO$
   $R_{sendMsg} \leftarrow IO_n \rightarrow L_{receiveMsg}$ or $R_{receiveMsg} \leftarrow IO_m \rightarrow L_{sendMsg}$, or even the two of them. Any combination would result in the same final effect: both rules use the same \emph{server}.
   \begin{figure}[!ht]
   \centering
-  \fbox{\includegraphics[scale=0.5]{grammar/server/IO-object}}
-  \fbox{\includegraphics[scale=0.5]{grammar/server/IO-object2}}
-  \fbox{\includegraphics[scale=0.5]{grammar/server/IO-object3}}
+  \fbox{\includegraphics[scale=0.5]{grammar/server/io-object}}
+  \fbox{\includegraphics[scale=0.5]{grammar/server/io-object2}}
+  \fbox{\includegraphics[scale=0.5]{grammar/server/io-object3}}
   \caption{A basic Input-Output relation building}\label{fig:tests:inout}
 \end{figure}
 
@@ -177,6 +181,7 @@ The first step of the construction, the amalgamation of rules in $F$ w.r.t. $IO$
 The retyping step is responsible for generating actions: ``new'' graph rules which, rather than being generic descriptions of system transformations, represent concrete executions of the original rules over a given context. Therefore, a rule which describes the process where a user receives from the server a message sent also by a user becomes a concrete action where \textit{Alice} receives \textit{the message} sent by \textit{Bob}.
 %The set $F'$ of doubly-typed graph rules from the colimit calculated in the previous step.
 For each graph rule $\mbox{$p_i^{TG} = \left(L_i^{TG} \leftarrow K_i^{TG} \rightarrow R_i^{TG}\right)$} \in F$, we generate a new action \mbox{$q_i^{Occ} = \left(L_i^{Occ} \leftarrow K_i^{Occ} \rightarrow R_i^{Occ}\right) \in F'$}, where the typing morphisms are those from the original rules in $F$ to the colimit graph $Occ$. Since $Occ$ is the type graph of the new rules and, at the same time, a typed graph over $TG$, the actions are now doubly-typed rules over $Occ^{TG^T}$.
+Figure~\ref{fig:tests:actions} shows the actions generated for our running example\footnote{ Since we use AGG as our form of output visualization and it was not intended to provide support for doubly-typed graph grammars, the NACs of our actions can not be properly seen, however they are maintained and used in Verigraph internal format.}.
 
 \begin{figure}[!ht]
   \centering

@@ -1,8 +1,8 @@
 \chapter{Conclusions}\label{ch:conclusions}
 
-An Occurrence Graph Grammar is a way of representing the semantics of a graph grammar as a graph grammar itself. OGGs were previously defined by~\cite{Ribeiro1996} and~\cite{Corradini1996}. However, its original definitions do not consider Negative Application Conditions, which are nowadays essential do the modelling of complex, real-like systems.
+An Occurrence Graph Grammar (OGG) is a way of representing the semantics of a graph grammar as a graph grammar itself. OGGs were previously defined by~\cite{Ribeiro1996} and~\cite{Corradini1996}. Notwithstanding, its original definitions do not consider Negative Application Conditions, which are nowadays essential do the modelling of complex, real-like systems.
 
-  In our work, we proposed an extension to the framework of occurrence graph grammars in order to include Negative Application Conditions (NACs), which has not been done so far. Additionally, the process of constructing occurrence graph grammars from graph grammars was implemented on Verigraph, a software specification and verification system based on graph rewriting.%, which now supports doubly-typed graph grammars in general.
+  In our work, we proposed an extension to the framework of occurrence graph grammars in order to include Negative Application Conditions (NACs), which has not been done so far. Additionally, the process of constructing occurrence graph grammars was implemented on Verigraph, a software specification and verification system based on graph rewriting.%, which now supports doubly-typed graph grammars in general.
 
   %As the main objective of this thesis, we used occurrence graph grammars and its relations to generate test cases, also using Verigraph. This functionality aims to improve the quality of the software testing activity by providing test cases and oracles that are complete (regarding the point of view of rules application ordering) and compact.
 
@@ -24,7 +24,7 @@ Although our main objectives were accomplished during the work of this thesis, t
 
 %\end{itemize}
 
-\textbf{Basic categorial operations:} One of the features Verigraph provides is to support for different categories and analysis, nonetheless there are basic operations and different types of categories which are not contemplated by Verigraph current state.
+\textbf{Basic categorial operations:} One of the features Verigraph provides is to support for different categories and analysis, nonetheless there are basic operations and different categories and types of categories which are not contemplated by the current state of Verigraph.
 
 One of such basic features would be the dual operations of cocomplete categories, such as equalizers, products, pullbacks and limits, implemented in a \code{Complete} type class so it can be reused in the same manner as the \code{Cocomplete} one.
 
@@ -32,28 +32,25 @@ Also, Verigraph does not support categories that have different morphism classes
 
 \textbf{Incremental NACs:} The entire process of calculating the occurrence graph grammars and the later generation of test cases depends on all the NACs of the input grammar being incremental. Despite incremental NACs being sufficient for most applications and that our case studies only used grammars which respect this restriction, there may be cases where it is needed to use grammars with general NACs.
 
-  Verigraph current implementation assumes the input grammars have incremental NACs only, therefore it remains as a future work to implement the algorithm that compiles arbitrary NACs to incremental ones and use it as a previous step to our main work.
+  The current implementation of Verigraph assumes the input grammars have incremental NACs only, therefore it remains as a future work to implement the algorithm that compiles arbitrary NACs to incremental ones and use it as a previous step to our main work.
 
-\textbf{NACs in strongly safe grammars:} In our work, we defined NACs in strongly safe grammars that are only single-typed. However, the definition of doubly-typed NACs seems be useful when to point concretely each element in the core graph that triggers the NAC of an action.
+\textbf{NACs in strongly safe grammars:} In our work, we defined NACs in strongly safe grammars that are only single-typed. However, the definition of doubly-typed NACs seems to be useful if one wants to point concretely each element in the core graph that triggers the NAC of an action.
 
-The idea is to create a doubly-typed NAC for each concrete triggering of the original NAC over the core graph. Moreover, this translation may yield the creation of (possibly) many doubly-typed NACs for each original single-typed. 
-
-Thus, it remains as future work to formally define this other kind of NAC, to verify whether and when it would really be useful, how to use it to improve the expressiveness for test cases generation and then implement it on Verigraph.
+The idea is to create a doubly-typed NAC for each concrete triggering of the original NAC over the core graph. Moreover, this translation may yield the creation of (possibly) many doubly-typed NACs for each original single-typed. Thus, it remains as future work to formally define this other kind of NAC, to verify whether and when it would really be useful, how to use it to improve the expressiveness for test cases generation and then implement it on Verigraph.
 
 %\important{Test generation with non-deterministic occurrence graph grammars with nacs}
 
 \textbf{Different graph rewriting approaches:} Occurrence graph grammars were originally defined for DPO and SPO approach without NACs, our extension adds NACs to the DPO approach. It remains open how to extend them for SPO or even other different approaches, such as SqPO and AGREE.
 
-\textbf{Complexity:} To this point, it is not clear to us what is the complexity of an algorithm to find (or to check if it is possible to find) a total ordering of actions of a strongly safe grammar that respects both the concrete occurrence relation and arbitrary abstract restrictions.
+\textbf{Complexity of finding a total ordering:} To this point, it is not clear to us what is the complexity of an algorithm to find (or to check if it is possible to find) a total ordering of actions of a strongly safe grammar that respects both the concrete occurrence relation and arbitrary abstract restrictions.
 
-  Although for our practical applications so far it is unlikely that the strongly safe grammars have many restrictions (or nay restrictions at all), given that grammars generated from use cases usually have an existential relation that will avoid this problem, it is not difficult to come up with other applications and grammars where this situation happens.
-
-  Therefore, more study is necessary regarding this aspect, specifically, we want to be sure whether it is possible to find total orderings for arbitrary strongly safe graph grammars or at least under which conditions (besides an empty set of abstract restrictions) would it still be feasible. After that, we will know if this process is suitable to generate tests for grammars the model arbitrary systems, not only those described by use cases.
+  Although in our practical applications so far we did not find strongly safe grammars with many constraints (or any constraint at all) in the occurrence relation restriction, it is not (theoretically) difficult to create scenarios with other applications and grammars where this situation happens. Therefore, more study is necessary regarding this aspect, specifically, we want to be sure whether it is possible to find total orderings for arbitrary strongly safe graph grammars or at least under which conditions
+  (besides an empty set of abstract restrictions) would it still be feasible. After that, we will know if this process is suitable to generate tests for grammars the model arbitrary systems and not only those described by use cases.
 
 \textbf{Concurrent Graphs:} In the original definitions of Occurrence Graph Grammars, there exist the concept of concurrent graphs, which consist of all reachable graphs while executing the underlying grammar. Such a concept was not used, therefore not defined in our extension for DPO approach with NACs. Refining our work to include this concept would both complete our definitions regarding the previous works and improve the generation of tests, by allowing us to know which (intermediary) states the system can or can not assume.
 
-\textbf{Interface:} Regarding input and output, Verigraph does not have an operational graphical user interface (GUI) yet, using the AGG tool and its \code{.ggx} file format for providing this operations. However, AGG does not support doubly-typed graph grammars nor NACs under this framework, thus the graphical visualization of the output of the test generation process is not completely possible, which makes the development of a GUI dedicated to Verigraph a necessary step to address this issue\footnote{the development
-  of a responsive, dedicated GUI is currently one of the main focus of the verites group}.
+\textbf{Graphical Interface:} Regarding input and output, Verigraph does not have an operational graphical user interface (GUI) yet, using the AGG tool and its \code{.ggx} file format for providing this operations. However, AGG does not support doubly-typed graph grammars nor NACs under this framework, thus the graphical visualization of the output of the test generation process is not completely possible, which makes the development of a GUI dedicated to Verigraph a necessary step to address this issue\footnote{the development
+  of a responsive, dedicated GUI is currently one of the main focus of the Verites group}.
 
 %\textbf{Interactive test case generation:} With respect to the test case generation, the GUI will also be helpful to the guided generation of different cases. Currently, the user must create the subsets of functionalities manually, as well as the $IO$ relations needed for them.
 
