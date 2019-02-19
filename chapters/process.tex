@@ -234,9 +234,6 @@ In the context of strongly safe graph grammars, we will use a slightly different
 
   By restricting the overlapping of actions to the images of their matches (resp. comatch and match) we consider only the local effects of these actions. Thus resulting in two properties of our interest: (1) We avoid dangling conditions with edges in the core graph that do not directly participate in the interaction of these actions. Similarly, (2) the NACs of these actions are not triggered with elements that, in despite of being present in the core graph, do not directly participate in the interaction of these two actions. These restrictions, together with the use of incremental NACs, allow us to locally compute the conflicts and dependencies for each pair of actions, without the necessity of dealing with global effects other actions might have.
 
-  \important{example? maybe use the transformations of the leila's relations that were removed.}
-
-
 \begin{remark}[Strongly Safe Grammars] Throughout this work, we will use only strongly safe grammars whose set $P$ of actions is finite and each action in $P$ is distinct from the others.
 
 \hfill
