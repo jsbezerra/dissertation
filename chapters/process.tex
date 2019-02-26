@@ -579,6 +579,10 @@ The first four conditions correspond to those of the Definition 19 of~\cite{Corr
 
 The fifth condition deals with the conflicts and dependencies induced by NACs that do not participate in the concrete relations, thus generating \emph{intervals} of actions inside of which specific actions can not be applied. If it is possible to find a total ordering of actions regarding the occurrence relation which also obeys the set of restrictions, then it is possible to execute the underlying single typed grammar.
 
+\important{Conseguiste terminar isto? Para provar estes teoremas seria necessário dizer que a tua noção de OGG representa uma restrição em relação à def. de Corradini et all, e remeter para lá a questão de como transformar uma OGG em derivação e vice versa. Se as regras não envolverem NACs os teoremas do artigo do Corradini já garantem os teus. Para o 3.33 tens que argumentar que , para qualquer ordem total que satisfaça a OGG com NACs, cada acão  de P que envolve uma NAC pode ser executada
+depois das ações que vem antes dela na ordem, e isto seria garantido pelas restricoes que tu impuseste ao gerar a OGG. Para o 3.35, tens que provar que a OGG construida da mesma forma como no artigo do Corradini, mas adicionando os pares referentes aos conflitos e dependencias concretos e as triplas referentes aos abstratos gera uma OGG com NACs. Ou seja, na hora de gerar a OGG com NACs, quando houver uma regra com NAC deve ser feita a analise do impacto desta regras na derivacao de acordo com
+as tuas defs 3.25 e 3.27. Neste caso, precisa-se argumentar que a relacao de ocorrencia resultante é uma ordem parcial (como veio de uma ordem total, eh obvio) e que respeita as restricoes de ocorrencia (novamente, como veio de uma derivacao concreta que existe, isso deve ser obvio.}
+
 \begin{thm} Given a graph grammar \graphGrammar{} and an Occurrence Graph Grammar \occurrenceGrammar{}. If we have that:
 \begin{itemize}
   \item $\forall a \in A \Rightarrow a \in P$
@@ -589,11 +593,17 @@ Then any derivation represented by $OGG$ is a derivation of $GG$.
 
 \end{thm}
 
+\begin{proof}
+\end{proof}
+
 \begin{definition}[OGG Derivation Format]
 \end{definition}
 
 \begin{thm} Given a Graph Grammar \graphGrammar{}, any derivation of $GG$ generates an $OGG$. 
 \end{thm}
+
+\begin{proof}
+\end{proof}
 
 \begin{definition} Given a Graph Grammar \graphGrammar{} the semantics of $GG$ can be described as the set of $OGGs$ corresponding to its derivations.
 \end{definition}
