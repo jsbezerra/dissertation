@@ -4,7 +4,7 @@ The theory of graph grammars and graph transformation systems is based on the ap
 
 Graph grammars have a wide application in computer science, not only because graphs are very natural and intuitive way to model complex situations, but also because it is possible to reason about several properties of the modelled systems using its formalism~\cite{Ehrig2006,Rozenberg1997}.
 
-We now review the basic concepts and some analysis techniques for graph transformations that are used in this work. We use the algebraic approach, which is based on Category Theory. The reader is assumed to be familiar with categorial concepts, but a brief review of the main concepts used in this thesis is presented in appendix~\ref{app:category-theory}.
+We now review the basic concepts and some analysis techniques for graph transformations that are used in this work. We use the algebraic approach, which is based on Category Theory. For the proofs of theorems and facts, the reader is reffered to ~\cite{Corradini1996:DPO}, however a brief review of the main categorial concepts used in this thesis is presented in appendix~\ref{app:category-theory}.
 
 \begin{definition}[Graph] A graph is a tuple $G = \left(V,E,s,t\right)$ where: $V$ is a set of nodes, $E$ is a set of Edges and $s,t : E \rightarrow V$ are two total functions that map each edge in $E$ to its source and target in $V$.
 
@@ -53,7 +53,7 @@ We now review the basic concepts and some analysis techniques for graph transfor
 }
 \end{definition}
 
-\begin{example}[Typed Graph and Typed Graph Morphism Example] Figure~\ref{fig:gts:typed-graphs} shows a type graph $T$, and four graphs $G_0, G_1, G_2, G_3$ where only $G_0$ and $G_1$ are valid \emph{T-typed} graphs. 
+\begin{example}[Typed Graph and Typed Graph Morphism Example] Figure~\ref{fig:gts:typed-graphs} shows a type graph $T$, and four graphs $G_0, G_1, G_2, G_3$ where only $G_0$ and $G_1$ are valid \emph{T-typed} graphs. In this graphical representation, the shapes of the nodes represent different types. Thus, a square node can only be mapped to the square node in $T$, and so on.
   
   Notice that $G_2$ can not be a \emph{T-typed} graph because type graph does not have a node of the type $\lozenge$, neither an edge type with source and target in the $\Square$ type. Similarly, $G_3$ is not a valid \emph{T-typed} graph because, although there is an edge type between a $\triangle$ and a $\Square$ types, the source must of this type of edge must be a $\Square$ and the target a $\triangle$.
 
@@ -176,12 +176,12 @@ Figure~\ref{fig:gts:rule-standard} presents the rule in the standard DPO notatio
 \end{figure}
 \end{example}
 
-The gluing conditions express in a positive manner whether it is possible to perform a transformation. Given a rule and a match to an instance graph, the pattern found by the match must satisfy the dangling and the identification conditions in order to be considered valid. However, sometimes it is also convenient to specify forbidden contexts, in which the transformation can not be applied even if it satisfies the gluing conditions. An elegant form of
+The gluing condition expresses in a positive manner whether it is possible to perform a transformation. Given a rule and a match to an instance graph, the pattern found by the match must satisfy the dangling and the identification conditions in order to be considered valid. However, sometimes it is also convenient to specify forbidden contexts, in which the transformation can not be applied even if it satisfies the gluing conditions. An elegant form of
 achieving this is by means of Negative Application Conditions (NACs), defined in ~\cite{Habel1996}.
 
-A NAC extends one side of a rule by describing a pattern that can not be found around the match or comatch, otherwise the application is forbidden. Although they do not provide more expressive power, they make the modelling and understanding of graph grammars a lot easier. Besides, they are nowadays essential to the modelling of complex systems~\cite{Corradini2014}.
+A NAC extends one side of a rule by describing a pattern that should not be found around the match or comatch, otherwise the application is forbidden. Although NACs do not provide more expressive power, they make the modelling and understanding of graph grammars a lot easier. They are nowadays essential to the modelling of complex systems~\cite{Corradini2014}.
 
-\begin{definition}[Negative Application Condition] A \emph{left} negative application condition over a graph rule \graphrule{} is of the form $NAC\left(n\right)$, where \nac{} is an arbitrary (typed) graph morphism. A match \match{} of a rule $p$ satisfies\footnote{When a NAC is satisfied it is also said that the NAC is \emph{not triggered} and vice versa.} $NAC\left(n\right)$ on $L$, written $m \models NAC\left(n\right)$, iff $\nexists$ $q : N \rightarrow G$ with $q$ injective and $q \circ n = m$.
+\begin{definition}[Negative Application Condition] A \emph{left} negative application condition over a graph rule \graphrule{} is of the form $NAC\left(n\right)$, where \nac{} is an arbitrary (typed) graph morphism. A match \match{} of a rule $p$ satisfies\footnote{When a NAC is satisfied it is also said that the NAC is \emph{not triggered} and vice versa.} $NAC\left(n\right)$ on $L$, written $m \models NAC\left(n\right)$, iff $\nexists$ $q : N \rightarrow G$ with $q$ being a monomorphism and $q \circ n = m$.
 
 \diagram{
   N\ar@{.>}[dr]|{|}_{q} & L\ar[d]^{m}\ar[l]_{n}\\
@@ -190,7 +190,7 @@ A NAC extends one side of a rule by describing a pattern that can not be found a
 
   A match \match{} satisfies a set \mbox{$NAC_L = \{NAC\left(n_i\right)|i \in I\}$} of left $NACs$, iff \mbox{$m \models NAC\left(n_i\right)$} $\forall i \in I$.
 
-  Analogously, a \emph{right} negative application condition over a graph rule \graphrule{} is of the form $NAC\left(n\right)$, where \rightnac{} is an arbitrary (typed) graph morphism. A comatch \comatch{} of a rule $p$ satisfies $NAC\left(n\right)$ on $R$ (written \mbox{$m' \models NAC\left(n\right)$}) iff $\nexists$ $q : N \rightarrow H$ with $q$ injective and $q \circ n = m'$.
+  Analogously, a \emph{right} negative application condition over a graph rule \graphrule{} is of the form $NAC\left(n\right)$, where \rightnac{} is an arbitrary (typed) graph morphism. A comatch \comatch{} of a rule $p$ satisfies $NAC\left(n\right)$ on $R$ (written \mbox{$m' \models NAC\left(n\right)$}) iff $\nexists$ $q : N \rightarrow H$ with $q$ being a monomorphism and $q \circ n = m'$.
 
 \diagram{
   R\ar[d]_{m'}\ar[r]^{n} & N\ar@{.>}[dl]|{|}^{q}\\
@@ -225,9 +225,9 @@ A NAC extends one side of a rule by describing a pattern that can not be found a
 %\begin{assumption}[Left NACs] Unless stated otherwise, we will work with graph rules that have only left $NACs$ for the rest of this thesis. This is without loss of generality once right $NACs$ can be translated to left ones as it is shown in Definition~\ref{def:shift-nac}.
 %\end{assumption}
 
-\begin{definition}[Trivially-Triggered NACs] Given a $NAC(n)$, where $n : L \rightarrow \hat{L}$ is an isomorphism, and a match \match{} which is also a monomorphism, we call $NAC(n)$ a \emph{trivially-triggered NAC} as, for every monomorphic $m$, there will always exist a $q : \hat{L} \rightarrow G$ injective such that $q \circ n = m$.
+\begin{definition}[Trivially-Triggered NACs] Given a $NAC(n)$, where $n : L \rightarrow \hat{L}$ is an isomorphism, and a match \match{} which is a monomorphism, we call $NAC(n)$ a \emph{trivially-triggered NAC} as, for every monomorphic $m$, there will always exist a $q : \hat{L} \rightarrow G$ injective such that $q \circ n = m$.
 
-  A trivially-triggered NAC $n : L \rightarrow \hat{L}$ is also notated $NAC(L)$. If a rule $p$ has a trivially-triggered NAC then $p$ can never be applied whatsoever, as the NAC will never be satisfied. An example of a trivially-triggered NAC is shown on Figure~\ref{fig:gts:nacs:trivial}.
+  A trivially-triggered NAC $n : L \rightarrow \hat{L}$ is also denoted $NAC(L)$. If a rule $p$ has a trivially-triggered NAC then $p$ can never be applied, as the NAC will never be satisfied. An example of a trivially-triggered NAC is shown on Figure~\ref{fig:gts:nacs:trivial}.
 \end{definition}
 
 \begin{definition}[Graph Transformation System and Graph Grammar] A typed graph transformation system is a pair $GTS = \left(TG,P\right)$ where $TG$ is the type graph of the system and $P$ is a set of typed graph rules with NACs.
@@ -275,9 +275,9 @@ A NAC extends one side of a rule by describing a pattern that can not be found a
 
 One of the characteristics that make Graph Transformation Systems and Graph Grammars suitable formalisms to model and reason about parallel and/or concurrent systems is the possibility to check whether the transformations given by two graph rules over the same instance graph can be applied (1) at the same time or (2) in any interchangeable order. In the first case we say that the transformations are parallel independent; in the later we say that they are sequential independent.
 
-In this section, we show both what it means for two graph transformations to be independent and how to check it. Notice that when we are reasoning about graph transformations (rules application) the (in)dependence is concrete, while for the case of graph rules the (in)dependence is potential, as it depends on the particular way the rules are applied.
+In this section, we review both what it (formally) means for two graph transformations to be independent and how to check it. Notice that when we are reasoning about graph transformations (rules application) the (in)dependence is concrete, while for the case of graph rules the (in)dependence is potential, as it depends on the particular way the rules are applied.
 
-\begin{definition}[Causal Dependency]\label{def:classic-dependency} Given two graph rules $p_1,p_2$ with NACs, they are \emph{causally dependent} for a given graph $E$, in which they overlap via morphisms \morph{m'_1}{R_1}{E} and \morph{m_2}{L_2}{E}, iff at least one of the following situations occurs in the transformations diagram below:
+\begin{definition}[Causal Dependency]\label{def:classic-dependency} Given two graph rules \ruleone{}, \ruletwo{} with NACs, they are \emph{causally dependent} for a given graph $E$, in which they overlap via morphisms \morph{m'_1}{R_1}{E} and \morph{m_2}{L_2}{E}, iff at least one of the following situations occurs in the transformations diagram below:
 
   \begin{enumerate}
     \item $\nexists h_{12} : R_1 -> D_2$ such that $d_2 \circ h_{12} = m_1'$
