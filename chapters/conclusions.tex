@@ -1,6 +1,6 @@
 \chapter{Conclusions}\label{ch:conclusions}
 
-An Occurrence Graph Grammar (OGG) is a way of representing the semantics of a graph grammar as a graph grammar itself. OGGs were previously defined by~\cite{Ribeiro1996} and~\cite{Corradini1996}. Notwithstanding, its original definitions do not consider Negative Application Conditions, which are nowadays essential do the modelling of complex, real-like systems.
+An Occurrence Graph Grammar (OGG) is a way of representing the semantics of a graph grammar as a graph grammar itself. OGGs were previously defined by~\cite{Ribeiro1996} and~\cite{Corradini1996}. Notwithstanding, its original definitions do not consider Negative Application Conditions, which are nowadays essential do the modelling of complex, real-life systems.
 
   In our work, we proposed an extension to the framework of occurrence graph grammars in order to include Negative Application Conditions (NACs), which has not been done so far. Additionally, the process of constructing occurrence graph grammars was implemented on Verigraph, a software specification and verification system based on graph rewriting.%, which now supports doubly-typed graph grammars in general.
 
@@ -24,11 +24,11 @@ Although our main objectives were accomplished during the work of this thesis, t
 
 %\end{itemize}
 
-\textbf{Basic categorial operations:} One of the features Verigraph provides is to support for different categories and analysis, nonetheless there are basic operations and different categories and types of categories which are not contemplated by the current state of Verigraph.
+%\textbf{Basic categorial operations:} One of the features Verigraph provides is to support for different categories and analysis, nonetheless there are basic operations and different categories and types of categories which are not contemplated by the current state of Verigraph.
 
-One of such basic features would be the dual operations of cocomplete categories, such as equalizers, products, pullbacks and limits, implemented in a \code{Complete} type class so it can be reused in the same manner as the \code{Cocomplete} one.
+%One of such basic features would be the dual operations of cocomplete categories, such as equalizers, products, pullbacks and limits, implemented in a \code{Complete} type class so it can be reused in the same manner as the \code{Cocomplete} one.
 
-Also, Verigraph does not support categories that have different morphism classes besides mono-, epi- and isomorphisms. In particular, some categories are adhesive with respect to a subclass $N$ of monomorphisms or that restrict which kind of morphisms are allowed in productions.
+%Also, Verigraph does not support categories that have different morphism classes besides mono-, epi- and isomorphisms. In particular, some categories are adhesive with respect to a subclass $N$ of monomorphisms or that restrict which kind of morphisms are allowed in productions.
 
 \textbf{Incremental NACs:} The entire process of calculating the occurrence graph grammars and the later generation of test cases depends on all the NACs of the input grammar being incremental. Despite incremental NACs being sufficient for most applications and that our case studies only used grammars which respect this restriction, there may be cases where it is needed to use grammars with general NACs.
 
@@ -44,8 +44,11 @@ The idea is to create a doubly-typed NAC for each concrete triggering of the ori
 
 \textbf{Complexity of finding a total ordering:} To this point, it is not clear to us what is the complexity of an algorithm to find (or to check if it is possible to find) a total ordering of actions of a strongly safe grammar that respects both the concrete occurrence relation and arbitrary abstract restrictions.
 
-  Although in our practical applications so far we did not find strongly safe grammars with many constraints (or any constraint at all) in the occurrence relation restriction, it is not (theoretically) difficult to create scenarios with other applications and grammars where this situation happens. Therefore, more study is necessary regarding this aspect, specifically, we want to be sure whether it is possible to find total orderings for arbitrary strongly safe graph grammars or at least under which conditions
-  (besides an empty set of abstract restrictions) would it still be feasible. After that, we will know if this process is suitable to generate tests for grammars the model arbitrary systems and not only those described by use cases.
+  In our practical applications so far we did not find strongly safe graph grammars with a prohibitive number of constraints (for many chosen executions there was no constraint at all) in the set of occurrence relation restrictions.
+  We believe this happened because most of our graph grammars were extracted from use cases which provided ``natural'' orderings under which the actions must be applied, thus limiting the possible cases in which abstract conflicts/dependencies might occur.
+  However, in graph grammars which were not extracted from use cases and where the system execution had more possibilities to execute in parallel than sequentially, those situations appeared more frequently.
+  Therefore, more study is necessary regarding this aspect, specifically, we want to be sure whether it is possible to find total orderings for arbitrary strongly safe graph grammars or at least under which conditions (besides an empty set of abstract restrictions) would it still be feasible.
+  After that, we will know if this process is suitable to generate tests for grammars that model arbitrary systems and not only those described by use cases.
 
 \textbf{Concurrent Graphs:} In the original definitions of Occurrence Graph Grammars, there exist the concept of concurrent graphs, which consist of all reachable graphs while executing the underlying grammar. Such a concept was not used, therefore not defined in our extension for DPO approach with NACs. Refining our work to include this concept would both complete our definitions regarding the previous works and improve the generation of tests, by allowing us to know which (intermediary) states the system can or can not assume.
 
