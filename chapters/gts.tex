@@ -239,10 +239,10 @@ A NAC extends one side of a rule by describing a pattern that should not be foun
 \begin{example}[Mail Server Graph Transformation System]\label{ex:mail-grammar} Figure~\ref{fig:gts:mail} depicts a graph transformation system that models a client-server scenario for a very simple e-mail application. The type graph (a) defines four kinds of nodes: \faUser{} for users, \faEnvelope{} for messages, \faFileTextO{} for data and \faServer{} for mail servers, while the edges specify where each kind of node can be located at a given time. Finally, this system has four actions modelled as graph rules, which can be summarized as: 
 
 \begin{enumerate}[label=(\alph*),start=2]
-  \item \emph{Send message:} a client sends a message to a server.
-  \item \emph{Get data:} a piece of data is obtained from a server.
-  \item \emph{Receive message:} a server sends a message to a client.
-  \item \emph{Delete message:} a client obtains a piece of data from a received message and the message is destroyed.
+  \item \emph{Send message:} a client writes a message which they send to a server, however there is a NAC forbidding the message of being sent if it has a piece of data attached to it.
+  \item \emph{Get data:} a piece of data is obtained from a server and attached to a message.
+  \item \emph{Receive message:} a server sends a message with attached data to a client.
+  \item \emph{Delete message:} a client obtains a piece of data from a received message and this message is destroyed.
 \end{enumerate}
 
 \begin{figure}[!ht]
@@ -277,7 +277,7 @@ One of the characteristics that make Graph Transformation Systems and Graph Gram
 
 In this section, we review both what it (formally) means for two graph transformations to be independent and how to check it. Notice that when we are reasoning about graph transformations (rules application) the (in)dependence is concrete, while for the case of graph rules the (in)dependence is potential, as it depends on the particular way the rules are applied.
 
-\begin{definition}[Causal Dependency]\label{def:classic-dependency} Given two graph rules \ruleone{}, \ruletwo{} with NACs, they are \emph{causally dependent} for a given graph $E$, in which they overlap via morphisms \morph{m'_1}{R_1}{E} and \morph{m_2}{L_2}{E}, iff at least one of the following situations occurs in the transformations diagram below:
+\begin{definition}[Causal Dependency]\label{def:classic-dependency} Given two graph rules \ruleone{}, \ruletwo{} with NACs \nacone{} and \nactwo{}, we say that transformations $t_1: H_1 \xRightarrow{p_1,m_1} E$ and $t_2: E \xRightarrow{p_2,m_2} H_2$ as is the diagram below are \emph{causally dependent} iff at least one of the following situations occurs:
 
   \begin{enumerate}
     \item $\nexists h_{12} : R_1 -> D_2$ such that $d_2 \circ h_{12} = m_1'$
@@ -288,10 +288,12 @@ In this section, we review both what it (formally) means for two graph transform
 
 \diagram{
     N_1 & & & & N_2 & & \\
-      L_1\ar[d]\ar[u]^{n_1} & K_1\ar[d]\ar[l]\ar[r] & R_1\ar[dr]_{m'_{1}}\ar@{.>}@/^1.1pc/[drrr]|<<{|}^<<<{h_{12}} & & L_2\ar[dl]^{m_2}\ar[u]^{n_2}\ar@{.>}@/_1.1pc/[dlll]|<<{|}_<<<{h_{21}} & K_2\ar[d]\ar[l]\ar[r] & R_2\ar[d]\\
+      L_1\ar[d]_{m_1}\ar[u]^{n_1} & K_1\ar[d]\ar[l]\ar[r] & R_1\ar[dr]_{m'_{1}}\ar@{.>}@/^1.1pc/[drrr]|<<{|}^<<<{h_{12}} & & L_2\ar[dl]^{m_2}\ar[u]^{n_2}\ar@{.>}@/_1.1pc/[dlll]|<<{|}_<<<{h_{21}} & K_2\ar[d]\ar[l]\ar[r] & R_2\ar[d]\\
         H_1 & D_1\ar[l]^{d_1}\ar[rr]_{e_1} & & \textit{E} & & D_2\ar[ll]^{d_2}\ar[r]_{e_2} & H_2\\
           & & & & & &
           }
+
+We say that rules $p_1$ and $p_2$ are (potentially) causally dependent iff a diagram like the one above fulfilling at least one of the mentioned situations exists.
 \end{definition}
 
 Intuitively, each case of dependency can be regarded as follows:
@@ -303,8 +305,10 @@ Intuitively, each case of dependency can be regarded as follows:
   \item a \emph{delete-forbid} dependency: $p_1$ deletes (from graph $H_1$) at least one element that would trigger the NAC $N_2$, thus allowing the application of $p_2$ on $E$.
 \end{enumerate}
 
+In this work we mostly consider dependencies (and conflicts) between rules. Thus, when we say that two rules are causally dependent it means that there may be a situation in which the application of one rule actually depends on the application of the other, but there might be also situations in which these both rules are applied independently.
+
 \begin{example}[Dependency situation in the mail server grammar]
-  Figure~\ref{fig:gts:dependency} shows a dependency situation between the rules \emph{getData} and \emph{receiveMessage}. In this case, the dependency is of a \emph{produce-use} kind: the edge between the \emph{piece of data} and the \emph{message} at the instance graph was created by \emph{getData} and the same edge is necessary for \emph{receiveMessage} to be applied.
+  Figure~\ref{fig:gts:dependency} shows a dependency situation between the rules \emph{getData} and \emph{receiveMessage}. In this case, the dependency is of a \emph{produce-use} kind: there may be a situation in which the edge between the \emph{piece of data} and the \emph{message} at the instance graph created by \emph{getData} are necessary for \emph{receiveMessage} to be applied.
 
 \begin{figure}[!ht]
   \centering
@@ -312,10 +316,10 @@ Intuitively, each case of dependency can be regarded as follows:
   \caption{A dependency in the server grammar}\label{fig:gts:dependency}
 \end{figure}
 
-  In the diagram, it is not possible to find a morphism from the left-hand-side of \emph{receiveMessage} to the gluing graph of \emph{getData} such that the transformation is still valid. Thus, for the overlapping in this particular graph, \emph{receiveMessage} is causally dependent on \emph{getData}.
+  In the diagram, it is not possible to find a morphism from the left-hand-side of \emph{receiveMessage} to the gluing graph of \emph{getData} such that the transformation is still valid. Thus, \emph{receiveMessage} is causally dependent on \emph{getData}.
 \end{example}
 
-\begin{definition}[Conflict]\label{def:classic-conflict} Given two graph rules $p_1, p_2$ with NACs, they are in conflict for a given graph $E$, in which they overlap via morphisms \morph{m_1}{L_1}{E} and \morph{m_2}{L_2}{E}, iff at least one of the following situations occur:
+\begin{definition}[Conflict]\label{def:classic-conflict} Given two graph rules \ruleone{} and \ruletwo{} with NACs \nacone{} and \nactwo{}, we say that transformations $t_1: E \xRightarrow{p_1,m_1} H_1$ and $t_2: E \xRightarrow{p_2,m_2} H_2$ as in the diagram bellow are in conflict iff at least one of the following situations occurs:
 
 \begin{enumerate}
     \item $\nexists h_{12} : L_1 -> D_2$ such that $d_2 \circ h_{12} = m_1$
@@ -330,6 +334,8 @@ Intuitively, each case of dependency can be regarded as follows:
         H_1 & D_1\ar[l]^{e_1}\ar[rr]_{d_1} & & \textit{E} & & D_2\ar[ll]^{d_2}\ar[r]_{e_2} & H_2\\
           & & & & & &
           }
+
+We say that rules $p_1$ and $p_2$ are (potentially) conflicting iff a diagram like the one above fulfilling at least one of the mentioned situations exists.
 \end{definition}
 
 Intuitively, each conflict case can be regarded as:
@@ -342,7 +348,7 @@ Intuitively, each conflict case can be regarded as:
 \end{enumerate}
 
 \begin{example}[Conflict situation in the mail server grammar]
-  Figure~\ref{fig:gts:dependency} shows a conflict situation involving the rules \emph{getData} and \emph{receiveMessage}. This is a \emph{delete-use} conflict: \emph{receiveMessage} deletes from the overlapping graph an edge between the \emph{message} and the \emph{server} which is necessary for \emph{getData} to be applied. Both rules are applied over the same graph and, individually, both transformations are valid. However, once \emph{receiveMessage} is applied, it is no longer possible to
+  Figure~\ref{fig:gts:conflict} shows a conflict situation involving the rules \emph{getData} and \emph{receiveMessage}. This is a \emph{delete-use} conflict: \emph{receiveMessage} deletes from the overlapping graph an edge between the \emph{message} and the \emph{server} which may be necessary for \emph{getData} to be applied. Considering the matches in Figuere~\ref{fig:gts:conflict}, both transformations are valid. However, once \emph{receiveMessage} is applied, it is no longer possible to
   apply \emph{getData}. This is represented in the diagram by the fact that it is not possible to find a morphism from the left-hand-side of \emph{getData} to the gluing graph of \emph{receiveMessage} such that the transformation from there is still valid.
 
 \begin{figure}[!ht]
