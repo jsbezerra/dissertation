@@ -1,4 +1,4 @@
-\chapter{Occurrence Graph Grammars}\label{ch:process}
+\chapter{Occurrence Graph Grammars with NACs}\label{ch:process}
 
 Occurrence graph grammars (OGGs) were defined for the Single-Pushout (SPO) approach by~\cite{Ribeiro1996}, and for the Double-Pushout (DPO) approach by~\cite{Corradini1996}. In both cases they consist of a way of representing the concurrent semantics of a graph grammar as a graph grammar itself.
 
@@ -6,9 +6,9 @@ The aim of an OGG is to describe all possible states and changes of states of th
 
 These relations express dependencies among core graph elements, such as which of them must occur together, at the same state, which ones must be created/deleted one after the other, which elements must never occur together, and so on. They also encode restrictions over the application of rules, such as which rules are sequentially dependent on others or whether it is possible to successfully apply all the rules of a grammar, etc. %This property makes occurrence graph grammars excellent candidates for the generation of test cases, as we are interested in a way of representing several (equivalent) possible derivations using a compact notation.
 
-However, Negative Application Conditions are not addressed by the original definitions of occurrence grammars. Still, NACs are nowadays essential for modelling complex systems as graph grammars, given they provide more compact mechanisms to control the application of rules~\cite{Habel1996, Lambers2008, Corradini2014}. In this chapter, after reviewing the works of~\cite{Ribeiro1996} and~\cite{Corradini1996} in OGGs, we develop an extension of the occurrence grammars framework towards contemplating negative application conditions, which is part of our thesis contribution.
+However, Negative Application Conditions are not addressed by the original definitions of occurrence grammars. Still, NACs are nowadays essential for modelling complex systems as graph grammars, given they provide more compact mechanisms to control the application of rules~\cite{Habel1996, Lambers2008, Corradini2014}. In this chapter, after reviewing the works of~\cite{Ribeiro1996} and~\cite{Corradini1996} in OGGs, and develop an extension of the occurrence grammars framework towards contemplating negative application conditions, which is part of our thesis contribution.
 
-\section{Occurrence Graph Grammars}
+\section{Occurrence Graph Grammars with NACs}
 
 \begin{definition}[Doubly-Typed Graph] Given a type graph $T$, a \emph{doubly-typed graph} \doublyTypedGraph{} over $T$ is a tuple \doublyTypedGraph $= \left(G^T,TG^T, t^{G^T} : G^T \rightarrow TG^T\right)$ where $G^T$ and $TG^T$ are typed graphs over $T$ and \mbox{$t^{G^T} : G^T \rightarrow TG^T$} is a typed graph morphism in \typedGraphCategory{}. We call $TG^T$ the \emph{double-type graph} and $t^{G^T}$ the double-typing morphism.
 \end{definition}
@@ -46,7 +46,7 @@ Notice that the (single) type morphisms $type_G : G \rightarrow T$ and $type_H :
   \caption{Doubly-typed graph morphism}\label{fig:process:doubly-typed-graph-morphism}
 \end{figure}
 
-\begin{remark} \cite{Ribeiro1996} defined different kinds of doubly-typed graph morphisms based on whether the doubly-type graphs and the type graphs are or are not the same. In this work we are only interested in the case where all doubly-typed graphs share the exact same double-type and type graphs. Therefore, through the rest of this thesis, we will refer to \mbox{\emph{$TG^T$-doubly-typed graph morphisms}} simply by \emph{doubly-typed graph morphisms}.
+\begin{remark} \cite{Ribeiro1996} defined different kinds of doubly-typed graph morphisms based on whether the double-type graphs and the type graphs are or are not the same. In this work we are only interested in the case where all doubly-typed graphs share exactly the same double-type and type graphs. Therefore, through the rest of this thesis, we will refer to \mbox{\emph{$TG^T$-doubly-typed graph morphisms}} simply by \emph{doubly-typed graph morphisms}.
 \end{remark}
 
 
@@ -104,10 +104,12 @@ order of application for any pair in that sequence an arbitrary number of times 
 However, the switch equivalence does not always hold when the grammar has NACs. This happens because there may be situations where the NAC of a rule can be triggered by the cumulative effect of applying two (or more) other rules, while the same rules would not trigger that NAC in isolation. This may lead to a situation where conflicts and dependencies
 	are not \emph{stable under switch}, which means that conflicts or dependencies that do not occur in a given sequence of transformations may arise if one or more pairs of transformations are switched. An example is shown in Figure~\ref{ex:process:instability}.
 
-\begin{example}[Switch Equivalence]\label{ex:process:instability}The rules depicted in Figure~\ref{fig:process:instability} show a situation where the independency between rules is not stable under switch equivalence.
+\begin{example}[Switch Equivalence]\label{ex:process:instability}The rules depicted in Figure~\ref{fig:process:instability} show a situation where the independence between rules is not stable under switch equivalence.
 
-  In this example, all rules are independent and also do not conflict with each other in the sense of Definitions~\ref{def:classic-dependency} and~\ref{def:classic-conflict}. Thus, in theory, it should be possible to apply this rules in any order or in parallel. Particularly, it is possible to apply all rules in the order they appear in the figure: $[p_1, p_2, p_3]$. It is also possible to apply them in the orders $[p_1, p_3, p_2]$, $[p_2, p_1, p_3]$ and $[p_3, p_1, p_2]$. However, it is not
-  possible to perform a derivation using the rules in the orders $[p_2, p_3, p_1]$ or $[p_3, p_2, p_1]$. This problem arises from the fact that $p_2$ and $p_3$ independently create a piece of the pattern forbidden by the NAC of $p_1$ in a way that, although the effect of each rule by itself does not trigger the NAC of $p_1$, their combined effects do.
+  In this example, all rules are independent and also do not conflict with each other in the sense of Definitions~\ref{def:classic-dependency} and~\ref{def:classic-conflict}. 
+  Thus, in theory, it should be possible to apply these rules in any order or in parallel. Particularly, it may be possible to apply all rules in the order they appear in the figure: $[p_1, p_2, p_3]$. 
+  It may also be possible to apply them in the orders $[p_1, p_3, p_2]$, $[p_2, p_1, p_3]$ and $[p_3, p_1, p_2]$. 
+  However, it is not possible to perform a derivation using the rules in the orders $[p_2, p_3, p_1]$ or $[p_3, p_2, p_1]$. This problem arises from the fact that $p_2$ and $p_3$ independently create a piece of the pattern forbidden by the NAC of $p_1$ in a way that, although the effect of each rule by itself does not trigger the NAC of $p_1$, their combined effects do.
 \end{example}
 
 \begin{figure}[!ht]
@@ -116,7 +118,8 @@ However, the switch equivalence does not always hold when the grammar has NACs. 
   \caption{Instability of conflicts under shift\\}\label{fig:process:instability}
 \end{figure}
 
-In order to avoid this problem while we construct a canonical representation of several possible derivations for a set of rules, we will make use of a special type of NACs called \emph{incremental NACs}. \emph{Incremental NACs} were originally defined in~\cite{Corradini2013} and~\cite{Corradini2014}. They have the property of extending the forbidden context of a match by a single edge or a single node. Thus, each NAC forbids only one element at a time and therefore there is no possible way to trigger a NAC by the cumulative effects of more than one rule.
+In order to avoid this problem while we construct a canonical representation of several possible derivations for a set of rules, we will restrict the use of NACs to a special type of NACs called \emph{incremental NACs}.
+\emph{Incremental NACs} were originally defined in~\cite{Corradini2013} and~\cite{Corradini2014}. They have the property of extending the forbidden context of a match by a single edge or a single node. Thus, each NAC forbids only one element at a time and therefore there is no possible way to trigger a NAC by the cumulative effects of more than one rule.
 
 \begin{definition}[Incremental NACs] Given a monomorphism \mbox{$n : L \rightarrow N$}, $NAC(n)$ is said to be incremental if for any possible pair of decompositions \mbox{$g_1 : L \rightarrow O_g;g_2 : O_g \rightarrow N$} and \mbox{$f_1 : L \rightarrow O_f;f_2 : O_f \rightarrow N$} as in the diagram below, where all morphisms are monos and \mbox{$f_1;f_2 = n = g_1;g_2$}, there exists a mediating morphism $o_1 : O_g \rightarrow O_f$ or $o_2 : O_f \rightarrow O_g$, such that the resulting triangles
   commutes.
@@ -138,11 +141,20 @@ In order to avoid this problem while we construct a canonical representation of 
 \end{figure}
 \end{example}
 
-At first, it may seem that we are loosing expressive power by restricting the NACs used in our grammars to incremental NACs only, however ~\cite{Corradini2013} have shown two important results regarding them. First, they showed that incremental NACs are sufficient to model most of real applications using $GTS$s. Second, they presented an algorithm to compile rules with general NACs to rules with incremental NACs only, generating a new $GTS$ that is able to simulate the original one.
+At first, it may seem that we are loosing expressive power by restricting the NACs used in our grammars to incremental NACs only. However ~\cite{Corradini2013} have shown two important results regarding them. First, they showed that incremental NACs are sufficient to model most of real applications using $GTS$s. Second, they presented an algorithm to compile rules with general NACs to rules with incremental NACs only, generating a new $GTS$ that is able to simulate the original one.
+
+  \begin{notation}[Set Operations over Graphs] Given a graph $G$, we will sometimes view them as being composed of a set $V(G)$ of nodes and a set $E(G)$ of edges, denoted \mbox{$G = V(G) \cup E(G)$}, in order to allow the use of set operations over this graph.
+    For example, we say that an element (a node or an edge) $x$ is a member of $G$, denoted $x \in G$, iff $x \in V(G) \cup E(G)$. 
+      Moreover, any operations involving multiple graphs will be applied \emph{setwise}. For example, given two graphs $G_1$ and $G_2$, the difference $D = G_1 - G_2$ between them is the union of the differences between their sets of nodes and their sets of edges. Therefore $D = V(D) \cup E(D)$ where $V(D) = V(G_1) - V(G_2)$ and $E(D) = E(G_1) - E(G_2)$.
+
+    Any other set operations applied over graphs will be regarded likewise.
+%\mbox{$D = G_1 - G_2 = V(G_1) \cup E(G_1) - V(G_2) \cup E(V_2) = (V(G_1) - V(G_2)) \cup (E(G_1) - E(G_2))$}
+
+\end{notation}
 
 \begin{definition}[Triggering element] Given a rule \graphrule{} with an incremental, non trivially triggered NAC \nac{}, and a monomorphic match \match{}, where there is an injective $q : N \rightarrow G$, therefore $m \not\models NAC(n)$. There is exactly one element that will complete the match towards triggering the NAC, this element is present in the difference between the images of $q$ and $m$.
 
-  Let $G_{|N}$ be the image of $q$, $G_{|L}$ the image of $m$, and \mbox{$D = G_{|N} - G_{|L}$}.\footnote{In this case, $D$ may not be a graph, we are here abusing the notation and treating $D$ as a set $V$ of vertices and a set $E$ of edges.} The triggering element of this NAC is:
+  Let $G_{|N}$ be the image of $q$, $G_{|L}$ the image of $m$, and \mbox{$D = G_{|N} - G_{|L}$}. The triggering element of this NAC is:
 
   \begin{itemize}
     \item $x \in E(D)$, if $E(D) \neq \varnothing$;
@@ -164,6 +176,7 @@ At first, it may seem that we are loosing expressive power by restricting the NA
 \begin{definition}[Doubly-Typed Graph Grammars] A \emph{doubly-typed graph grammar} is a tuple $GG = \left(TG^T, I^{TG^T},P \right)$ where $TG^T$ is the double-type graph of the grammar, $I^{TG^T}$ is a doubly-typed graph called the \emph{initial graph} and $P$ is a set of doubly-typed graph rules.
 
 \end{definition}
+
 
 \begin{definition}[Core Graph]\label{def:core-graph} Given a doubly-typed graph grammar \doublyTypedGraphGrammarCore{}, we have that \coreGraph{} is a \emph{core graph} iff the following two conditions hold:
 
@@ -187,7 +200,7 @@ At first, it may seem that we are loosing expressive power by restricting the NA
 \end{definition}
   The first condition assures that every element in the \emph{core graph} was either already present in the initial graph or was created by one and only one rule. The second condition assures that for every element that is deleted, it is deleted only once by only one rule. The idea is that each element within a \emph{core graph} has a unique origin. At the same time, the \emph{core graph} contains all elements necessary (created, deleted and preserved) by all rules in its underlying grammar. 
   
-  In~\cite{Ribeiro1996} the second condition is not used, because of a peculiarity of the SPO approach where more than one rule can delete the same element at the same time, while this would raise a conflict and therefore be forbidden in the DPO approach. As a consequence, the occurrence grammars defined by~\cite{Ribeiro1996} are inherently non-deterministic, whereas ours are deterministic.  In practice, this means that the semantics of a graph grammar in the SPO approach can be achieved with only one occurrence grammar, while in the DPO approach we will need a set of them.
+  In~\cite{Ribeiro1996} the second condition was not used, because of a peculiarity of the SPO approach where more than one rule can delete the same element at the same time, while this would raise a conflict and therefore be forbidden in the DPO approach. As a consequence, the occurrence grammars defined by~\cite{Ribeiro1996} are inherently non-deterministic, whereas ours are deterministic.  In practice, this means that the semantics of a graph grammar in the SPO approach can be achieved with only one occurrence grammar, while in the DPO approach we will need a set of them.
 
 \begin{example}[Doubly-Typed Graph Grammar and Core Graph Example] \mbox{Figure~\ref{fig:process:core-graph:counter-example}} shows a doubly-typed graph grammar, whose double-type is not a core graph. That happens because $\Square_2$ is created by both rules $p_1$ and $p_2$, as well as $\Circle_1$ is deleted by both $p_2$ and $p_3$.
 
@@ -232,9 +245,9 @@ In the context of strongly safe graph grammars, we will use a slightly different
   \item When searching for conflicts (resp. dependencies) between two actions $a_1,a_2$ with NACs, we check the NAC satisfiability only in the overlapping and the derived graphs rather than the entire core graph.
 \end{itemize}
 
-  By restricting the overlapping of actions to the images of their matches (resp. comatch and match) we consider only the local effects of these actions. Thus resulting in two properties of our interest: (1) We avoid dangling conditions with edges in the core graph that do not directly participate in the interaction of these actions. Similarly, (2) the NACs of these actions are not triggered with elements that, in despite of being present in the core graph, do not directly participate in the interaction of these two actions. These restrictions, together with the use of incremental NACs, allow us to locally compute the conflicts and dependencies for each pair of actions, without the necessity of dealing with global effects other actions might have.
+  By restricting the overlapping of actions to the images of their matches (resp. comatch and match) we consider only the local effects of these actions. Thus resulting in two properties of our interest: (1) We avoid dangling conditions with edges in the core graph that do not directly participate in the interaction of these actions. Similarly, (2) the NACs of these actions are not triggered by elements that, in despite of being present in the core graph, do not directly participate in the interaction of these two actions. These restrictions, together with the use of incremental NACs, allow us to locally compute the conflicts and dependencies for each pair of actions, without the necessity of dealing with global effects other actions might have.
 
-\begin{remark}[Strongly Safe Grammars] Throughout this work, we will use only strongly safe grammars whose set $P$ of actions is finite and each action in $P$ is distinct from the others.
+\begin{remark}[Strongly Safe Grammars] Throughout the rest of this work, we will use only strongly safe grammars whose set $P$ of actions is finite and each action in $P$ is distinct from the others.
 
 \hfill
 \end{remark}
@@ -246,7 +259,7 @@ In the context of strongly safe graph grammars, we will use a slightly different
 
 Given a strongly safe graph grammar, its core graph contains all elements used (created, read or deleted) during one possible execution of the grammar. Moreover, as each element has a unique origin, the core graph can be considered to contain the entire ``execution history'' of its underlying grammar.
 
-We are here interested in some of the properties that can be found by looking at this history. Particularly, which kind of relations exist among actions and elements, whether it is possible to find sequences in which all actions are applied and which graphs can be considered valid (reachable) by this grammar.
+We are here interested in some of the properties that can be found by looking at this history. Particularly, we want to define the kind of relations that exist among actions and elements, whether it is possible to find sequences in which all actions are applied and which graphs can be considered valid (reachable) by this grammar.
 
 In~\cite{Ribeiro1996}, causal, conflict and occurrence relations for strongly safe graph grammars were defined. There, the graph transformation approach used was the \emph{Single Pushout} (SPO) without NACs. \cite{Corradini1996} also defined a different notion of causal relation, equivalent to the occurrence relation in the previous mentioned work, with respect to the DPO approach without NACs.
 
@@ -254,7 +267,7 @@ Both authors use these relations to find out whether all the actions of a strong
 
 Here we recall the work of ~\cite{Corradini1996}, since it already uses the DPO approach, then extend it to create an equivalent notion of \emph{occurrence relation} that works for grammars in the DPO approach with NACs.
 
-\begin{definition}[Causal Relation]\label{def:causal-relation} This is the same \emph{causal relation} defined in \cite{Corradini1996} for the DPO approach without NACs. Given  \doublyTypedGraphGrammarCore{} a strongly safe graph grammar, actions \mbox{$a_1, a_2 \in P, a_1 \ne a_2$} and an element \mbox{$e \in N(C^T) \cup E(C^T)$}, then:
+\begin{definition}[Causal Relation]\label{def:causal-relation} \emph{(This is the same causal relation defined in \cite{Corradini1996} for the DPO approach without NACs.)} Given  \doublyTypedGraphGrammarCore{} a strongly safe graph grammar, actions \mbox{$a_1, a_2 \in P, a_1 \ne a_2$} and an element \mbox{$e \in N(C^T) \cup E(C^T)$}, then:
 
   \begin{enumerate}
     \item If $a_1$ deletes $e$, then $e <_c a_1$.
@@ -264,7 +277,7 @@ Here we recall the work of ~\cite{Corradini1996}, since it already uses the DPO 
     \item The \emph{causal relation} $\leq_c$ of $P \cup N(C^T) \cup E(C^T)$ is the reflexive and transitive closure of $<_c$.
   \end{enumerate}\end{definition}
 
-This relation represents conditions over creation, use (preservation) and deletion of elements by the actions used to characterize executions of the underlying rules. We have that an action $a$ must occur after all actions that create the elements it preserves or deletes. Analogously, $a$ must occur before all actions that delete the elements created or preserved by it.
+This relation represents conditions over creation, use (preservation) and deletion of elements by the actions used to characterize executions of the underlying rules. In any of the derivations represented by this strongly safe graph grammar, an action $a$ must occur after all actions that create the elements it preserves or deletes. Analogously, $a$ must occur before all actions that delete the elements created or preserved by it.
 
 In \cite{Corradini1996} it is shown that if this relation is a \emph{partial order}, then any total order with respect to it is a sequencing in which all productions of the underlying grammar are applicable.
 
@@ -304,7 +317,7 @@ The same definition can be attempted in a strongly safe grammar where actions ar
 \begin{example}[Causal Relation in Grammars with NACs]\label{ex:process:existential-relation-fail}Consider the strongly safe grammar corresponding to the core and initial graphs in Figure~\ref{fig:process:existential-relation:core-graph} and the set of rules in Figure~\ref{fig:process:existential-relation:example-nacs}.
 
 We have the same causal relation as the one presented in Example~\ref{ex:process:existential-relation}, since the structure of the actions is the same in both examples, except for the NAC in the action $a_1$ on Figure~\ref{fig:process:existential-relation:example-nacs}. In this example, we still have that $a_2$ must be applied first in order for $a_1$ to be applied. However, besides creating the $\Square_1$ needed for $a_1$, $a_2$ also creates a $\curvearrowleft_1$ from $\Square_1$ to
-  $\Circle_1$ which is a pattern forbidden by the NAC on $a_1$. Therefore, we have that $a_2$ also causes a \emph{produce-forbid} conflict with $a_1$. Moreover, $a_3$ is the only other action in this grammar and it does not delete any element that could undo the forbidden pattern. Thus, there is no possible way of applying all actions of this grammar, even though the causal relation is a partial order.\end{example}
+  $\Circle_1$ which is a pattern forbidden by the NAC of $a_1$. Therefore, we have that $a_2$ also causes a \emph{produce-forbid} conflict with $a_1$. Moreover, $a_3$ is the only other action in this grammar and it does not delete any element that could undo the forbidden pattern. Thus, there is no possible way of applying all actions of this grammar, even though the causal relation is a partial order.\end{example}
 
 \iffalse
 \input{chapters/process/unconditional}
@@ -351,15 +364,17 @@ We have the same causal relation as the one presented in Example~\ref{ex:process
 
 \section{Relations within Strongly Safe Graph Grammars with NACs}
 
-One important thing to notice is that the causal relation presented in the previous section is always concrete. This means that if an action is dependent on (resp. conflicting with) another one, it happens because one of them creates (resp. deletes) at least one of the concrete elements necessary for the other to be applied (resp. prevented of being applied).
+It is important to notice that the causal relation presented in the previous section is always concrete. This means that if an action is dependent on (resp. conflicting with) another one, it happens because one of them creates (resp. deletes) at least one of the concrete elements necessary for the other to be applied (resp. prevented of being applied).
 
 Moreover, the causal relation must always be respected whenever we try to find a total order in which all the actions of a strongly safe grammar are applicable. Nonetheless, for grammars equipped with NACs it is necessary to include the conflicts and dependencies created by NACs in this relation.
 
-This inclusion of conflicts and dependencies induced by NACs gives rise to a new problem: we can not just add those conflicts and dependencies directly into the causal relation because they are \textit{potential} instead of concrete. They may or may not happen depending on which specific total ordering of application (among all possibilities) was performed. Therefore, we need a way to identify under what conditions these potential conflicts (resp. dependencies) will appear, in order to know which among the possible total orderings also respect the restrictions imposed by NACs.
+This inclusion of conflicts and dependencies induced by NACs gives rise to a new problem: we can not just add those conflicts and dependencies directly into the causal relation because they are \textit{potential} instead of concrete. They may or may not happen depending on which specific total ordering of application (among all possibilities) was performed. Therefore, we need a way to identify under which conditions these potential conflicts (resp. dependencies) will appear, in order to know which among the possible total orderings also respect the restrictions imposed by NACs.
 
 \begin{example}[Interaction between causal relation and NACs]
-Let $a_1, a_2, a_3$ be three actions of the same strongly safe grammar. Suppose that $a_1$ creates elements used by $a_2$ and $a_2$ creates elements used by $a_3$, therefore by the causal relation we know that $a_1 \leq_c a_2 \leq_c a_3$. Now suppose that when $a_2$ is applied, it creates an element that would be forbidden by a NAC of $a_1$ and also that $a_3$ deletes this element. Following the classical notions of dependency and conflict with NACs, as shown in
-  definitions~\ref{def:classic-dependency} and~\ref{def:classic-conflict}, $a_2$ would cause a (potential) produce-forbid conflict on $a_1$, thus $a_1$ should be applied before $a_2$ $(a_1 <_{pf} a_2)$. Likewise, $a_1$ would be (potentially) dependent by delete-forbid on $a_3$, consequently $a_3$ should be applied before $a_1$ $(a_3 <_{df} a_1)$. By adding these produce-forbid and delete-forbid directly into the causal relation we would have the situation depicted in Figure~\ref{fig:process:order:occurrence-relation-fail}. It is easy to see that the resulting relation is not a partial order, therefore there can be no total ordering for this set of actions.
+Let $a_1, a_2, a_3$ be three actions of the same strongly safe grammar. 
+  Suppose that $a_1$ creates elements used by $a_2$ and $a_2$ creates elements used by $a_3$, therefore by the causal relation we know that $a_1 \leq_c a_2 \leq_c a_3$. 
+  Now suppose that when $a_2$ is applied, it creates an element that would be forbidden by a NAC of $a_1$ and also that $a_3$ deletes this element. 
+  Following the classical notions of dependency and conflict of graph grammars with NACs, as shown in  definitions~\ref{def:classic-dependency} and~\ref{def:classic-conflict}, $a_2$ would cause a (potential) produce-forbid conflict on $a_1$, thus $a_1$ should be applied before $a_2$ $(a_1 <_{pf} a_2)$. Likewise, $a_1$ would be (potentially) dependent by delete-forbid on $a_3$, consequently $a_3$ should be applied before $a_1$ $(a_3 <_{df} a_1)$. By adding these produce-forbid and delete-forbid directly into the causal relation we would have the situation depicted in Figure~\ref{fig:process:order:occurrence-relation-fail}. It is easy to see that the resulting relation is not a partial order, therefore there can be no total ordering for this set of actions.
 \begin{figure}[!ht]
   \centering
   \fbox{\includegraphics[scale=1]{images/process/order/occurrence-relation-fail}}
@@ -370,7 +385,7 @@ Notwithstanding, by analysing the causal relation we can affirm that this config
   does not exist either, because $a_1$ was executed before its triggering element even existed.
 \end{example}
 
-\begin{definition}[Conflict and Dependency Characterization]\label{def:conflict-dependency-characterization} Given a strongly safe graph grammar \doublyTypedGraphGrammarCore{}, every conflict (resp. dependency) induced by NACs between two distinct actions $a_i, a_j \in P$ is said to be \emph{potential}, as we initially do not know whether this particular situation will occur during an execution of the underlying grammar. Each potential conflict (resp. dependency) can be characterized according to how it relates to the overall grammar execution.
+\begin{definition}[Conflict and Dependency Characterization]\label{def:conflict-dependency-characterization} Given a strongly safe graph grammar \doublyTypedGraphGrammarCore{}, every conflict (resp. dependency) induced by NACs between two distinct actions $a_i, a_j \in P$ is said to be \emph{potential} (as we initially do not know whether this particular situation will occur during an execution of the underlying grammar). %Each potential conflict (resp. dependency) can be characterized according to how it relates to the overall grammar execution.
 
     Given a potential conflict (resp. dependency) situation in a strongly safe grammar, we say that it is:
     \begin{itemize}
@@ -380,7 +395,8 @@ Notwithstanding, by analysing the causal relation we can affirm that this config
     \end{itemize}
 \end{definition}
 
-\begin{definition}[Abstract Conflicts and Dependencies] Given a strongly safe graph grammar \doublyTypedGraphGrammarCore{}, an abstract conflict is a tuple of distinct actions $t = (a_i,a_j,a_k)$. In any total ordering of actions in $P$, $t$ restricts the application of $a_i$ such that $a_i \not\in [a_j \ldots a_k]$.
+\begin{definition}[Abstract Conflicts and Dependencies] Given a strongly safe graph grammar \doublyTypedGraphGrammarCore{}, an abstract conflict/dependency is a tuple of distinct actions $t = (a_i,a_j,a_k)$. In any total ordering $<_t$ of actions in $P$, $t$ restricts the application of $a_i$ such that either $a_i <_t a_j$ or $a_k <_t a_i$\tinytodo{eu não tenho certeza se isso captura bem o que eu preciso definir, que é ai pode ser aplicada antes de aj ou depois de ak, mas nunca entre a execução
+  delas}.
 
 \hfill
 \end{definition}
@@ -390,10 +406,10 @@ The definition of abstract conflicts and dependencies translates to ``the action
 We already know that at least the causal relation must be a partial order in order to be possible to apply all the actions of a grammar. Nevertheless, the following problem remains to be solved:
 
 \begin{intuition}
-  Given a strongly safe grammar \doublyTypedGraphGrammarCore{} with at least two actions $a_1, a_2 \in P$ in a potential delete-forbid or produce-forbid situation, under which circumstances this dependency or conflict exists and must be considered in the actions application ordering?
+  \emph{Given a strongly safe grammar \doublyTypedGraphGrammarCore{} with at least two actions $a_1, a_2 \in P$ in a potential delete-forbid or produce-forbid situation, under which circumstances this dependency or conflict exists and must be considered in the actions application ordering?}
 \end{intuition}
 
-In the following, we categorize this conflicts and dependencies according to their triggering elements and pertinence of these elements into the causal relation in order to address this problem.
+In the following, we categorize these conflicts and dependencies using their triggering elements and pertinence of these elements into the causal relation in order to address this problem.
 
 \begin{definition}[Delete-Forbid Relation in Strongly Safe Graph Grammars]\label{def:delete-forbid-strong} Let \doublyTypedGraphGrammarCore{} be a strongly-safe graph grammar, where $P$ is a set of actions with incremental, non-trivially triggered NACs only.
 
@@ -411,14 +427,14 @@ In the following, we categorize this conflicts and dependencies according to the
   \item \emph{non existent}: otherwise.
 \end{itemize}
 
-  If the above dependency is characterized as concrete, we have that \mbox{$a_1 <_{df} a_2$}. If it is abstract, we have $t_{df} = (a_2, a_3, a_1)$. If it is non existent, the dependency is simply discarded in further analysis, since the orderings of execution are not affected by it.
+  If the above dependency is characterized as concrete, we have that \mbox{$a_1 <_{df} a_2$}. If it is abstract, $t_{df} = (a_2, a_3, a_1)$ is is the set of abstract conflicts and dependencies of the grammar $GG$. If it is non existent, the dependency is simply discarded in further analysis, since the orderings of execution are not affected by it.
 
 \hide{Two elements $x, y \in N(C^T) \cup E(C^T)$ are in a delete-forbid dependency if there are actions $a_1,a_2$ such that (1) $a_1 <_{df} a_2$ and (2) $a_1$ creates $x$ and $a_2$ creates $y$. In this case use say that $x <_{df} y$.
 
   The delete-forbid between two elements has the same quality (concrete, abstract, non existent) as the one between the actions involved in this dependency.}
 \end{definition}
 
-According to our classification, we have that if a delete-forbid dependency is concrete, i.e. $a_i <_{df} a_j$, then we can only consider total orderings of $\leq_c$ where $a_i < a_j$. For the abstract case, i.e. $a_i \not\in [a_j \ldots a_k]$, we can only consider total orderings of $\leq_c$ where $a_i < a_j$ or $a_k < a_j$. If it is non existent there is no need to impose any new restrictions over the ordering of $\leq_c$. Thus, we need to demonstrate that:
+According to our classification, we have that if a delete-forbid dependency is concrete, i.e. $a_i <_{df} a_j$, then we can only consider total orderings of $\leq_c$ where $a_i < a_j$. For the abstract case, we can only consider total orderings of $\leq_c$ where $a_i < a_j$ or $a_k < a_j$. If it is non existent there is no need to impose any new restrictions over the ordering of $\leq_c$. Thus, we need to demonstrate that:
 
 \begin{thm} For each potential \emph{delete-forbid} in a strongly safe graph grammar, definition~\ref{def:delete-forbid-strong} correctly classifies these dependencies.
 \end{thm}
@@ -437,7 +453,7 @@ Let $x$ be an element which is not created by any action in $P$, meaning that $x
 \item [Triggering element is not related to the action:]
   Let $x$ be not related to $a_2$, but created by a third action $a_3 \in P$ (notice that in this configuration we have that $a_3 <_{c} a_1$).
 
-    If $a_3$ is not related to $a_2$, in which case we have that $a_1$ and $a_2$ \emph{would be} in a concrete delete-forbid dependency if $a_3$ was applied before $a_2$. On the other hand, the same dependency \emph{would be} non existent if $a_3$ was applied after $a_2$. This situation depicts an \emph{abstract} produce-forbid dependency as we have that either $a_1 <_{df} a_2$ or $a_2 < a_3$ are possible. Therefore $a_2 \not\in [a_3 \ldots a_1]$.
+    If $a_3$ is not related to $a_2$, in which case we have that $a_1$ and $a_2$ \emph{would be} in a concrete delete-forbid dependency if $a_3$ were applied before $a_2$. On the other hand, the same dependency \emph{would be} non existent if $a_3$ were applied after $a_2$. This situation depicts an \emph{abstract} produce-forbid dependency as we have that either $a_1 <_{df} a_2$ or $a_2 < a_3$ are possible. Therefore $(a_2,a_3,a_1)$ is an abstract dependency.
 
   Finally, if $a_3$ is related to $a_2$, then $a_2$ is related to $x$, as $a_3$ creates $x$, which corresponds to our second case.
 \end{description}
@@ -480,22 +496,22 @@ Let $x$ be an element which is not created by any action in $P$, meaning that $x
     Now let $x \leq_c a_2$, which means that $x$ existed before $a_2$ was applied, which leads to two possible sub cases:
 
     \begin{itemize}
-      \item Assume that there is no other action $a_3$ which deletes $x$. In this situation, we have both that the triggering element $x$ exists before the application of $a_2$ and that $x$ is never deleted. Therefore, the produce-forbid between $a_1$ and $a_2$ is \emph{concrete} and we have that the $a_2 <_{pf} a_1$.
+      \item Assume that there is no other action $a_3$ which deletes $x$. In this situation, we have both that the triggering element $x$ exists before the application of $a_2$ and that $x$ is never deleted. Therefore, the produce-forbid relation between $a_1$ and $a_2$ is \emph{concrete} and we have that the $a_2 <_{pf} a_1$.
       \item Assume that there exists a third action $a_3 \in P$ which deletes $x$. This means that, even though $a_1$ and $a_2$ are in a concrete produce-forbid conflict, this conflict can be ``annulated'' by the application of $a_3$, which must then happen before $a_2$. Therefore, this conflict is non-existent if $a_3 <_c a_2$, otherwise it is concrete and we have that $a_2 <_{pf} a_1$.
     \end{itemize}
 
   \item[Triggering element is not related to the action:]
     Let $a_2$ be not related to $x$ in the causal relation.
 
-    Suppose that there is no other action $a_3$ which deletes $x$, then we know for a fact that once $a_1$ has been applied and $x$ has been created it will no longer be possible to apply $a_2$. Therefore, this produce-forbid is \emph{concrete} and we have that $a_2 <_{pf} a_1$.
+    Suppose that there is no other action $a_3$ which deletes $x$, then we know for a fact that once $a_1$ has been applied and $x$ has been created it will no longer be possible to apply $a_2$. Therefore, this produce-forbid relation is \emph{concrete} and we have that $a_2 <_{pf} a_1$.
 
-    On the other hand, suppose that there is an action $a_3$ which deletes $x$ and $a_3$ not related to $a_2$ by the causal relation, such that $a_1 <_c a_3$. In this configuration, we have an \emph{abstract} conflict, in the sense that $a_2$ can not be applied after $a_1$ has been applied, unless $a_3$ is also applied before $a_2$, disabling the produce-forbid conflict. This situation depicts an abstract delete-forbid conflict as we have that either \mbox{$a_2 <_{pf} a_1$} or \mbox{$a_3 < a_2$}
-    are possible. Therefore \mbox{$a_2 \not\in [a_1\ldots a_3]$}.
+    On the other hand, suppose that there is an action $a_3$ which deletes $x$ (and thus $a_1 <_c a_3$) and $a_3$ not related to $a_2$ by the causal relation. In this configuration, we have an \emph{abstract} conflict, because $a_2$ can not be applied after $a_1$ has been applied, unless $a_3$ is also applied before $a_2$, disabling the produce-forbid conflict.
+    This situation depicts an abstract delete-forbid conflict as we have that either \mbox{$a_2 <_{pf} a_1$} or \mbox{$a_3 < a_2$} are possible. Therefore \mbox{($a_2,a_1,a_3)$} is an abstract conflict.
 \end{description}
 \end{proof}
 
-\begin{example}[Conditional Relations] Consider the strongly safe grammar show in Figure~\ref{fig:process:order} (the core, typed and initial graphs were omitted). 
-  
+\begin{example}[Conditional Relations] Consider the strongly safe grammar show in Figure~\ref{fig:process:order} (the core, typed and initial graphs were omitted).
+
 \begin{figure}[!ht]
   \centering
   \begin{subfigure}[t]{.2\textwidth}
@@ -536,9 +552,9 @@ Let $x$ be an element which is not created by any action in $P$, meaning that $x
   \caption{Cycle due to conditional conflicts and dependencies}\label{fig:process:order:cycle}
 \end{figure}
 
-  Regarding the element $\Circle_1$, we have an abstract produce-forbid conflict as $a_3$ can be applied before $a_1$ creates it or after $a_2$ deletes it. Thus it is possible to apply $a_3$ as long as $a_3 \not\in [a_1\ldots a_2]$. As for the element $\Circle_2$, we have an abstract produce-forbid conflict as $a_3$ can be applied before $a_2$ creates it or after $a_4$ deletes it. In this case, $a_3$ can be applied as long as $a_3 \not\in [a_2\ldots a_4]$.
+  Regarding the element $\Circle_1$, we have an abstract produce-forbid conflict as $a_3$ can be applied before $a_1$ creates it or after $a_2$ deletes it. Thus it is possible to apply $a_3$ as long as it is not applied between $a_1$ and $a_2$. As for the element $\Circle_2$, we have an abstract produce-forbid conflict as $a_3$ can be applied before $a_2$ creates it or after $a_4$ deletes it.
 
-  In fact, we have that this particular grammar can be executed in any total ordering of its causal relation $a_1 \leq_c a_2, a_2 \leq_c a_4, a_1 \leq_c a_4, a_3 \leq_c a_3$ that also respects the \emph{restrictions} $a_3 \not\in [a_1\ldots a_2]$ and $a_3 \not\in [a_2\ldots a_4]$. There exist two such sequentializations, namely: $[a_3, a_1, a_2, a_4]$ and $[a_1,a_2,a_4,a_3]$.
+  In fact, we have that the actions of this particular grammar can be executed in any total ordering of its causal relation $a_1 \leq_c a_2, a_2 \leq_c a_4, a_1 \leq_c a_4, a_3 \leq_c a_3$ that also respects the \emph{restrictions} given by the abstract dependency/conflict tuples $(a_3,a_1,a_2)$ and $(a_3,a_2,a_4)$. There exist two such sequentializations, namely: $[a_3, a_1, a_2, a_4]$ and $[a_1,a_2,a_4,a_3]$.
 \end{example}
 
 \begin{remark}[Abstract Dependencies and Conflicts] The existence of an abstract produce-forbid conflict, triggered by an element $x$ is always conditioned to the existence of an action which deletes $x$. Given an action $a_1$ which creates $x$, an action $a_2$ whose NAC forbids $x$ and provided a configuration where $a_1$ was applied before $a_2$, we have that $a_2$ can be applied only after an action $a_3$ which deletes $x$ has been applied.
@@ -547,18 +563,18 @@ Let $x$ be an element which is not created by any action in $P$, meaning that $x
 \fi
   In general, for each abstract produce-forbid conflict $a_2 <_{pf} a_1$ caused by an element $x$, we have that $a_2$ must be successfully applied before $a_1$ or after an action $a_{j}$ where $a_i$ deletes $x$ and $a_i \leq a_j$.
 
-  Analogously, for each abstract delete-forbid conflict $a_1 <_{df} a_2$ caused by an element $x$, we have that $a_2$ must be successfully applied after $a_1$ or before an action $a_j$ where $a_i$ creates $x$ and $a_j \leq a_i$.
+  Analogously, for each abstract delete-forbid dependency $a_1 <_{df} a_2$ caused by an element $x$, we have that $a_2$ must be successfully applied after $a_1$ or before an action $a_j$ where $a_i$ creates $x$ and $a_j \leq a_i$.
 \end{remark}
 
 Having the conflicts and dependencies classified as described above, we can now use these characterizations to extend the original causal relation in order to work with strongly safe graph grammars with (incremental) NACs. The main idea is that non-existent conflicts and dependencies can be discarded, while the concrete ones must be considered together with the causal relation and the abstract ones impose extra restrictions over the causal and (concrete) produce-forbid and delete-forbid relations.
 
-\begin{definition}[Occurence Relation] Given a strongly safe grammar \doublyTypedGraphGrammarCore{}, let $[\leq_{df}]$ be the set of all its \emph{concrete} delete-forbids and $[\leq_{pf}]$ be the set of all its \emph{concrete} produce-forbids. Then, its occurrence relation $\leq_o$ of $(P \cup N(C^T) \cup E(C^T))$ is defined as the transitive and reflexive closure of \mbox{$\leq_{c}$ $\cup$ $[\leq_{df}]$ $\cup$ $[\leq_{pf}]$}.
+\begin{definition}[Occurence Relation] Given a strongly safe grammar \doublyTypedGraphGrammarCore{}, let $\leq_{df}$ be the set of all its \emph{concrete} delete-forbids pairs and $\leq_{pf}$ be the set of all its \emph{concrete} produce-forbids pairs. Then, its occurrence relation $\leq_o$ of $(P \cup N(C^T) \cup E(C^T))$ is defined as the transitive and reflexive closure of \mbox{$\leq_{c}$ $\cup$ $\leq_{df}$ $\cup$ $\leq_{pf}$}.
 \end{definition}
 
-\begin{definition}[Occurence Relation Restrictions] Given a strongly safe grammar \doublyTypedGraphGrammarCore{}, its \emph{occurrence relation restrictions} are the set $R$ containing all its abstract produce-forbid conflicts and delete-forbid dependencies.
+\begin{definition}[Occurence Relation Restrictions] Given a strongly safe grammar \doublyTypedGraphGrammarCore{}, its \emph{occurrence relation restrictions} are the sets containing all its abstract produce-forbid conflicts and delete-forbid dependencies.
 \end{definition}
 
-\begin{definition}[Occurrence Graph Grammars]\label{def:ogg} Let \doublyTypedGraphGrammarCore{} be a strongly safe graph grammar. $GG$ is an \emph{occurrence graph grammar} iff:
+\begin{definition}[Occurrence Graph Grammars]\label{def:ogg} Let \doublyTypedGraphGrammarCore{} be a strongly safe graph grammar. $GG$ is an \emph{occurrence graph grammar} with NACs iff:
 
   \begin{enumerate}
     \item its occurrence relation $\leq_{o}$ is a partial order such that, for any \mbox{$n \in N(\coreGraph)$}, \mbox{$e \in E(\coreGraph)$} such that $n = s(e)$ or $n = t(e)$, and for any $p \in P$, we have that:
@@ -567,7 +583,7 @@ Having the conflicts and dependencies classified as described above, we can now 
         \item if $n \leq_o p$, then $e \leq_o p$;
       \end{itemize}
     \item Let $Min = \{x \in N(\coreGraph) \cup E(\coreGraph)$ $|$ $\not\exists y \in N(\coreGraph) \cup E(\coreGraph)\bullet y \leq_o x \}$, and $G(Min) = \left(N,E,s,t\right)$ such that $N = Min \cap N(\coreGraph)$, $E = Min \cap E(\coreGraph)$, $s = s_{|E}$, and $t = t_{|E}$; then $\initialGraph = G(Min)$;
-    \item $\forall p \in P$, $p$ satisfies the \emph{identification condition};
+    \item $\forall p \in P$, $p$ satisfies the\tinytodo{não apareceu o conteúdo do comentário sobre o que tinha que fazer aqui} \emph{identification condition};
     \item $\forall x \in N(\coreGraph) \cup E(\coreGraph)$, $x$ is consumed by at most one production in $P$, and it is created by at most one production in $P$.
     \item there is at least one total ordering of the actions $a_1,\ldots,a_n \in P$ that respects the occurrence relation restrictions.
   \end{enumerate}
