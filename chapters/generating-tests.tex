@@ -1,4 +1,4 @@
-\chapter{Construction of Occurrence Graph Grammars}\label{ch:tests}
+\chapter{Construction of Occurrence Graph Grammars with NACs}\label{ch:tests}
 
 %A test case is a collection of (1) input values necessary to complete some execution of the system under testing, (2) the results that must be produced after executing the test (assuming the system satisfies the intended behaviour) and (3) any inputs necessary to setup the system into the appropriate state to receive the test values~\cite{Ammann2008}.
 %Test oracles are specifications describing properties about the validity of tests cases, i.e. if the test must fail or pass. These properties may include relationships between the input given and the expected output, data validity properties, format of possible execution paths, etc. No matter the oracle format, it must be able to determine the validity of tests in a finite and reasonable amount of time~\cite{Weyuker1982}.
@@ -295,19 +295,115 @@ Finally, we have the strongly safe grammar $OGG$ together with its corresponding
 %\end{figure}
 %\fi
 
+  In our previous example, no situation with abstract conflicts or dependencies was found.
+  This grammar and the particular execution chosen have a causal relation which forces a sequencing of actions that avoids the existence of abstract conflicts/dependencies.
+  In our case studies, this situation has show to be very common in graph grammars extracted from use cases, where there are clear steps that must be followed in a specific order to accomplish the completion of a functionality.
+  Nonetheless, in graph grammars that model systems with higher parallelism or concurrency, situations with abstract conflicts/dependencies have shown to arise more often. We now introduce another graph grammar example to illustrate the construction of an occurrence graph grammar with NACs which has a non-empty set of restrictions.
+
+\begin{example} Figure~\ref{fig:tests:grammar-traffic} depicts a graph grammar that models a common traffic situation, where a pedestrian cross a street. This grammar has only three rules, which are summarized as:
+
+\begin{enumerate}[label=(\alph*),start=2]
+  \item \emph{walk:} a pedestrian is on a sidewalk and crosses the street to be on another sidewalk, however he/she can not do so if there is a closed traffic light.
+  \item \emph{open:} turns a closed traffic light into an open one.
+  \item \emph{close:} turns an open traffic light into a closed one.
+\end{enumerate}
+\end{example}
+
+\begin{figure}[!ht]
+  \centering
+  \begin{subfigure}[t]{.5\textwidth}
+    \centerline{\fbox{\includegraphics[scale=0.5]{grammar/traffic/type-graph}}}
+    \caption{Type Graph of the Grammar}\label{fig:tests:traffic-type-graph}
+  \end{subfigure}
+  \begin{subfigure}[t]{.5\textwidth}
+    \centerline{\fbox{\includegraphics[scale=0.5]{grammar/traffic/walk}}}
+    \caption{Rule \emph{walk}}
+  \end{subfigure}
+  \begin{subfigure}[t]{.5\textwidth}
+    \centerline{\fbox{\includegraphics[scale=0.5]{grammar/traffic/open}}}
+    \caption{Rule \emph{open}}
+  \end{subfigure}%
+  \begin{subfigure}[t]{.5\textwidth}
+    \centerline{\fbox{\includegraphics[scale=0.5]{grammar/traffic/close}}}
+    \caption{Rule \emph{close}}
+  \end{subfigure}
+  \caption{Graph Grammar of the Traffic System}\label{fig:tests:grammar-traffic}
+\end{figure}
+
+As before, to begin the construction of the occurrence graph grammar with NACs for our graph grammar, we will need a collection of rules and an input-output relation. The collection chosen consists of one copy of each rule in the original grammar. The $IO$ relation is also very simple and it only identifies the traffic lights and the edges that represent they are closed in rules \emph{close} and \emph{open}. The relation is depicted on Figure~\ref{fig:tests:inout-traffic}.
+
+\begin{figure}[!ht]
+\centering
+\fbox{\includegraphics[scale=0.5]{grammar/traffic/io}}
+\caption{Input output relation for the traffic graph grammar}\label{fig:tests:inout-traffic}
+\end{figure}
+
+The first step, the amalgamation of rules, results in the core graph depicted in Figure~\ref{fig:tests:amalgamation-traffic}. Notice that, differently from the type graph in Figure~\ref{fig:tests:traffic-type-graph}, it has concrete elements, a generic pedestrian is now \emph{Jane}, there are two specific sidewalks which are connected by the \emph{Avenue B}, etc.
+
+\begin{figure}[!ht]
+  \centering
+  \fbox{\includegraphics[scale=0.5]{grammar/traffic/amalgamation}}
+  \caption{Amalgamation (colimit) of rules for the traffic grammar example.}\label{fig:tests:amalgamation-traffic}
+\end{figure}
+
+The retyping of rules provides the actions depicted in Figure~\ref{fig:tests:actions-traffic}. Once again, NACs are not shown due to limitations with AGG format compatibility for double-typed graph grammars.
+
+The causal relation for this execution of the grammar consists of the set represented only by the pair \emph{close} $<$ \emph{open}. Therefore, in this context, the traffic light must be closed before it opens and, so far, the action \emph{walk} does not relate to any of the others. This relation is a partial order, given that there are multiple options of total orderings which respect this relation: $[walk < close < open]$, $[close < walk < open]$ and $[close < open < walk]$.
+
+\begin{figure}[!ht]
+  \centering
+  \begin{subfigure}[t]{.5\textwidth}
+    \centerline{\fbox{\includegraphics[scale=0.5]{grammar/traffic/amalgamation/walk}}}
+    \caption{Action \emph{walk}}
+  \end{subfigure}
+  \begin{subfigure}[t]{.5\textwidth}
+    \centerline{\fbox{\includegraphics[scale=0.5]{grammar/server/amalgamation/getData}}}
+    \caption{Action \emph{open}}
+  \end{subfigure}
+  \begin{subfigure}[t]{.5\textwidth}
+    \centerline{\fbox{\includegraphics[scale=0.5]{grammar/server/amalgamation/receiveMsg}}}
+    \caption{Action \emph{close}}
+  \end{subfigure}
+  \caption{The set of actions generated for the traffic graph grammar.}\label{fig:tests:actions-traffic}
+\end{figure}
+
+The \emph{Initial} and \emph{Final} graphs obtained by deletion of elements created (resp. deleted) by the actions in the core graph are shown in Figure~\ref{fig:tests:graphs-traffic}.
+
+\begin{figure}[!ht]
+  \centering
+  \begin{subfigure}[t]{.5\textwidth}
+    \centerline{\fbox{\includegraphics[scale=0.5]{grammar/traffic/init}}}
+    \caption{Initial graph}
+  \end{subfigure}%
+  \begin{subfigure}[t]{.5\textwidth}
+    \centerline{\fbox{\includegraphics[scale=0.5]{grammar/traffic/final}}}
+    \caption{Final graph}
+  \end{subfigure}
+  \caption{Instance graphs for the traffic grammar}\label{fig:tests:graphs-traffic}
+\end{figure}
+
+  The categorization of conflicts and dependencies is where the behaviour of this graph grammar defers from our previous example.
+  There is one potential produce-forbid conflict between actions \emph{close} and \emph{walk} and one potential delete-forbid dependency between actions \emph{open} and \emph{walk}.
+  Both the conflict and the dependency act over the same triggering element, the \emph{closed} edge in the NAC of action \emph{walk}.
+  This element is not present in the \emph{Initial} graph, as it is created by the action \emph{close}.
+  Also, the element is not (causally) related to the action \emph{walk}, given that the actions which create and delete it are themselves not related to that action.
+  It is easy to see that the action \emph{walk} can either occur before action \emph{close} or after action \emph{open}, but never in between them, because \emph{Jane} must not cross \emph{Avenue B} while the traffic light is closed.
+  Therefore, we have an abstract produce-forbid conflict as well as an abstract delete-forbid dependency which, in this case, are both denoted by the tuple $(walk,close, open)$. Moreover, as there are no concrete conflicts and dependencies induced by NACs the occurrence relation remains equal to the causal relation.
+
+Finally, we have to find at least one total ordering of the actions respecting both the occurrence relation $\leq_o$ = $[close <_o open]$ and the set of occurrence relation restrictions $R = (walk,close,open)$. In fact, there are two such orderings: $[walk < close < open]$ and $[close < open < walk]$. Therefore, the strongly safe graph grammar constructed from this graph grammar execution is also an occurrence graph grammar with NACs.
+
 \section{Generating Tests}
 
 %Once the previous verifications were executed, we can build the occurrence relation to verify whether $OGG_i$ can be really an occurrence graph grammar. If no abstract dependencies or conflicts are found, then the concrete relations are sufficient to perform this verification, and it suffices to check if there is a total ordering compatible with the occurrence relation. If the set $R$ of \emph{occurrence relation restrictions} is not empty, we also need to check if there is a total ordering of the occurrence relation that respects these restrictions.
 
 %As to check wether a partial order satisfies the generated set of restrictions seems to be a hard problem, in the complexity sense, we left this last implementation as a future work.
 
-Occurrence Graph Grammars may be used to generate a set of tests for a Graph Grammar. In our case studies, no situation with abstract conflicts or dependencies was found. We believe that it happens because we used grammars extracted from real use cases, where usually there are (possibly many) sequential connections between the actions, which forces the rules to be connected via the \emph{occurrence relation} and avoids abstract restrictions. 
-
-The process of constructing an occurrence graph grammar may provide insights for tests even when it fails. In the case where OGGs are found, we have test cases for successful executions of the system and conditions over how the system should execute. In the case where OGGs are not found, we have test cases for executions where the system must always fail.
+  Occurrence Graph Grammars may be used to generate a set of tests for a Graph Grammar. The process of constructing an occurrence graph grammar may provide insights for tests even when it fails. In the case where OGGs are found, we have test cases for successful executions of the system under modelling and conditions over how the system should execute. In the case where OGGs are not found, we have test cases for executions where the system must always fail.
 
 We use the occurrence relation and the set of abstract restrictions as test oracles, to define the acceptance of the tests: any path that complies to the format imposed by them is considered valid and must always succeed. On the other hand, paths that break at least one of such restrictions are considered invalid, and their tests must always capture them as failures.
 
-The tests are represented by the concrete orderings of the rules execution, orderings of elements creation/deletion, and by the initial and final graphs. The ordering of rules is one of (possibly) many valid orders in which the rules can be applied according to the occurrence relation. The ordering of elements represent an ordering in which the state of the system may be constructed. While the initial and final graphs translate the valid formats for the input and output of each test. More specific usability details can be found on the Verigraph tutorial, which can be found at \url{https://github.com/Verites/verigraph-tutorial/releases}.
+  The tests are represented by the concrete orderings of the rules execution, orderings of elements creation/deletion, and by the initial and final graphs.
+  An ordering of rules is one of (possibly) many valid orders in which the rules can be applied according to the occurrence relation. An ordering of elements represents an ordering in which the state of the system may be constructed. While the initial and final graphs translate the valid/necessary data for the input and output of each test. More specific usability details can be found on the Verigraph tutorial, which can be found at \url{https://github.com/Verites/verigraph-tutorial/releases}.
 
 
 The output of Verigraph for an OGG creation and its test case generation is shown on Figure~\ref{fig:tests:checklist}. On the first figure, Verigraph performs the basic verifications to check whether the generated output is, in fact, an occurrence grammar.
@@ -321,14 +417,71 @@ Testing Serialization:
 [OK] Final graph is valid
 [OK] Concrete occurrence relation is a total order
 [OK] Concrete elements relation is a total order
-[OK] There are no abstract restrictions
-Analysis written in tmp/output_analysis
-Test cases written in tmp/output_test_cases
-Doubly-typed grammar saved in tmp/output.ggx
+[WARN] There are abstract restrictions
+Analysis written in ogg_execution_analysis
+Test cases written in ogg_execution_test_cases
+Doubly-typed grammar saved in ogg_execution.ggx
 \end{minted}
   \label{fig:tests:checklist}
 \end{figure}
 
-The analysis file contains the results for calculation of conflicts and dependencies among rules and among elements. The test cases file contains the information relevant to test designer.
-The \code{.ggx} presents the occurrence graph grammar constructed\footnote{ AGG supports its visualization only as a simply-typed graph grammar.}, together with its initial and final graphs.
+The analysis file contains a summary of the results for calculation of conflicts and dependencies among rules and among elements. For example: which conflicts and dependencies were found; for the conflicts and dependencies induced by NACs which are the triggering elements of each NAC; the causal relation between elements and actions that created/deleted them, etc. Figure~\ref{fig:tests:analysis} depicts the content of the analysis file for our traffic example.
+
+\begin{figure}[!ht]
+\caption{Analysis file content}
+\begin{minted}[linenos=true, breaklines,fontsize=\small]{shell}
+Conflicts and Dependencies:
+[
+  Interaction {firstRule = "close", secondRule = "walk", interactionType = ProduceForbid, nacInvolved = Just 0},
+  Interaction {firstRule = "close", secondRule = "open", interactionType = ProduceUse, nacInvolved = Nothing},
+  Interaction {firstRule = "open", secondRule = "walk", interactionType = DeleteForbid, nacInvolved = Just 0}
+]
+
+Creation and Deletion Relation:
+[
+  (Edge 1,Rule "open"),(Edge 4,Rule "walk"),(Rule "close",Edge 1),(Rule "walk",Edge 7)
+]
+
+Conflicts and dependencies induced by NACs:
+[
+  (Interaction {firstRule = "close", secondRule = "walk", interactionType = ProduceForbid, nacInvolved = Just 0},Edge 1),
+  (Interaction {firstRule = "open", secondRule = "walk", interactionType = DeleteForbid, nacInvolved = Just 0},Edge 1)
+]
+\end{minted}
+  \label{fig:tests:analysis}
+\end{figure}
+
+
+The test cases file contains information we consider relevant to a test designer, such as the rules and elements involved in that particular execution of the graph grammar represented by the occurrence graph grammar, as well as the occurrence relation, a total ordering of rules application (if found) and the set of restrictions (if found). Figure~\ref{fig:tests:cases} presents the content of the test cases files for our traffic example.
+
+
+\begin{figure}[!ht]
+\caption{Test cases file content}
+\begin{minted}[linenos=true, breaklines,fontsize=\small]{shell}
+Rules involved:
+[Rule "close",Rule "open",Rule "walk"]
+
+Concrete Rules Relation:
+[(Rule "close" < Rule "open")]
+
+Elements involved:
+[Node 1,Node 7,Node 8,Node 9,Edge 1,Edge 3,Edge 4,Edge 7]
+
+Elements Relation:
+[(Edge 4 < Edge 7)]
+
+Rules Ordering: Just [Rule "close",Rule "open",Rule "walk"]
+
+Elements Ordering: Just [Node 1,Node 7,Node 8,Node 9,Edge 1,Edge 3,Edge 4,Edge 7]
+
+Set of Abstract Restrictions:
+[
+  (AbstractProduceForbid: Rule "walk" must not occur between [Rule "close" < Rule "open"]),
+  (AbstractDeleteForbid: Rule "walk" must not occur between [Rule "close" < Rule "open"])
+]
+\end{minted}
+  \label{fig:tests:cases}
+\end{figure}
+
+Finally, the \code{.ggx} file presents a translation of the constructed occurrence graph grammar from Verigraph format to AGG format in order to support the OGG graphical visualization. It contains its actions (without NACs), initial and final graphs and core graph (which assumes the role of the type-graph in AGG) as shown in the previous section.
 
