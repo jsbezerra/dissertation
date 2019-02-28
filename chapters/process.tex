@@ -589,37 +589,62 @@ Having the conflicts and dependencies classified as described above, we can now 
   \end{enumerate}
 \end{definition}
 
-As was said in the beginning of this chapter, the idea is that an occurrence graph grammar is a suitable way to describe the semantics of a graph grammar, in the sense that it represents both all possible states and changes of states that is also a graph grammar.
+As was said in the beginning of this chapter, the idea is that an occurrence graph grammar is a suitable way to describe the semantics of a graph grammar, in the sense that it represents both all possible states and changes of states while also being a graph grammar itself.
 
-The first four conditions correspond to those of the Definition 19 of~\cite{Corradini1996} which assure that it is possible to find a sequence of actions that respects the order of creation and deletion of elements given by the causal relation, while extending it to also respect the order imposed by concrete produce-forbids and delete-forbids of the grammar. In other words, it assures that there is no cycle of conflicts and dependencies that can prevent the application of the grammar.
+Our notion of Occurrence Graph Grammar is a restriction over that of~\cite{Corradini1996}. The first four conditions of our definition correspond to those of the Definition 19 in their work, which assure that it is possible to find a sequence of actions that respects the order of creation and deletion of elements given by the causal relation, while extending it to also respect the order imposed by concrete produce-forbids and delete-forbids of the grammar. In other words, it assures that there is no cycle of conflicts and dependencies that can prevent the application of the grammar.
 
 The fifth condition deals with the conflicts and dependencies induced by NACs that do not participate in the concrete relations, thus generating \emph{intervals} of actions inside of which specific actions can not be applied. If it is possible to find a total ordering of actions regarding the occurrence relation which also obeys the set of restrictions, then it is possible to execute the underlying single typed grammar.
 
-\important{Conseguiste terminar isto? Para provar estes teoremas seria necessário dizer que a tua noção de OGG representa uma restrição em relação à def. de Corradini et all, e remeter para lá a questão de como transformar uma OGG em derivação e vice versa. Se as regras não envolverem NACs os teoremas do artigo do Corradini já garantem os teus. Para o 3.33 tens que argumentar que , para qualquer ordem total que satisfaça a OGG com NACs, cada acão  de P que envolve uma NAC pode ser executada
-depois das ações que vem antes dela na ordem, e isto seria garantido pelas restricoes que tu impuseste ao gerar a OGG. Para o 3.35, tens que provar que a OGG construida da mesma forma como no artigo do Corradini, mas adicionando os pares referentes aos conflitos e dependencias concretos e as triplas referentes aos abstratos gera uma OGG com NACs. Ou seja, na hora de gerar a OGG com NACs, quando houver uma regra com NAC deve ser feita a analise do impacto desta regras na derivacao de acordo com
-as tuas defs 3.25 e 3.27. Neste caso, precisa-se argumentar que a relacao de ocorrencia resultante é uma ordem parcial (como veio de uma ordem total, eh obvio) e que respeita as restricoes de ocorrencia (novamente, como veio de uma derivacao concreta que existe, isso deve ser obvio.}
+\begin{definition}[Derivation of an Occurrence Graph Grammar with NACs] Given an \occurrenceGrammar{} and a total order $s = a_1,a_2,\ldots,a_n$ of all actions in $A$ which respects the occurrence relation $\leq_o$ and the occurrence relation restrictions of $OGG$, the derivation of $OGG$ regarding $s$ is given by the diagram below, where each individual transformation $t_i : H_{i-1} \xRightarrow{a_i, pre_{a_i}} H_i$ is concrete over the elements of the core graph, as in Definition~\ref{def:strongly-safe-grammar}.
 
-\begin{thm} Given a graph grammar \graphGrammar{} and an Occurrence Graph Grammar \occurrenceGrammar{}. If we have that:
+
+\diagram{
+  L_1\ar[d]_{pre_{a_1}} & K_1\ar[d]\ar[l]\ar[r] & R_1\ar[dr]|{post_{a_1}} & & \ldots\ar[dl]|{pre_{a_2}}\ar[dr]|{post_{a_{n-1}}} & & L_n\ar[dl]|{pre_{a_n}} & K_n\ar[d]\ar[l]\ar[r] & R_n\ar[d]^{post_{a_n}} \\
+  I^{C^T} & D_1\ar[l]\ar[rr] & & H_1  &  \ldots\ar[l]\ar[r]    & H_{n-1} &    & D_{n}\ar[ll]\ar[r]   & F^{C^T}
+}\hfill\\
+
+A derivation for an $OGG$ starts at the initial graph $I^{C^T}$ and terminates at the final graph $F^{C^T}$ of $OGG$, and every intermediary graph is a subgraph of the core graph, i.e. $D_i\xhookrightarrow{} C^T$, $H_i\xhookrightarrow{} C^T$.
+
+\end{definition}
+\newadd{Para provar estes teoremas seria necessário dizer que a tua noção de OGG representa uma restrição em relação à def. de Corradini et all, e remeter para lá a questão de como transformar uma OGG em derivação e vice versa. Se as regras não envolverem NACs os teoremas do artigo do Corradini já garantem os teus.  }
+
+\begin{thm} Given a graph grammar $GG = (T,I^T,P)$ and an Occurrence Graph Grammar with NACs \occurrenceGrammar{}. If we have that:
 \begin{itemize}
   \item $\forall a \in A \Rightarrow a \in P$
-  \item $I^{C^T} \equiv I$
+  \item $I^{C^T} \subset I^T$
 \end{itemize}
 
 Then any derivation represented by $OGG$ is a derivation of $GG$.
 
 \end{thm}
 
-\begin{proof}
+\begin{proof}\newadd{Para o 3.34 tens que argumentar que , para qualquer ordem total que satisfaça a OGG com NACs, cada acão  de P que envolve uma NAC pode ser executada depois das ações que vem antes dela na ordem, e isto seria garantido pelas restricoes que tu impuseste ao gerar a OGG.}
+  For any total ordering of $A$ which satisfies the the occurrence relation and occurence relation restriction of 
 \end{proof}
 
-\begin{definition}[OGG Derivation Format]
-\end{definition}
 
-\begin{thm} Given a Graph Grammar \graphGrammar{}, any derivation of $GG$ generates an $OGG$. 
+\begin{thm} Given a Graph Grammar with NACs ${GG = (T,I^T,P)}$, any derivation of $GG$ generates an Occurrence Graph Grammar with NACs \occurrenceGrammar{}. 
 \end{thm}
 
 \begin{proof}
+
+Let $d = I^T \xRightarrow{p_1, m_1} H_1 \xRightarrow{p_2, m_2} H_2 \ldots H_{n-1} \xRightarrow{p_n, m_n} H_n$ be a valid derivation of $GG$.
+We have that $d$ provides a total order of rules $p_i \in P$ in which it is possible to apply a particular number of rules. 
+Therefore, if we calculate the colimit of the diagram defined by derivation $d$ the result is a graph $C^T$ containing all the elements ever used in that derivation.
+This colimit also identifies the common elements among the rules and initial (and final) graph. Thus, the colimit object $C^T$ is also a core graph.
+
+Given the rules $p_1, p_2,\ldots,p_n$ used in the derivation, if we consider their morphisms to $C^T$ as typing morphisms, we arive at a set of double-typed graph rules $A = (a_1,a_2,\ldots,a_n)$ over $C^T$.
+Similarly, if we consider the morphism from the initial graph $I^T$ to the colimit as a typing morphism, we arive at a double-typed graph $I^{C^T}$.
+Thus, the grammar defined by $OGG = (C^T,I^{C^T},A)$ is in fact a strongly safe graph grammar, therefore a candidate to be an occurrence graph grammar with NACs.
+
+We now have to prove that (1) the occurrence relation $\leq_o$ underlying $OGG$ is a partial order and that (2) there is at least one total ordering of $\leq_o$ which also respects the occurrence relation restrictions generated by the analysis of conflicts and dependencies induced by NACs in $OGG$.
+
+If we use the the same order of actions in $A$ given by the application of their correspondent graph rules from $P$ in the derivation $d$, we have a total order $<_o$ which allows the application of all actions in $A$, thus $\leq_o$ must be a partial order.
+
+  As for the occurrence relation restrictions, we have at least one total order which satisfies them, also given the same order of rules application in $d$.
+  If this order did not satisfy these restrictions, then there would be at least one triggered NAC disabling a transformation in $d$, therefore $d$ would not be a valid derivation.
+
 \end{proof}
 
-\begin{definition} Given a Graph Grammar \graphGrammar{} the semantics of $GG$ can be described as the set of $OGGs$ corresponding to its derivations.
+\begin{definition}[Semantics of a Graph Grammar] Given a Graph Grammar \graphGrammar{} the semantics of $GG$ can be described as the set of $OGGs$ corresponding to its derivations.
 \end{definition}
