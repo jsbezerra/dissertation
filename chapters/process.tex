@@ -395,8 +395,7 @@ Notwithstanding, by analysing the causal relation we can affirm that this config
     \end{itemize}
 \end{definition}
 
-\begin{definition}[Abstract Conflicts and Dependencies] Given a strongly safe graph grammar \doublyTypedGraphGrammarCore{}, an abstract conflict/dependency is a tuple of distinct actions $t = (a_i,a_j,a_k)$. In any total ordering $<_t$ of actions in $P$, $t$ restricts the application of $a_i$ such that either $a_i <_t a_j$ or $a_k <_t a_i$\tinytodo{eu não tenho certeza se isso captura bem o que eu preciso definir, que é ai pode ser aplicada antes de aj ou depois de ak, mas nunca entre a execução
-  delas}.
+\begin{definition}[Abstract Conflicts and Dependencies] Given a strongly safe graph grammar \doublyTypedGraphGrammarCore{}, an abstract conflict/dependency is a tuple of distinct actions $t = (a_i,a_j,a_k)$. In any total ordering $<_t$ of actions in $P$, $t$ restricts the application of $a_i$ such that either $a_i <_t a_j$ or $a_k <_t a_i$.
 
 \hfill
 \end{definition}
@@ -583,7 +582,7 @@ Having the conflicts and dependencies classified as described above, we can now 
         \item if $n \leq_o p$, then $e \leq_o p$;
       \end{itemize}
     \item Let $Min = \{x \in N(\coreGraph) \cup E(\coreGraph)$ $|$ $\not\exists y \in N(\coreGraph) \cup E(\coreGraph)\bullet y \leq_o x \}$, and $G(Min) = \left(N,E,s,t\right)$ such that $N = Min \cap N(\coreGraph)$, $E = Min \cap E(\coreGraph)$, $s = s_{|E}$, and $t = t_{|E}$; then $\initialGraph = G(Min)$;
-    \item $\forall p \in P$, $p$ satisfies the\tinytodo{não apareceu o conteúdo do comentário sobre o que tinha que fazer aqui} \emph{identification condition};
+    \item $\forall p \in P$, $p$ satisfies the \emph{identification condition};
     \item $\forall x \in N(\coreGraph) \cup E(\coreGraph)$, $x$ is consumed by at most one production in $P$, and it is created by at most one production in $P$.
     \item there is at least one total ordering of the actions $a_1,\ldots,a_n \in P$ that respects the occurrence relation restrictions.
   \end{enumerate}
@@ -606,20 +605,50 @@ The fifth condition deals with the conflicts and dependencies induced by NACs th
 A derivation for an $OGG$ starts at the initial graph $I^{C^T}$ and terminates at the final graph $F^{C^T}$ of $OGG$, and every intermediary graph is a subgraph of the core graph, i.e. $D_i\xhookrightarrow{} C^T$, $H_i\xhookrightarrow{} C^T$.
 
 \end{definition}
-\newadd{Para provar estes teoremas seria necessário dizer que a tua noção de OGG representa uma restrição em relação à def. de Corradini et all, e remeter para lá a questão de como transformar uma OGG em derivação e vice versa. Se as regras não envolverem NACs os teoremas do artigo do Corradini já garantem os teus.  }
 
 \begin{thm} Given a graph grammar $GG = (T,I^T,P)$ and an Occurrence Graph Grammar with NACs \occurrenceGrammar{}. If we have that:
 \begin{itemize}
   \item $\forall a \in A \Rightarrow a \in P$
-  \item $I^{C^T} \subset I^T$
+  \item $I^{C^T} \equiv I^T$
 \end{itemize}
 
 Then any derivation represented by $OGG$ is a derivation of $GG$.
 
 \end{thm}
 
-\begin{proof}\newadd{Para o 3.34 tens que argumentar que , para qualquer ordem total que satisfaça a OGG com NACs, cada acão  de P que envolve uma NAC pode ser executada depois das ações que vem antes dela na ordem, e isto seria garantido pelas restricoes que tu impuseste ao gerar a OGG.}
-  For any total ordering of $A$ which satisfies the the occurrence relation and occurence relation restriction of 
+\begin{proof}
+  Given a Graph Grammar $GG = (T,I^T,P)$ and an Occurrence Graph Grammar \occurrenceGrammar{} built from $GG$. It is possible to construct a valid derivation of $OGG$ for any total ordering of $A$ which satisfies the occurrence relation and the occurrence relation restrictions of $OGG$.
+
+  Let \mbox{$d = I^{C^T} \xRightarrow{a_1, pre_1} H_1^{C^T} \xRightarrow{a_2, pre_2} H_2^{C^T} \ldots H_{n-1}^{C^T} \xRightarrow{a_n, pre_n} F^{C^T}$} be one of the possible derivations of $OGG$.
+  Given the type morphism $t: C \rightarrow T$ of the core graph and the type morphism $dt_i : H_i \rightarrow C^T$ of a $C^T$-double typed graph, it is possible to compose them in a (simple) type morphism $t \circ dt_i : H_i \rightarrow T$. 
+  Using the resulting family of (simple) type morphisms obtained by such composition, it is possible to create a diagram \mbox{$d' = I^T \xRightarrow{p_1, m_1} H_1^T \xRightarrow{p_2,m_2} H_2^T \ldots H_{n-1}^T \xRightarrow{p_n, m_n} H_n^T$} which has the format of a derivation of $GG$.
+
+  If the graph grammar $GG$ does not have NACs, the underlying occurrence graph grammar $OGG$ also does not have NACs, and it holds true that $d'$ is a derivation of $GG$, since it was constructed as given by the original definition of occurrence graph grammars in~\cite{Corradini1996}.
+
+  Thus, we need to show that with the addition of (incremental) NACs in $GG$, our extension for the construction of occurrence graph grammars with NACs still guarantees that the derivation $d'$ obtained from $d$ is a valid derivation of $GG$.
+
+  Let $p_i = L^T_i \leftarrow K^T_i \rightarrow R^T_i \in P$ be a rule with an incremental NAC $n_i : L_i^T \rightarrow N_i^T$ which participates in the (candidate) derivation $d'$.
+  Assume that $n_i$ is triggered by an elementi $x$ around the match $m_i : L_i^T \rightarrow H^T_{i-1}$ in the derivation. There are four possible cases that could lead to this configuration:
+\begin{enumerate}
+  \item $x \in I^T$ and there is no rule which deletes it.
+  \item $x \in I^T$, but the rule $p_k$ which deletes it was applied after $p_i$, i.e. $p_i < p_k$. 
+  \item $x$ was created by a rule $p_j$ applied before $p_i$ and there is no other rule which deletes $x$, i.e $p_j < p_i$.
+  \item $x$ was created by a rule $p_j$ applied before $p_i$ and the rule $p_k$ which deletes $x$ was applied after $p_i$, i.e. $p_j < p_i < p_k$.
+\end{enumerate}
+
+  The construction of the occurrence graph grammar would identify these problems as listed below:
+
+  \important{O primeiro caso não é coberto pela construção da gramática de ocorrência}
+
+  In the second case, there would be a concrete delete-forbid dependency between actions $a_k <_{df} a_i$, therefore this dependency would be present on the occurrence relation and any total ordering where $a_i < a_k$ would not satisfy the $OGG$ constraints.
+
+  In the third case, there would be a concrete produce-forbid conflict between actions $a_i <_{pf} a_j$, this conflict would thus be present on the occurrence relation and any total ordering where $a_j < a_k$ would not satisfy the $OGG$ constraints.
+
+  In the fourth case, there would be an abstract delete-forbid dependency and/or an abstract produce-forbid conflict denoted by the tuple $(a_i,a_j,a_k)$, which would be included in the set of occurrence relation restrictions and forbid any total ordering of actions where $a_j < a_i < a_k$.
+
+  Therefore, given that either of the situations described above would result in a total ordering of actions in $A$ which do not satisfy the constraints of an Occurrence Graph Grammar with NACs \occurrenceGrammar{}, $d'$ not being a derivation of $GG$ would contradict the fact the $d$ is a derivation of $OGG$, because it would be based on a total ordering which do not satisfy the constraints of its underlying Occurrence Graph Grammar.
+
+  %\newadd{Para o 3.34 tens que arrgumentar que , para qualquer ordem total que satisfaça a OGG com NACs, cada acão  de P que envolve uma NAC pode ser executada depois das ações que vem antes dela na ordem, e isto seria garantido pelas restricoes que tu impuseste ao gerar a OGG.}
 \end{proof}
 
 
@@ -646,5 +675,5 @@ If we use the the same order of actions in $A$ given by the application of their
 
 \end{proof}
 
-\begin{definition}[Semantics of a Graph Grammar] Given a Graph Grammar \graphGrammar{} the semantics of $GG$ can be described as the set of $OGGs$ corresponding to its derivations.
+\begin{definition}[Semantics of a Graph Grammar] Given a Graph Grammar \graphGrammar{} the semantics of $GG$ is described by the set of $OGGs$ corresponding to its derivations.
 \end{definition}
