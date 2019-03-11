@@ -255,50 +255,14 @@ The occurrence relation $\leq_o$ is then calculated from the causal relation tog
 were found, it remains empty.
 
 Finally, we have the strongly safe grammar $OGG$ together with its corresponding occurrence relation $\leq_o$ and a set of restrictions $R$. As it was shown, if $\leq_o$ is a partial order and it is possible to find a total ordering of it that respects all restrictions in $R$, it follows that $OGG$ is an occurrence graph grammar according to Definition~\ref{def:ogg}.
-
-\hide{If $Occ_i$ is a \emph{core graph} according to definition~\ref{def:core-graph}, we can create a doubly-typed graph grammar $OGG_i$ that is also a strongly-safe grammar and therefore a candidate to be an occurrence graph grammar. Otherwise, it means that there is more than one rule that deletes or creates the same element, therefore it is not possible to apply all rules of this collection and we can build an $OGG_i$ that is a  deterministic occurrence graph grammar.}
-
-%\iffalse
-%\section{Implementation} \newadd{The construction of the occurrence graph grammars to generate test cases was implemented in the Verigraph System.}
-
-%\begin{figure}[!ht]
-%\caption{Colimit Implementation}
-%\begin{minted}[linenos=true, breaklines,fontsize=\small]{haskell}
-%
-%calculateRulesColimit :: RuleSequence morph -> [NamedRuleWithMatches morph]
-%calculateRulesColimit (_,rs,os) =
-%  let
-%    fs = ksCoproduct rs
-%    gs = allCoproduct rs 
-%    -- separates morphism families
-%    (g1s, g2s, g3s) = groupMorphisms (split gs)
-%    h1 = induceSpanMorphism fs (zipWith <&> g1s (getLefts rs))
-%    h2 = induceSpanMorphism fs g2s
-%    h3 = induceSpanMorphism fs (zipWith <&> g3s (getRights rs))
-%    coEq = calculateNCoequalizer [h1,h2,h3]
-%    hm = map (coEq <&> ) gs
-%    
-%    -- colimit (based on coequalizers) with object flows
-%    leftIOs  = map getLeftMorphism os
-%    rightIOs = map getRightMorphism os
-%    objCop = objectFlowCoproduct os
-   % leftFamily = induceSpanMorphism objCop leftIOs
-%    rightFamily = induceSpanMorphism objCop rightIOs
-%    coreGraphMorphism = calculateCoequalizer leftFamily rightFamily
-%    hs2 = split $ map (coreGraphMorphism <&>) hm
-%  in if null os then zip rs hs1 else zip rs hs2
-%
-%\end{minted}
-%\label{fig:tests-colimit}
-%\end{figure}
-%\fi
+\linebreak
 
   In our previous example, no situation with abstract conflicts or dependencies was found.
   This grammar and the particular execution chosen have a causal relation which forces a sequencing of actions that avoids the existence of abstract conflicts/dependencies.
-  In our case studies, this situation has show to be very common in graph grammars extracted from use cases, where there are clear steps that must be followed in a specific order to accomplish the completion of a functionality.
-  Nonetheless, in graph grammars that model systems with higher parallelism or concurrency, situations with abstract conflicts/dependencies have shown to arise more often. We now introduce another graph grammar example to illustrate the construction of an occurrence graph grammar with NACs which has a non-empty set of restrictions.
+  In our case studies, this situation has shown to be very common in graph grammars extracted from use cases, where there are clear steps that must be followed in a specific order to accomplish the completion of a functionality.
+  Nonetheless, in graph grammars that model systems with higher parallelism or concurrency, situations with abstract conflicts/dependencies have shown to arise more often. We now introduce another graph grammar example with more independent rules to illustrate the construction of an occurrence graph grammar with NACs which has a non-empty set of restrictions.
 
-\begin{example} Figure~\ref{fig:tests:grammar-traffic} depicts a graph grammar that models a common traffic situation, where a pedestrian cross a street. This grammar has only three rules, which are summarized as:
+\begin{example} This graph grammar models a common traffic situation, where a pedestrian crosses or not a street according to the state of a traffic light. The grammar is depicted in Figure~\ref{fig:tests:grammar-traffic} while its rules are summarized as follows:
 
 \begin{enumerate}[label=(\alph*),start=2]
   \item \emph{walk:} a pedestrian is on a sidewalk and crosses the street to be on another sidewalk, however he/she can not do so if there is a closed traffic light.
@@ -328,7 +292,7 @@ Finally, we have the strongly safe grammar $OGG$ together with its corresponding
   \caption{Graph Grammar of the Traffic System}\label{fig:tests:grammar-traffic}
 \end{figure}
 
-As before, to begin the construction of the occurrence graph grammar with NACs for our graph grammar, we will need a collection of rules and an input-output relation. The collection chosen consists of one copy of each rule in the original grammar. The $IO$ relation is also very simple and it only identifies the traffic lights and the edges that represent they are closed in rules \emph{close} and \emph{open}. The relation is depicted on Figure~\ref{fig:tests:inout-traffic}.
+As before, to begin the construction of the occurrence graph grammar with NACs from our graph grammar, we will need a collection of rules and an input-output relation. The chosen collection consists of one copy of each rule in the original grammar. The $IO$ relation is also very simple: it only identifies the traffic lights and the edges that represent they are closed in rules \emph{close} and \emph{open}. The relation is depicted on Figure~\ref{fig:tests:inout-traffic}.
 
 \begin{figure}[!ht]
 \centering
@@ -336,7 +300,7 @@ As before, to begin the construction of the occurrence graph grammar with NACs f
 \caption{Input output relation for the traffic graph grammar}\label{fig:tests:inout-traffic}
 \end{figure}
 
-The first step, the amalgamation of rules, results in the core graph depicted in Figure~\ref{fig:tests:amalgamation-traffic}. Notice that, differently from the type graph in Figure~\ref{fig:tests:traffic-type-graph}, it has concrete elements, a generic pedestrian is now \emph{Jane}, there are two specific sidewalks which are connected by the \emph{Avenue B}, etc.
+The first step in the construction, the amalgamation of rules, results in the core graph depicted in Figure~\ref{fig:tests:amalgamation-traffic}. Notice that, differently from the type graph in Figure~\ref{fig:tests:traffic-type-graph}, it has concrete elements, a generic pedestrian is now \emph{Jane}, there are two specific sidewalks which are connected by the \emph{Avenue B}, etc.
 
 \begin{figure}[!ht]
   \centering
@@ -344,9 +308,9 @@ The first step, the amalgamation of rules, results in the core graph depicted in
   \caption{Amalgamation (colimit) of rules for the traffic grammar example.}\label{fig:tests:amalgamation-traffic}
 \end{figure}
 
-The retyping of rules provides the actions depicted in Figure~\ref{fig:tests:actions-traffic}. Once again, NACs are not shown due to limitations with AGG format compatibility for double-typed graph grammars.
+The second step retypes the rules providing the actions depicted in Figure~\ref{fig:tests:actions-traffic}. Once again, NACs are not shown due to limitations with AGG format compatibility for double-typed graph grammars.
 
-The causal relation for this execution of the grammar consists of the set represented only by the pair \emph{close} $<$ \emph{open}. Therefore, in this context, the traffic light must be closed before it opens and, so far, the action \emph{walk} does not relate to any of the others. This relation is a partial order, given that there are multiple options of total orderings which respect this relation: $[walk < close < open]$, $[close < walk < open]$ and $[close < open < walk]$.
+The third step is to calculate the causal relation. For this particular execution of the grammar it consists of the set cointaining only the pair \emph{close} $<$ \emph{open}. Therefore, in this context, the traffic light must be closed before it opens and, so far, the action \emph{walk} does not relate to any of the others. This relation is a partial order, given that there are multiple options of total orderings which respect this relation: $[walk < close < open]$, $[close < walk < open]$ and $[close < open < walk]$.
 
 \begin{figure}[!ht]
   \centering
@@ -365,7 +329,7 @@ The causal relation for this execution of the grammar consists of the set repres
   \caption{The set of actions generated for the traffic graph grammar.}\label{fig:tests:actions-traffic}
 \end{figure}
 
-The \emph{Initial} and \emph{Final} graphs obtained by deletion of elements created (resp. deleted) by the actions in the core graph are shown in Figure~\ref{fig:tests:graphs-traffic}.
+After calcultating the causal relation, we construct the \emph{Initial} and \emph{Final} graphs obtained by deletion of elements created (resp. deleted) by the actions in the core graph. The graphs for this execution are shown in Figure~\ref{fig:tests:graphs-traffic}.
 
 \begin{figure}[!ht]
   \centering
@@ -380,13 +344,13 @@ The \emph{Initial} and \emph{Final} graphs obtained by deletion of elements crea
   \caption{Instance graphs for the traffic grammar}\label{fig:tests:graphs-traffic}
 \end{figure}
 
-  The categorization of conflicts and dependencies is where the behaviour of this graph grammar defers from our previous example.
+  The characterization of conflicts and dependencies is where the behaviour of this graph grammar greatly defers from our previous example.
   There is one potential produce-forbid conflict between actions \emph{close} and \emph{walk} and one potential delete-forbid dependency between actions \emph{open} and \emph{walk}.
   Both the conflict and the dependency act over the same triggering element, the \emph{closed} edge in the NAC of action \emph{walk}.
   This element is not present in the \emph{Initial} graph, as it is created by the action \emph{close}.
   Also, the element is not (causally) related to the action \emph{walk}, given that the actions which create and delete it are themselves not related to that action.
   It is easy to see that the action \emph{walk} can either occur before action \emph{close} or after action \emph{open}, but never in between them, because \emph{Jane} must not cross \emph{Avenue B} while the traffic light is closed.
-  Therefore, we have an abstract produce-forbid conflict as well as an abstract delete-forbid dependency which, in this case, are both denoted by the tuple $(walk,close, open)$. Moreover, as there are no concrete conflicts and dependencies induced by NACs the occurrence relation remains equal to the causal relation.
+  Therefore, we have an abstract produce-forbid conflict as well as an abstract delete-forbid dependency which, in this case, are both denoted by the tuple $(walk,close, open)$. Moreover, as there are no concrete conflicts and dependencies induced by NACs, the occurrence relation remains equal to the causal relation.
 
 Finally, we have to find at least one total ordering of the actions respecting both the occurrence relation $\leq_o$ = $[close <_o open]$ and the set of occurrence relation restrictions $R = (walk,close,open)$. In fact, there are two such orderings: $[walk < close < open]$ and $[close < open < walk]$. Therefore, the strongly safe graph grammar constructed from this graph grammar execution is also an occurrence graph grammar with NACs.
 
