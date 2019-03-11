@@ -25,14 +25,14 @@ Notice that the two first items correspond to test cases while the last one corr
 \fi
 %First, we present a brief overview of the methodology for extracting graph grammars from use cases, after what we present the process of generating the tests cases from the extracted grammars.
 
-In this chapter, we present the process of constructing Occurrence Graph Grammars with NACs (OGGs) in a systematic manner and how this process was implemented in Verigraph. We use the same grammar presented on Example~\ref{ex:mail-grammar} in order to illustrate the explanation. We also applied this process in more complex graph grammars. One of the grammars models the system of a restaurant, with functionalities such as login of employees, reservation and cancellation of tables,
+In this chapter, we present the process of constructing Occurrence Graph Grammars with NACs (OGGs) in a systematic manner and how this process was implemented in Verigraph. We make use of some example grammars in order to illustrate the explanation. We also applied this process in more complex graph grammars: One of the grammars models the system of a restaurant, with functionalities such as login of employees, reservation and cancellation of tables,
 accommodation of clients, serving tables, among others. Another models the system of an e-Store, with functionalities such as browse and search catalogue, registration of clients, login, maintain shopping cart, effectuate purchase, etc. The grammars, their textual specifications (use cases), together with their generated OGGs can be found at the Verites repository for case studies\footnote{https://github.com/Verites/case-studies}.
 
 
 
 %that modelling the system of a restaurant and , built from the set of use cases presented in Appendix~\ref{app:use-cases} by applying the systematic methodology proposed by~\cite{Junior2015}. These use cases model basic functionalities of the proposed restaurant system such as login of employees, reservation and cancellation of tables, accommodation of clients, serving tables, among others. The complete extracted grammar, together with its generated OGGs can be found at the Verites repository for case studies\footnote{https://github.com/Verites/case-studies}.
 
-First, we reintroduce the \emph{Mail Server Graph Grammar}, then we proceed to the explanation of the necessary steps to build an Occurrence Graph Grammar according to the definitions presented on chapter~\ref{ch:process}. The implementation of this process in Verigraph is also part of this thesis contribution, as Verigraph is the first tool in the field to implement the construction of Occurrence Graph Grammars, even when considering OGGs without NACs. As a possible practical application of this, at the end of the chapter, we provide some insight about how OGGs can be used to generate test cases for the system they model.
+Our first example is the \emph{Mail Server Graph Grammar} presented on chapter~\ref{ch:gts}, which will be reintroduced. Then we proceed to the explanation of the necessary steps to build an Occurrence Graph Grammar according to the definitions presented on chapter~\ref{ch:process}. Our second example is a \emph{Traffic-Light Graph Grammar}, which will be introduced later on this chapter and also used to explain the process of constructing an OGG. The implementation of this process in Verigraph is also part of this thesis contribution, as Verigraph is the first tool in the field to implement the construction of Occurrence Graph Grammars, even when considering OGGs without NACs. As a possible practical application of this, at the end of the chapter, we provide some insight about how OGGs can be used to generate test cases for the system they model.
 %Given the graph grammar model of a system, we want to generate test cases and oracles for collections of its underlying functionalities. These collections could represent something as ``atomic'' as a successful or failing login attempt or something as complex as the entire workflow of attending clients, which would require attendants and waiters to log in into the system, tables to be occupied, orders to be prepared, among possibly several other steps.
 
 %The reason why we focused on collections of functionalities is to test the emergent behaviour of a system, which usually is not observable if we consider each functionality in isolation. By grouping together several (usually, but not necessarily different) functionalities, we may realize how they interact with each other and which are the overall effects of this integration.
@@ -96,10 +96,9 @@ First, we reintroduce the \emph{Mail Server Graph Grammar}, then we proceed to t
   The difference is that instead of building a rule, the result of our construction is an OGG, i.e., represents a computation.
 
 \begin{definition}[Input-Output Relation] Given a collection $F$ of rules, an \emph{input-output relation} $IO$ over $F$ is a set of typed-graph morphism spans of the form \mbox{$R_x \leftarrow IO_i \rightarrow L_y$} each of which connects two distinct rules $x,y \in F$.
-
 \end{definition}
 
-The $IO_i$ object of each span works similarly to the gluing graph $K$ of a rule, but instead of identifying elements that are the same in both left and right sides of a single rule, it identifies elements that are necessarily the same between the right and left sides of two different rules. An input-output relation for a collection of rules will have an appearance similar to the following diagram, where there are several $IO$ objects connecting the right-hand side of a rule with the left-hand side of another one.
+The $IO_i$ object of each span works similarly to the gluing graph $K$ of a rule, but instead of identifying elements that are the same in both left and right sides of a single rule, it identifies elements that are necessarily the same between the right and left sides of two different rules. An input-output relation for a collection of rules will have an appearance similar (but not necessarily equal) to the following diagram, where there are several $IO$ objects connecting the right-hand side of a rule with the left-hand side of another one.
 
 \diagram{
   & & & & IO_6\ar@{-->}[dddrrrr]\ar@{-->}[dddllll] & & & &\\
@@ -115,7 +114,7 @@ The $IO_i$ object of each span works similarly to the gluing graph $K$ of a rule
 \begin{example}[Input-Output Relations]\label{ex:inout} Figure~\ref{fig:tests:inout} shows one possible $IO$ relation for our running example. Notice that the elements which should be the same in both rules have the same prefix number in their identification. The first $IO$ object connects the rules \emph{send message} and \emph{get data}.  In this case, we want the server, the message and the connection between them to be the same in both rules. %For example, the table involved in both action is the same table, as a client there is accommodated must also be served. The employees, on the other hand, are not, as the employee who receives the client in the restaurant (the receptionist) is not the same who serves the client (the waiter).
 
 As a side note, the reader may notice that it is not mandatory to create an $IO$ span \mbox{$\left(R_x \leftarrow IO_i \rightarrow L_y\right)$} for \textbf{every} pair of rules. For example, consider that we want to analyse a scenario where the \emph{server} node is unique. Given rules \emph{get data} and \emph{receive message}, we have the options of building the span that identifies the server node as
-  $R_{sendMsg} \leftarrow IO_n \rightarrow L_{receiveMsg}$ or $R_{receiveMsg} \leftarrow IO_m \rightarrow L_{sendMsg}$, or even the two of them. Any combination would result in the same final effect: both rules use the same \emph{server}.
+  $R_{sendMsg} \leftarrow IO_n \rightarrow L_{receiveMsg}$ or $R_{receiveMsg} \leftarrow IO_m \rightarrow L_{sendMsg}$, or even combining the two of them. Any option would result in the same final effect: both rules use the same \emph{server}.
   \begin{figure}[!ht]
   \centering
   \fbox{\includegraphics[scale=0.5]{grammar/server/io-object}}
@@ -123,7 +122,6 @@ As a side note, the reader may notice that it is not mandatory to create an $IO$
   \fbox{\includegraphics[scale=0.5]{grammar/server/io-object3}}
   \caption{A basic Input-Output relation building}\label{fig:tests:inout}
 \end{figure}
-
 \end{example}
 
 Currently, the generation of the \textit{input-output relation} is a manual step in our strategy, therefore the analyst needs to decide how to better implement his/her own $IO$ relation. This did not shown to be a problem, as in our analysis we usually wanted to restrict the number of possible combinations to more realistic cases. However, its fully automation was scheduled as future work.
@@ -163,7 +161,7 @@ Currently, the generation of the \textit{input-output relation} is a manual step
 
 \item \emph{retype} the rules in $F$ over $Occ$: use each morphism found from each $L_i, K_i, R_i$ to $Occ$ as their respective new typing morphism. This step generates a set $F'$ of doubly-typed graph rules, given that $Occ$ is a $TG$-typed graph itself.
 
-\item calculate the causal relation $\leq_{c}$ of the doubly-typed graph rules in $F'$.
+\item calculate the causal relation $\leq_{c}$ of the doubly-typed graph rules in $F'$ and verify whether it is a partial order.
 
 \item\label{enum:construction-graphs} generate the initial and final graphs $I$ and $J$ by respectively deleting from $Occ$ all elements ever created and deleted by the rules in $F'$.
 
@@ -244,8 +242,8 @@ In step~\ref{enum:construction-occurrence}, we proceed towards creating the occu
   In~\ref{enum:construction-analysis}, we calculate all produce-forbid conflicts and delete-forbid dependencies between the rules in $F'$ by using the categorial algorithms presented in Definitions~\ref{def:delete-forbid-strong} and~\ref{def:produce-forbid-strong}. 
   Initially, we do not know whether these conflicts and dependencies will be exercised during the execution of the underlying grammar. 
 
-  In our example, we find one conflict and one dependency induced by NACs. The first is a produce-forbid between \emph{getData} and \emph{sendMsg} regarding the creation of an attachment between a piece of data and a message in \emph{getData}, which is forbidden by the NAC of \emph{sendMsg}.
-  The second, a delete-forbid between \emph{deleteMsg} and \emph{sendMsg}, regarding the deletion of the same kind of attachment.
+  In our example, we find one conflict and one dependency induced by NACs. The first is a produce-forbid between \emph{getData} and \emph{sendMsg} regarding the creation of the attachment between the piece of data and the message in \emph{getData}, which is forbidden by the NAC of \emph{sendMsg}.
+  The second, a delete-forbid between \emph{deleteMsg} and \emph{sendMsg}, regarding the deletion of that same attachment.
   Given the information collected so far we can deduce whether any of these
 conditions exists in the local context.
   Hence, we use the information acquired in previous steps to classify those conflicts and dependencies as concrete, abstract or non-existent as specified in
