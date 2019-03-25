@@ -63,3 +63,12 @@ The idea is to create a doubly-typed NAC for each concrete triggering of the ori
 
 %\textbf{Automated source code generation:}
 %  Finally, the generation of test cases is done in a textual manner, thus leaving to the test designer the responsibility of translating it into real source code. A very interesting research would be how to translate it directly to source code of specific programming languages and/or test frameworks.
+
+\section{Related Work}
+
+  The idea for the unfolding of graph transformation systems is very similar to that of occurrence graph grammars: it represents in a single structure all possible executions of a system, while also encoding the dependencies among each partial execution.
+  Unfolding techniques were initially proposed for Petri Nets~\cite{unk} and later generalized to graph grammars~\cite{Ribeiro1996} and other adhesive-HLR systems~\cite{unk}.
+
+  In~\cite{Baldan2004} they use the unfolding of graph transformation systems in order to generate test cases for code generators of the automotive industry.
+  Their work is based on the category of hypergraphs and, similarly to ours, it also extends their framework to include negative application conditions.
+
