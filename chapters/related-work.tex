@@ -1,16 +1,21 @@
 \chapter{Related Work}\label{ch:related-work}
 
-\section{Semantics}
+\section{Semantics of Graph Grammars}
 
 \subsection{Unfolding Semantics}
 
-  Unfolding techniques were initially proposed for Petri Nets~\cite{Nielsen1981} and later generalized to Graph Grammars~\cite{Ribeiro1996} and other Adhesive Categories~\cite{Baldan2009}.
-  The idea of Unfolding of a Graph Grammar uses that of Occurrence Graph Grammars and consists of a nondeterministic process of the grammar that expresses its behaviour: for a given grammar $G$, it is possible to build a sequence of Occurrence Grammars $O_n$ where each $O_n$ represents all computations up to depth $n$, where the depth of a concurrent computation is the length of a maximally parallel execution of the computation~\cite{Baldan2009}.
+  Unfolding techniques were initially proposed for Petri Nets~\cite{Nielsen1981} and later generalized to Graph Grammars~\cite{Ribeiro1996} and other Adhesive Systems~\cite{Baldan2009}.
+  The idea of Unfolding of a Graph Grammar uses that of Occurrence Graph Grammars and consists of a non deterministic process that expresses the Graph Grammar behaviour: for a given grammar $G$, it is possible to build a sequence of Occurrence Grammars $O_n$ where each $O_n$ represents all computations up to depth $n$, where the depth of a concurrent computation is the length of a maximally parallel execution of the computation~\cite{Baldan2009}.
 
-  The Unfolding begins at the start graph of the grammar $G$ and proceeds by applying all rules in all possible ways to its concurrent subgraphs, then each occurrence of a rule and each new graph element created is recorded in the unfolfding.
-  As in our approach, no element is ever deleted from this structure, which can be seen as a ``partial application'' of a rule to a match, given that it generates the new items created by the application of the rule, without actually erasing the elements that have been deleted.%: intuitively, this is because such items may still be used by another production in the nondeterministic unfolding.
+  The Unfolding begins at the start graph of the grammar $G$ and proceeds by continuously applying all rules in all possible ways to its concurrent subgraphs until depth $n$, then each occurrence of a rule and each new graph element created is recorded in the unfolding.
+  As in our approach, no element is ever deleted from this structure, therefore it can be seen as a ``partial application'' of a rule to a match, given that it generates the new items created by the application of the rule, without actually erasing the elements that have been deleted~\cite{Baldan2008}.%: intuitively, this is because such items may still be used by another production in the nondeterministic unfolding.
 
-\subsection{Graph Processes}
+\subsection{Abstract Graph Processes}
+
+The concept of Graph Processes was introduced by~\cite{Corradini1996} and it also uses that of Occurrence Graph Grammars. A Graph Process for a grammar \graphGrammar{} consists of an Occurrence Graph Grammar \occurrenceGrammar{} together with its causal relation $\leq_c$ and a pair of morphisms $(mg,mp)$ mapping (1) the core graph of the occurrence grammar to the type graph of its underlying grammar $mg: C^T \rightarrow T$ and (2) the actions in $A$ to their corresponding rules in $P$, $mp: A
+\rightarrow P$.
+
+Abstract Graph Processes are classes of Graph Processes which have the same structure and despite having different concrete identities for the elements and actions should still be considered equivalent. Therefore, they encompass a greater number of possible grammar executions with a smaller number of processes (or occurrence grammars).
 
 \subsection{Canonical Derivations}
 
