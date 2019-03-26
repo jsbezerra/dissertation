@@ -1,23 +1,39 @@
 \chapter{Related Work}\label{ch:related-work}
 
-Graph Transformation Systems have a wide range of applications in Computer Science, particularly in the field of model driven engineering~\cite{modelDriven}. They can be used not only to model and simulate the execution of systems~\cite{Ehrig2009}, but also to analyse and prove properties about their behaviour~\cite{Lambers},~\cite{dissertacaoDoCarinha}, ~\cite{Penneman}, as a formal basis for translating a problem between different domain or layers ~\cite{tripleGraphGrammars} and even describe their own evolution~\cite{Machado2012}.
+\section{Semantics}
 
-Not only they have the benefit of a solid formalism, they also enjoy several tools and practical approaches which have been developed over the last years in order that they can be applied over real, complex software systems, such as~\cite{AGG}, ~\cite{Groove},~\cite{Henshin},~\cite{GrGen.Net}.
+\subsection{Unfolding Semantics}
 
-Our work aims to develop a particular field in which graph transformations systems can be applied in this context: model-based testing. Therefore, we present in the following some related work in the area and how they relate or differ from our own.
+  Unfolding techniques were initially proposed for Petri Nets~\cite{Nielsen1981} and later generalized to Graph Grammars~\cite{Ribeiro1996} and other Adhesive Categories~\cite{Baldan2009}.
+  The idea of the Unfolding of a Graph Grammar uses that of Occurrence Graph Grammars. For a given grammar $G$, it is possible to build a sequence
+of Occurrence Grammars $O_n$.
+  Each $O_n$ represents all computations up to depth $n$ where the depth of a concurrent computation is the length of a maximally parallel execution of the computation~\cite{Baldan2009}.
 
-We found in the literature two main techniques by which tests can be generated from graph grammars: the first one is based on the unfolding of graph transformations~\cite{Baldan2004} while the second uses visual contracts as graph rules and static analysis over them.
+%  The idea for the unfolding of graph transformation systems is very similar to that of occurrence graph grammars: it represents in a single structure all possible executions of a system, while also encoding the dependencies among each partial execution.
 
-\section{Generating tests by the unfolding of graph transformations}
 
-This approach was first proposed to generate tests for code generators, which are tools used to translate graphical specifications of systems directly into executable code. According to \cite{Baldan2004}, these code generators are widely used in the development of embedded software, e.g. in the automotive sector, however they lack the maturity and testing when compared to compilers of standard programming languages.
+%Graph Transformation Systems have a wide range of applications in Computer Science, particularly in the field of model driven engineering~\cite{modelDriven}. They can be used not only to model and simulate the execution of systems~\cite{Ehrig2009}, but also to analyse and prove properties about their behaviour~\cite{Lambers},~\cite{dissertacaoDoCarinha}, ~\cite{Penneman}, as a formal basis for translating a problem between different domain or layers ~\cite{tripleGraphGrammars} and even describe their own evolution~\cite{Machado2012}.
 
-According to the authors, one of the biggest problems in testing code generators is the difficulty to describe the transformation rules from a graphical model to a target language (as well as the interactions amongst the rules) in a precise and formal way. Therefore, they propose a graph transformation based approach for systematically deriving test cases in this particular scenario.
+%Not only they have the benefit of a solid formalism, they also enjoy several tools and practical approaches which have been developed over the last years in order that they can be applied over real, complex software systems, such as~\cite{AGG}, ~\cite{Groove},~\cite{Henshin},~\cite{GrGen.Net}.
+
+%Our work aims to develop a particular field in which graph transformations systems can be applied in this context: model-based testing. Therefore, we present in the following some related work in the area and how they relate or differ from our own.
+
+%We found in the literature two main techniques by which tests can be generated from graph grammars: the first one is based on the unfolding of graph transformations~\cite{Baldan2004} while the second uses visual contracts as graph rules and static analysis over them.
+
+\section{Generating tests cases}
+
+\subsection{Unfolding of graph transformations}
+
+  In~\cite{Baldan2004} the unfolding of graph transformation systems is used in order to generate test cases for code generators of the automotive industry.
+  Their work is based on the category of hypergraphs and, similarly to ours, it also extends their framework to include negative application conditions.
+
+  According to the authors, code generators are widely used in the development of embedded software, however they lack the maturity and testing when compared to compilers of standard programming languages.
+  Thus, one of the biggest problems in testing code generators is the difficulty to describe the transformation rules from a graphical model to a target language (as well as the interactions amongst the rules) in a precise and formal way.
+  Therefore, they propose a graph transformation based approach for systematically deriving test cases in this particular scenario.
 
 Their approach is based on the use of unfolding of graph transformation systems~\cite{Ribeiro1996} over two graph grammars, a \textit{generating grammar}, responsible for generating all possible input models, and an \textit{optimising grammar}, which formalises specific transformation steps towards code optimisation.
 The main purpose is to test the optimisation phase, in an attempt to ensure no mistakes will be introduced by improving the code while preserving its behaviour.
 
-The unfolding of graph transformations consists of\ldots
 
 In this environment, a test case for a subset of optimising rules $R$ is an input model $G$ such that all the rules in $R$ can be computed over $G$. This is similar to our approach where, for a sequence to be executable, all rules in that sequence must be applicable over the occurrence graph. However, we also use the non-executable ones in order to generate test cases where the system is indeed expected to fail.
 
@@ -30,21 +46,21 @@ Their approach is focused on testing the optimization steps of code generation, 
 %Advantages: test of non-deterministic systems. While our approach can probably be extended to test non-deterministic systems, no attempts 
 %acyclic graphs and maximal depth of the unfolding
 
-\section{Visual Contracts}
+\subsection{Visual Contracts}
 
-An approach proposed by~\cite{Heckel2011},~\cite{Khan2012},~\cite{Khan2012a},~\cite{Runge2013} focusing mainly on generating test cases for service-oriented or component-based systems. Given that systems of this kind often hide their implementation, the authors use interface descriptions known as visual contracts\footnote{ Formally regarded as graph transformation rules with operation signatures}, in order to model the observable behaviour of the system.
+  An approach proposed by~\cite{Heckel2011},~\cite{Khan2012},~\cite{Khan2012a},~\cite{Runge2013} focusing mainly on generating test cases for service-oriented or component-based systems.
+  Given that systems of this kind often hide their implementation, the authors use interface descriptions known as visual contracts\footnote{ Formally regarded as graph transformation rules with operation signatures.} in order to model the observable behaviour of the system.
 
 Coverage criteria is defined by means of static analysis, where potential conflicts and dependencies amongst visual contracts are calculated and used to build a dependency graph. In this situation, despite of being called ``a dependency graph'', this structure is rather similar to our occurrence relation, summarizing the results of both conflict and dependency analysis while representing the possible orderings in which the visual contracts may be executed.
 
-In the processes of generating test cases, it is necessary to provide also an initial graph, which is used to find out which visual contracts are applicable to it. One of such visual contracts is chosen as the first step and all the paths through the dependency graph in which each rule is applied at most once are computed and stored as a set of rule sequences. Thereafter, the sequences are enriched to encompass rules with multiple dependencies and lately redundant rules contained in larger ones are
-removed. Afterwards, each sequence is executed (if possible), and any new edges in the dependency graph reached by them are added to coverage. The entire process is then repeated as long as the coverage shows improvements. 
+In the processes of generating test cases, it is necessary to provide an initial graph, which is used to find out which visual contracts are applicable to it. One of such visual contracts is chosen as the first step and all the paths through the dependency graph in which each rule is applied at most once are computed and stored as a set of rule sequences. Thereafter, the sequences are enriched to encompass rules with multiple dependencies and lately redundant rules contained in larger ones are
+removed. Afterwards, each sequence is executed (if possible), and any new edges in the dependency graph reached by them are added to coverage. The entire process is then repeated as long as the coverage shows improvement.
 
 In comparison to our work, this approach has both advantages and limitations. As an example of the first, there are: the possibility to work with attributed typed graph transformation systems and multi-rules. As for the second: it requires more user involvement during the process of test case generation, it does not enclose negative application conditions, it was planned to work in a configuration where each rule is applied at most once and although being an extension of
 AGG~\cite{Taentzer2000}, the tool is not available to download.
 
-\section{Other Tools}
+\section{Tools}
 
-Overview and Comparison with other tools
 
 \begin{itemize}
 \item AGG
