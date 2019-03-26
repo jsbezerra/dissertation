@@ -146,8 +146,10 @@
 % \renewcommand{\nominataChefeINT}{Prof.~Leila Ribeiro}
 % \renewcommand{\nominataChefeINTname}{Chefe do \deptINT}
 
-\keyword{Graph Transformations}
-\keyword{Use Cases}
+\keyword{Graph Grammars}
+\keyword{Occurrence Graph Grammars}
+\keyword{Negative Aplication Conditions}
+\keyword{Semantics}
 
 \input{conf/macros.tex}
 \input{conf/listings.tex}
@@ -198,7 +200,10 @@
   Finalmente, para mainha, Dona Necila... eu jamais poderei expressar suficientemente o quão a senhora foi importante em todas as minhas conquistas até agora. A senhora sempre foi a pessoa que mais admiro na vida, por toda sua luta, dedicação e sacrifícios para dar a mim e aos meus irmãos todas as oportunidades que a senhora não teve. Esse mestrado é tão seu quanto meu. Vou te amar pra sempre.
 
 \begin{abstract}
-  This thesis proposes an approach for systematically generating test cases and oracles from graph grammar models of systems.
+    Graph grammars are based on the application of rules that are able to modify graphs, as such, they provide a suitable formalism to model complex systems in an intuitive and precise manner, providing both a graphical, straightforward language and a solid formal background for systems analysis. Therefore, they have found a wide range of applications within Computer Science, specially in the field of Model-Driven Development. Particularly, the study of the Semantics of Graph Grammars, i.e.
+    which graphs belong to the language of a grammar and which derivations are possible within the context of a grammar, provides a powerful framework to reason about the execution behaviour of systems modelled as Graph Grammars. There are several different ways of specifying the Semantics of Graph Grammars, one notable possibility is the use of Occurrence Graph Grammars, which encodes the Semantics in a structure that is also a Graph Grammar itself. Occurrence Graph Grammars were introduced in
+    the nineties and used ever since, however the original definitions lack the inclusion of Negative Application Conditions, additional structures imposed over the rules of a grammar to better tune their possible applications according to the execution context. Given the important role Negative Application Conditions play in the modelling and analysis of complex systems as Graph Grammars nowadays, this thesis presents an extension to the framework of Occurrence Graph Grammars in order to
+    include them. It also presents its implementation in Verigraph, a software specification and verification system based on graph rewriting, which is now the first tool in the field to implement the construction of Occurrence Graph Grammars.
 \end{abstract}
 
 \begin{englishabstract}{Gramáticas de Grafos de Ocorrência com Condições Negativas de Aplicação}{Electronic document preparation, \LaTeX, ABNT, UFRGS}
