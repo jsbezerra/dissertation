@@ -1,5 +1,7 @@
 \chapter{Related Work}\label{ch:related-work}
 
+We proposed a new semantical model for Graph Grammars with Negative Application Conditions based on unfoldings (Occurrence Graph Grammars). It relies on and extends previous work that defined the semantics of Graph Grammars as one unfolding structure (describing a non-deterministic computation) or as a set of unfolding structures (describing  a set of deterministic computations). The main difference is that our approach considers Negative Application Conditions, that were not tackled by any of the existing approaches.
+
 \section{Semantics of Graph Grammars}
 
 \subsection{Unfolding Semantics}
@@ -60,7 +62,7 @@ AGG~\cite{Taentzer2000}, the tool is not available to download.
 
 \section{Tools}
 
-Although Verigraph~\cite{Costa2016, verigraph, Azzi2018} is the first tool in the field to implement Occurrence Graph Grammars (with or without Negative Application Conditions), there are other Graph Grammar tools with different approaches and analysis available. In the following, we list the ones which are to some extent closely related to Verigraph.
+Although Verigraph~\cite{Costa2016, verigraph, Azzi2018} is the first tool in the field to implement Occurrence Graph Grammars (with or without Negative Application Conditions) for general Graph Grammars while also having its source code closely related to Category Theory, there are other Graph Grammar tools with different approaches and analysis available. In the following, we list the ones which are to some extent closely related to Verigraph.
 
 \subsection{AGG}
 
@@ -77,3 +79,7 @@ Although Verigraph~\cite{Costa2016, verigraph, Azzi2018} is the first tool in th
 \subsection{SyGrAV}
 
 The Symbolic Graph Analysis and Verification (SyGrAV) tool prototype~\cite{Deckwerth2016} is a tool for static verification of attributed (symbolic) graph transformation systems. It is based on the DPO approach and implemented in Java. It shares with Verigraph its inspiration to maintain the source code as closely related to the theory as possible, for which it makes use of a series of APIs defining contracts over the behaviour of the underlying Categories.
+
+\subsection{Augur 2}
+
+  Augur 2 is a tool for the analysis of (attributed) graph transformation systems using approximative unfolding techniques~\cite{Konig2008}. It allows the analysis of Graph Transformation Systems by approximating them with Petri nets. The tool is also based in the DPO approach (with some restrictions) and its source code is written in \code{C++}. 
