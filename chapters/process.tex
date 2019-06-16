@@ -406,7 +406,7 @@ Notwithstanding, by analysing the causal relation we can affirm that this config
 \hfill
 \end{definition}
 
-The definition of abstract conflicts and dependencies translates to ``the action $a_i$ can only be applied either before $a_j$ or after $a_k$, but never in between their applications''. This situation models the following configuration of actions: $a_j$ creates an element $x$ which triggers a NAC of $a_i$, while $a_k$ deletes this same element. Therefore, $a_i$ can not be applied while $x$ exists.
+The definition of abstract conflicts and dependencies translates to ``the action $a_i$ can only be applied either before $a_j$ or after $a_k$, but never in between their applications''. This situation models the following configuration of actions: $a_j$ creates an element $x$, which triggers a NAC of $a_i$, while $a_k$ deletes this same element. Therefore, $a_i$ can not be applied while $x$ exists.
 
 We already know that at least the causal relation must be a partial order in order to be possible to apply all the actions of a grammar. Nevertheless, the following problem remains to be solved:
 
