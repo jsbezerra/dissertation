@@ -32,8 +32,8 @@ accommodation of clients, serving tables, among others. Another models the syste
 
 %that modelling the system of a restaurant and , built from the set of use cases presented in Appendix~\ref{app:use-cases} by applying the systematic methodology proposed by~\cite{Junior2015}. These use cases model basic functionalities of the proposed restaurant system such as login of employees, reservation and cancellation of tables, accommodation of clients, serving tables, among others. The complete extracted grammar, together with its generated OGGs can be found at the Verites repository for case studies\footnote{https://github.com/Verites/case-studies}.
 
-Our first example is the \emph{Mail Server Graph Grammar} presented on chapter~\ref{ch:gts}, which will be reintroduced. Then we proceed to the explanation of the necessary steps to build an Occurrence Graph Grammar according to the definitions presented on chapter~\ref{ch:process}. Our second example is a \emph{Traffic-Light Graph Grammar}, which will be introduced later on this chapter and also used to explain the process of constructing an OGG. The implementation of this process in Verigraph
-is also part of this thesis contribution, as Verigraph is the first tool in the field to implement the construction of Occurrence Graph Grammars for general Graph Grammars, even when considering OGGs without NACs. As a possible practical application of this, at the end of the chapter, we provide some insight about how OGGs can be used to generate test cases for the system they model.
+Our first example is the \emph{Mail Server Graph Grammar} presented on Chapter~\ref{ch:gts}, which are reintroduced. Then we proceed to the explanation of the necessary steps to build an Occurrence Graph Grammar according to the definitions presented on Chapter~\ref{ch:process}. Our second example is a \emph{Traffic-Light Graph Grammar}, which is introduced later on this chapter and also used to explain the process of constructing an OGG. The implementation of this process in Verigraph
+is also part of this work contribution, as Verigraph is the first tool in the field to implement the construction of Occurrence Graph Grammars for general Graph Grammars, even when considering OGGs without NACs. As a possible practical application of this, at the end of the chapter, we provide some insight about how OGGs can be used to generate test cases for the system they model.
 %Given the graph grammar model of a system, we want to generate test cases and oracles for collections of its underlying functionalities. These collections could represent something as ``atomic'' as a successful or failing login attempt or something as complex as the entire workflow of attending clients, which would require attendants and waiters to log in into the system, tables to be occupied, orders to be prepared, among possibly several other steps.
 
 %The reason why we focused on collections of functionalities is to test the emergent behaviour of a system, which usually is not observable if we consider each functionality in isolation. By grouping together several (usually, but not necessarily different) functionalities, we may realize how they interact with each other and which are the overall effects of this integration.
@@ -44,7 +44,7 @@ is also part of this thesis contribution, as Verigraph is the first tool in the 
 %\section{Running Example}
 
 \begin{example} %The rules we chose for this example represent one way in which the entire process of serving a client can be accomplished. In this particular case, we chose the rules representing the successful paths of the use cases \emph{reserve table}, \emph{accommodate client}, \emph{serve table} and \emph{close table}, which are depicted on figure~\ref{fig:tests:grammar}.
-  The grammar used here illustrates a mail server scenario for a simple e-mail application composed by four rules, which are described in the following and depicted in Figure~\ref{fig:tests:grammar}.
+  The grammar used here illustrates a mail server scenario for a simple e-mail application composed of four rules, which are described in the following and depicted in Figure~\ref{fig:tests:grammar}.
   In order to better present the ideas of this chapter in terms of its implementation, we use the rules in the format provided by AGG~\cite{Taentzer2000}, which is also the format used as input and output by Verigraph.
   This format depicts the LHS and RHS graphs of rules, but does not explicitly show the interface graph, which can be inferred by identification numbers correlating items of LHS and RHS.
 
@@ -86,9 +86,9 @@ is also part of this thesis contribution, as Verigraph is the first tool in the 
 
 \section{Selecting a Computation of GG}
 
-  In this work we defined only deterministic Occurrence Graph Grammars with NACs, and therefore, in contrast to~\cite{Ribeiro1996}, where the semantics of a Graph Grammar is represented by only one (non-deterministic) Occurrence Graph Grammar, here we need a set of Occurrence Graph Grammars to represent the behaviour of a Graph Grammar.
+  In this work we defined only deterministic Occurrence Graph Grammars (OGGs) with NACs, and therefore, in contrast to~\cite{Ribeiro1996}, where the semantics of a Graph Grammar is represented by only one (non-deterministic) Occurrence Graph Grammar, here we need a set of Occurrence Graph Grammars to represent the behaviour of a Graph Grammar.
   Nevertheless, this set is usually much smaller than the set of all derivations of a Graph Grammar since each OGG represents a (shift-)equivalent set of derivations, that is, a set of derivations that are equivalent with respect to switching the order of independent steps. 
-  In the following we will describe how to construct one OGG, the complete behaviour of a GG would be described by the (possibly infinite) set of OGGs that can be constructed with the rules of the underlying GG. Note that, even in the case of~\cite{Ribeiro1996}, where the semantics was described by only one OGG, this structure may be  infinite in the case the system has the possibility of a non-terminating computation.
+  In the following we describe how to construct one OGG, the complete behaviour of a GG would be described by the (possibly infinite) set of OGGs that can be constructed with the rules of the underlying GG. Note that, even in the case of~\cite{Ribeiro1996}, where the semantics was described by only one OGG, this structure may be  infinite in the case the system has the possibility of a non-terminating computation.
 
   Thus, in order to construct an Occurrence Graph Grammar $OGG$ for a graph grammar \graphGrammar{}, we need (1) a collection\footnote{ We use the term collection instead of set because, in this case, a rule can appear more than once since each rule in $F$ represents the application of a rule in $P$.} of rules $F$ based on $P$, which represent the rules that are applied in the computation depicted by the OGG, and (2) a way of specifying how the rules in $F$ interact among themselves. 
   The latter is needed to define which elements are common throughout the rules. To this purpose, we use an \emph{input-output relation}, depicting connections between the rules in $F$.
@@ -99,7 +99,7 @@ is also part of this thesis contribution, as Verigraph is the first tool in the 
 \begin{definition}[Input-Output Relation] Given a collection $F$ of rules, an \emph{input-output relation} $IO$ over $F$ is a set of typed-graph morphism spans of the form \mbox{$R_x \leftarrow IO_i \rightarrow L_y$} each of which connects two distinct rules $x,y \in F$.
 \end{definition}
 
-The $IO_i$ object of each span works similarly to the gluing graph $K$ of a rule, but instead of identifying elements that are the same in both left and right sides of a single rule, it identifies elements that are necessarily the same between the right and left sides of two different rules. An input-output relation for a collection of rules will have an appearance similar (but not necessarily equal) to the following diagram, where there are several $IO$ objects connecting the right-hand side of a rule with the left-hand side of another one.
+The $IO_i$ object of each span works similarly to the gluing graph $K$ of a rule, but instead of identifying elements that are the same in both left and right sides of a single rule, it identifies elements that are necessarily the same between the right and left sides of two different rules. An input-output relation for a collection of rules has an appearance similar (but not necessarily equal) to the following diagram, where there are several $IO$ objects connecting the right-hand side of a rule with the left-hand side of another one.
 
 \diagram{
   & & & & IO_6\ar@{-->}[dddrrrr]\ar@{-->}[dddllll] & & & &\\
@@ -241,7 +241,7 @@ Notice that, if the steps listed so far (\ref{enum:construction-colimit} to~\ref
 
 In step~\ref{enum:construction-occurrence}, we proceed towards creating the occurrence relation and occurrence relation restrictions. 
   In~\ref{enum:construction-analysis}, we calculate all produce-forbid conflicts and delete-forbid dependencies between the rules in $F'$ by using the categorial algorithms presented in Definitions~\ref{def:delete-forbid-strong} and~\ref{def:produce-forbid-strong}. 
-  Initially, we do not know whether these conflicts and dependencies will be exercised during the execution of the underlying grammar. 
+  Initially, we do not know whether these conflicts and dependencies are exercised during the execution of the underlying grammar. 
 
   In our example, we find one conflict and one dependency induced by NACs. The first is a produce-forbid between \emph{getData} and \emph{sendMsg} regarding the creation of the attachment between the piece of data and the message in \emph{getData}, which is forbidden by the NAC of \emph{sendMsg}.
   The second, a delete-forbid between \emph{deleteMsg} and \emph{sendMsg}, regarding the deletion of that same attachment.
@@ -293,7 +293,7 @@ Finally, we have the strongly safe grammar $OGG$ together with its corresponding
   \caption{Graph Grammar of the Traffic System}\label{fig:tests:grammar-traffic}
 \end{figure}
 
-As before, to begin the construction of the occurrence graph grammar with NACs from our graph grammar, we will need a collection of rules and an input-output relation. The chosen collection consists of one copy of each rule in the original grammar. The $IO$ relation is also very simple: it only identifies the traffic lights and the edges that represent they are closed in rules \emph{close} and \emph{open}. The relation is depicted on Figure~\ref{fig:tests:inout-traffic}.
+As before, to begin the construction of the occurrence graph grammar with NACs from our graph grammar, we need a collection of rules and an input-output relation. The chosen collection consists of one copy of each rule in the original grammar. The $IO$ relation is also very simple: it only identifies the traffic lights and the edges that represent they are closed in rules \emph{close} and \emph{open}. The relation is depicted on Figure~\ref{fig:tests:inout-traffic}.
 
 \begin{figure}[!ht]
 \centering
