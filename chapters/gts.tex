@@ -6,7 +6,7 @@ Graph grammars have a wide application in computer science, not only because gra
 
   We now review the basic concepts and some analysis techniques for graph transformations that are used in this work. We use the algebraic approach, which is based on Category Theory. For the proofs of theorems and facts, the reader is referred to ~\cite{Corradini1996:DPO}, however a brief review of the main categorial concepts used in this thesis is presented in appendix~\ref{app:category-theory}.
 
-\begin{definition}[Graph] A graph is a tuple $G = \left(V,E,s,t\right)$ where: $V$ is a set of nodes, $E$ is a set of Edges and $s,t : E \rightarrow V$ are two total functions that map each edge in $E$ to its source and target in $V$.
+\begin{definition}[Graph] A graph is a tuple $G = \left(V,E,s,t\right)$ where: $V$ is a set of nodes, $E$ is a set of edges and $s,t : E \rightarrow V$ are two total functions that map each edge in $E$ to its source and target in $V$.
 
 \end{definition}
 
@@ -148,10 +148,10 @@ Figure~\ref{fig:gts:rule-standard} presents the rule in the standard DPO notatio
   G\ar@{}[urr]|{\left(1\right)} & & D\ar[ll]^{f}\ar[rr]_{g}             & & H\ar@{}[ull]|{\left(2\right)}
 }
 
-  For \cat{TGraph_T} there are two conditions, called \emph{gluing or application conditions}, that must be satisfied so that the pushouts (1) and (2) exist and the rule graph rule can be applied:
+  For \cat{TGraph_T} there are two conditions, called \emph{gluing or application conditions}, that must be satisfied so that the pushouts (1) and (2) exist and the graph rule can be applied:
 
 \begin{itemize}
-  \item the \emph{dangling condition} requires that no node can be deleted if it has incident edges that are not also deleted (otherwise the result of this deletion would not be a graph).  
+  \item the \emph{dangling condition} requires that no node can be deleted if it has incident edges that are not also deleted (otherwise the result of this deletion would not be a graph).
   \item the \emph{identification condition} requires the match to not identify a deleted element with a preserved or (another) deleted one.
 \end{itemize}
 
@@ -200,9 +200,9 @@ A NAC extends one side of a rule by describing a pattern that should not be foun
 
 \end{definition}
 
-\begin{example}[NAC and NAC satisfiability] Figure~\ref{fig:gts:nacs:satisfied} shows a NAC that is satisfied (i.e. not triggered) over a match $m$, as there is no possible way of mapping the edge between $\Circle_1$ and $\Square_1$ in $N$ to an edge in $G_0$ such that the resulting triangle commutes. Therefore, if $G_0$ also satisfies the gluing conditions for the corresponding rule the transformation can be applied.
+\begin{example}[NAC and NAC satisfiability] Figure~\ref{fig:gts:nacs:satisfied} shows a NAC that is satisfied (i.e. not triggered) over a match $m$, as there is no possible way of mapping the edge between $\Circle_1$ and $\Square_1$ in $N$ to an edge in $G_0$ such that the resulting triangle commutes. Therefore, if the match over $G_0$ also satisfies the gluing conditions for the corresponding rule the transformation can be applied.
 
-  On the other hand, Figure~\ref{fig:gts:nacs:triggered} shows a NAC that is triggered (i.e. not satisfied) over the match $m$: all the elements in $N$ can be mapped to $G_0$ such that the resulting triangle commutes. Therefore, even if $G_0$ satisfies the gluing conditions, the transformation can not be applied, as the pattern forbidden by the NAC was found on the instance graph.
+  On the other hand, Figure~\ref{fig:gts:nacs:triggered} shows a NAC that is triggered (i.e. not satisfied) over the match $m$: all the elements in $N$ can be mapped to $G_0$ such that the resulting triangle commutes. Therefore, even if the match satisfies the gluing conditions, the transformation can not be applied, as the pattern forbidden by the NAC was found on the instance graph.
 
 \begin{figure}[!ht]
   \centering

@@ -95,13 +95,13 @@ A (doubly-typed) match morphism $m^{TG^T} : L^{TG^T} \rightarrow G^{TG^T}$ of a 
    & G\ar@/_2.1pc/[uu]
 }
 
-  A match $m^{TG^T} : L^{TG^T} \rightarrow G^{TG^T}$ satisfies a set \mbox{$NAC_L = \{NAC\left(n^T_i\right)|i \in I\}$} of left $NACs$, iff \mbox{$m \models NAC\left(n^T_i\right)$} $\forall i \in I$.
+  A match $m^{TG^T} : L^{TG^T} \rightarrow G^{TG^T}$ satisfies a set \mbox{$NAC_L = \{NAC\left(n^T_i\right)|i \in I\}$} of left $NACs$, iff \mbox{$m^T \models NAC\left(n^T_i\right)$} $\forall i \in I$.
 
 \emph{Right} negative application conditions are defined analogously for the right hand side of a rule and its comatch.
 \end{definition}
 
 \begin{remark}
-  We could have defined NACs whose morphisms are doubly-typed graph morphisms, which would then act specifically over doubly-typed graphs. However, the use of this kind of NAC could lead to a doubly-typed grammar with a set of NACs much bigger than the original one, thus we do not use this kind of NACs given our interest in a compact and more abstract characterization for the semantics of graph grammars. Therefore, we use \emph{single-typed} NACs as the only NAC type in all of our \emph{doubly-typed graph grammars}, and $NAC(n)$ as a synonym of $NAC(n^T)$.
+  We could have defined NACs whose morphisms are doubly-typed graph morphisms, which would then act specifically over doubly-typed graphs. However, the use of this kind of NAC would imply mapping all possible ways a NAC typed over $T$ could be translated into a NAC typed over $TG$, which would lead to a doubly-typed grammar with a set of NACs much bigger than the original one. Thus we do not use this kind of NACs given our interest in a compact and more abstract characterization for the semantics of graph grammars. Therefore, we use \emph{single-typed} NACs as the only NAC type in all of our \emph{doubly-typed graph grammars}, and $NAC(n)$ as a synonym of $NAC(n^T)$.
 \end{remark}
 
 In a grammar without NACs, if there is a sequence of graph transformations $t_0\ldots t_n$ where each pair $(t_i,t_{i+1})$ of consecutive transformations is sequentially independent, then it is possible to \emph{switch} the
@@ -204,7 +204,7 @@ At first, it may seem that we are loosing expressive power by restricting the NA
    \]\end{description}
 
 \end{definition}
-  The first condition assures that every element in the \emph{core graph} was either already present in the initial graph or was created by one and only one rule. The second condition assures that for every element that is deleted, it is deleted only once by only one rule. The idea is that each element within a \emph{core graph} has a unique origin. At the same time, the \emph{core graph} contains all elements necessary (created, deleted and preserved) by all rules in its underlying grammar. 
+  The first condition assures that every element in the \emph{core graph} was either already present in the initial graph or was created by one and only one rule. The second condition assures that for every element that is deleted, it is deleted only once by only one rule. The idea is that each element within a \emph{core graph} has a unique origin. At the same time, the \emph{core graph} contains all elements created, deleted or preserved by all rules in its underlying grammar. 
   
   In~\cite{Ribeiro1996} the second condition was not used, because of a peculiarity of the SPO approach where more than one rule can delete the same element at the same time, while this would raise a conflict and therefore be forbidden in the DPO approach. As a consequence, the occurrence grammars defined by~\cite{Ribeiro1996} are inherently non-deterministic, whereas ours are deterministic.  In practice, this means that the semantics of a graph grammar in the SPO approach can be achieved with only one occurrence grammar, while in the DPO approach we need a set of them.
 
@@ -639,7 +639,7 @@ Then any derivation represented by $OGG$ is a derivation of $GG$.
   Given the type morphism $t: C \rightarrow T$ of the core graph and the type morphism $dt_i : H_i \rightarrow C^T$ of a $C^T$-double typed graph, it is possible to compose them in a (simple) type morphism $t \circ dt_i : H_i \rightarrow T$. 
   Using the resulting family of (simple) type morphisms obtained by such composition, it is possible to create a diagram \mbox{$d' = I^T \xRightarrow{p_1, m_1} H_1^T \xRightarrow{p_2,m_2} H_2^T \ldots H_{n-1}^T \xRightarrow{p_n, m_n} H_n^T$} which has the format of a derivation of $GG$.
 
-  If the graph grammar $GG$ does not have NACs, the underlying occurrence graph grammar $OGG$ also does not have NACs, and it holds true that $d'$ is a derivation of $GG$, since it was constructed as given by the original definition of occurrence graph grammars in~\cite{Corradini1996}.
+  If the graph grammar $GG$ does not have NACs, the occurrence graph grammar $OGG$ also does not have NACs, and it holds true that $d'$ is a derivation of $GG$, since it was constructed as given by the original definition of occurrence graph grammars in~\cite{Corradini1996}.
 
   Thus, we need to show that with the addition of (incremental) NACs in $GG$, our extension for the construction of occurrence graph grammars with NACs still guarantees that the derivation $d'$ obtained from $d$ is a valid derivation of $GG$.
 
