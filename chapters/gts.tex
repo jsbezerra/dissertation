@@ -1,8 +1,8 @@
 \chapter{Graph Grammars}\label{ch:gts}
 
-The theory of graph grammars and graph transformation systems is based on the application of rules that are able to modify graphs. Using this framework, it is possible to model complex systems as graph transformation systems, where graphs represent system states while rules model transitions between states.
+The theory of graph grammars and graph transformation systems is based on the application of rules that are able to modify graphs. Using this framework, it is possible to model complex systems as graph transformation systems, where graphs represent system states, while rules model transitions between states.
 
-Graph grammars have a wide application in computer science, not only because graphs are natural and intuitive way to model complex situations, but also because it is possible to reason about several properties of the modelled systems using its formalism~\cite{Ehrig2006,Rozenberg1997}.
+Graph grammars have a wide range of application in computer science, not only because graphs are a natural and intuitive way of modelling complex situations, but also because it is possible to reason about several properties of the modelled systems using this formalism~\cite{Ehrig2006,Rozenberg1997}.
 
   We now review the basic concepts and some analysis techniques for graph transformations that are used in this work. We use the algebraic approach, which is based on Category Theory. For the proofs of theorems and facts, the reader is referred to ~\cite{Corradini1996:DPO}, however a brief review of the main categorial concepts used in this thesis is presented in appendix~\ref{app:category-theory}.
 
@@ -55,7 +55,7 @@ Graph grammars have a wide application in computer science, not only because gra
 
 \begin{example}[Typed Graph and Typed Graph Morphism Example] Figure~\ref{fig:gts:typed-graphs} shows a type graph $T$, and four graphs $G_0, G_1, G_2, G_3$ where only $G_0$ and $G_1$ are valid \emph{T-typed} graphs. In this graphical representation, the shapes of the nodes represent different types. Thus, a square node can only be mapped to the square node in $T$, and so on.
   
-  Notice that $G_2$ can not be a \emph{T-typed} graph because type graph does not have a node of the type $\lozenge$, neither an edge type with source and target in the $\Square$ type. Similarly, $G_3$ is not a valid \emph{T-typed} graph because, although there is an edge type between a $\triangle$ and a $\Square$ types, the source must of this type of edge must be a $\Square$ and the target a $\triangle$.
+  Notice that $G_2$ can not be a \emph{T-typed} graph because the type graph does not have a node of type $\lozenge$, neither an edge type with source and target in the $\Square$ type. Similarly, $G_3$ is not a valid \emph{T-typed} graph because, although there is an edge type between a $\triangle$ and a $\Square$ types, the source of this type of edge must be a $\Square$ and the target a $\triangle$.
 
   Figure~\ref{fig:gts:typed-graph-morphism} shows a typed graph morphism $f : G_0^T \rightarrow G_1^T$, where $f$ maps node $\Circle_a$ to $\Circle_1$, $\Square_b$ to $\Square_1$ and edge $\curvearrowleft_e$ to $\curvearrowleft_2$.
 \begin{figure}[!ht]
@@ -179,7 +179,7 @@ Figure~\ref{fig:gts:rule-standard} presents the rule in the standard DPO notatio
 The gluing condition expresses in a positive manner whether it is possible to perform a transformation. Given a rule and a match to an instance graph, the pattern found by the match must satisfy the dangling and the identification conditions in order to be considered valid. However, sometimes it is also convenient to specify forbidden contexts, in which the transformation can not be applied even if it satisfies the gluing conditions. An elegant form of
 achieving this is by means of Negative Application Conditions (NACs), defined in ~\cite{Habel1996}.
 
-A NAC extends one side of a rule by describing a pattern that should not be found around the match or comatch, otherwise the application is forbidden. Although NACs do not provide more expressive power, they make the modelling and understanding of graph grammars a lot easier. They are nowadays essential to the modelling of complex systems~\cite{Corradini2014}.
+A NAC extends one side of a rule by describing a pattern that should not be found around the match or comatch, otherwise the application is forbidden. Although NACs do not provide more expressive power, they make the modelling and understanding of graph grammars much easier. They are nowadays essential to the modelling of complex systems~\cite{Corradini2014}.
 
 \begin{definition}[Negative Application Condition] A \emph{left} negative application condition over a graph rule \graphrule{} is of the form $NAC\left(n\right)$, where \nac{} is an arbitrary (typed) graph morphism. A match \match{} of a rule $p$ satisfies\footnote{When a NAC is satisfied it is also said that the NAC is \emph{not triggered} and vice versa.} $NAC\left(n\right)$ on $L$, written $m \models NAC\left(n\right)$, iff $\nexists$ $q : N \rightarrow G$ with $q$ being a monomorphism and $q \circ n = m$.
 
@@ -273,7 +273,7 @@ A NAC extends one side of a rule by describing a pattern that should not be foun
 
 \section{Parallel and Sequential Independence}
 
-One of the characteristics that make Graph Transformation Systems and Graph Grammars suitable formalisms to model and reason about parallel and/or concurrent systems is the possibility to check whether the transformations given by two graph rules over the same instance graph can be applied (1) at the same time or (2) in any interchangeable order. In the first case we say that the transformations are parallel independent; in the later we say that they are sequential independent.
+One of the characteristics that make Graph Transformation Systems and Graph Grammars suitable formalisms for modelling and reasoning about parallel and/or concurrent systems is the possibility of checking whether the transformations given by two graph rules over the same instance graph can be applied (1) at the same time or (2) in any interchangeable order. In the first case we say that the transformations are parallel independent; in the later we say that they are sequential independent.
 
 In this section, we review both what it (formally) means for two graph transformations to be independent and how to check it. Notice that when we are reasoning about graph transformations (rules application) the (in)dependence is concrete, while for the case of graph rules the (in)dependence is potential, as it depends on the particular way the rules are applied.
 
@@ -305,7 +305,7 @@ Intuitively, each case of dependency can be regarded as follows:
   \item a \emph{delete-forbid} dependency: $p_1$ deletes (from graph $H_1$) at least one element that would trigger the NAC $N_2$, thus allowing the application of $p_2$ on $E$.
 \end{enumerate}
 
-In this work we mostly consider dependencies (and conflicts) between rules. Thus, when we say that two rules are causally dependent it means that there may be a situation in which the application of one rule actually depends on the application of the other, but there might be also situations in which these both rules are applied independently.
+In this work we mostly consider dependencies (and conflicts) between rules. Thus, when we say that two rules are causally dependent it means that there may be a situation in which the application of one rule actually depends on the application of the other, but there might also be situations in which both these rules are applied independently.
 
 \begin{example}[Dependency situation in the mail server grammar]
   Figure~\ref{fig:gts:dependency} shows a dependency situation between the rules \emph{getData} and \emph{receiveMessage}. In this case, the dependency is of a \emph{produce-use} kind: there may be a situation in which the edge between the \emph{piece of data} and the \emph{message} at the instance graph created by \emph{getData} are necessary for \emph{receiveMessage} to be applied.
