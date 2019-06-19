@@ -1,8 +1,8 @@
 \chapter{Conclusions}\label{ch:conclusions}
 
-An Occurrence Graph Grammar (OGG) is a way of representing the semantics of a graph grammar as a graph grammar itself. OGGs were previously defined by~\cite{Ribeiro1996} and~\cite{Corradini1996}. Notwithstanding, its original definitions do not consider Negative Application Conditions, which are nowadays essential do the modelling of complex, real-life systems.
+An Occurrence Graph Grammar (OGG) is a way of representing the semantics of a graph grammar as a graph grammar itself. OGGs were previously defined by~\cite{Ribeiro1996} and~\cite{Corradini1996}. Notwithstanding, its original definitions do not consider Negative Application Conditions, which are nowadays essential for modelling of complex, real-life systems.
 
-  In our work, we proposed an extension to the framework of occurrence graph grammars in order to include Negative Application Conditions (NACs), which has not been done so far. Additionally, the process of constructing occurrence graph grammars was implemented on Verigraph, a software specification and verification system based on graph rewriting.%, which now supports doubly-typed graph grammars in general.
+  In our work, we proposed an extension of the framework of occurrence graph grammars in order to include Negative Application Conditions (NACs), which has not been done so far. Additionally, the process of constructing occurrence graph grammars was implemented on Verigraph, a systems specification and verification software based on graph rewriting.%, which now supports doubly-typed graph grammars in general.
 
   %As the main objective of this thesis, we used occurrence graph grammars and its relations to generate test cases, also using Verigraph. This functionality aims to improve the quality of the software testing activity by providing test cases and oracles that are complete (regarding the point of view of rules application ordering) and compact.
 
@@ -36,7 +36,7 @@ Although our main objectives were accomplished during the work of this thesis, t
 
 \textbf{NACs in strongly safe grammars:} In our work, we defined NACs in strongly safe grammars that are only single-typed. However, the definition of doubly-typed NACs seems to be useful if one wants to point concretely each element in the core graph that triggers the NAC of an action.
 
-The idea is to create a doubly-typed NAC for each concrete triggering of the original NAC over the core graph. Moreover, this translation may yield the creation of (possibly) many doubly-typed NACs for each original single-typed. Thus, it remains as future work to formally define this other kind of NAC, to verify whether and when it would really be useful, how to use it to improve the expressiveness for test cases generation and then implement it on Verigraph.
+The idea is to create a doubly-typed NAC for each concrete triggering of the original NAC over the core graph. Moreover, this translation may yield the creation of (possibly) many doubly-typed NACs for each original single-typed. Thus, it remains as future work to formally define this other kind of NAC, to verify whether and when it would really be useful, how to use it to improve the expressiveness of test cases generation and then implement it on Verigraph.
 
 %\important{Test generation with non-deterministic occurrence graph grammars with nacs}
 
