@@ -125,7 +125,7 @@ As a side note, the reader may notice that it is not mandatory to create an $IO$
 \end{figure}
 \end{example}
 
-Currently, the generation of the \textit{input-output relation} is a manual step in our strategy, therefore the analyst needs to decide how to better implement his/her own $IO$ relation. This did not shown to be a problem, as in our analysis we usually wanted to restrict the number of possible combinations to more realistic cases. However, its fully automation was scheduled as future work.
+Currently, the generation of the \textit{input-output relation} is a manual step in our strategy, therefore the analyst needs to decide how to better implement his/her own $IO$ relation. This has not shown to be a problem, as in our analysis we usually wanted to restrict the number of possible combinations to more realistic cases. However, its fully automation has been scheduled as future work.
 
 
 \section{Constructing the OGG}
@@ -182,8 +182,8 @@ Currently, the generation of the \textit{input-output relation} is a manual step
 
 If all the steps in such a construction can be successfully executed, specially steps~\ref{enum:construction-graphs} and~\ref{enum:construction-ordering}, we have that $OGG = (Occ, I, F')$ is not only a doubly-typed graph grammar, but also a deterministic occurrence graph grammar. %This means it is possible to successfully apply all the rules in the original collection $F$. %Our approach creates test cases and oracles from $OGG$ whether it is in fact an occurrence graph grammar or not. In the first case, we have tests for success and failure execution paths, whereas in the second we have tests only for the failure ones. Notwithstanding, we regard the failure tests as important because they pinpoint uses of the underlying system where the system itself is supposed to fail, therefore they can not or should not be performed. In the following, we dive into details of each construction step.
 
-The first step of the construction, the amalgamation of rules in $F$ w.r.t. $IO$, is responsible to ``glue'' the graphs of all rules in one typed graph $Occ$, while identifying the items that are meant to be the same throughout the grammar execution. This can be regarded as a mapping which turns generic elements such as \textit{a user} into concrete elements such as the user named \textit{Bob}. It also discriminates these elements, for instance: the user \textit{Bob} is different from the user
-\textit{Alice}. Therefore, at the end of this step, $Occ$ contains all concrete elements ever to be created, preserved or deleted by any of the rules in collection $F$. Figure~\ref{fig:tests:amalgamation} shows the amalgamation of an $F$ containing one copy of each rule in our example grammar w.r.t. the IO relation depicted on Figure~\ref{fig:tests:inout}.
+The first step of the construction, the amalgamation of rules in $F$ w.r.t. $IO$, is responsible for ``gluing'' the graphs of all rules in one typed graph $Occ$, while identifying the items that are meant to be the same throughout the grammar execution. This can be regarded as a mapping which turns generic elements such as \textit{a user} into concrete elements such as the user named \textit{Bob}. It also discriminates these elements, for instance: the user \textit{Bob} is different from the user
+\textit{Alice}. Therefore, at the end of this step, $Occ$ contains all concrete elements ever to be created, preserved or deleted by any of the rules in the collection $F$. Figure~\ref{fig:tests:amalgamation} shows the amalgamation of an $F$ containing one copy of each rule in our example grammar w.r.t. the IO relation depicted on Figure~\ref{fig:tests:inout}.
 
 \begin{figure}[!ht]
   \centering
@@ -220,7 +220,8 @@ Figure~\ref{fig:tests:actions} shows the actions generated for our running examp
 
 Once the set $F'$ of actions was created, we proceed to calculating the causal relation, as described in Definition~\ref{def:causal-relation}. This relation is the very first indicative of whether it is possible to construct an occurrence graph grammar for the given collection of rules. Remember that this relation must be a partial order, otherwise the totality of rules in $F$ are not executable. Specifically, the causal relation gives us hints over the order in which the actions must be performed to accomplish the functionality aims, for example: \textit{Bob} must sent \textit{the message} to \textit{the server} before it reaches \textit{Alice}. The occurrence relation of our example is [getData < deleteMsg, getData < receiveMsg, receiveMsg < deleteMsg, sendMsg < deleteMsg, sendMsg < getData, sendMsg < receiveMsg]. It is also easy to see that this relation is a partial order. In fact, there is only one possible total order derived from it: $[sendMsg < getData < receiveMsg < deleteMsg]$.
 
-The next step consists of using the causal relation and the graph $Occ$ in order to generate the initial and final graphs of our target grammar. These graphs correspond to the necessary input and expected output of performing $F$ in a minimal context. In order to create the graphs, we delete from $Occ$ the elements that are created (resp. deleted) by the rules in $F'$ according to the causal relation. For example: \textit{Alice} is a person who can never be created by any action of our system, no matter how advanced, as a consequence she must be present in any initial states of the actions performed with her. \textit{The message} sent by \textit{Bob} was never created by any action either, so it must be present in the initial graph. However, it is deleted by the action \emph{deleteMsg}, so it must not appear in the final graph.
+The next step consists of using the causal relation and the graph $Occ$ in order to generate the initial and final graphs of our target grammar. These graphs correspond to the necessary input and expected output of performing $F$ in a minimal context. In order to create the graphs, we delete from $Occ$ the elements that are created (resp. deleted) by the rules in $F'$ according to the causal relation.
+For example: \textit{Alice} is a person who can never be created by any action of our system, no matter how advanced. As a consequence she must be present in any initial states of the actions performed with her. \textit{The message} sent by \textit{Bob} is never created by any action either, hence it must be present in the initial graph. However, it is deleted by the action \emph{deleteMsg}, so it must not appear in the final graph.
 
 \begin{figure}[!ht]
   \centering
@@ -235,7 +236,7 @@ The next step consists of using the causal relation and the graph $Occ$ in order
   \caption{Instance graphs}\label{fig:tests:graphs}
 \end{figure}
 
-In general, after simply deleting those elements from $Occ$, the result may be that either \emph{Initial} or \emph{Final} graphs are not valid, in the case that any source or target node of an edge is deleted, but not the edge itself. This means that the execution of $F$ would need to begin on or lead to an inconsistent state, therefore no sequencing of actions in $F$ could be performed in a real execution. However, if they are indeed valid graphs, as they are in our example, we have just found the initial and final (minimal) states of the system regarding the execution of all rules in $F$.
+In general, after simply deleting those elements from $Occ$, the result may be that either \emph{Initial} or \emph{Final} graphs are not valid, in the case that any source or target node of an edge is deleted, but not the edge itself. This means that the execution of $F$ would need to begin in or lead to an inconsistent state, therefore no sequencing of actions in $F$ could be performed in a real execution. However, if they are indeed valid graphs, as they are in our example, we have just found the initial and final (minimal) states of the system regarding the execution of all rules in $F$.
 
 Notice that, if the steps listed so far (\ref{enum:construction-colimit} to~\ref{enum:construction-graphs}) were able to be successfully performed, we have a grammar \mbox{$OGG = \left(Occ, I, F'\right)$} that is not only doubly-typed, but also strongly safe in the sense of Definition~\ref{def:strongly-safe-grammar}. Therefore it is a candidate to be an occurrence graph grammar.
 
@@ -266,7 +267,7 @@ Finally, we have the strongly safe grammar $OGG$ together with its corresponding
 \begin{example} This graph grammar models a common traffic situation, where a pedestrian crosses or not a street according to the state of a traffic light. The grammar is depicted in Figure~\ref{fig:tests:grammar-traffic} while its rules are summarized as follows:
 
 \begin{enumerate}[label=(\alph*),start=2]
-  \item \emph{walk:} a pedestrian is on a sidewalk and crosses the street to be on another sidewalk, however he/she can not do so if there is a closed traffic light.
+  \item \emph{walk:} a pedestrian is on a sidewalk and crosses the street to be on another sidewalk, however they can not do so if there is a closed traffic light.
   \item \emph{open:} turns a closed traffic light into an open one.
   \item \emph{close:} turns an open traffic light into a closed one.
 \end{enumerate}
@@ -309,7 +310,7 @@ The first step in the construction, the amalgamation of rules, results in the co
   \caption{Amalgamation (colimit) of rules for the traffic grammar example.}\label{fig:tests:amalgamation-traffic}
 \end{figure}
 
-The second step retypes the rules providing the actions depicted in Figure~\ref{fig:tests:actions-traffic}. Once again, NACs are not shown due to limitations with AGG format compatibility for double-typed graph grammars.
+The second step retypes the rules generating the actions depicted in Figure~\ref{fig:tests:actions-traffic}. Once again, NACs are not shown due to limitations with AGG format compatibility for double-typed graph grammars.
 
 The third step is to calculate the causal relation. For this particular execution of the grammar it consists of the set cointaining only the pair \emph{close} $<$ \emph{open}. Therefore, in this context, the traffic light must be closed before it opens and, so far, the action \emph{walk} does not relate to any of the others. This relation is a partial order, given that there are multiple options of total orderings which respect this relation: $[walk < close < open]$, $[close < walk < open]$ and $[close < open < walk]$.
 
@@ -345,31 +346,32 @@ After calcultating the causal relation, we construct the \emph{Initial} and \emp
   \caption{Instance graphs for the traffic grammar}\label{fig:tests:graphs-traffic}
 \end{figure}
 
-  The characterization of conflicts and dependencies is where the behaviour of this graph grammar greatly defers from our previous example.
+  The characterization of conflicts and dependencies is where the behaviour of this graph grammar greatly differs from our previous example.
   There is one potential produce-forbid conflict between actions \emph{close} and \emph{walk} and one potential delete-forbid dependency between actions \emph{open} and \emph{walk}.
   Both the conflict and the dependency act over the same triggering element, the \emph{closed} edge in the NAC of action \emph{walk}.
-  This element is not present in the \emph{Initial} graph, as it is created by the action \emph{close}.
-  Also, the element is not (causally) related to the action \emph{walk}, given that the actions which create and delete it are themselves not related to that action.
+  This element is not present in the \emph{Initial} graph, as it is created by action \emph{close}.
+  Also, the element is not (causally) related to action \emph{walk}, given that the actions which create and delete it are themselves not related to that action.
   It is easy to see that the action \emph{walk} can either occur before action \emph{close} or after action \emph{open}, but never in between them, because \emph{Jane} must not cross \emph{Avenue B} while the traffic light is closed.
   Therefore, we have an abstract produce-forbid conflict as well as an abstract delete-forbid dependency which, in this case, are both denoted by the tuple $(walk,close, open)$. Moreover, as there are no concrete conflicts and dependencies induced by NACs, the occurrence relation remains equal to the causal relation.
 
 Finally, we have to find at least one total ordering of the actions respecting both the occurrence relation $\leq_o$ = $[close <_o open]$ and the set of occurrence relation restrictions $R = (walk,close,open)$. In fact, there are two such orderings: $[walk < close < open]$ and $[close < open < walk]$. Therefore, the strongly safe graph grammar constructed from this graph grammar execution is also an occurrence graph grammar with NACs.
 
-\section{Generating Tests}
+\section{Generating Test Cases}
 
 %Once the previous verifications were executed, we can build the occurrence relation to verify whether $OGG_i$ can be really an occurrence graph grammar. If no abstract dependencies or conflicts are found, then the concrete relations are sufficient to perform this verification, and it suffices to check if there is a total ordering compatible with the occurrence relation. If the set $R$ of \emph{occurrence relation restrictions} is not empty, we also need to check if there is a total ordering of the occurrence relation that respects these restrictions.
 
 %As to check wether a partial order satisfies the generated set of restrictions seems to be a hard problem, in the complexity sense, we left this last implementation as a future work.
 
-  Occurrence Graph Grammars may be used to generate a set of tests for a Graph Grammar. The process of constructing an occurrence graph grammar may provide insights for tests even when it fails. In the case where OGGs are found, we have test cases for successful executions of the system under modelling and conditions over how the system should execute. In the case where OGGs are not found, we have test cases for executions where the system must always fail.
+  Occurrence Graph Grammars may be used to generate a set of tests for a Graph Grammar. The process of constructing an occurrence graph grammar may provide insights for tests even when it fails. In the case where OGGs are found, we have test cases for successful executions of the system under modelling and conditions under which the system should execute. In the case where OGGs are not found, we have test cases for executions where the system must always fail.
 
-We use the occurrence relation and the set of abstract restrictions as test oracles, to define the acceptance of the tests: any path that complies to the format imposed by them is considered valid and must always succeed. On the other hand, paths that break at least one of such restrictions are considered invalid, and their tests must always capture them as failures.
+We use the occurrence relation and the set of abstract restrictions as test oracles, to define the acceptance of tests: any path that complies with the format imposed by them is considered valid and must always succeed. On the other hand, paths that break at least one of such restrictions are considered invalid, and their corresponding test cases must always capture them as failures.
 
   The tests are represented by the concrete orderings of the rules execution, orderings of elements creation/deletion, and by the initial and final graphs.
-  An ordering of rules is one of (possibly) many valid orders in which the rules can be applied according to the occurrence relation. An ordering of elements represents an ordering in which the state of the system may be constructed. While the initial and final graphs translate the valid/necessary data for the input and output of each test. More specific usability details can be found on the Verigraph tutorial, which can be found at \url{https://github.com/Verites/verigraph-tutorial/releases}.
+  An ordering of rules is one of (possibly) many valid orders in which the rules can be applied according to the occurrence relation.
+  An ordering of elements represents an ordering in which the state of the system may be constructed, whereas the initial and final graphs translate the valid/necessary data for the input and output of each test. More specific usability details can be found on the Verigraph tutorial at \url{https://github.com/Verites/verigraph-tutorial/releases}.
 
 
-The output of Verigraph for an OGG creation and its test case generation is shown on Figure~\ref{fig:tests:checklist}. On the first figure, Verigraph performs the basic verifications to check whether the generated output is, in fact, an occurrence grammar.
+The output of Verigraph for an OGG creation and its test case generation is shown in Figure~\ref{fig:tests:checklist}. On the first figure, Verigraph performs the basic verifications to check whether the generated output is, in fact, an occurrence grammar.
 
 \begin{figure}[!ht]
 \caption{Tool command line output}
