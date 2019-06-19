@@ -7,7 +7,7 @@ We proposed a new semantical model for Graph Grammars with Negative Application 
 \subsection{Unfolding Semantics}
 
   Unfolding techniques were initially proposed for Petri Nets~\cite{Nielsen1981} and later generalized to Graph Grammars~\cite{Ribeiro1996} and other Adhesive Systems~\cite{Baldan2009}.
-  The idea of Unfolding of a Graph Grammar uses that of Occurrence Graph Grammars and consists of a non deterministic process that expresses the Graph Grammar behaviour: for a given grammar $G$, it is possible to build a sequence of Occurrence Grammars $O_n$ where each $O_n$ represents all computations up to depth $n$, where the depth of a concurrent computation is the length of a maximally parallel execution of the computation~\cite{Baldan2009}.
+  The idea of Unfolding of a Graph Grammar uses that of Occurrence Graph Grammars and consists of a non-deterministic process that expresses the Graph Grammar behaviour: for a given grammar $G$, it is possible to build a sequence of Occurrence Grammars $O_n$ where each $O_n$ represents all computations up to depth $n$, where the depth of a concurrent computation is the length of a maximally parallel execution of the computation~\cite{Baldan2009}.
 
   The Unfolding begins at the start graph of the grammar $G$ and proceeds by continuously applying all rules in all possible ways to its concurrent subgraphs until depth $n$, then each occurrence of a rule and each new graph element created is recorded in the unfolding.
   As in our approach, no element is ever deleted from this structure, therefore it can be seen as a ``partial application'' of a rule to a match, given that it generates the new items created by the application of the rule, without actually erasing the elements that have been deleted~\cite{Baldan2008}.%: intuitively, this is because such items may still be used by another production in the nondeterministic unfolding.
@@ -57,8 +57,8 @@ Coverage criteria is defined by means of static analysis, where potential confli
 In the process of generating test cases, it is necessary to provide an initial graph, which is used to find out which visual contracts are applicable to it. One of such visual contracts is chosen as the first step and all the paths through the dependency graph in which each rule is applied at most once are computed and stored as a set of rule sequences. Thereafter, the sequences are enriched to encompass rules with multiple dependencies and lately redundant rules contained in larger ones are
 removed. Afterwards, each sequence is executed (if possible), and any new edges in the dependency graph reached by them are added to coverage. The entire process is then repeated as long as the coverage shows improvement.
 
-In comparison to our work, this approach has both advantages and limitations. As an example of the first, there are: the possibility to work with attributed typed graph transformation systems and multi-rules. As for the second: it requires more user involvement during the process of test case generation, it does not enclose negative application conditions, it was planned to work in a configuration where each rule is applied at most once and although being an extension of
-AGG~\cite{Taentzer2000}, the tool is not available to download.
+In comparison to our work, this approach has both advantages and limitations. As an example of the first, there are: the possibility of working with attributed typed graph transformation systems and multi-rules. 
+As for the second: it requires more user involvement during the process of test case generation, it does not enclose negative application conditions, it was planned to work in a configuration where each rule is applied at most once and, although being an extension of AGG~\cite{Taentzer2000}, the tool is not available for download.
 
 \section{Tools}
 
