@@ -9,7 +9,7 @@ The implemented categorial constructions are used as a basis to implement severa
 The analysis algorithms are implemented in a generic functional style, having the advantage of being closely related to the formal definitions, thus making it easier to reason about them and to inspect for correctness. 
 In addition, Verigraph benefits from a layered architecture, shown on Figure~\ref{fig:verigraph:layers}, where it is easy to reuse the same analysis algorithms (top layer) for other categories different than \cat{TGraph_T} (bottom layer), as long as they implement the contracts given
 by the type classes (middle layer) defined on the system.
-Examples of these type classes are shown on Figures~\ref{fig:verigraph:morphism-type-class} and \ref{fig:verigraph:cocomplete-type-class}. To implement the constructions defined in this work, it sufficed to add the module \code{OcurrenceGrammar} which  reused the already existing categories and analysis algorithms present in other modules.
+Examples of these type classes are shown on Figures~\ref{fig:verigraph:morphism-type-class} and \ref{fig:verigraph:cocomplete-type-class}. To implement the constructions defined in this work, it sufficed to add the module \code{OcurrenceGrammar} which  reused the already existing categories and analysis algorithms present in other modules. 
 
 \begin{figure}[!ht]
   \centering
