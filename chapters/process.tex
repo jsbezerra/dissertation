@@ -1,6 +1,7 @@
 \chapter{Occurrence Graph Grammars with NACs}\label{ch:process}
 
-Occurrence Graph Grammars (OGGs) were defined for the Single-Pushout (SPO) approach by~\cite{Ribeiro1996}, and for the Double-Pushout (DPO) approach by~\cite{Corradini1996}. In both cases they consist of a way of representing the concurrent semantics of a graph grammar as a graph grammar itself.
+Occurrence Graph Grammars (OGGs) were defined for the Single-Pushout (SPO) approach by~\cite{Ribeiro1996}, and for the Double-Pushout (DPO) approach by~\cite{Corradini1996}. In both cases they consist of a way of representing the concurrent semantics of a graph grammar as a graph grammar itself. It also presents the advantage of having a more compact structure than other semantic models for graph grammars.
+  For example, with Unfolding~\cite{Ribeiro1996} the semantics of a graph grammar is given by the set of all possible derivations of that grammar, which may be an infinite structure, whereas with OGGs we have a grammar which already encodes such derivations in a finite way.
 
   The aim of an OGG is to describe all possible states and changes of states of the graph grammar from which it was constructed.
   This is possible because occurrence grammars can be regarded as an execution history of the underlying grammar.
