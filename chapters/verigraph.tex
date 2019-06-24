@@ -6,15 +6,15 @@ Regarding category theory, Verigraph implements important basic constructions su
 
 The implemented categorial constructions are used as a basis to implement several graph grammar analyses, such as critical pair analysis~\cite{Lambers2006}, state space generation and model checking~\cite{Becker2014}, concurrent rules generation~\cite{BezerraETMF2016} and higher-order graph transformations~\cite{Machado2015}. They were also used to implement the construction of occurrence graph grammars with NACs explained in depth in Chapter~\ref{ch:process}.
 
-The analysis algorithms are implemented in a generic functional style, having the advantage of being very close to the formal definitions, thus making it easier to reason about them and to inspect for correctness. 
+The analysis algorithms are implemented in a generic functional style, having the advantage of being closely related to the formal definitions, thus making it easier to reason about them and to inspect for correctness. 
 In addition, Verigraph benefits from a layered architecture, shown on Figure~\ref{fig:verigraph:layers}, where it is easy to reuse the same analysis algorithms (top layer) for other categories different than \cat{TGraph_T} (bottom layer), as long as they implement the contracts given
 by the type classes (middle layer) defined on the system.
-Examples of these type classes are shown on Figures~\ref{fig:verigraph:morphism-type-class} and \ref{fig:verigraph:cocomplete-type-class}.
+Examples of these type classes are shown on Figures~\ref{fig:verigraph:morphism-type-class} and \ref{fig:verigraph:cocomplete-type-class}. To implement the constructions defined in this work, it sufficed to add the module \code{OcurrenceGrammar} which  reused the already existing categories and analysis algorithms present in other modules.
 
 \begin{figure}[!ht]
   \centering
   \begin{subfigure}[t]{.5\textwidth}
-    \centerline{\includegraphics[scale=0.6]{images/verigraph/layers}}
+    \centerline{\includegraphics[scale=0.4]{images/verigraph/layers}}
 %    \caption{Detailed Layers}
   \end{subfigure}
 %  \begin{subfigure}[t]{.5\textwidth}
